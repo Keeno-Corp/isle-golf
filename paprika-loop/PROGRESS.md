@@ -110,3 +110,9 @@ Judge 2 is written from what I saw. I did not prove the hole 6 SPLASH. My one re
    - Re-verify bunkers against the cliff lip and the fairway after scaling, with a `look` zoom on hole 5 and a `sample` on hole 1's ribbon against #5d8a3a.
 
 SCORE: 6.7
+
+## Iteration 3
+**Did** Only Next item 1 (flag as the vertical accent), in `src/pins.js`: `pin_pole` 2.2 m tall and 0.17-0.19 m wide (was 1.35 m, 0.1 m), `pin_flag` cloth 1.05x0.7 at y 1.85, `pin_knob` is now a 0.15 yellow (#ffd23a) MeshBasicMaterial sphere at y 2.25 as a bright cap.
+**Saw** Hole 2 aim look (state {hole:1} loads "HOLE 2"): `pin_pole` 0.19% [674,62,688,226] (was 0.08% on hole 1), `pin_flag` 0.13%, `pin_knob` 0.039%. Pole is ~14 px wide, still softened by the tilt-shift blur at the frame top. 0 console errors from the change; the `toNonIndexed` warning is still there. Brightness 50%, 0% blown out. Not run: perf, hole 6 C-view pin position, the splash and hole 9 real-key checks, the SPREAD raise, holes 2/3 difficulty, and the saved `course-*` checks.
+**Next** (1) Real-key hole 6 splash (hold D until aimDeg > 40, wedge, Space x3) and hole 9 drive; save as `course-h6-splash`, `course-h9-drive`. (2) Raise `SPREAD` toward 1.2 in `src/course.js` and note the camera pull-back in `lanes/course.md`; add a carry or bunker on holes 2 and 3 (still 3-stroke walks). (3) Check the pin on the hole 6 C view is inside the frame, not at the top edge.
+**Open** Pole and flag may now look oversized on the C view; unchecked. `SFX[k] is not a function` (`src/sound.js`) is outside this lane.

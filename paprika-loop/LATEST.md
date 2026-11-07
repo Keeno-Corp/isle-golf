@@ -1,11 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 2
-**Did** Owner priority 0. (a) island.js: `stripeTex` (16 px/m DataTexture from course.js `stripeAt`) + `grainTex` (3-scale tiling noise) in `terrainMat.onBeforeCompile`, LinearMipmapLinear + `getMaxAnisotropy()`; vertex-colour stripes removed in `courseColour`. (b) course.js `SPREAD = 1.12` scales HOLES paths/bunkers, HOUSE, POND, COW, BELL, HILL, LH_COT, TREES0, FLOWERS, topH bumps, ISLE_A/B; island.js path curves and fences scaled, terrain 78x54 (390x270 segs); bunkers within 3.2 m of the cliff are pulled inland.
-**Saw** Zoom on hole 1 fairway/green at the overview: stripes smooth-edged, no pixel blocks or repeated tile. Eval sweep (auto-aim + needPower) finishes all 9 holes in <=3 strokes, all pins 'green'; yards now 131,142,135,232,254,203,258,288,443. Island overflows frame left/right in the hole 1 aim look (look lane's camera). Not run: perf, rough zoom in true aim view (camera is game-controlled), real-key checks.
-**Next** look lane to widen the camera; real-key hole 6 splash and hole 9 checks from Judge 1; holes 2/3 still easy; pin/marker readability; verify trees/props didn't land on bunkers/fairway after scaling (TREES filter handles fairway).
-**Open** Holes are ~12% longer (a 5-par at 443 yd); drivers reach 204 yd so par 4s need two shots, as before. Bunker-ray clearing ran after scaling, not re-verified by look.
-
 ### Judge 2
 
 Judge 2 is written from what I saw. I did not prove the hole 6 SPLASH. My one real-key attempt landed on the rough with strokes 1, and the pin on the hole 6 C view was too small to read. I also did not run the hole 9 drive or the colour sample.
@@ -57,3 +51,9 @@ Judge 2 is written from what I saw. I did not prove the hole 6 SPLASH. My one re
    - Re-verify bunkers against the cliff lip and the fairway after scaling, with a `look` zoom on hole 5 and a `sample` on hole 1's ribbon against #5d8a3a.
 
 SCORE: 6.7
+
+## Iteration 3
+**Did** Only Next item 1 (flag as the vertical accent), in `src/pins.js`: `pin_pole` 2.2 m tall and 0.17-0.19 m wide (was 1.35 m, 0.1 m), `pin_flag` cloth 1.05x0.7 at y 1.85, `pin_knob` is now a 0.15 yellow (#ffd23a) MeshBasicMaterial sphere at y 2.25 as a bright cap.
+**Saw** Hole 2 aim look (state {hole:1} loads "HOLE 2"): `pin_pole` 0.19% [674,62,688,226] (was 0.08% on hole 1), `pin_flag` 0.13%, `pin_knob` 0.039%. Pole is ~14 px wide, still softened by the tilt-shift blur at the frame top. 0 console errors from the change; the `toNonIndexed` warning is still there. Brightness 50%, 0% blown out. Not run: perf, hole 6 C-view pin position, the splash and hole 9 real-key checks, the SPREAD raise, holes 2/3 difficulty, and the saved `course-*` checks.
+**Next** (1) Real-key hole 6 splash (hold D until aimDeg > 40, wedge, Space x3) and hole 9 drive; save as `course-h6-splash`, `course-h9-drive`. (2) Raise `SPREAD` toward 1.2 in `src/course.js` and note the camera pull-back in `lanes/course.md`; add a carry or bunker on holes 2 and 3 (still 3-stroke walks). (3) Check the pin on the hole 6 C view is inside the frame, not at the top edge.
+**Open** Pole and flag may now look oversized on the C view; unchecked. `SFX[k] is not a function` (`src/sound.js`) is outside this lane.
