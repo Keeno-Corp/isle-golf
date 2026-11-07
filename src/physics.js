@@ -1,6 +1,6 @@
 import './aimline.js';   // load order: each file runs after the one before it (COORDINATION.md)
 import * as THREE from 'three';
-import { rand } from './util.js';
+import { clamp, rand } from './util.js';
 import { ST, fire } from './shared.js';
 import { BELL, COW, HOUSE, H_COT, H_HOUSE, H_LH, H_POND, LH, LH_COT, POND, heightAt, surfaceAt } from './course.js';
 import { treeObjs } from './island.js';
@@ -75,7 +75,7 @@ export function stepSim(b, dt) {
       if (surf === 'sand') { v.multiplyScalar(0.1); v.y = 0; b.mode = 'roll'; b.ev.push('sandHit'); return; }
       const ret = b.bounces === 0 ? b.landT * S.t / 0.8 : S.t;
       tmpV.copy(v).addScaledVector(_n, -vn).multiplyScalar(ret);
-      v.copy(tmpV).addScaledVector(_n, -vn * S.e); b.bounces++; b.ev.push('bounce');
+      v.copy(tmpV).addScaledVector(_n, -vn * S.e); if (b.bounces === 0 && b.curve) { const hv2 = Math.hypot(v.x, v.z) || 1; v.x += (-v.z / hv2) * b.curve * 0.22; v.z += (v.x / hv2) * b.curve * 0.22; } b.bounces++; b.ev.push('bounce');
       if (-vn * S.e < 0.75 || b.bounces > 5) { v.y = 0; b.mode = 'roll'; }
     }
   } else if (b.mode === 'roll') {
@@ -87,12 +87,17 @@ export function stepSim(b, dt) {
     let sp = Math.hypot(v.x, v.z);
     const roll = S.roll * (surf === 'rough' ? 1 : 1) + (surf === 'sand' ? 0 : 0);
     if (sp > 1e-4) { const ns = Math.max(0, sp - roll * dt); v.x *= ns / sp; v.z *= ns / sp; sp = ns; }
-    // the cup: a ball that is slow enough over it drops; one just off it is pulled in a little
+    // the cup: a slow ball over it drops, a quick one lips out (bends round the rim) or runs over; one just off it is pulled in a little
     if (surf === 'green' && b.pin) {
-      const dx = b.pin.x - p.x, dz = b.pin.z - p.z, d = Math.hypot(dx, dz);
-      if (d < 0.13 && sp < 3.4) { b.mode = 'sunk'; b.ev.push('sunk'); p.x = b.pin.x; p.z = b.pin.z; v.set(0, 0, 0); return; }
-      if (d < 0.3 && sp < 1.6) { v.x += dx / d * 4.0 * dt; v.z += dz / d * 4.0 * dt; }
-      if (d < 0.2 && sp >= 3.4 && !b.lipped) { b.lipped = true; b.ev.push('lip'); }
+      const dx = b.pin.x - p.x, dz = b.pin.z - p.z, d = Math.hypot(dx, dz) || 1e-4;
+      if (d < 0.17) {
+        const vcap = 1.35 * (1 - d / 0.17) + 0.1;
+        if (sp < vcap) { b.mode = 'sunk'; b.ev.push('sunk'); p.x = b.pin.x; p.z = b.pin.z; v.set(0, 0, 0); return; }
+        if (d < 0.15 && sp > 0.7 && sp < 3 && !b.lipped) {   // caught the rim: swerve off to the far side
+          b.lipped = true; b.ev.push('lip'); const side = (v.x * dz - v.z * dx) > 0 ? -1 : 1, an = side * (0.55 + 0.5 * (d / 0.15)), c = Math.cos(an), sn = Math.sin(an);
+          const vx = v.x * c - v.z * sn, vz = v.x * sn + v.z * c; v.x = vx * 0.82; v.z = vz * 0.82;
+        }
+      } else if (d < 0.32 && sp < 1.1) { v.x += dx / d * 3.4 * dt; v.z += dz / d * 3.4 * dt; }
     }
     p.x += v.x * dt; p.z += v.z * dt; p.y = heightAt(p.x, p.z) + BR * 0.8;
     if (b.live) collideWorld(b, p.y);
@@ -103,7 +108,7 @@ export function stepSim(b, dt) {
 export function previewShot(club, aimYaw, power, H, startPos, lie, out) {
   const s = newSim(); s.live = false; s.pos.copy(startPos); launchOn(s, club, power, 0, aimYaw, H, lie);
   let n = 0; out.length = 0;
-  while (s.mode === 'air' && n++ < 400) { stepSim(s, 1 / 60); if (n % 3 === 0) out.push([s.pos.x, s.pos.z, s.pos.y]); if (s.hasLanded) break; }
+  while (s.mode === 'air' && n++ < 800) { stepSim(s, 1 / 120); if (n % 6 === 0) out.push([s.pos.x, s.pos.z, s.pos.y]); if (s.hasLanded) break; }
   out.push([s.pos.x, s.pos.z, s.pos.y]); return s.pos;
 }
 export function launchOn(s, club, power, acc, aimYaw, H, lie) {
@@ -118,10 +123,11 @@ export function launchOn(s, club, power, acc, aimYaw, H, lie) {
   s.vel.set(s.fx * v * Math.cos(th), v * Math.sin(th), s.fz * v * Math.cos(th)); s.mode = 'air'; s.curve = acc * 2.4; s.pos.y += 0.02;
 }
 // one step of a ball in flight: the sim at 240 Hz, its events, the trail, then settle when it stops
+let _lastTrail = null;
 export function stepFlight(dt) {
   G.flightT += dt; ST.cowWatch = 0.3; const n = Math.max(1, Math.ceil(dt * 240)), h = dt / n;
   for (let i = 0; i < n; i++) { stepSim(SIM, h); if (SIM.ev.length) flightEvents(); if (SIM.mode === 'rest' || SIM.mode === 'sunk' || SIM.mode === 'water' || SIM.mode === 'ob') break; }
-  if (SIM.mode === 'air' || (SIM.mode === 'roll' && Math.hypot(SIM.vel.x, SIM.vel.z) > 1.2)) emit(trail, SIM.pos.x, SIM.pos.y, SIM.pos.z, { life: 0.45, sp: 0.05, up: 0.05, g: 0, color: '#fff3c0' });
+  if (SIM.mode === 'air' || (SIM.mode === 'roll' && Math.hypot(SIM.vel.x, SIM.vel.z) > 1.2)) { const L = _lastTrail; const nn = L ? Math.min(4, Math.ceil(L.distanceTo(SIM.pos) / 0.12)) : 1; for (let i = 1; i <= nn; i++) { const k = i / nn; emit(trail, L ? L.x + (SIM.pos.x - L.x) * k : SIM.pos.x, L ? L.y + (SIM.pos.y - L.y) * k : SIM.pos.y, L ? L.z + (SIM.pos.z - L.z) * k : SIM.pos.z, { life: 0.75, sp: 0.02, up: 0.03, g: 0, color: SIM.mode === 'air' ? '#fff3c0' : '#ffe9a0' }); } _lastTrail = SIM.pos.clone(); } else _lastTrail = null;
   if (G.flightT > 22 && SIM.mode !== 'rest') { SIM.mode = 'rest'; SIM.vel.set(0, 0, 0); }
   if (SIM.mode === 'rest' || SIM.mode === 'sunk' || SIM.mode === 'water' || SIM.mode === 'ob') { G.phase = 'settle'; G.resolveT = SIM.mode === 'rest' ? 0.7 : SIM.mode === 'sunk' ? 0.5 : 1.7; }
 }
@@ -130,11 +136,15 @@ export function flightEvents() {
   const b = SIM, p = curP();
   for (const e of b.ev) {
     fire('ball:' + e, { ball: b, player: p });
-    if (e === 'land') { burst(b.pos.x, b.pos.z, b.surf === 'sand' ? 18 : 8, b.surf === 'sand' ? '#e3cf94' : b.surf === 'green' ? '#a5d07a' : '#7fa653', 1.1, 2.2); play('thud'); }
-    else if (e === 'bounce') { burst(b.pos.x, b.pos.z, 3, '#8fb860', 0.6, 1.2); play('thud', 0.5); }
+    if (e === 'land') {
+      const sf = b.surf, sp = Math.hypot(b.vel.x, b.vel.z);
+      if (sf === 'sand') burst(b.pos.x, b.pos.z, 26, '#e3cf94', 1.6, 2.8); else if (sf === 'green') burst(b.pos.x, b.pos.z, 7, '#b9e08a', 0.9, 1.6); else if (sf === 'rough') burst(b.pos.x, b.pos.z, 12, '#5f8a3d', 1.0, 2.0); else burst(b.pos.x, b.pos.z, 10, '#8fb860', 1.2, 2.2);
+      play('land', sf, clamp(0.6 + sp * 0.05, 0.6, 1.3));
+    }
+    else if (e === 'bounce') { burst(b.pos.x, b.pos.z, 3, b.surf === 'green' ? '#b9e08a' : '#8fb860', 0.6, 1.2); play('land', b.surf, 0.45); }
     else if (e === 'sandHit') { burst(b.pos.x, b.pos.z, 22, '#e3cf94', 1.6, 2.6); play('sand'); setSub('PLUGGED IN THE SAND'); }
     else if (e === 'tree') { play('rustle'); if (b.treeHit) { const t = b.treeHit.t; for (let i = 0; i < 8; i++) emit(dust, b.pos.x, b.pos.y, b.pos.z, { life: 0.9, sp: 1, up: 1.4, g: 4, color: pick(['#3a7a2f', '#4a8a35', '#7aa845']) }); } setSub(pick(['INTO THE BRANCHES!', 'LEAVES EVERYWHERE!', 'A TREE GETS IN THE WAY'])); }
-    else if (e === 'wall') { play('clank'); setSub('OFF THE WALL'); }
+    else if (e === 'wall') { play('clank'); burst(b.pos.x, b.pos.z, 6, '#e8dcc0', 0.8, 1.4); setSub('OFF THE WALL'); }
     else if (e === 'sheep') {
       const s = b.sheep; if (s) sheepBonked(s, b);
       G.sheepHits++; play('baa', rand(0.9, 1.2)); showBanner('BAA!', 'BOUNCED OFF A SHEEP', 1.6); G.hitStop = 0.1; ST.flash = 0.4; ST.flashHold = 0.05;

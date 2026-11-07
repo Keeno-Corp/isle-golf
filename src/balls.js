@@ -24,7 +24,7 @@ export function updateBalls() {
     const b = balls[i], isAct = p === act, live = isAct && (G.phase === 'flight' || G.phase === 'settle'), src = live ? SIM.pos : p.pos;
     b.m.visible = G.phase !== 'title' && G.phase !== 'card' && !(p.holed && !live) && !(live && SIM.mode === 'sunk' && SIM.sunkT > 0.35);
     b.m.position.copy(src); if (!live && p.strokes === 0 && p.surf === 'tee') b.m.position.y += 0.035;
-    if (live && SIM.mode === 'sunk') b.m.position.set(SIM.pos.x, curH().pinY - SIM.sunkT * 1.2 + BR, SIM.pos.z);
+    if (live && SIM.mode === 'sunk') { const t = SIM.sunkT, rr = 0.11 * Math.exp(-t * 7); b.m.position.set(SIM.pos.x + Math.cos(t * 38) * rr, curH().pinY - Math.min(t, 0.4) * 0.9 + BR + 0.08 * Math.max(0, 0.12 - t) * 4, SIM.pos.z + Math.sin(t * 38) * rr); }
     const gy = heightAt(src.x, src.z); const h = Math.max(0, src.y - gy);
     b.sh.visible = b.m.visible && SIM.mode !== 'sunk'; b.sh.position.set(src.x + h * 0.15, gy + 0.025, src.z + h * 0.1); b.sh.scale.setScalar(clamp(1 - h * 0.12, 0.4, 1) * 0.9);
     b.ring.visible = b.m.visible && (G.players.length > 1 || (isAct && G.phase === 'aim')); b.ring.position.set(src.x, gy + 0.03, src.z);

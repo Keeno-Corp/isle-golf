@@ -6,7 +6,7 @@ import { scene } from './stage.js';
 import { play } from './sound.js';
 import { CLUBS, LIE, _cm } from './rules.js';
 import { setClubLook } from './golfer.js';
-import { previewShot } from './physics.js';
+import { launchOn, newSim, previewShot, stepSim } from './physics.js';
 import { G, curClub, curH, curP, pinDist } from './round.js';
 
 // ---------------------------------------------------------------- the aim line and the putting grid
@@ -51,8 +51,9 @@ export function holdAim(dt) {
 export function updateAimLine() {
   const p = curP(), H = curH(), c = curClub(), track = [];
   if (c.putt) {
-    const n = 16; for (let i = 0; i < 40; i++) { if (i >= n) { _cm.position.set(0, -50, 0); _cm.scale.setScalar(0.001); _cm.updateMatrix(); aimDots.setMatrixAt(i, _cm.matrix); continue; }
-      const d = 0.35 + i * 0.3, x = p.pos.x + Math.cos(G.aim) * d, z = p.pos.z + Math.sin(G.aim) * d; _cm.position.set(x, heightAt(x, z) + 0.03, z); _cm.rotation.set(0, 0, 0); _cm.scale.setScalar(1 - i / n * 0.5); _cm.updateMatrix(); aimDots.setMatrixAt(i, _cm.matrix); }
+    // the putt preview: roll a ghost ball along the aim at the power that stops it at the cup, so the dots bend with the break
+    const pts = puttTrack(p, H, c), n = pts.length;
+    for (let i = 0; i < 40; i++) { if (i >= n) { _cm.position.set(0, -50, 0); _cm.scale.setScalar(0.001); } else { _cm.position.set(pts[i][0], heightAt(pts[i][0], pts[i][1]) + 0.03, pts[i][1]); _cm.scale.setScalar(1 - i / n * 0.45); } _cm.rotation.set(0, 0, 0); _cm.updateMatrix(); aimDots.setMatrixAt(i, _cm.matrix); }
     aimRing.visible = false;
   } else {
     const end = previewShot(c, G.aim, 1, H, p.pos, lieMul(), track), N = Math.min(40, track.length + 1);
@@ -63,6 +64,14 @@ export function updateAimLine() {
     aimRing.visible = true; aimRing.position.set(end.x, heightAt(end.x, end.z) + 0.04, end.z);
   }
   aimDots.instanceMatrix.needsUpdate = true; aimDots.visible = G.phase === 'aim' || G.phase === 'intro';
+}
+export function puttTrack(p, H, c) {
+  const d = Math.max(0.5, Math.hypot(H.pinX - p.pos.x, H.pinZ - p.pos.z)), out = [];
+  // power for a dead-straight stop at the pin distance, found on the flat-friction formula, then a ghost roll on the real slopes
+  const pw = Math.min(1.3, d / c.putt * 1.04), s = newSim(); s.live = false; s.pos.copy(p.pos); launchOn(s, c, pw, 0, G.aim, H, 1); s.pin = { x: 1e9, z: 1e9 };
+  let acc = 0, last = [p.pos.x, p.pos.z], n = 0;
+  while (s.mode === 'roll' && n++ < 2400 && out.length < 40) { stepSim(s, 1 / 120); acc += Math.hypot(s.pos.x - last[0], s.pos.z - last[1]); last = [s.pos.x, s.pos.z]; if (acc >= 0.3) { acc = 0; out.push([s.pos.x, s.pos.z]); } }
+  return out;
 }
 export function buildSlopeGrid() {
   const p = curP(), H = curH(), cx = (p.pos.x + H.pinX) / 2, cz = (p.pos.z + H.pinZ) / 2; let k = 0;

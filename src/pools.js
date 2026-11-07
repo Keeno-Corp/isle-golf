@@ -12,7 +12,7 @@ export function pointPool(n, size, name, additive) {
   const pts = new THREE.Points(g, m); pts.name = name; pts.frustumCulled = false; pts.renderOrder = 7; scene.add(pts);
   return { pts, pos, col, n, k: 0, p: Array.from({ length: n }, () => ({ life: 0, t: 1, vx: 0, vy: 0, vz: 0, g: 0, c: new THREE.Color() })) };
 }
-export const dust = pointPool(160, 0.16, 'divots', false), trail = pointPool(60, 0.12, 'ballTrail', true);
+export const dust = pointPool(160, 0.16, 'divots', false), trail = pointPool(140, 0.22, 'ballTrail', true);
 export function emit(pool, x, y, z, o) {
   const p = pool.p[pool.k++ % pool.n]; p.t = 0; p.life = o.life; p.g = o.g ?? 9; p.c.set(o.color);
   const a = rand(0, 6.28), s = (o.sp ?? 1) * rand(0.3, 1); p.vx = Math.cos(a) * s + (o.vx || 0); p.vz = Math.sin(a) * s + (o.vz || 0); p.vy = (o.up ?? 2) * rand(0.5, 1);

@@ -1,0 +1,9 @@
+# Progress
+
+The request is in PROMPT.md. Each session of the loop appends one section here: a builder's `## Iteration n` (Did, Saw, Next, Open) and the judge's `### Judge n` (its scores, Next). LATEST.md holds the last of each, rewritten by the loop after every session; the next builder reads the latest Judge's Next there first.
+
+## Iteration 1
+**Did**: Lane edit (game already built). New src/ballfx.js (SFX overrides, `landRing` pool, `PHY` shot tracking + `physics` observe, meter reset in addUpdate). physics.js: cup logic (vcap by distance; lip event + swerve; pull-in), spin kick at first bounce, per-surface `land` puffs/sounds, 1/120 preview, interpolated 140-point `trail` (pools.js). aimline.js `puttTrack` bends putt dots with the slope. balls.js cup rattle. rules.js SURF green t .95, rough t .32. Notes in lanes/ball-physics.md.
+**Saw**: via eval: driver preview ring == first bounce exactly (6.416,12.8); slice +0.6 lands +2.1 z right, hook -0.6 left; wind 8 moves the preview ring ~5 units; putt at needPower from 2 units sinks, x1.3 lips (lips=1) and rests 0.28 past, x0.7 short. A look in flight shows the trail but it is faint (size raised to 0.22 afterwards, not re-looked). No console errors.
+**Next**: verify roll-out order green>fairway>rough>sand with wedge swings and tune SURF; check trees/sheep/house collisions with real keys; save ball-physics-* checks in game-tests.json (none added yet); verify putt preview bends on a sloped green; frame-fair click timing in meter.js untouched.
+**Open**: no saved checks yet; rollYd only updates in real frames (not via act settle); the lip swerve direction is unverified visually.
