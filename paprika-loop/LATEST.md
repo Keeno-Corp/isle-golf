@@ -1,11 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 25
-**Did:** `nextTurnOrCard` in `src/round.js` now also empties the `banner` b/i text on a turn change, so no stale "34 YD TO PIN" sits under "FINN TO PLAY". `updateTag` in `src/hud.js` clamps the `tag` to y>=110 and x<=innerWidth-300 so it stays off `windp`.
-**Saw:** No browser, `look`, `test` or `perf` run this session (about 22 minutes); no new numbers or fault lines.
-**Next:** Run `test` on `hud-round-full-round` (the `until hudRound.final` action is unconfirmed). Take the unseen pictures: rough-lie `clubp` yardage, PERFECT banner, PICKED UP stamp, ROUND COMPLETE card. Raise `clubp`/`hinter` font to about 15 px; add a larger ring under the active golfer.
-**Open:** Both edits are untested. The tag clamp numbers (110, 300) are guesses; if the tag drifts from the golfer at the wide camera, loosen them.
-
 ### Judge 25
 
 **Judge 25: Isle Golf, hud-round lane**
@@ -54,3 +48,9 @@ I ran `test` (all 8 saved checks), two `interact` plays with `look`, and `perf` 
    - `look` at the tee should show it. Also run a SO CLOSE! putt (`swing` power just short on the green) and confirm `lastCall` "SO CLOSE!" with no doubled sound.
 
 SCORE: 7.7
+
+## Iteration 26
+**Did:** `#hinter` in `src/hud.js` raised to 17 px and opacity .92 (was 14 px, .7). No other change.
+**Saw:** No browser, `look`, `test` or `perf` run (about 13 minutes); no new numbers. `#clubp` was already 20 px, so Judge 25's "small" note was about the captured size.
+**Next:** Make `meterp` label/needle more opaque in flight; add a kit-colour ring under `golferShadow` and an edge arrow for `tag` at the tee; take the unseen pictures (rough lie, PERFECT banner, PICKED UP, ROUND COMPLETE) and a SO CLOSE! putt.
+**Open:** The hinter edit is untested; check it stays off `ball1`/`cup` at the bottom right.

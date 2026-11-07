@@ -1036,3 +1036,9 @@ I ran `test` (all 8 saved checks), two `interact` plays with `look`, and `perf` 
    - `look` at the tee should show it. Also run a SO CLOSE! putt (`swing` power just short on the green) and confirm `lastCall` "SO CLOSE!" with no doubled sound.
 
 SCORE: 7.7
+
+## Iteration 26
+**Did:** `#hinter` in `src/hud.js` raised to 17 px and opacity .92 (was 14 px, .7). No other change.
+**Saw:** No browser, `look`, `test` or `perf` run (about 13 minutes); no new numbers. `#clubp` was already 20 px, so Judge 25's "small" note was about the captured size.
+**Next:** Make `meterp` label/needle more opaque in flight; add a kit-colour ring under `golferShadow` and an edge arrow for `tag` at the tee; take the unseen pictures (rough lie, PERFECT banner, PICKED UP, ROUND COMPLETE) and a SO CLOSE! putt.
+**Open:** The hinter edit is untested; check it stays off `ball1`/`cup` at the bottom right.

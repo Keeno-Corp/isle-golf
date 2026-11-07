@@ -75,7 +75,7 @@ style.textContent = `
 #meterp .snap{position:absolute;left:0;top:0;bottom:0;width:4.5%;background:rgba(255,246,200,.28);border-right:3px solid #fff6c8}
 #meterp .needle{position:absolute;top:-2px;bottom:-2px;width:5px;margin-left:-2px;background:#fff;box-shadow:0 0 8px #fff;display:none}
 #meterp .notch{position:absolute;top:0;bottom:0;width:3px;background:#4ad8e8;box-shadow:0 0 6px #4ad8e8}
-#hinter{position:absolute;right:16px;bottom:14px;padding:4px 10px;background:rgba(18,34,25,.72);border-radius:5px;font-size:14px;line-height:1.5;text-align:right;color:#f4e39a;opacity:.7;text-shadow:1px 1px 0 #000}#hinter b{color:#fff6c8}
+#hinter{position:absolute;right:16px;bottom:14px;padding:4px 10px;background:rgba(18,34,25,.72);border-radius:5px;font-size:17px;line-height:1.5;text-align:right;color:#f4e39a;opacity:.92;text-shadow:1px 1px 0 #000}#hinter b{color:#fff6c8}
 #title{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:9%;pointer-events:none}
 #title h1{margin:0;font-size:120px;line-height:.95;color:#f7e27a;text-shadow:5px 5px 0 #000,-3px -3px 0 #000,0 0 30px rgba(255,214,120,.8);-webkit-text-stroke:2px #3a3408;letter-spacing:2px}
 #title .sub{font-size:26px;color:#fff6c8;margin:10px 0 26px;padding:4px 20px}
