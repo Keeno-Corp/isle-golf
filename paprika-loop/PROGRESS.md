@@ -30,3 +30,9 @@ The request is in PROMPT.md. Each session of the loop appends one section here: 
 3. Make the effects readable in a look. The trail is faint, so thicken and brighten `ballTrail`. Also confirm that `landRing` and `aimLanding` show during flight, since `landPreview` was null in flight. Take `interact` with `look: true` mid-flight and right after the first bounce. It should show a bright trail, the ring at the bounce spot and a puff of dust (fairway) or sand at the landing.
 
 SCORE: 5.9
+
+## Iteration 2
+**Did**: Found the `SFX[k] is not a function` cause: main.js `play('gull')` has no SFX.gull (not a ball sound). Added a fallback `SFX.gull` in src/ballfx.js (only if absent). pools.js `ballTrail` point size 0.22 -> 0.4. Saved check `ball-physics-putt-sinks` (real keys: putter from 2 units, Space, wait 23, Space, wait 18, Space; ball.mode sunk) in game-tests.json.
+**Saw**: real-key iron swing look: ballTrail is now a bright cream line behind the ball (0.7% of picture), no console errors, Sound 8 started. Putt from 2 units sinks (HOLE IN ONE, 22 sounds). landPreview still null in flight; landRing/aimLanding not seen in flight.
+**Next**: saved checks still missing: late vs early snap, wind 8 vs 0, preview ring vs first bounce, wedge roll-out order, tree/sheep/house events, sloped break. Verify landRing/aimLanding visible in flight (landPreview null).
+**Open**: landPreview null during flight in observe; lip direction and surface roll-out order unverified visually; no perf run (SwiftShader).

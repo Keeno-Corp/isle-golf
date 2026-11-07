@@ -1,11 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 1
-**Did**: Lane edit (game already built). New src/ballfx.js (SFX overrides, `landRing` pool, `PHY` shot tracking + `physics` observe, meter reset in addUpdate). physics.js: cup logic (vcap by distance; lip event + swerve; pull-in), spin kick at first bounce, per-surface `land` puffs/sounds, 1/120 preview, interpolated 140-point `trail` (pools.js). aimline.js `puttTrack` bends putt dots with the slope. balls.js cup rattle. rules.js SURF green t .95, rough t .32. Notes in lanes/ball-physics.md.
-**Saw**: via eval: driver preview ring == first bounce exactly (6.416,12.8); slice +0.6 lands +2.1 z right, hook -0.6 left; wind 8 moves the preview ring ~5 units; putt at needPower from 2 units sinks, x1.3 lips (lips=1) and rests 0.28 past, x0.7 short. A look in flight shows the trail but it is faint (size raised to 0.22 afterwards, not re-looked). No console errors.
-**Next**: verify roll-out order green>fairway>rough>sand with wedge swings and tune SURF; check trees/sheep/house collisions with real keys; save ball-physics-* checks in game-tests.json (none added yet); verify putt preview bends on a sloped green; frame-fair click timing in meter.js untouched.
-**Open**: no saved checks yet; rollYd only updates in real frames (not via act settle); the lip swerve direction is unverified visually.
-
 ### Judge 1
 
 **Judge, session 1: ball-physics lane**
@@ -28,3 +22,9 @@ The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.m
 3. Make the effects readable in a look. The trail is faint, so thicken and brighten `ballTrail`. Also confirm that `landRing` and `aimLanding` show during flight, since `landPreview` was null in flight. Take `interact` with `look: true` mid-flight and right after the first bounce. It should show a bright trail, the ring at the bounce spot and a puff of dust (fairway) or sand at the landing.
 
 SCORE: 5.9
+
+## Iteration 2
+**Did**: Found the `SFX[k] is not a function` cause: main.js `play('gull')` has no SFX.gull (not a ball sound). Added a fallback `SFX.gull` in src/ballfx.js (only if absent). pools.js `ballTrail` point size 0.22 -> 0.4. Saved check `ball-physics-putt-sinks` (real keys: putter from 2 units, Space, wait 23, Space, wait 18, Space; ball.mode sunk) in game-tests.json.
+**Saw**: real-key iron swing look: ballTrail is now a bright cream line behind the ball (0.7% of picture), no console errors, Sound 8 started. Putt from 2 units sinks (HOLE IN ONE, 22 sounds). landPreview still null in flight; landRing/aimLanding not seen in flight.
+**Next**: saved checks still missing: late vs early snap, wind 8 vs 0, preview ring vs first bounce, wedge roll-out order, tree/sheep/house events, sloped break. Verify landRing/aimLanding visible in flight (landPreview null).
+**Open**: landPreview null during flight in observe; lip direction and surface roll-out order unverified visually; no perf run (SwiftShader).

@@ -28,6 +28,9 @@ Object.assign(SFX, {
   cup: () => { for (let i = 0; i < 4; i++) tone({ f: 1500 - i * 140, f2: 1100 - i * 120, dur: 0.05, g: 0.07, type: 'triangle', at: i * 0.055 }); tone({ f: 260, f2: 130, dur: 0.18, g: 0.2, type: 'triangle', at: 0.2 }); noise({ dur: 0.1, g: 0.08, f: 500, at: 0.2 }); tone({ f: 1760, dur: 0.6, g: 0.05, at: 0.24 }); },
 });
 
+// main.js plays 'gull' on a timer; no lane defines it, so a missing key threw in sound.js play(). Fallback only if absent.
+if (!SFX.gull) SFX.gull = () => { tone({ f: 1500, f2: 1000, dur: 0.22, g: 0.04, type: 'triangle', vib: 40, vibF: 18 }); tone({ f: 1300, f2: 900, dur: 0.3, g: 0.035, type: 'triangle', at: 0.25 }); };
+
 // ---------------------------------------------------------------- landing rings: a flat ring that expands where the ball first lands
 const RINGS = Array.from({ length: 6 }, (_, i) => {
   const m = new THREE.Mesh(new THREE.RingGeometry(0.85, 1, 28).rotateX(-Math.PI / 2), new THREE.MeshBasicMaterial({ color: '#fff6d0', transparent: true, opacity: 0, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -4, polygonOffsetUnits: -4 }));

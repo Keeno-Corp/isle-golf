@@ -230,6 +230,87 @@
           "value": 0
         }
       ]
+    },
+    {
+      "id": "ball-physics-putt-sinks",
+      "title": "ball-physics-putt-sinks",
+      "state": {},
+      "actions": [
+        {
+          "action": "newRound",
+          "players": 1
+        },
+        {
+          "action": "start",
+          "players": 1
+        },
+        {
+          "action": "next"
+        },
+        {
+          "wait": 20
+        },
+        {
+          "state": {
+            "ball": {
+              "x": -3.7,
+              "z": 11.95
+            }
+          }
+        },
+        {
+          "action": "club",
+          "name": "putter"
+        },
+        {
+          "action": "aim",
+          "at": "pin"
+        },
+        {
+          "wait": 5
+        },
+        {
+          "key": "Space",
+          "frames": 1
+        },
+        {
+          "wait": 23
+        },
+        {
+          "key": "Space",
+          "frames": 1
+        },
+        {
+          "wait": 18
+        },
+        {
+          "key": "Space",
+          "frames": 1
+        },
+        {
+          "until": {
+            "phase": [
+              "aim",
+              "holed",
+              "card"
+            ]
+          },
+          "max": 600
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "ball.mode",
+          "op": "==",
+          "value": "sunk"
+        },
+        {
+          "path": "physics.mode",
+          "op": "==",
+          "value": "sunk"
+        }
+      ]
     }
   ]
 }
