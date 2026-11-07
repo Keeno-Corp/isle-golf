@@ -7440,8 +7440,10 @@
       "actions": [
         {
           "state": {
-            "localStorage": {
-              "isleGolfBest1": "999"
+            "daily": {
+              "localStorage": {
+                "isleGolfBest1": "999"
+              }
             }
           }
         },

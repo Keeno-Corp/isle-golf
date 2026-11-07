@@ -511,10 +511,10 @@ addObserve(() => ({
   }
 }));
 
-// ---------------------------------------------------------------- setState hook — allows check steps to seed localStorage for test isolation
+// ---------------------------------------------------------------- setState hook — allows check steps to seed localStorage under s.daily.localStorage
 addSetState(s => {
-  if (s.localStorage) {
-    for (const [k, v] of Object.entries(s.localStorage)) {
+  if (s.daily?.localStorage) {
+    for (const [k, v] of Object.entries(s.daily.localStorage)) {
       try { if (v === null) localStorage.removeItem(k); else localStorage.setItem(k, String(v)); } catch (e) {}
     }
   }
