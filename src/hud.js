@@ -29,7 +29,7 @@ export function buildCard(final) {
   h += `<div class="stamps">${stamps}</div>`;
   if (final) {
     const best = [...G.players].sort((a, b) => a.total - b.total)[0];
-    let rec = ''; try { const k = 'isleGolfBest' + G.nPlayers; const old = +localStorage.getItem(k) || 999; if (best.total < old) { localStorage.setItem(k, best.total); rec = ' · NEW BEST'; } else rec = ' · BEST ' + old; } catch (e) { }
+    let rec = ''; if (!G.dailyOn) { try { const k = 'isleGolfBest' + G.nPlayers; const old = +localStorage.getItem(k) || 999; if (best.total < old) { localStorage.setItem(k, best.total); rec = ' · NEW BEST'; } else rec = ' · BEST ' + old; } catch (e) { } }
     h += `<div class="fin">${G.players.length > 1 ? best.name + ' WINS WITH ' + best.total : 'YOU FINISHED ON ' + best.total}  (${vsPar(best.vs)})${rec}</div>`;
   }
   h += `<div class="go">${final ? 'SPACE · BACK TO THE FIRST TEE' : 'SPACE · NEXT HOLE'}</div>`;
@@ -44,7 +44,7 @@ export function advanceCard() {
 export function replayHole() {
   if (G.phase === 'title' || G.phase === 'card') return;
   const H = curH(); for (const p of G.players) { p.strokes = 0; p.holed = false; p.pos.copy(teeVec(H)); p.prev.copy(p.pos); p.surf = 'tee'; p.scores[G.hole] = undefined; p.pickedUp = false; }
-  G.turn = G.order[0]; showBanner('REPLAY', `HOLE ${G.hole + 1}`, 1.4); beginShot();
+  G.turn = G.order[0]; showBanner('REPLAY', `HOLE ${G.hole + 1}`, 1.4); fire('hole:replay', { hole: G.hole }); beginShot();
 }
 
 // ---------------------------------------------------------------- the HUD: steel panels in bevelled green, cream-yellow italic capitals
@@ -151,10 +151,11 @@ export function updateHUD() {
   hud.holep.style.display = hud.windp.style.display = hud.clubp.style.display = 'block'; hud.windp.style.display = 'flex';
   const p = curP(), H = curH(), d = pinDist(p.pos, H), w = windInfo(), c = curClub();
   const tot = G.players.reduce((a, q) => a, 0); let run = 0, parRun = 0; for (let i = 0; i < G.hole; i++) if (p.scores[i] !== undefined) { run += p.scores[i]; parRun += HOLES[i].par; }
-  const key = [G.hole, p.i, p.strokes, Math.round(d * 12), G.club, w.speed, w.rel, p.surf, run].join('|');
+  const key = [G.hole, p.i, p.strokes, Math.round(d * 12), G.club, w.speed, w.rel, p.surf, run, G.dailyOn || false].join('|');
   if (key !== _hudKey) {
     _hudKey = key;
-    hud.holep.innerHTML = `<div class="h">HOLE ${G.hole + 1}<small>PAR ${H.par}</small></div><div class="r"><span>STROKES ${p.strokes}</span><span>${Math.round(d * YD)} YD</span></div><div class="r"><span>ROUND ${vsPar(run - parRun)}</span><span>${H.name}</span></div>` + (G.players.length > 1 ? `<div class="who"><i style="background:${p.kit.col}"></i>${p.name}</div>` : '');
+    const holeLabel = G.dailyOn ? 'DAILY HOLE' : `HOLE ${G.hole + 1}`;
+    hud.holep.innerHTML = `<div class="h">${holeLabel}<small>PAR ${H.par}</small></div><div class="r"><span>STROKES ${p.strokes}</span><span>${Math.round(d * YD)} YD</span></div><div class="r"><span>ROUND ${vsPar(run - parRun)}</span><span>${H.name}</span></div>` + (G.players.length > 1 ? `<div class="who"><i style="background:${p.kit.col}"></i>${p.name}</div>` : '');
     hud.clubp.innerHTML = CLUBS.map((k, i) => `<div class="${i === G.club ? 'on' : ''}">${k.name}<span>${k.putt ? 'GREEN' : Math.round(k.carry * YD * (i === G.club ? lieMul() : 1)) + ' YD'}</span></div>`).join('') + `<div class="lie">LIE · ${p.surf === 'tee' ? 'TEE' : p.surf.toUpperCase()}</div>`;
     hud.wt.innerHTML = `${Math.round(w.speed)} MPH<small>${w.text}</small>`;
     hud.arrow.setAttribute('transform', `rotate(${Number.isFinite(w.rel) ? w.rel : 0})`);
