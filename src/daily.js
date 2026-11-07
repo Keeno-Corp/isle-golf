@@ -10,6 +10,7 @@ import { hud, showBanner, setSub, showTitle } from './hud.js';
 import { SIM } from './physics.js';
 
 // ---------------------------------------------------------------- Daily Hole state
+let _cardTimer = null;
 export const DAILY = {
   on: false,
   date: '',
@@ -88,6 +89,7 @@ export function exitDaily() {
     if (H.flag) { H.flag.rotation.y = o.flagRotY; H.flag.scale.x = o.flagScaleX; }
     // Do NOT reset WIND/ST.gust here — the next beginHole sets them correctly from the restored H.wv
   }
+  if (_cardTimer) { clearTimeout(_cardTimer); _cardTimer = null; }
   const card = document.getElementById('daily-card');
   if (card) card.remove();
   DAILY.on = false;
@@ -188,6 +190,9 @@ on('round:start', () => {
 // hole:replay fires in replayHole (hud.js) after it resets p.pos to unnudged tee, before beginShot
 on('hole:replay', ({ hole }) => {
   if (!DAILY.on || hole !== DAILY.holeIndex) return;
+  if (_cardTimer) { clearTimeout(_cardTimer); _cardTimer = null; }
+  const existingCard = document.getElementById('daily-card');
+  if (existingCard) existingCard.remove();
   const p = curP();
   // Re-apply nudge to the unnudged tee position that replayHole just set
   p.pos.x += DAILY.teeNudge[0];
@@ -231,7 +236,8 @@ on('hole:end', () => {
 
   _buildShareText(H);
 
-  setTimeout(() => {
+  _cardTimer = setTimeout(() => {
+    _cardTimer = null;
     if (DAILY.on && !DAILY.cardShown) showDailyCard();
   }, 1200);
 });

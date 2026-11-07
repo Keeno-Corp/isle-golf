@@ -6856,7 +6856,7 @@
         {
           "path": "creatures.footballer.maxBoneLengthDeviation",
           "op": "<=",
-          "value": 1e-9
+          "value": 1e-09
         }
       ]
     },
@@ -6892,7 +6892,7 @@
         {
           "path": "creatures.footballer.maxBoneLengthDeviation",
           "op": "<=",
-          "value": 1e-9
+          "value": 1e-09
         }
       ]
     },
@@ -6930,7 +6930,7 @@
         {
           "path": "creatures.footballer.maxBoneLengthDeviation",
           "op": "<=",
-          "value": 1e-9
+          "value": 1e-09
         }
       ]
     },
@@ -6968,7 +6968,7 @@
         {
           "path": "creatures.footballer.maxBoneLengthDeviation",
           "op": "<=",
-          "value": 1e-9
+          "value": 1e-09
         }
       ]
     },
@@ -7009,7 +7009,7 @@
         {
           "path": "creatures.footballer.maxBoneLengthDeviation",
           "op": "<=",
-          "value": 1e-9
+          "value": 1e-09
         }
       ]
     },
@@ -7069,7 +7069,7 @@
         {
           "path": "creatures.footballer.maxBoneLengthDeviation",
           "op": "<=",
-          "value": 1e-9
+          "value": 1e-09
         },
         {
           "path": "creatures.golferClip",
@@ -7190,7 +7190,7 @@
         {
           "path": "creatures.footballer.maxBoneLengthDeviation",
           "op": "<=",
-          "value": 1e-9
+          "value": 1e-09
         },
         {
           "path": "creatures.golferClip",
@@ -7500,67 +7500,6 @@
       ]
     },
     {
-      "id": "daily-replay-blocked-at-card",
-      "title": "daily-replay-blocked-at-card",
-      "state": {},
-      "actions": [
-        {
-          "action": "daily",
-          "date": "2026-11-07"
-        },
-        {
-          "action": "next"
-        },
-        {
-          "until": {
-            "phase": "aim"
-          },
-          "max": 300
-        },
-        {
-          "action": "swing",
-          "power": 0.72,
-          "accuracy": 0,
-          "settle": true
-        },
-        {
-          "action": "aim",
-          "at": "pin"
-        },
-        {
-          "action": "swing",
-          "power": 0.247,
-          "accuracy": 0,
-          "settle": true
-        },
-        {
-          "until": {
-            "phase": "daily-card"
-          },
-          "max": 600
-        },
-        {
-          "key": "KeyR"
-        },
-        {
-          "wait": 10
-        }
-      ],
-      "frames": 0,
-      "expect": [
-        {
-          "path": "phase",
-          "op": "==",
-          "value": "daily-card"
-        },
-        {
-          "path": "daily.on",
-          "op": "==",
-          "value": true
-        }
-      ]
-    },
-    {
       "id": "daily-share-url-has-date",
       "title": "daily-share-url-has-date",
       "state": {},
@@ -7650,6 +7589,166 @@
           "path": "lie",
           "op": "==",
           "value": "tee"
+        }
+      ]
+    },
+    {
+      "id": "daily-replay-from-card-goes-to-aim",
+      "title": "daily-replay-from-card-goes-to-aim",
+      "state": {},
+      "actions": [
+        {
+          "action": "daily",
+          "date": "2026-11-07"
+        },
+        {
+          "action": "next"
+        },
+        {
+          "until": {
+            "phase": "aim"
+          },
+          "max": 300
+        },
+        {
+          "action": "swing",
+          "power": 0.72,
+          "accuracy": 0,
+          "settle": true
+        },
+        {
+          "action": "aim",
+          "at": "pin"
+        },
+        {
+          "action": "swing",
+          "power": 0.247,
+          "accuracy": 0,
+          "settle": true
+        },
+        {
+          "until": {
+            "phase": "daily-card"
+          },
+          "max": 600
+        },
+        {
+          "key": "KeyR"
+        },
+        {
+          "until": {
+            "phase": "aim"
+          },
+          "max": 200
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "phase",
+          "op": "==",
+          "value": "aim"
+        },
+        {
+          "path": "daily.on",
+          "op": "==",
+          "value": true
+        },
+        {
+          "path": "daily.shotsCount",
+          "op": "==",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "daily-replay-fresh-card",
+      "title": "daily-replay-fresh-card",
+      "state": {},
+      "actions": [
+        {
+          "action": "daily",
+          "date": "2026-11-07"
+        },
+        {
+          "action": "next"
+        },
+        {
+          "until": {
+            "phase": "aim"
+          },
+          "max": 300
+        },
+        {
+          "action": "swing",
+          "power": 0.72,
+          "accuracy": 0,
+          "settle": true
+        },
+        {
+          "action": "aim",
+          "at": "pin"
+        },
+        {
+          "action": "swing",
+          "power": 0.247,
+          "accuracy": 0,
+          "settle": true
+        },
+        {
+          "until": {
+            "phase": "daily-card"
+          },
+          "max": 600
+        },
+        {
+          "key": "KeyR"
+        },
+        {
+          "until": {
+            "phase": "aim"
+          },
+          "max": 200
+        },
+        {
+          "action": "swing",
+          "power": 0.72,
+          "accuracy": 0,
+          "settle": true
+        },
+        {
+          "action": "aim",
+          "at": "pin"
+        },
+        {
+          "action": "swing",
+          "power": 0.247,
+          "accuracy": 0,
+          "settle": true
+        },
+        {
+          "until": {
+            "phase": "daily-card"
+          },
+          "max": 600
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "phase",
+          "op": "==",
+          "value": "daily-card"
+        },
+        {
+          "path": "daily.result",
+          "op": "==",
+          "value": "BIRDIE!"
+        },
+        {
+          "path": "daily.on",
+          "op": "==",
+          "value": true
         }
       ]
     }
