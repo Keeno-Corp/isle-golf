@@ -252,7 +252,7 @@ function _buildShareText(H) {
   const row = DAILY.result === 'PICKED UP'
     ? '⬛'.repeat(H.par + 3)
     : _strokeRow(DAILY.strokes, H.par);
-  DAILY.shareText = `Isle Golf Daily ${DAILY.date} · ${H.name} (par ${H.par}) · ${DAILY.strokes} ${DAILY.strokes === 1 ? 'stroke' : 'strokes'}, ${vsParStr} ${resultClean}\n${row}\nhttps://isle-golf.pages.dev/?daily`;
+  DAILY.shareText = `Isle Golf Daily ${DAILY.date} · ${H.name} (par ${H.par}) · ${DAILY.strokes} ${DAILY.strokes === 1 ? 'stroke' : 'strokes'}, ${vsParStr} ${resultClean}\n${row}\nhttps://isle-golf.pages.dev/?daily=${DAILY.date}`;
 }
 
 // ---------------------------------------------------------------- Daily stamp card UI
@@ -487,6 +487,7 @@ addObserve(() => ({
     strokes: DAILY.strokes,
     result: DAILY.result,
     shareText: DAILY.shareText,
+    shareUrl: DAILY.shareText ? DAILY.shareText.split('\n').pop() : '',
   }
 }));
 

@@ -7559,6 +7559,61 @@
           "value": true
         }
       ]
+    },
+    {
+      "id": "daily-share-url-has-date",
+      "title": "daily-share-url-has-date",
+      "state": {},
+      "actions": [
+        {
+          "action": "daily",
+          "date": "2026-11-07"
+        },
+        {
+          "action": "next"
+        },
+        {
+          "until": {
+            "phase": "aim"
+          },
+          "max": 300
+        },
+        {
+          "action": "swing",
+          "power": 0.72,
+          "accuracy": 0,
+          "settle": true
+        },
+        {
+          "action": "aim",
+          "at": "pin"
+        },
+        {
+          "action": "swing",
+          "power": 0.247,
+          "accuracy": 0,
+          "settle": true
+        },
+        {
+          "until": {
+            "phase": "daily-card"
+          },
+          "max": 600
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "phase",
+          "op": "==",
+          "value": "daily-card"
+        },
+        {
+          "path": "daily.shareUrl",
+          "op": "==",
+          "value": "https://isle-golf.pages.dev/?daily=2026-11-07"
+        }
+      ]
     }
   ]
 }
