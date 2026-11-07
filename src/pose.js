@@ -173,7 +173,7 @@ addUpdate(dt => {
     // stand beside the tee (or the ball on a short hole) out of the line: behind-left of the golfer
     const p = curP(), H = curH(); if (!p || !H) return;
     const pos = p.pos || { x: H.tee[0], z: H.tee[1] }, ay = G2.aim || 0, fx = Math.cos(ay), fz = Math.sin(ay);
-    let tx = pos.x - fx * 3.0 - fz * 1.5, tz = pos.z - fz * 3.0 + fx * 1.5;   // 3 back from the ball, 1.5 to the side away from the golfer
+    let tx = pos.x + fx * 1.2 - fz * 2.0, tz = pos.z + fz * 1.2 + fx * 2.0;   // just ahead of the ball and 2 to the south side: inside the aim camera
     { const ok = (x, z) => { const q = surfaceAt(x, z); return q === 'fairway' || q === 'green' || q === 'tee'; };
       if (!ok(tx, tz)) for (const [a, b] of [[-1.5, 1.0], [1.5, 1.0], [-1.5, -0.2], [1.5, -0.2], [0, 2], [0, -2]]) { const cx = pos.x - fx * (b > 0 ? 3.0 : 1.5) - fz * Math.abs(a), cz = pos.z - fz * (b > 0 ? 3.0 : 1.5) + fx * Math.abs(a); if (ok(cx, cz)) { tx = cx; tz = cz; break; } } }
     const k = foot.x === 0 && foot.z === 0 ? 1 : 1 - Math.exp(-dt * 2.2); foot.x += (tx - foot.x) * k; foot.z += (tz - foot.z) * k;

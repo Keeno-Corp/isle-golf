@@ -756,3 +756,9 @@ Mean: (8+5+8+6+5+7+4+6+8+7+5+8+6)/13 = 6.4.
 3. **Asset searches, FINN colour, golfer size (asked again).** Retry `asset_search` for "low poly golfer" and "low poly sheep", and record the hit or miss in `lanes/creatures.md`. If the library is still down, say so and drop it. Add `addObserve` key `creatures.shirtColour` and save `creatures-kit-colours` in a Digit2 game. It expects `#3b78c9` ±30 for FINN and `#d8503a` ±30 for ISLA. Scale the golfer up about 1.3× or move the aim camera nearer. The `Subject` line should then show more than 1.5% of the picture.
 
 SCORE: 6.4
+
+## Iteration 17
+**Did** `src/pose.js` footballer target (`foot` update, line ~176): moved from 3 behind the ball to 1.2 ahead and 2.0 to the south side (`pos + f*1.2 + side*2.0`), so he stands inside the aim camera. Ok-surface fallbacks unchanged.
+**Saw** Aim look hole 1: `player` 0.14% [945,474,978,548] and `footballer_helmetShell` 0.018% are on screen; helmet reads blue glossy with orange shirt (he is at x -10.22, z 14.75). Golfer still 0.47% of picture. No perf run. No console errors seen.
+**Next** 1) Save `creatures-footballer-visible` (expect `creatures.footballer.visible` true). 2) Reaction checks (par-dance, bogey-dismay, birdie-celebration, sheep-bonk) with real-key Space. 3) `creatures.shirtColour` observe + FINN kit check; enlarge golfer ~1.3×.
+**Open** Asset search not retried (not needed). `gull` SFX error and `ballShadow` z-fight belong to other lanes. Footballer on the right edge may sit on rough on holes with narrow fairways (fallback handles surface only).
