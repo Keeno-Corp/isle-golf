@@ -508,3 +508,9 @@ Status: all 7 saved checks pass and I've taken the hole 1, 2, 3 and 7 looks. I'm
    - Note the hole 2 club-pick fix for the hud lane in `lanes/course.md`.
 
 SCORE: 7.0
+
+## Iteration 9
+**Did** Saved check `course-h2-carry` in game-tests.json: hole 2, ball placed at the tee-to-pin midpoint (7.97, 15.49) gives lie 'sand' and banner BUNKER. No source change.
+**Saw** Hole 2 observe: tee (1.8,17.04), pin (14.14,13.94), 153 yd, iron picked (needPower 1.05); `ball.surface` stays 'fairway' in the bunker, only `lie` says sand. Not run: perf, cliff-lip zoom, ribbon sample, hole 7 C view, hole 3 carry check.
+**Next** (1) Save `course-cliff-lip` and `course-h1-ribbon`. (2) Make the hole 7 C-view pin read (src/pins.js). (3) Hole 3 carry check; hud lane must fix the hole 2 club pick (a driver is needed).
+**Open** `toNonIndexed` warning; hole 2 club pick (outside lane); other 8 saved checks not rerun this session.

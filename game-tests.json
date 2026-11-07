@@ -427,6 +427,47 @@
           ]
         }
       ]
+    },
+    {
+      "id": "course-h2-carry",
+      "title": "course-h2-carry",
+      "state": {},
+      "actions": [
+        {
+          "action": "newRound",
+          "players": 1
+        },
+        {
+          "state": {
+            "hole": 1,
+            "skipIntro": true
+          }
+        },
+        {
+          "state": {
+            "ball": {
+              "x": 7.97,
+              "z": 15.49
+            }
+          }
+        },
+        {
+          "wait": 3
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "lie",
+          "op": "==",
+          "value": "sand"
+        },
+        {
+          "path": "hole",
+          "op": "==",
+          "value": 2
+        }
+      ]
     }
   ]
 }

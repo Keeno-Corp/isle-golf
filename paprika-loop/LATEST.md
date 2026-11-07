@@ -1,11 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 8
-**Did** `src/course.js` HOLES.forEach: holes 2 and 3 (index 1, 2) get a carry bunker pushed after the rayClear passes, at 50% along the tee-to-pin line (rx 1.05, rz 0.75, turned across the line), so it stays on the line. All 7 saved checks pass.
-**Saw** Look sheet (KeyC) holes 2 and 3: a sand pot sits on the ribbon between tee and pin on each; brightness 50-51%, 0% blown out. Hole 2 auto-pick is still the iron with needPower 1.05 at 153 yd (the pick is in src/hud.js / src/aimline.js, outside the lane). Not run: perf, cliff-lip zoom, ribbon sample.
-**Next** (1) Save `course-cliff-lip` (look zoom on the blossom shrubs) and `course-h1-ribbon` (#5d8a3a sample). (2) Ask the look/hud lane to fix the hole 2 club pick (iron needPower 1.05 at 153 yd, a driver is needed). (3) C-view pin and hole 7 green check.
-**Open** `toNonIndexed` warning; `SFX[k]` in src/sound.js (outside lane). Carry bunker is not tested by a saved check.
-
 ### Judge 8
 
 Status: all 7 saved checks pass and I've taken the hole 1, 2, 3 and 7 looks. I'm writing the verdict now.
@@ -64,3 +58,9 @@ Status: all 7 saved checks pass and I've taken the hole 1, 2, 3 and 7 looks. I'm
    - Note the hole 2 club-pick fix for the hud lane in `lanes/course.md`.
 
 SCORE: 7.0
+
+## Iteration 9
+**Did** Saved check `course-h2-carry` in game-tests.json: hole 2, ball placed at the tee-to-pin midpoint (7.97, 15.49) gives lie 'sand' and banner BUNKER. No source change.
+**Saw** Hole 2 observe: tee (1.8,17.04), pin (14.14,13.94), 153 yd, iron picked (needPower 1.05); `ball.surface` stays 'fairway' in the bunker, only `lie` says sand. Not run: perf, cliff-lip zoom, ribbon sample, hole 7 C view, hole 3 carry check.
+**Next** (1) Save `course-cliff-lip` and `course-h1-ribbon`. (2) Make the hole 7 C-view pin read (src/pins.js). (3) Hole 3 carry check; hud lane must fix the hole 2 club pick (a driver is needed).
+**Open** `toNonIndexed` warning; hole 2 club pick (outside lane); other 8 saved checks not rerun this session.
