@@ -1127,3 +1127,9 @@ SCORE: 7.0
    - Shown done by a `look` on `{state:{hole:8,skipIntro:true}}` listing `cliffRocks` or `seaStacks` above 0.05% under On screen.
 
 SCORE: 6.9
+
+## Iteration 20
+**Did** No code changes. Reran `test` (11 of 11 pass) and `interact` on `{state:{hole:6,skipIntro:true}}`, which lands on "HOLE 7 Mid Meadow" (par 4, 214 yd, `hole` 7, so the state hole index is 0-based).
+**Saw** `meter.needPower` reads 0.59 with the driver on Mid Meadow. The tee move to [-9.55,6.5] did not change it. The 214 yd distance and the 204 yd driver would give above 1, so the game's `needPower` also counts TAILWIND 2.68 (and perhaps elevation). The 0.75–0.95 expectation is therefore the wrong target. The HUD says `yardsToPin` 214, `cViewSpan` 17.9. No look or perf this session.
+**Next** (1) Drop or change the 0.75–0.95 `needPower` expectation to ~0.5–0.7, or make the hole longer or use a headwind if power should be higher. (2) `pin_pole` clip and `cViewSpan` ≤10 plus golfer contrast (pins.js, course.js). (3) Put `cliffRocks` and `seaStacks` into the aim views (island.js).
+**Open** The needPower expectation is unresolved but explained. Items 2 and 3 are untouched.
