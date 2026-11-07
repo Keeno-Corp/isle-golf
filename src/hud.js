@@ -156,7 +156,7 @@ export function updateHUD() {
     hud.holep.innerHTML = `<div class="h">HOLE ${G.hole + 1}<small>PAR ${H.par}</small></div><div class="r"><span>STROKES ${p.strokes}</span><span>${Math.round(d * YD)} YD</span></div><div class="r"><span>ROUND ${vsPar(run - parRun)}</span><span>${H.name}</span></div>` + (G.players.length > 1 ? `<div class="who"><i style="background:${p.kit.col}"></i>${p.name}</div>` : '');
     hud.clubp.innerHTML = CLUBS.map((k, i) => `<div class="${i === G.club ? 'on' : ''}">${k.name}<span>${k.putt ? 'GREEN' : Math.round(k.carry * YD * (i === G.club ? lieMul() : 1)) + ' YD'}</span></div>`).join('') + `<div class="lie">LIE · ${p.surf === 'tee' ? 'TEE' : p.surf.toUpperCase()}</div>`;
     hud.wt.innerHTML = `${Math.round(w.speed)} MPH<small>${w.text}</small>`;
-    hud.arrow.setAttribute('transform', `rotate(${w.rel})`);
+    hud.arrow.setAttribute('transform', `rotate(${Number.isFinite(w.rel) ? w.rel : 0})`);
   }
   const m = G.m;
   hud.meter.classList.toggle('on', G.phase === 'aim' && m.stage > 0 || G.phase === 'swing');
