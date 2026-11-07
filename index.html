@@ -1936,7 +1936,7 @@ function crisp(m) { const o = m.onBeforeCompile, id = 'crisp' + (crispN++); m.on
 [flagMat, flagWhite, clubMat, clubHeadMat, ...balls.map(b => b.m.material)].forEach(crisp);
 
 // ---------------------------------------------------------------- the golfer's pose: address, backswing, through; bones are nudged after the clip's own pose each frame
-const POSE = { lean: 0.42, twist: 0.9, armR: [0, 0, 0], armL: [0, 0, 0] };
+const POSE = { lean: 0.42, twist: 0.9, armR: [0, 0, 0], armL: [0, 0, 0], foreR: [0, 0, 0], foreL: [0, 0, 0] }; window.POSE = POSE;
 const _q = new THREE.Quaternion(), _ax = { x: new THREE.Vector3(1, 0, 0), y: new THREE.Vector3(0, 1, 0), z: new THREE.Vector3(0, 0, 1) };
 function rotBone(name, axis, a) { const b = golfer.bones[name]; if (!b || !a) return; b.quaternion.multiply(_q.setFromAxisAngle(_ax[axis], a)); }
 function showGolfer(on) { golfer.holder.visible = on; clubG.visible = on; golferShadow.visible = on; }
@@ -1958,10 +1958,13 @@ function placeGolfer() {
 const _hp = new THREE.Vector3(), _d0 = new THREE.Vector3(), _dB = new THREE.Vector3(), _dF = new THREE.Vector3(), _dir = new THREE.Vector3(), _f = new THREE.Vector3(), _u = new THREE.Vector3(0, 1, 0), _r = new THREE.Vector3(), _q2 = new THREE.Quaternion(), _xv = new THREE.Vector3();
 function updateGolfer(dt) {
   if (!golfer.holder.visible) return;
+  if (!golfer.rest) { golfer.rest = {}; for (const n of ['DEF-hips', 'DEF-spine001', 'DEF-spine002', 'DEF-upper_armR', 'DEF-upper_armL', 'DEF-forearmR', 'DEF-forearmL']) golfer.rest[n] = golfer.bones[n].quaternion.clone(); }
+  for (const n in golfer.rest) golfer.bones[n].quaternion.copy(golfer.rest[n]);   // the clip rewrites what it animates; the rest are put back before the nudges
   golfer.mixer.update(dt);
   const s = swingParam(), B = golfer.bones;
   // lean over the ball, hands together; the body winds back and unwinds with the swing
   rotBone('DEF-hips', 'y', -s * 0.35); rotBone('DEF-spine001', 'x', POSE.lean * 0.5); rotBone('DEF-spine002', 'x', POSE.lean * 0.5); rotBone('DEF-spine001', 'y', -s * POSE.twist * 0.5); rotBone('DEF-spine002', 'y', -s * POSE.twist * 0.6);
+  for (const [n, v] of [['DEF-upper_armR', POSE.armR], ['DEF-upper_armL', POSE.armL], ['DEF-forearmR', POSE.foreR], ['DEF-forearmL', POSE.foreL]]) { rotBone(n, 'x', v[0]); rotBone(n, 'y', v[1]); rotBone(n, 'z', v[2]); }
   golfer.holder.updateMatrixWorld(true);
   if (!B['DEF-handR']) return;
   B['DEF-handR'].getWorldPosition(_hp);
@@ -1994,10 +1997,10 @@ function updateBalls() {
 
 // ---------------------------------------------------------------- camera: high behind the ball, narrow FOV; follows the ball in flight; pulls back to the diorama for each flyover
 const cam = { pos: new THREE.Vector3(1, 44, 68), look: new THREE.Vector3(0, 2.2, 1), fov: 26, dio: 1, focus: new THREE.Vector3(), fy: 0.5 };
-const DIO = { pos: new THREE.Vector3(1, 44, 68), look: new THREE.Vector3(0, 2.2, 1), fov: 26 };
+const DIO = { pos: new THREE.Vector3(1, 47, 74), look: new THREE.Vector3(0, 2.2, 1), fov: 27 };
 const cPos = new THREE.Vector3(), cLook = new THREE.Vector3();
 function aimCam(pos, look) {
-  const p = curP(), putt = curClub().putt, fx = Math.cos(G.aim), fz = Math.sin(G.aim), D = putt ? 2.7 : 6.0, Hh = putt ? 1.45 : 3.4, ah = putt ? 1.4 : 3.0, src = G.phase === 'flight' || G.phase === 'settle' ? G.shotOrigin : p.pos;
+  const p = curP(), putt = curClub().putt, fx = Math.cos(G.aim), fz = Math.sin(G.aim), D = putt ? 2.9 : 7.6, Hh = putt ? 1.5 : 3.9, ah = putt ? 1.6 : 4.2, src = G.phase === 'flight' || G.phase === 'settle' ? G.shotOrigin : p.pos;
   pos.set(src.x - fx * D, src.y + Hh, src.z - fz * D); pos.y = Math.max(pos.y, heightAt(pos.x, pos.z) + 1.0); look.set(src.x + fx * ah, src.y + 0.12, src.z + fz * ah);
 }
 function overheadCam(pos, look, H, from) {
