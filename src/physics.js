@@ -90,14 +90,14 @@ export function stepSim(b, dt) {
     // the cup: a slow ball over it drops, a quick one lips out (bends round the rim) or runs over; one just off it is pulled in a little
     if (surf === 'green' && b.pin) {
       const dx = b.pin.x - p.x, dz = b.pin.z - p.z, d = Math.hypot(dx, dz) || 1e-4;
-      if (d < 0.17) {
-        const vcap = 1.35 * (1 - d / 0.17) + 0.1;
+      if (d < 0.23) {
+        const vcap = 1.6 * (1 - d / 0.23) + 0.18;
         if (sp < vcap) { b.mode = 'sunk'; b.ev.push('sunk'); p.x = b.pin.x; p.z = b.pin.z; v.set(0, 0, 0); return; }
-        if (d < 0.15 && sp > 0.7 && sp < 3 && !b.lipped) {   // caught the rim: swerve off to the far side
-          b.lipped = true; b.ev.push('lip'); const side = (v.x * dz - v.z * dx) > 0 ? -1 : 1, an = side * (0.55 + 0.5 * (d / 0.15)), c = Math.cos(an), sn = Math.sin(an);
+        if (d < 0.2 && sp > 1.5 && sp < 3.6 && !b.lipped) {   // caught the rim: swerve off to the far side
+          b.lipped = true; b.ev.push('lip'); const side = (v.x * dz - v.z * dx) > 0 ? -1 : 1, an = side * (0.55 + 0.5 * (d / 0.2)), c = Math.cos(an), sn = Math.sin(an);
           const vx = v.x * c - v.z * sn, vz = v.x * sn + v.z * c; v.x = vx * 0.82; v.z = vz * 0.82;
         }
-      } else if (d < 0.32 && sp < 1.1) { v.x += dx / d * 3.4 * dt; v.z += dz / d * 3.4 * dt; }
+      } else if (d < 0.5 && sp < 1.5) { v.x += dx / d * 4.5 * dt; v.z += dz / d * 4.5 * dt; }
     }
     p.x += v.x * dt; p.z += v.z * dt; p.y = heightAt(p.x, p.z) + BR * 0.8;
     if (b.live) collideWorld(b, p.y);
@@ -105,18 +105,23 @@ export function stepSim(b, dt) {
   } else if (b.mode === 'sunk') { b.sunkT += dt; }
 }
 // where the aim line takes a full-power shot: the ground track of a free flight (wind and spin included), used for the dotted preview
-export function previewShot(club, aimYaw, power, H, startPos, lie, out) {
-  const s = newSim(); s.live = false; s.pos.copy(startPos); launchOn(s, club, power, 0, aimYaw, H, lie);
+export function previewShot(club, aimYaw, power, H, startPos, lie, out, acc = 0) {
+  const s = newSim(); s.live = false; s.pos.copy(startPos); launchOn(s, club, power, acc, aimYaw, H, lie);
   let n = 0; out.length = 0;
   while (s.mode === 'air' && n++ < 800) { stepSim(s, 1 / 120); if (n % 6 === 0) out.push([s.pos.x, s.pos.z, s.pos.y]); if (s.hasLanded) break; }
   out.push([s.pos.x, s.pos.z, s.pos.y]); return s.pos;
 }
+// putter reach at full meter: a little past the pin, so the cyan notch sits near 0.8 for any putt length
+export const puttRange = d => Math.max(1.6, d * 1.22 + 0.5);
 export function launchOn(s, club, power, acc, aimYaw, H, lie) {
   const wv = H.wv, f = aimYaw + acc * (club.putt ? 0.05 : 0.04);
   s.fx = Math.cos(f); s.fz = Math.sin(f); s.bounces = 0; s.hasLanded = false; s.t = 0; s.ev = []; s.lipped = false; s.sheep = null; s.treeHit = null;
   s.pin = { x: H.pinX, z: H.pinZ }; s.wx = wv.x * 0.26; s.wz = wv.y * 0.26; s.landT = club.land;
   if (club.putt) {
-    const v = Math.sqrt(2 * SURF.green.roll * club.putt * Math.max(0.02, power)); s.vel.set(s.fx * v, 0, s.fz * v); s.mode = 'roll'; s.curve = 0; s.wx = s.wz = 0; return;
+    // forgiving putts: a power within 0.2 of the flat-ground notch counts half, so a press near the cyan line still drops
+    const dp = Math.hypot(s.pin.x - s.pos.x, s.pin.z - s.pos.z), rg = puttRange(dp), pf = Math.min(1, dp / rg), x = power - pf, ax = Math.abs(x);
+    const pe = dp < 0.3 ? power : Math.max(0.02, pf + Math.sign(x) * (x < 0 ? (ax < 0.2 ? ax * 0.3 : 0.06 + (ax - 0.2)) : (ax < 0.06 ? ax * 0.5 : 0.03 + (ax - 0.06))));
+    const v = Math.sqrt(2 * (SURF[surfaceAt(s.pos.x, s.pos.z)]?.roll ?? SURF.green.roll) * rg * pe);; s.vel.set(s.fx * v, 0, s.fz * v); s.mode = 'roll'; s.curve = 0; s.wx = s.wz = 0; return;
   }
   const carry = Math.max(0.5, club.carry * power * lie * (1 - 0.1 * Math.abs(acc))), th = club.loft;
   const v = Math.sqrt(carry * GR / Math.sin(2 * th));

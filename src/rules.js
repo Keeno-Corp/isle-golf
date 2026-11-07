@@ -23,7 +23,7 @@ export const CLUBS = [
 export const GR = 7.0, BR = 0.07;
 export const SURF = {
   fairway: { e: 0.42, t: 0.8, roll: 3.1, ks: 0.5 }, rough: { e: 0.14, t: 0.32, roll: 10, ks: 0.3 }, sand: { e: 0.0, t: 0.08, roll: 26, ks: 0.15 },
-  green: { e: 0.3, t: 0.95, roll: 2.0, ks: 2.4 },
+  green: { e: 0.3, t: 0.95, roll: 2.4, ks: 2.4 },
 };
 SURF.tee = SURF.fairway;
 export const kindOf = s => s === 'sand' ? 'sand' : s;

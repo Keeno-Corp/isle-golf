@@ -93,7 +93,7 @@
         },
         {
           "action": "swing",
-          "power": 0.054,
+          "power": 0.228,
           "accuracy": 0,
           "settle": true
         },
@@ -274,14 +274,14 @@
           "frames": 1
         },
         {
-          "wait": 23
+          "wait": 66
         },
         {
           "key": "Space",
           "frames": 1
         },
         {
-          "wait": 18
+          "wait": 41
         },
         {
           "key": "Space",
@@ -309,6 +309,245 @@
           "path": "physics.mode",
           "op": "==",
           "value": "sunk"
+        }
+      ]
+    },
+    {
+      "id": "ball-physics-putt-mid-easy",
+      "title": "ball-physics-putt-mid-easy",
+      "state": {},
+      "actions": [
+        {
+          "action": "newRound",
+          "players": 1
+        },
+        {
+          "action": "start",
+          "players": 1
+        },
+        {
+          "action": "next"
+        },
+        {
+          "wait": 20
+        },
+        {
+          "state": {
+            "ball": {
+              "x": -8,
+              "z": 11.95
+            }
+          }
+        },
+        {
+          "action": "club",
+          "name": "putter"
+        },
+        {
+          "action": "aim",
+          "at": "pin"
+        },
+        {
+          "wait": 5
+        },
+        {
+          "key": "Space",
+          "frames": 1
+        },
+        {
+          "wait": 56
+        },
+        {
+          "key": "Space",
+          "frames": 1
+        },
+        {
+          "wait": 34
+        },
+        {
+          "key": "Space",
+          "frames": 1
+        },
+        {
+          "until": {
+            "phase": [
+              "aim",
+              "holed",
+              "card"
+            ]
+          },
+          "max": 700
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "ball.mode",
+          "op": "==",
+          "value": "sunk"
+        }
+      ]
+    },
+    {
+      "id": "ball-physics-putt-too-hard",
+      "title": "ball-physics-putt-too-hard",
+      "state": {},
+      "actions": [
+        {
+          "action": "newRound",
+          "players": 1
+        },
+        {
+          "action": "start",
+          "players": 1
+        },
+        {
+          "action": "next"
+        },
+        {
+          "wait": 20
+        },
+        {
+          "state": {
+            "ball": {
+              "x": -3.7,
+              "z": 11.95
+            }
+          }
+        },
+        {
+          "action": "club",
+          "name": "putter"
+        },
+        {
+          "action": "aim",
+          "at": "pin"
+        },
+        {
+          "wait": 5
+        },
+        {
+          "key": "Space",
+          "frames": 1
+        },
+        {
+          "wait": 87
+        },
+        {
+          "key": "Space",
+          "frames": 1
+        },
+        {
+          "wait": 54
+        },
+        {
+          "key": "Space",
+          "frames": 1
+        },
+        {
+          "until": {
+            "phase": [
+              "aim",
+              "holed",
+              "card"
+            ]
+          },
+          "max": 700
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "ball.mode",
+          "op": "in",
+          "value": [
+            "rest",
+            "roll"
+          ]
+        },
+        {
+          "path": "strokes",
+          "op": "==",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "ball-physics-preview-matches-bounce",
+      "title": "ball-physics-preview-matches-bounce",
+      "state": {},
+      "actions": [
+        {
+          "action": "newRound",
+          "players": 1
+        },
+        {
+          "action": "next"
+        },
+        {
+          "wait": 5
+        },
+        {
+          "state": {
+            "wind": {
+              "speed": 0,
+              "degrees": 0
+            }
+          }
+        },
+        {
+          "action": "club",
+          "name": "iron"
+        },
+        {
+          "key": "Space",
+          "frames": 1
+        },
+        {
+          "wait": 60
+        },
+        {
+          "key": "Space",
+          "frames": 1
+        },
+        {
+          "wait": 38
+        },
+        {
+          "key": "Space",
+          "frames": 1
+        },
+        {
+          "until": {
+            "phase": [
+              "settle",
+              "aim"
+            ]
+          },
+          "max": 500
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "physics.firstBounce.x",
+          "op": ">=",
+          "value": -2.53
+        },
+        {
+          "path": "physics.firstBounce.x",
+          "op": "<=",
+          "value": -2.33
+        },
+        {
+          "path": "physics.firstBounce.z",
+          "op": ">=",
+          "value": 11.08
+        },
+        {
+          "path": "physics.firstBounce.z",
+          "op": "<=",
+          "value": 11.28
         }
       ]
     }

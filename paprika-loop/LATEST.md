@@ -1,11 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 3
-**Did**: src/ballfx.js: added `landRingPreview` (yellow pulsing ring, depthTest off, renderOrder 5). On `swing` it copies `aimLanding`'s last position, stays on the ground until `ball:land` (or aim phase); `physics.landPreview` now reads from it in flight. Not done: saved checks (snap, wind, ring vs bounce, roll-out, tree/sheep/house, break) and landing-puff look.
-**Saw**: real-key iron swing mid-flight: `landRingPreview` is in the On screen list (0.35%, [591,192,784,231]), `physics.landPreview` {x -0.146, z 12.661} (pin at -1.7, 11.95). The ring sits under the HOLE 1 banner area, so it is hard to see in the picture. No console errors. Swing was HOOK (spin -0.643), preview is the perfect-shot spot, not the hooked one.
-**Next**: save the missing `ball-physics-*` checks with interact `save` (one per check); compare landPreview with `physics.firstBounce` on a perfect swing; puff look 5 frames after first bounce on fairway and sand; tree/sheep/house events; sloped-green break.
-**Open**: landing-puff visuals and roll-out order unverified; no perf run.
-
 ### Judge 3
 
 I've seen enough to write the verdict. Two real-key swings and a `perf` run are done, so I'm writing it up now.
@@ -30,3 +24,9 @@ I've seen enough to write the verdict. Two real-key swings and a `perf` run are 
 3. Show landing puffs and the other collisions. Take `interact` with `look: true` 5 frames after the first bounce, once on fairway (dust) and once in sand. Then add real-key drives into a tree, a sheep and the hole 5 house to fire `ball:tree|sheep|wall`. Show `aimDots` or `slopeGrid` on a sloped-green putt for the break check.
 
 SCORE: 6.4
+
+## Iteration 4
+**Did**: PROMPT's new top item, easier putting. physics.js: `puttRange(d)` (full meter = 1.22*d+0.5 past the pin, so the notch sits near 0.6-0.8 at any length), used by `launchOn` and aimline.js `puttTrack`; putter power is forgiving near the notch (under-power counts 0.3, small over-power 0.5, then 1:1) and uses the same reach on any surface; cup capture radius 0.17→0.23, `vcap` 1.35→1.6 base, lip needs sp 1.5-3.6, pull-in radius 0.5 at sp<1.5; green roll 2.0→2.4 (rules.js). aimline.js `aimDots` radius 0.055→0.085, opacity 1. Landing preview: `previewShot` takes `acc`; ballfx.js `swing` handler re-runs it with the swing's real power, spin, lie and wind, so `landRingPreview` is the real landing. Saved checks: `ball-physics-putt-mid-easy` (6.3 units, -9% power, sunk), `ball-physics-putt-too-hard` (+30%: not sunk), `ball-physics-preview-matches-bounce`; re-saved `ball-physics-putt-sinks`; `putt-drops-in-cup` power 0.054→0.228.
+**Saw**: iron, no wind, hook: `landPreview` {-2.433, 11.172} vs `firstBounce` {-2.432, 11.176}, a 0.004 gap. `test`: all 6 then passed (8 saved now, two added after that run). 2-unit putt at +30% power ran past (0.24 away, lips 0). No look or perf run this session.
+**Next**: the lip-out is not seen at +30% (add a check that fires `ball:lip`); look at the putt dots on a break; saved checks for driver late/early snap, wind 8 vs 0, wedge roll-out order, tree/sheep/house; landing puff looks.
+**Open**: -9% mid putt sinks only because of the pull-in radius; `needPower` read 0.031 after the putt (stale cache, harmless). No look of the thicker aim dots.

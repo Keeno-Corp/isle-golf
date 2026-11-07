@@ -5,10 +5,10 @@ import { on, addObserve, addUpdate } from './shared.js';
 import { YD, heightAt } from './course.js';
 import { scene } from './stage.js';
 import { SFX, tone, noise, play } from './sound.js';
-import { r3 } from './rules.js';
-import { SIM } from './physics.js';
+import { r3, CLUBS, LIE } from './rules.js';
+import { SIM, previewShot } from './physics.js';
 import { aimRing } from './aimline.js';
-import { G } from './round.js';
+import { G, curH, curP } from './round.js';
 
 // ---------------------------------------------------------------- sounds (replace the ball ones; built on tone/noise)
 Object.assign(SFX, {
@@ -46,7 +46,7 @@ export function landRing(x, z, r = 0.55, color = '#fff6d0', dur = 0.6) {
 const flightRing = new THREE.Mesh(new THREE.RingGeometry(0.62, 1, 32).rotateX(-Math.PI / 2), new THREE.MeshBasicMaterial({ color: '#f2d43a', transparent: true, opacity: 0.9, depthWrite: false, depthTest: false, side: THREE.DoubleSide }));
 flightRing.name = 'landRingPreview'; flightRing.renderOrder = 5; flightRing.visible = false; flightRing.frustumCulled = false; scene.add(flightRing);
 export const PHY = { spin: 0, carryYd: 0, rollYd: 0, lastBounce: null, firstBounce: null, puttBreak: 0, origin: null, aim: 0, bounces: 0, lips: 0, club: '' };
-on('swing', e => { if (aimRing.visible || aimRing.position.lengthSq() > 0) { flightRing.position.set(aimRing.position.x, heightAt(aimRing.position.x, aimRing.position.z) + 0.06, aimRing.position.z); flightRing.visible = e.club !== 'putter' && !(G.club >= 3); PHY.landPreview = { x: r3(aimRing.position.x), z: r3(aimRing.position.z) }; } PHY.origin = SIM.pos.clone(); PHY.aim = G.aim; PHY.spin = e.acc; PHY.carryYd = PHY.rollYd = PHY.puttBreak = 0; PHY.lastBounce = PHY.firstBounce = null; PHY.bounces = PHY.lips = 0; PHY.club = e.club; });
+on('swing', e => { const c = CLUBS.find(k => k.id === e.club); if (c && !c.putt) { const pw = e.power * (G.m.label === 'MISS-HIT!' ? 0.6 : 1), end = previewShot(c, G.aim, pw, curH(), G.shotOrigin || SIM.pos, LIE[curP().surf] ?? 1, [], e.acc); flightRing.position.set(end.x, heightAt(end.x, end.z) + 0.06, end.z); flightRing.visible = true; PHY.landPreview = { x: r3(end.x), z: r3(end.z) }; } else { flightRing.visible = false; PHY.landPreview = null; } PHY.origin = SIM.pos.clone(); PHY.aim = G.aim; PHY.spin = e.acc; PHY.carryYd = PHY.rollYd = PHY.puttBreak = 0; PHY.lastBounce = PHY.firstBounce = null; PHY.bounces = PHY.lips = 0; PHY.club = e.club; });
 on('ball:land', e => { flightRing.visible = false; const b = e.ball; PHY.firstBounce = { x: r3(b.pos.x), z: r3(b.pos.z), surf: b.surf }; if (PHY.origin) PHY.carryYd = Math.round(Math.hypot(b.pos.x - PHY.origin.x, b.pos.z - PHY.origin.z) * YD); landRing(b.pos.x, b.pos.z, b.surf === 'sand' ? 0.75 : 0.55, b.surf === 'sand' ? '#f1dca0' : '#fff6d0'); });
 on('ball:bounce', e => { PHY.bounces++; PHY.lastBounce = { x: r3(e.ball.pos.x), z: r3(e.ball.pos.z) }; });
 on('ball:lip', () => { PHY.lips++; play('lip'); });
