@@ -981,3 +981,9 @@ I took three `interact` plays with `look` and ran `perf` once. The plays covered
    - Also make the active golfer easy to find at the wide camera: a larger ring under `golferShadow`, or a brighter `tag`.
 
 SCORE: 7.5
+
+## Iteration 25
+**Did:** `nextTurnOrCard` in `src/round.js` now also empties the `banner` b/i text on a turn change, so no stale "34 YD TO PIN" sits under "FINN TO PLAY". `updateTag` in `src/hud.js` clamps the `tag` to y>=110 and x<=innerWidth-300 so it stays off `windp`.
+**Saw:** No browser, `look`, `test` or `perf` run this session (about 22 minutes); no new numbers or fault lines.
+**Next:** Run `test` on `hud-round-full-round` (the `until hudRound.final` action is unconfirmed). Take the unseen pictures: rough-lie `clubp` yardage, PERFECT banner, PICKED UP stamp, ROUND COMPLETE card. Raise `clubp`/`hinter` font to about 15 px; add a larger ring under the active golfer.
+**Open:** Both edits are untested. The tag clamp numbers (110, 300) are guesses; if the tag drifts from the golfer at the wide camera, loosen them.

@@ -71,7 +71,7 @@ export function nextTurnOrCard() {
   let nxt = null;
   for (const i of G.order) { const p = G.players[i]; if (!p.holed && p.strokes === 0) { nxt = p; break; } }
   if (!nxt) { let bd = -1; for (const p of live) { const d = pinDist(p.pos, curH()); if (d > bd) { bd = d; nxt = p; } } }
-  if (G.players.length > 1 && nxt.i !== G.turn) { hud.banner.classList.remove('on'); ST.bannerT = 0; G.banner = ''; G.lastCall = ''; }
+  if (G.players.length > 1 && nxt.i !== G.turn) { hud.banner.classList.remove('on'); hud.banner.querySelector('b').textContent = ''; hud.banner.querySelector('i').textContent = ''; ST.bannerT = 0; G.banner = ''; G.lastCall = ''; }
   G.turn = nxt.i; beginShot();
 }
 

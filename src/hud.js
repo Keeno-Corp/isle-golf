@@ -143,7 +143,7 @@ function updateTag() {
   const p = curP(); _tv.set(p.pos.x, (p.pos.y ?? 4.5) + 0.85, p.pos.z).project(camera);
   if (_tv.z > 1) { t.style.display = 'none'; return; }
   const k = p.name + p.kit.col; if (t._k !== k) { t._k = k; t.innerHTML = `<i style="background:${p.kit.col}"></i>${p.name}`; }
-  t.style.display = 'block'; t.style.transform = `translate(${((_tv.x * .5 + .5) * innerWidth - 55).toFixed(0)}px,${((-_tv.y * .5 + .5) * innerHeight).toFixed(0)}px) translate(-50%,-100%)`;
+  t.style.display = 'block'; t.style.transform = `translate(${Math.min((_tv.x * .5 + .5) * innerWidth - 55, innerWidth - 300).toFixed(0)}px,${Math.max((-_tv.y * .5 + .5) * innerHeight, 110).toFixed(0)}px) translate(-50%,-100%)`;
 }
 export function updateHUD() {
   updateTag();

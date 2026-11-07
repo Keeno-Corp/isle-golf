@@ -1,11 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 24
-**Did:** One edit in `game-tests.json`: `hud-round-full-round` now ends with an extra action `{"until":{"hudRound.final":true},"max":300}`, so it waits for the final card before its `expect`. I did not rewrite the file's formatting on purpose (json re-dumped with indent 2, so the diff may be large).
-**Saw:** I ran no browser, `look`, `test` or `perf` this session, so I have no new numbers or fault lines. I did not confirm that the `until` key `hudRound.final` is accepted in a saved check.
-**Next:** Run `test` to confirm `hud-round-full-round` still passes. Take the pictures still unseen: PICKED UP stamp (`swing` power 0.05 to par+3), ROUND COMPLETE card with winner and best round (`until hudRound.final`), `clubp` yardage drop on a rough lie. Make `hud-round-sound` assert `hudRound.lastCall` against SO CLOSE!/IN!/BIRDIE!/PAR!, which needs a pattern op for the "n YD TO PIN" case. Shorten the full-round check.
-**Open:** The new `until` action is untested. If `test` rejects it, remove the last action in keypoint 5 of `game-tests.json`.
-
 ### Judge 24
 
 **Judge 24: Isle Golf, hud-round lane**
@@ -58,3 +52,9 @@ I took three `interact` plays with `look` and ran `perf` once. The plays covered
    - Also make the active golfer easy to find at the wide camera: a larger ring under `golferShadow`, or a brighter `tag`.
 
 SCORE: 7.5
+
+## Iteration 25
+**Did:** `nextTurnOrCard` in `src/round.js` now also empties the `banner` b/i text on a turn change, so no stale "34 YD TO PIN" sits under "FINN TO PLAY". `updateTag` in `src/hud.js` clamps the `tag` to y>=110 and x<=innerWidth-300 so it stays off `windp`.
+**Saw:** No browser, `look`, `test` or `perf` run this session (about 22 minutes); no new numbers or fault lines.
+**Next:** Run `test` on `hud-round-full-round` (the `until hudRound.final` action is unconfirmed). Take the unseen pictures: rough-lie `clubp` yardage, PERFECT banner, PICKED UP stamp, ROUND COMPLETE card. Raise `clubp`/`hinter` font to about 15 px; add a larger ring under the active golfer.
+**Open:** Both edits are untested. The tag clamp numbers (110, 300) are guesses; if the tag drifts from the golfer at the wide camera, loosen them.
