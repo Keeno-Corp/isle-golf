@@ -839,3 +839,9 @@ SCORE: 6.9
    - Shown done by `look` after KeyC with `pin_pole` fully inside [y>20] and the golfer's edge contrast at 0.1 or more.
 
 SCORE: 6.7
+
+## Iteration 14
+**Did** No code change. Probed `needPower` per hole after `setState({hole:n,skipIntro:true})` with `eval`.
+**Saw** Auto-picked club and `meter.needPower`: h1 iron 0.883, h2 iron 0.643, h3 driver 0.895, h4 driver 0.745, h5 driver 0.993, h6-h9 driver 1.05 (pin beyond one drive; par 4/5, so expected). All par 3s are under 0.95. Console still warns `toNonIndexed(): already non-indexed` at open.
+**Next** (1) `asset_search` swaps for `tree*`, `bushes*`, `blossoms*`, `fenceRails` in src/island.js. (2) Hole 5 (0.993) and 6 could be shortened in src/course.js if the judge's 0.95 target should hold for par 4s; the auto-club lives in src/aimline.js (not this lane). (3) Export `course.cViewCentre` for src/camera.js so the C view frames pin and golfer.
+**Open** Nothing was looked at or played this session; blossom size from iteration 13 is judged OK by the judge (0.23% of frame).

@@ -134,6 +134,17 @@
       "score": 6.9,
       "judgeTurns": 8,
       "judgeTokens": 154524
+    },
+    {
+      "n": 13,
+      "turns": 4,
+      "tokens": 114353,
+      "costUsd": 0.21719270000000002,
+      "minutes": 1.5,
+      "commit": "71f4645",
+      "score": 6.7,
+      "judgeTurns": 8,
+      "judgeTokens": 167785
     }
   ],
   "best": {

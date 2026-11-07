@@ -1,11 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 13
-**Did** src/island.js blossoms: petal icosahedron radius 0.075 -> 0.16 and 24 petals per blooming bush (was 16), so shrubs read as flowering clumps, same single InstancedMesh (no new draw calls).
-**Saw** Not looked at (no page run this session); syntax check only.
-**Next** (1) look zoom on cliff lip to confirm blossoms >= 0.1% of frame. (2) Auto-club: pick driver when iron needPower > 0.95 (hole 5 gives 1.05). (3) toNonIndexed warning source (sheep.js:16 / stage.js:40), scorecard check.
-**Open** Blossom size unverified visually; petals may now look too chunky.
-
 ### Judge 13
 
 **Judge 13.** I opened the page and took one look: hole 2 (`state.hole:1` landed on hole 2 here), `skipIntro`, then KeyC for 40 frames. I ran one `observe`-style `interact` on hole 6 and one `perf`. I did not take a cliff-lip zoom, run the full `test`, or play a swing. The host is SwiftShader, so frame times mean nothing.
@@ -61,3 +55,9 @@ The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.m
    - Shown done by `look` after KeyC with `pin_pole` fully inside [y>20] and the golfer's edge contrast at 0.1 or more.
 
 SCORE: 6.7
+
+## Iteration 14
+**Did** No code change. Probed `needPower` per hole after `setState({hole:n,skipIntro:true})` with `eval`.
+**Saw** Auto-picked club and `meter.needPower`: h1 iron 0.883, h2 iron 0.643, h3 driver 0.895, h4 driver 0.745, h5 driver 0.993, h6-h9 driver 1.05 (pin beyond one drive; par 4/5, so expected). All par 3s are under 0.95. Console still warns `toNonIndexed(): already non-indexed` at open.
+**Next** (1) `asset_search` swaps for `tree*`, `bushes*`, `blossoms*`, `fenceRails` in src/island.js. (2) Hole 5 (0.993) and 6 could be shortened in src/course.js if the judge's 0.95 target should hold for par 4s; the auto-club lives in src/aimline.js (not this lane). (3) Export `course.cViewCentre` for src/camera.js so the C view frames pin and golfer.
+**Open** Nothing was looked at or played this session; blossom size from iteration 13 is judged OK by the judge (0.23% of frame).
