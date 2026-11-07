@@ -1,44 +1,34 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-### Judge 19
-
-**Judge 19 verdict**
-
-I opened the page and played a 2-player start into the aim view (`look`). I then putted from beside the cup with the real `swing` action and saw the hole-out reaction. I saved one check, `creatures-birdie-celebration` (10 checks now), and ran `perf` once. I did not play the sheep bonk, the bogey or par reactions, the stepped swing at 1.3×, the walk or the cow's shuffle. Those scores carry over.
-
-The earlier `setState` error was because `{ball}` was sent from the title, before any player existed. `api.js:72` reads `curP()`. Call `{action:"start"}` and then `{state:{hole:0, skipIntro:true}}` first, and `{ball:{x,z}}` works. A mode field is not needed.
-
-0. **Golfer is not the football player, proper golfer, wider spacing: 8.** The golfer was enlarged 1.3×. `Subject` is 0.61% of this 1280×800 aim view (was 0.35%); the builder measured 0.81%. 19 of 26 parts show: `golfer_cap`, `golfer_brim`, `golfer_shirt`, `golfer_collar`, `golfer_slack`, `golfer_glove` and `club_grip`. He reads as a white cap, an orange polo and cream slacks, and stands clear of the ball. He is still small in the frame, and the putt and walk were not seen.
-0b. **Footballer as side character, clean helmet: 8.** `player` (0.24%) stands at (-10.22, 14.75) in `Idle_Loop`, behind the tee and clear of the aim dots. He has a glossy dark-blue helmet and an orange kit. On the hole-out `creatures.footballer.clip` was 'Celebration' ✓, now in the saved check.
-1. **Toy golfer, swing poses, club looks like a club: 8.** `club_shaft`, `club_grip` and `club_head` show and read as a club.
-2. **Kit colours per player: 6.** With `players: 2`, ISLA is first and `creatures.shirtColour` is `#d8503a` ✓. FINN's `#3b78c9` was not seen, and `creatures-kit-colours` is still not saved.
-3. **Hole-out reactions: 6.** A hole-in-one putt gives `creatures.golferClip` 'Celebration' ✓, which is saved. Dance_Loop (par) and Dismay (bogey) are still unseen. In the holed camera the golfer is out of frame (`golfer_*` 0 of 26 parts), so the viewer cannot see the celebration there.
-4. **Sheep wander into play: 7.** Five of 10 sheep are in `walk` state. One is at (-6.4, 10.65) heading to (-6.1, 13.4), next to the tee.
-5. **Sheep bonk clip moment: 4.** `sheepHits` is 0 and there is no saved check.
-6. **Cow reacts: 6.** `cow.state` read 'head-up' after the putt, so she reacts to the hole-out. The shuffle and the `ball:cow` case were not proven.
-7. **Stepped real-key drive: 8.** During the putt `golferClip` ran address → downswing → follow → Celebration, but nothing was looked at at 1.3× (see Open).
-8. **Looks as LOOK.md says, crisp materials: 7.** The picture is clean and in the Shepherd Isle style. Edge contrast is 0.103, which is weak.
-9. **Edit scope, checks saved, lanes/creatures.md: 6.** The new check is saved. The par, bogey, bonk and kit-colour checks are still missing, asked for since session 7.
-10. **Keep the core loop: 8.** The title, flyover, aim view, HUD, meter, hole-out banner and cup camera work.
-- **Faults: 6.** `perf` gave 1201 ms a frame at host load 3.6 on 8 cores, 307 draw calls and 486k triangles. That is a software renderer, so it is noise. `Surfaces:` still reports `ballShadow1` and `ballShadow2` z-fighting on the plane y = 4.49. The `toNonIndexed` warning is from three.js. No lane console errors appeared.
-
-Mean: (8+8+8+6+6+7+4+6+8+7+6+8+6)/13 = 6.8.
-
-**Next:**
-1. **Save the remaining reaction, bonk and kit checks (asked again, since session 7).** After `{action:"start"}` and `{state:{hole:0,skipIntro:true}}`, `{state:{ball:{x,z}}}` works. Use these four steps:
-   - Dance_Loop: `ball` at x -2.4, z 11.95 on a par 3, `swing` power 0.2 from the putter. A one-putt on par 3 is a birdie, so the par case needs a first stroke elsewhere.
-   - Dismay: take 3 or more strokes on the hole.
-   - Bonk: put the ball 1.5 units in front of a sheep from `creatures.sheep` and swing.
-   - Kit: `players: 2` and play to FINN's turn.
-
-   Each is one `interact` with `save`. Done is every `expect` ✓: `golferClip` 'Dance_Loop' or 'Dismay', `sheepHits` 1 with that sheep in `hop`, `flee` or `tumble`, and `shirtColour` `#3b78c9` on FINN's turn.
-2. **Show the reaction on screen.** At the hole-out the camera is on the cup and none of `golfer_*` shows. In `src/pose.js`, or through a `creatures.*` hook, hold the camera back, or raise the golfer's reaction until the camera pulls out. A `look` taken 20 frames after the `holed` event should then list `golfer_cap` and `golfer_shirt` while `golferClip` reads 'Celebration'.
-3. **Check the swing, putt and walk at 1.3×, and make him bigger on screen.** `Subject` is 0.61% here, so push the golfer to about 1.5× or tighten the aim view. Take stepped looks at backswing top, follow and a putt (`interact` with `look: true`) and confirm `club_head` meets the ball and `club_grip` meets `golfer_glove`. Raise `STANCE` slightly if the body sits too close.
-
-SCORE: 6.8
-
 ## Iteration 20
 **Did** Saved two checks in `game-tests.json` (12 now): `creatures-par-dance` (3 strokes on hole 1 → `golferClip` 'Dance_Loop', strokes 3) and `creatures-bogey-dismay` (4 strokes → 'Dismay'). Recipe: `{action:"start"}`, `{state:{hole:0,skipIntro:true}}`, `wait 20`, `{state:{ball:{x:-4.5,z:11.95}}}`, putter, `aim at pin`, `swing power 0.03` (miss) 2 or 3 times with `until phase aim`, then ball at (-2.3,11.95) and `swing power 0.2`. No source changes.
 **Saw** Both reactions play: footballer also goes Dance_Loop on par. `setState({strokes})` is ignored; use real strokes. Bonk check not saved: sheep 3 grazes at (-6.1,13.25) until about frame 70 after the start, then walks west; two tries (ball at -8.2,10.1 and -7.6,13.25, putter 0.3) gave `sheepHits` 0 because the ball arrived after the sheep moved. No `perf` run, no console errors seen.
 **Next** 1) Bonk: put the ball 0.8 units from a sheep within 20 frames of `skipIntro` (sheep 3 at (-6.1,13.25) is still then), use a wedge or driver power so contact is fast, expect `sheepHits` 1, then save `creatures-sheep-bonk`. 2) Save `creatures-kit-colours` (players 2, play to FINN's turn, expect `shirtColour` '#3b78c9'). 3) Look at swing, putt and walk at 1.3×; pull the camera back at hole-out so the golfer's celebration is in frame.
 **Open** Bonk and kit-colour checks still unsaved; swing/putt poses at 1.3× unlooked.
+
+### Judge 20
+
+Session 20: I played a 2-player game to FINN's turn and saw the aim view, saved `creatures-kit-colours` (13 checks now) and ran `perf` once. I did not see the bonk, the walk, a stepped swing or the cow's shuffle this session. Those scores carry over.
+
+0. **Golfer is not the football player, proper golfer, wider spacing: 7.** `golfer_cap`, `golfer_hair` and `golfer_capButton` show, and the golfer is a code-built figure. In FINN's aim view he is cut by the bottom edge: `Subject` is 0.19% with 3 of 26 parts visible. The footballer `player` (0.88%) is far more prominent. The 1.3× enlargement does not help if the camera frames him out.
+0b. **Footballer as side character, clean helmet: 8.** `footballer_helmetShell`, `footballer_facemask` and `footballer_helmetStripe` show. He stands at (-10.16, 14.71) in `Idle_Loop`, behind the tee, with a clean dark helmet and an orange kit.
+1. **Toy golfer, swing poses, club looks like a club: 6.** The club and golfer were not visible enough this session to judge the poses, and no stepped look was taken at 1.3×.
+2. **Kit colours per player: 9.** `creatures.shirtColour` read `#3b78c9` on FINN's turn ✓, and `creatures-kit-colours` is saved. ISLA's `#d8503a` was seen in session 19.
+3. **Hole-out reactions: 8.** `creatures-birdie-celebration`, `creatures-par-dance` and `creatures-bogey-dismay` are saved from sessions 19 and 20. The golfer is out of frame in the holed camera, so the viewer cannot see the reaction.
+4. **Sheep wander into play: 7.** Five of 10 sheep are in `walk` state. Sheep 3 is at (-6.22, 12.17) heading to (-6.1, 13.4), next to the tee, and a sheep stands on the fairway in the aim view.
+5. **Sheep bonk clip moment: 4.** `sheepHits` is 0 and no check is saved. Two tries in session 20 missed because the sheep moved.
+6. **Cow reacts: 6.** `cow.state` reads 'head-up' with `yaw` 1.49. The shuffle and the `ball:cow` case are not proven.
+7. **Stepped real-key drive: 6.** `golferClip` is 'address' with `swingT` 0.22 at rest. The swing poses at 1.3× were not looked at, and he is mostly out of frame.
+8. **Looks as LOOK.md says, crisp materials: 7.** The picture is clean and in the Shepherd Isle style, with crisp sheep. Subject edge contrast is only 0.025 in this view.
+9. **Edit scope, checks saved, lanes/creatures.md: 7.** 13 checks are saved. The bonk check is missing, along with the walk and putt-stroke checks.
+10. **Keep the core loop: 8.** The HUD, meter, aim dots, `aimLanding` and the turn change to FINN all work.
+- **Faults: 6.** `perf` gave 1091 ms a frame at host load 3.0 on a software renderer, so it is noise. It also gave 307 draw calls and 486k triangles. No lane console errors appeared. `golferShadow` is listed as outside the view.
+
+Mean: (7+8+6+9+8+7+4+6+6+7+7+8+6)/13 = 6.8.
+
+**Next:**
+1. **Keep the golfer in the aim view (new).** For FINN the camera sits at (-15.0, 8.0, 11.8) and the golfer is cut by the bottom edge. In `src/pose.js`, or via the `creatures.*` hook, move him or his stance offset so he stands inside the frame, or shift the camera's lookAt up. The check is a `look` at the same state: `Subject` should be at least 0.6% with 15 or more of 26 `golfer_*` parts, and `golfer_cap` and `golfer_shirt` should not touch the bottom edge. The same fix should show him at the hole-out, with `golfer_cap` listed 20 frames after `holed`.
+2. **Save `creatures-sheep-bonk` (asked again, since session 7).** Right after `skipIntro` and within 20 frames, put the ball 0.8 units from sheep 3 at (-6.1, 13.25). Use a wedge or driver power so contact is fast, then Space x3. It is done when `interact` with `expect` `sheepHits` 1 shows ✓ with that sheep in `hop`, `flee` or `tumble`. If the sheep still moves, make the sheep a fatter target in `src/sheep.js`.
+3. **Look at the swing, putt and walk at 1.3×.** Use `interact` with `look: true` at meter stage 1, stage 2, the swing top and the follow-through. Confirm `club_head` meets the ball and `club_grip` meets `golfer_glove`, with `golferClip` 'backswing' then 'follow'. After that, show the cow's shuffle with `ball` placed near her and `cow.state` changing.
+
+SCORE: 6.8

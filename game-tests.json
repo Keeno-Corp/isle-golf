@@ -829,6 +829,57 @@
           "value": 4
         }
       ]
+    },
+    {
+      "id": "creatures-kit-colours",
+      "title": "creatures-kit-colours",
+      "state": {},
+      "actions": [
+        {
+          "action": "start",
+          "players": 2
+        },
+        {
+          "state": {
+            "hole": 0,
+            "skipIntro": true
+          }
+        },
+        {
+          "wait": 20
+        },
+        {
+          "action": "aim",
+          "at": "pin"
+        },
+        {
+          "action": "swing",
+          "power": 0.5,
+          "accuracy": 0
+        },
+        {
+          "until": {
+            "phase": "aim"
+          },
+          "max": 900
+        },
+        {
+          "wait": 10
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "creatures.shirtColour",
+          "op": "==",
+          "value": "#3b78c9"
+        },
+        {
+          "path": "player",
+          "op": "==",
+          "value": "FINN"
+        }
+      ]
     }
   ]
 }
