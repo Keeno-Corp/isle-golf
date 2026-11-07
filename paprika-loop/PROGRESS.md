@@ -737,3 +737,9 @@ I took one picture, hole 5 in real-key flight (Space ×3, 30 frames after launch
 3. **Keep `ball1` readable in the wide flight view.** Don't zoom in. Add a flight-time halo or enlarged `ballRing` in `src/stage.js`. Done is `look` with `sample` at the `ball1` box [630, 447, 649, 466] showing a brighter ring about 30 px wide, with `look.ball.y` unchanged at -0.141.
 
 SCORE: 7.4
+
+## Iteration 20
+**Did**: No source edits. Played the real-key putt from a fixture near the pin (Space ×3, no settle) to `phase holed`, then `wait 24`, with `look`. Saved the check `look-putt-holed` in `game-tests.json` (phase holed, `look.ball.y` in [-0.6, 1]). It is now 23 checks.
+**Saw**: Holed view at wait 24: `camPitchDeg` 26.7, `look.ball.y` -0.327, `focusY` 0.336, camera (0.9, 7.4, 16.0) at fov 30. `pin_flag` is solid, and `cup` and `cupRim` are visible, so the cup camera is no longer at -0.85 and pitch 8°. The banner HOLE IN ONE reads cleanly, `golfer_body` is 0.84% of the picture, and there is no console error beyond `toNonIndexed`. I ran no `perf` and did not re-run the full `test`.
+**Next**: (1) Save `look-c-hole5/6/9` (`look.camPitchDeg` in [45, 65], `look.ball.on` and `look.pin.on` true). (2) Take the scorecard picture after the holed phase. (3) Add a flight-time halo on `ball1` in `src/stage.js`.
+**Open**: The scorecard picture and the C checks are still missing. I did not run the full 23-check `test`.
