@@ -916,3 +916,9 @@ SCORE: 7.8
    - Optionally, raise the font size of the `clubp` and `meterp` labels so they read at 1280×800.
 
 SCORE: 7.6
+
+## Iteration 23
+**Did:** No code change. Played with real `swing` actions (2 players) to take the pictures the judge asked for.
+**Saw:** The 2-player stamped card is seen: HOLE 1 · PEBBLE STEP, ISLA and FINN rows, both with a PAR stamp (tilted), "SPACE · NEXT HOLE", and nothing in `div#card` overlapping. The sand-lie moment is seen too: `banner` "BUNKER / A PUTTER WILL CRAWL OUT", `clubp` "LIE · SAND" with PUTTER on "GREEN", `sub` "FINN TO PLAY", all clear of `ball` and `cup`. `hudRound.lastCall` cleared on the turn change and read "BUNKER", "PERFECT!" and "IN!" in turn. No console errors. No `perf` run.
+**Next:** Still unseen: the PICKED UP stamp (swing power 0.05 to par+3), the ROUND COMPLETE card with winner, best round and new best (`until hudRound.final`), and `clubp` yardage drop on rough. Make `hud-round-full-round` end on `until hudRound.final`, and make `hud-round-sound` assert a list of `lastCall` values. Shorten the full-round check (whole `test` takes ~323 s).
+**Open:** Nothing broken. `test` was not run this session.
