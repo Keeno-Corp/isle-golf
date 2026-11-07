@@ -37,6 +37,7 @@ export function pickSheepTarget(s) {
 export function updateSheep(dt) {
   sheep.forEach((s, i) => {
     s.hop = Math.max(0, s.hop - dt); s.flee = Math.max(0, s.flee - dt); s.tumble = Math.max(0, s.tumble - dt);
+    if (!s.init) { s.init = true; if (s.wait <= 0) { const t = pickSheepTarget(s); if (t) { s.tx = t.nx; s.tz = t.nz; } } }   // the early walkers set off on frame 1
     const dx = s.tx - s.x, dz = s.tz - s.z, d = Math.hypot(dx, dz);
     if (s.wait > 0) s.wait -= dt;
     else if (d > 0.12 && s.tumble <= 0) { const sp = (s.flee > 0 ? 1.5 : 0.62) * dt; s.x += dx / d * sp; s.z += dz / d * sp; const ty = Math.atan2(dx, dz); let da = ty - s.yaw; while (da > Math.PI) da -= 6.283; while (da < -Math.PI) da += 6.283; s.yaw += da * Math.min(1, dt * 4); }

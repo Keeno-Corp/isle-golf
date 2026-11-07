@@ -245,3 +245,20 @@ I ran the hole 1 aim look, one real-key swing (Space ×3) with a trace, and `per
    - Raise the golfer's contrast with a brighter cap or a thin outline, toward an edge contrast above 0.15.
 
 SCORE: 5.6
+
+## The request changed
+
+paprika-loop/PROMPT.md changed before session 6; the Next lists above were written before it. Changed lines:
++ ## Steer (lane lead, after session 4)
++ A session that only re-runs checks scores nothing. Each session must change code and prove one of these with real inputs, in this order, saving each as a `creatures-` check:
++ 1. Sheep bonk: setState the ball 1-2 units in front of a sheep on the aim line (aim with A/D or the `aim` action), Space x3 -> `creatures.sheepHits` +1, that sheep `hop`/`tumble`/`flee`, a look shows the heart, hit-stop visible. If the ball keeps missing, make sheep a fatter target in your own sheep.js data (physics reads `sheepList`).
++ 2. Stepped real-key drive: looks at meter stage 1, stage 2, the swing and the flight show address, top of backswing and follow-through distinctly, club head visible; `creatures.golferClip` (or a `creatures.pose` name) reports 'address'|'backswing'|'downswing'|'follow' during the swing.
++ 3. Par -> 'Dance_Loop', bogey -> a dismay clip, the putting stroke (small pendulum) and the walk to the ball, each seen in a look.
++ 4. The footballer near the tee/green framed so he reads in the aim view (not hidden in rough), clean glossy helmet.
++ 5. Cow reacts to a shot landing near her (look up/turn/moo/shuffle), proven by `creatures.cow.state`.
+
+## Iteration 6
+**Did** `src/sheep.js` `updateSheep`: found why `wait: 0` never showed as `walk`. The first update saw `d = 0` (target = home), so it reset `wait` to 1.5–5 s. Now `s.init` picks a target on frame 1 for sheep with `wait <= 0`. `src/pose.js` observe: new `creatures.poseName` (`address`|`backswing`|`downswing`|`follow`, from phase, `swingT` and the sign of `pose`). New saved check `creatures-sheep-bonk-real-keys` (setState sheep 3 at (-9, 12.5) wait 60, `aim at pin`, Space x3).
+**Saw** Sheep 0, 3, 6 and 9 read `walk` from frame 1 and move by frame 5. The bonk run: `sheepHits` 0 → 1 at frame 79, sheep 3 `hop`, `hitStop` true, banner "BAA! BOUNCED OFF A SHEEP". The look shows `creatures_heart`, `creatures_bang` and `creatures_note` over the sheep, and the cow went `head-up`. The footballer played `Celebration` after the shot. `poseName` ran address until frame 34, backswing until 46, then follow. Golfer 0.48% of that picture, cut by the bottom edge, edge contrast 0.02 (the camera is low-left). No console errors. I did not run `perf` or a full `test`.
+**Next** 1) `downswing` is almost never seen (swing phase jumps from backswing to follow), so either name it from `pose` crossing 0 or accept it. 2) `golferClip` stays `Idle_Loop` during the swing; the name is only in `poseName`. 3) Sheets still not seen: par `Dance_Loop`, bogey `Dismay`, putt, walk. 4) Cow check `creatures-cow-reacts`; `asset_search` for sheep and cow. 5) The golfer's contrast and the framing at the bottom edge.
+**Open** Putt, walk, par and bogey are unseen by me. The `ball:cow` case is untested. The sheep and cow are still code-built, no `asset_search`. The other lanes' `ballShadow` and `Surfaces` faults remain.

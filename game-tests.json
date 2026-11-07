@@ -387,6 +387,82 @@
           "value": "iron"
         }
       ]
+    },
+    {
+      "id": "creatures-sheep-bonk-real-keys",
+      "title": "creatures-sheep-bonk-real-keys",
+      "state": {},
+      "actions": [
+        {
+          "action": "start",
+          "players": 1
+        },
+        {
+          "action": "next"
+        },
+        {
+          "wait": 5
+        },
+        {
+          "state": {
+            "creatures": {
+              "sheep": {
+                "i": 3,
+                "x": -9,
+                "z": 12.5,
+                "wait": 60
+              }
+            }
+          }
+        },
+        {
+          "action": "aim",
+          "at": "pin"
+        },
+        {
+          "key": "Space",
+          "frames": 2
+        },
+        {
+          "wait": 25
+        },
+        {
+          "key": "Space",
+          "frames": 2
+        },
+        {
+          "wait": 3
+        },
+        {
+          "key": "Space",
+          "frames": 2
+        },
+        {
+          "wait": 50
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "creatures.sheepHits",
+          "op": "==",
+          "value": 1
+        },
+        {
+          "path": "creatures.sheep.3.state",
+          "op": "in",
+          "value": [
+            "hop",
+            "tumble",
+            "flee"
+          ]
+        },
+        {
+          "path": "creatures.poseName",
+          "op": "==",
+          "value": "follow"
+        }
+      ]
     }
   ]
 }

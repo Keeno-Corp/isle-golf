@@ -137,7 +137,7 @@ on('ball:water', () => golferClip('Dismay', 0.35));
 on('ball:ob', () => golferClip('Dismay', 0.35));
 
 // ---------------------------------------------------------------- the one observe key of this lane (COORDINATION.md): creatures
-addObserve(() => ({ creatures: { golferClip: golfer.cur, shirt: '#' + kitU.uJersey.value.getHexString(), swingT: +(G.swingT || 0).toFixed(2), pose: +swingParam().toFixed(2), clubHead: clubG.userData.head.userData.id || '', footballer: { x: +foot.x.toFixed(2), z: +foot.z.toFixed(2), clip: foot.cur, visible: foot.g.visible, ready: foot.ready }, cow: cowObs(), ...sheepObs() } }));
+addObserve(() => ({ creatures: { golferClip: golfer.cur, poseName: (() => { const s = swingParam(); return G.phase === 'swing' ? (G.swingT < 0.2 ? 'backswing' : s < 0 ? 'downswing' : 'follow') : G.phase === 'flight' || G.phase === 'settle' ? 'follow' : 'address'; })(), shirt: '#' + kitU.uJersey.value.getHexString(), swingT: +(G.swingT || 0).toFixed(2), pose: +swingParam().toFixed(2), clubHead: clubG.userData.head.userData.id || '', footballer: { x: +foot.x.toFixed(2), z: +foot.z.toFixed(2), clip: foot.cur, visible: foot.g.visible, ready: foot.ready }, cow: cowObs(), ...sheepObs() } }));
 
 // ---------------------------------------------------------------- the footballer: Isle Blitz's player (assets/player-anim.glb) as the caddie beside the tee or the green, clean: a glossy painted helmet shell over the old one, one stripe, a crisp facemask
 import { gltfL } from './assets.js';
