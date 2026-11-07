@@ -976,3 +976,14 @@ SCORE: 6.8
    - Shown done by `look` on `{state:{hole:5,skipIntro:true}}`, where the On screen list names `duck*`, and by a hole 9 `look` that lists `cliffRocks` or `seaStacks` with pixels.
 
 SCORE: 7.1
+
+## The request changed
+
+paprika-loop/PROMPT.md changed before session 17; the Next lists above were written before it. Changed lines:
++ Steering note 3 (lane lead, last hour): no asset_search model swaps (keep the existing stylized trees/bushes/fences). Remaining time goes to: rerun the full saved `test` and fix what fails after the hole 6/7 shortening; look at holes 6 and 7 (bunkers/pond sensible, no bunker in a perfect drive's landing zone); save `course-cliff-lip` and `course-h1-ribbon` and `course-h9-drive` if not saved yet.
+
+## Iteration 17
+**Did** src/course.js Mid Meadow (state hole:6) tee/2nd point now [-9.5,6.5],[-4.0,6.9] (was -8.4/-3.5). Tried tee -10.6 first: 229 yd, needPower 1.05, too long.
+**Saw** Mid Meadow 214 yd, `meter.needPower` 0.749 (target 0.75-0.95, just under), still driver. Full saved `test` ran 11/11 pass BEFORE the final tee edit (at tee -10.6 build); not rerun after. No look/perf; bunkers on Mid Meadow not re-viewed. toNonIndexed warning still prints.
+**Next** (1) rerun `test` and a `look` on hole 7 for bunker/landing-zone sense; (2) pin_pole top clipped on hole 7 aim view, golfer contrast (camera/pins lane); (3) ducks and cliffRocks/seaStacks visibility.
+**Open** Final tee edit unverified by saved checks; needPower 0.749 marginally below judge's 0.75.
