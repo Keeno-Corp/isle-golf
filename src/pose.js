@@ -21,13 +21,15 @@ export function hideGolfer() { showGolfer(false); }
 export function swingParam() {
   if (G.phase === 'swing') { const t = G.swingT; const back = -(0.45 + 0.55 * G.pend.power); return t < 0.2 ? back * (1 - (t / 0.2) ** 2) : Math.min(1, (t - 0.2) / 0.3) * 0.9 * (0.5 + 0.5 * G.pend.power); }
   if (G.phase === 'flight' || G.phase === 'settle') { const t = G.flightT; return 0.9 * (0.5 + 0.5 * (G.pend ? G.pend.power : 1)) * (1 - smooth(1.0, 1.8, t)); }
-  if (G.phase === 'aim') return G.m.stage >= 1 ? -(0.7 + 0.3 * Math.sqrt(G.m.power)) : -golfer.pose.back * 0.4;
+  if (G.phase === 'aim') return G.m.stage >= 1 ? -(0.7 + 0.3 * Math.sqrt(G.m.power)) * Math.min(1, 0.15 + entryT / 7) : -golfer.pose.back * 0.4;
   return 0;
 }
-const GS = 1.7;   // the golfer's size on screen (holder scale; the club follows)
+let entryT = 0;   // frames since the meter started, eases the backswing in
+const GS = 1.9;   // the golfer's size on screen (holder scale; the club follows)
 const STANCE = 0.66;   // how far the golfer stands from the ball (a touch wider than before)
 const WALK_SPEED = 3.2;
 export function placeGolfer() {
+  entryT = G.phase === 'aim' && G.m && G.m.stage >= 1 ? entryT + 1 : 0;
   if (G.phase === 'title' || G.phase === 'card') return;
   const p = curP(), fx = Math.cos(G.aim), fz = Math.sin(G.aim), rx = -fz, rz = fx, ox = G.phase === 'flight' || G.phase === 'settle' ? G.shotOrigin : p.pos;
   const tx = ox.x - rx * STANCE - fx * 0.02, tz = ox.z - rz * STANCE - fz * 0.02, h = golfer.holder;

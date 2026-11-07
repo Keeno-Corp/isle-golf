@@ -1067,3 +1067,9 @@ Mean: (8+8+8+9+8+7+7+6+8+8+7+8+7)/13 = 7.7.
 3. **Ease the backswing entry.** In `src/pose.js` `swingParam`, ramp the stage-1 jump over about 6 to 8 frames instead of snapping. A `sheet` of the 1st Space at +2 and +6 frames should show the club part-way up at +2 and at the top by +6, not already at the top.
 
 SCORE: 7.7
+
+## Iteration 26
+**Did** `src/pose.js`: `swingParam` aim branch now scales the backswing by `min(1, 0.15 + entryT/7)`, `entryT` counted in `placeGolfer` (frames since stage>=1), so the top is reached in about 6 frames; `GS` 1.7 to 1.9.
+**Saw** No look, test or perf this session (about 16 minutes only); nothing verified.
+**Next** 1) `sheet` 1st Space at +2 and +6 frames, and check `golfer_cap` clear of the meter panel and `Subject` of at least 1.5%; 2) save `creatures-putt-stroke`, `creatures-walk-to-ball`, `creatures-cow-shuffle`; 3) a look of the cow shuffle.
+**Open** `GS` 1.9 could clip the HUD; if so go back to 1.8. entryT only counts in the aim phase, so a stepped test calling observe without frames will see the ramp start. Checks still 14, not re-run.
