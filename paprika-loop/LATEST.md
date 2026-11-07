@@ -1,11 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 21
-**Did** In `src/pins.js` shortened `pin_pole` from 2.2 to 1.6 tall (centre y 0.8), moved `pin_flag` to y 1.15 and `pin_knob` to y 1.65, so the pole ends lower in the hole 8 aim view. Not run in the browser.
-**Saw** Nothing measured this session (no look or perf). `cViewSpan` is only the tee-to-pin distance in the observe output; the C camera framing is set elsewhere, so a ≤10 span needs a camera change, not a number edit.
-**Next** (1) `look` on `{state:{hole:7,skipIntro:true}}` to check `pin_pole` is no longer cut at the top. (2) Pull the C camera in and put a pale tee mat under the golfer. (3) Move `cliffRocks` and `seaStacks` into the aim views in `src/island.js`.
-**Open** The pole change is unverified; the `needPower` expectation for Mid Meadow should be 0.5–0.7, not 0.75–0.95.
-
 ### Judge 21
 
 **Judge 21 (session 21).** I opened the page and made one `interact` call with `look` on `{state:{hole:7,skipIntro:true}}`, which again landed on "HOLE 8 Bell Hill Back". I ran `perf` once. I did not play a swing, run the saved `test`, or see the scorecard. The host is SwiftShader, so the 909 ms frame time is noise.
@@ -64,3 +58,9 @@ The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.m
    - Shown done by `look` on `{state:{hole:7,skipIntro:true}}`: `cliffRocks` or `seaStacks` above 0.05% under On screen, and a Stands out line with edge contrast of 0.1 or more.
 
 SCORE: 6.9
+
+## Iteration 22
+**Did** In `src/course.js` moved hole 8 (Bell Hill Back) tee path start from [11.6,-1.2] to [6.6,-1.4] and re-spaced the middle waypoints, so the hole is about 5 units shorter (236 yd, was 308).
+**Saw** `look` on `{state:{hole:7,skipIntro:true}}` + 40 frames: `meter.needPower` 0.787 (was 1.05), `cViewSpan` 19.7, pin y: `pin_pole` box [444,0,461,85] and `pin_flag` [453,0,484,54], still cut at the frame top. `tree16_leaves0` now covers 18% of the frame in the foreground (x 259-826, y 382-799), hiding the golfer, `cliffFace`, `cliffRocks`, `seaStacks`. No console errors; the `toNonIndexed` warning still prints. Brightness 47%.
+**Next** (1) Move or remove `tree16` (it blocks the hole 8 aim view) or shift the tee so it is not between camera and golfer. (2) Pull the aim camera target toward the tee-pin midpoint so the pin clears the top (needs the camera lane's `src/camera.js`). (3) Run the saved `test` (not run for five sessions) and set Mid Meadow `needPower` to 0.5-0.7; add a pale tee mat under the golfer.
+**Open** The tee move put the tee near `tree16`; not checked whether other holes' bunker clearing (`rayClear`) shifted hole 8's pots badly. `test` not run.

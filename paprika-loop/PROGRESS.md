@@ -1198,3 +1198,9 @@ SCORE: 6.9
    - Shown done by `look` on `{state:{hole:7,skipIntro:true}}`: `cliffRocks` or `seaStacks` above 0.05% under On screen, and a Stands out line with edge contrast of 0.1 or more.
 
 SCORE: 6.9
+
+## Iteration 22
+**Did** In `src/course.js` moved hole 8 (Bell Hill Back) tee path start from [11.6,-1.2] to [6.6,-1.4] and re-spaced the middle waypoints, so the hole is about 5 units shorter (236 yd, was 308).
+**Saw** `look` on `{state:{hole:7,skipIntro:true}}` + 40 frames: `meter.needPower` 0.787 (was 1.05), `cViewSpan` 19.7, pin y: `pin_pole` box [444,0,461,85] and `pin_flag` [453,0,484,54], still cut at the frame top. `tree16_leaves0` now covers 18% of the frame in the foreground (x 259-826, y 382-799), hiding the golfer, `cliffFace`, `cliffRocks`, `seaStacks`. No console errors; the `toNonIndexed` warning still prints. Brightness 47%.
+**Next** (1) Move or remove `tree16` (it blocks the hole 8 aim view) or shift the tee so it is not between camera and golfer. (2) Pull the aim camera target toward the tee-pin midpoint so the pin clears the top (needs the camera lane's `src/camera.js`). (3) Run the saved `test` (not run for five sessions) and set Mid Meadow `needPower` to 0.5-0.7; add a pale tee mat under the golfer.
+**Open** The tee move put the tee near `tree16`; not checked whether other holes' bunker clearing (`rayClear`) shifted hole 8's pots badly. `test` not run.
