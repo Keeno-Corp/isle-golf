@@ -1,0 +1,46 @@
+# Isle Golf · look lane (team run golf1)
+## What it is
+A tilt-shift arcade golf game on Shepherd Isle: the football field of Isle Blitz is regrown into a nine-hole links course with sheep, a pond, the lighthouse and the sea along the cliffs.
+
+This game already exists and works. NEVER rewrite it. This loop is the **look lane** of team run golf1: it makes small, targeted edits to the camera, stage and post pass of the existing game, and nothing else. Read COORDINATION.md (code layout, load order, hooks, events, the look section) before the first edit, and read the other lanes' notes in `lanes/` at the start of each iteration.
+
+## Must have
+1. **Look lane goal (COORDINATION.md, look):** Wii Sports Golf / Mario Golf readable camera in the Shepherd Isle tilt-shift look. Flyover intro per hole: diorama view, then along tee → pin, then behind the ball, with the pin in frame mid-flyover. A camera that follows the ball's flight and eases to the green; a holed camera that shows the ball drop. C is a 55° hole view framing tee and pin, never flat top-down (today it is near top-down). The tilt-shift band sits on the ball. Night mode (N) still reads. Art-critic findings: (1) golfer and ball crisp inside the focus band and lifted off the bottom edge of the frame; (2) the key light moved so shadows fall to the lower right, as from a warm low sun at the top left (tree shadows fall left today); (5) the critic runs on the aim view, the meter, the scorecard and a ball in flight.
+2. **Look check 1:** in the aim view of holes 1, 5 and 9 the top fifth of the frame is visibly blurred and the band around the ball and golfer is sharp; the ball sits above the bottom 20% of the frame.
+3. **Look check 2:** C on holes 5, 6 and 9: camera pitch is 45-65° (`look.camPitchDeg`), and the tee/ball and the pin are both on screen (`look` screen NDC positions inside -1..1).
+4. **Look check 3:** Space from the title, then stepped frames with looks at 25/50/75% of the flyover: the camera moves diorama → over the hole → behind the ball, and the pin is on screen at 50%. A real-key drive keeps the ball on screen through its flight (looks at 3 moments).
+5. **Look check 4 (LOOK.md checks 2 and 4):** sea at a corner of the title view within 30/255 of #0f6a67; one warm key light from the top left (shadows fall to the lower right); the only `Lighting:` note is the club's metal (no environment map).
+6. **Critic (paprika-make critic.md) runs on four views:** the aim view, the meter, the scorecard and a ball in flight, and its glitches are closed one at a time. In those passes, verify the two findings the **course lane** provides: (3) the cliff shrubs read as blossom shrubs, not pink rocks, and (4) the flag is a thicker pole and reads as the one vertical accent on every hole. Look keeps the flag out of the heaviest blur (post.js focus band / crisp), and records in `lanes/look.md` anything still wrong for the course lane. Do not edit course files.
+7. **Looks as LOOK.md says: its Checks hold** (the four Checks in LOOK.md, now and after every edit).
+8. **Edit only** `src/stage.js`, `src/post.js`, `src/camera.js`, `lanes/look.md` and `game-tests.json` (and your lane-local `paprika-loop/` state). Only the look lane owns camera, stage and post. Every other file is read-only: if a change is needed there, use the hooks and events in `src/shared.js` (`addUpdate`, `addKey`, `addAction`, `addObserve`, `addSetState`, `on`/`fire`), or write the request under "Requests" in the run's shared `workflow.md`. LOOK.md, BRIEF.md, DESIGN.md, CHARACTERS.md, COORDINATION.md, `src/util.js` and `src/shared.js` are frozen.
+9. **Load-order imports stay.** Each source file's first line is the load-order chain import (`import './<previous>.js';`). Preserve that line as line 1 of `src/stage.js`, `src/post.js` and `src/camera.js` exactly as it is, never removed or reordered, EVEN THOUGH the paprika3d plugin watermark normally goes first. Do not add the `// Made with paprika3d` watermark above it (if wanted, put it on line 2). A new file the lane creates has no chain line, imports only what it uses, and is imported from one of the lane's own files after that file's chain line. No code at load time that reads a `const` from a file later in the load order.
+10. **No imported bindings reassigned.** Imported `let`s are read-only outside their declaring file (assigning one is a runtime error). Never assign to an imported name (`G`, `SIM`, `ST` fields are mutated only by their documented writers; `ST.dusk`/`ST.duskTarget`, `ST.flash`/`ST.flashHold` follow the writer table). A value look must write that others read goes in a look-owned object or exported setter, not in someone else's binding.
+11. **Look observation hook:** register `addObserve(() => ({ look: {...} }))` in a look-owned file exposing at least `camPitchDeg` (current camera pitch in degrees), `flyoverT`, `focusY`, and the screen NDC positions (x, y in -1..1, plus an on-screen boolean) of the ball, the current hole's pin and the golfer/tee, projected through the live camera. Keep the existing `camera` key of `observe()` and every other existing key unchanged. Optionally add `look.*` actions (`look.cam`) via `addAction`.
+12. **Saved checks:** `game-tests.json` gets look-prefixed saves (ids `look-…`) for each look check above, recorded with the paprika3d `interact` + `test` tools; the four existing checks are kept, other lanes' saves are never edited or deleted.
+13. **Real-input proof (paprika3d tools):** each check is proved with `interact` real inputs on stepped frames (Space, A/D, W/S, C, three Space clicks with waits for a drive), using `setState` only to pick the hole (`{hole:n, skipIntro:true}`), place the ball or set night/wind. Take `look` pictures right after stepped frames (the game draws through a post pass; a `look` straight after an `until` step can read near-black). Use `observe` for `look.camPitchDeg` and the NDC positions, `look` for the blur band, `perf` for 60 fps (budget: no regression against 307 draws / 486k tris), `feel` for the follow camera if useful, and `test` to save and rerun the `look-` checks from a fresh reload. Faking the core loop with setState does not count.
+14. **Lane notes:** `lanes/look.md` lists the lane's observe keys, actions, events fired (`look:<thing>`), exports, and requests to other lanes. Keep it current each iteration.
+15. **Preserved from the game BRIEF.md (still true after every edit):**
+    1. Looks as LOOK.md says: Shepherd Isle's painted brush pass, a tilt-shift focus band on the ball, cream-green haze, teal sea, warm low sun; no unblurred frame.
+    2. Plays as DESIGN.md's Core loop and Controls say: aim, club, a three-click meter, mouse or keyboard, C hole camera, R replay.
+    3. Camera high behind the ball with a narrow FOV, following the ball in flight, pulling back to the diorama for each hole's flyover intro.
+    4. Ball flight with arc, wind, bounce and roll by surface (fairway, rough, sand, green, water drop, out of bounds).
+    5. A full playable 9 holes (tees, fairways, rough, greens with flags, bunkers, the pond, the sea as OB, lighthouse, house, trees), holes 1-3 par 3, doglegs round the pond and house, hole 9 par 5 at the lighthouse; sheep wander the fairways and a ball bounces off one with a baa.
+    6. Stroke play against par per hole and over 9 holes, a scorecard after each hole with birdie/par/bogey stamps, solo and 2-4 player hot seat in kit colours.
+    7. HUD in the Isle Blitz type restyled for golf: hole/par/strokes top left, wind top right, power meter bottom centre, club bottom left.
+    8. window.__game with observe() and act() for aim, club and swing (power, accuracy) so the paprika3d tools play it; 60 fps.
+    9. The golfer matches CHARACTERS.md; no real golf brands, courses or game names on screen.
+
+## References
+refs/sheets/LOOK.png · style · match (Shepherd Isle, the game's own views) · built from /home/ubuntu/repos/paprika3d-dev/examples/shepherd-isle
+refs/study/ (not published) · mood · inspiration
+## Inspirations and notes
+Mario Golf and Everybody's Golf arcade feel, Golf Story charm, the tilt-shift diorama views of Shepherd Isle and Isle Blitz. The owner: "take the shepherds isle / the tilt-shift nfl blitz game, and make it a golf game. Use the same style as shepherds isle".
+
+Feel reference from the owner (JC): "like how wii golf or the modern nintendo mario golf games are well polished and feel good, but keep our same tilt shift mini style." Frame the shot readably, follow the flight, ease to the green, show the drop.
+
+Working notes: the game draws through a post pass, so take pictures with `interact` + `look: true` right after stepped frames. No questions to a person; all creative decisions are made. `pkill -f <pattern>` from a shell whose own command line holds the pattern kills that shell too.
+## Sheets
+LOOK.md · CHARACTERS.md · DESIGN.md · refs/sheets/LOOK.png
+Web study: yes (asked) · Picture sheets: no, no image key (asked) · Asset style: stylized (asked)
+## Left to the builder
+Camera easing curves and flyover timing, the exact key-light direction and shadow softness, the focus band's width and falloff, what `look.*` observe keys beyond the required ones to expose.
