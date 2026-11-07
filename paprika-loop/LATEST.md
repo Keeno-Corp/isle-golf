@@ -1,33 +1,35 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-### Judge 18
-
-**Judge, session 18: ball-physics lane**
-
-I opened the page, set up a hole 1 putt and took one look. I then tried one real-key putt and ran `perf` once. The putt attempt was spoiled by my own setup, so it proves nothing. I passed `degrees:"auto"` to the `aim` action, and that is the likely source of the `rotate(NaN)` errors. The ball also went to a wedge from the rough, and the meter read MISS-HIT. I did not run `test` and did not see a puff or divot, a lip-out, or a tree, sheep or house drive. I could not check Iteration 18's `pools.js` change.
-
-0. **Make putting easier (top priority)**: 8. The look at 1.2 units from the pin shows `aimDots` ×3 (0.25%) as small, faint white dots. They are still not thick or bright enough to read as the break line in the tilt-shift look. The meter `needPower` read 0.311 for a 14 yd putt, which is a comfortable notch. My real-key putt from about 6.5 units was invalid, as above. The last known passes are Judge 14's: `ball-physics-putt-mid-easy`, `-putt-sinks` and `-putt-too-hard`.
-1. **Ball physics polished**: 8. This is carried over from Judge 17, which saw the `air` → `roll` → `rest` sequence with `landPreview` within 0.03 units of `firstBounce`. I saw no flight this session. Rollout on fairway, rough and sand is still unmeasured.
-2. **Trail, landing ring, putt preview**: 7.5. `ballTrail` and `landRingPreview` were seen at Judge 17. The putt preview is now seen, but it is only three faint dots and shows no clear bend.
-3. **Impact and landing feedback**: 5.5. No first-bounce puff, sand puff or splash was seen this session. Iteration 18's `updatePool` change (full colour until expiry for `landPuffs` and `divots`) is still unconfirmed. `divots` and `landPuffs` have not been visible for 5 sessions.
-4. **Meter timing and reset**: 7. In the putt attempt the meter went POWER, then SNAP, then a MISS-HIT result (`power` 0.594 against `needPower` 0.031), and the phase moved to `flight`. I did not check that the meter fields reset after the shot.
-5. **Events and observe data**: 8. `physics.minPinD` is exposed and reads 9 at rest. `spin` and `landPreview` are also exposed. I did not watch `ball:*` events.
-6. **Saved checks `ball-physics-*`**: 7.5. Iteration 18 reports 20 of 20 passing after the `pools.js` change. I did not re-run them. `ball-physics-lip`, `-minpind` and the real-key rollout checks are still missing.
-7. **Looks as LOOK.md says**: 8.5. The look shows painted grass, a tilt-shift blur at top and bottom, cream-green haze and warm light. The golfer "blends in" (subject brightness 57% against 62% around it, edge contrast 0.079). The ball is only 0.18% of the frame with `ballShadow1` and `ballRing1`.
-8. **Edit scope**: 9. The only recent change is in `src/pools.js`.
-9. **Keep as is**: 8.5. The HUD shows 5 panels with 0 overlap, 0 off-screen and 0 cut off. The only console warning is the `toNonIndexed` one, still of unknown source.
-
-**Faults**: 7. The `rotate(NaN)` SVG error (×2) appeared after my bad `aim` call. It may be the meter or HUD getting a NaN angle, so the builder should check it. `divots` and `landPuffs` are never visible. `perf` read 1130 ms a frame with 308 draw calls and 486k triangles. That is a software renderer at host load 3.0, so it is no budget signal.
-
-**Next:**
-1. **Show a puff in a look (asked again).** Use `setState` to place the ball in the sand patch on hole 1, then hit a real-key wedge. The calls to make are `interact` with `look:true`, then `look` with `sample` at the puff pixels about 5 frames after the first bounce. `landPuffs` should be listed above 0.3% in a sand colour, and `divots` should be visible. If it stays "Never visible", check that `flightEvents` emits `landPuffs`, that the pool is not hidden by the post pass, and that the camera is not behind it. Do not pass `degrees:"auto"` to `aim`. Use `{action:"aim", at:"pin"}` or `at:"auto"`.
-2. **Make the putt preview line thick and bright, and show the break.** In `src/aimline.js`, replace the 3 small `aimDots` with a continuous ribbon or dense dots that are bright and bent by `puttBreak`. Check it with `look` at 6 units on the sloped green. `aimDots` should cover above 0.5% of the frame and bend visibly. Then run a valid real-key putt: `aim at:"pin"`, Space, wait, Space at `needPower`, Space, and expect `ball.mode` `sunk`.
-3. **Add the missing checks.** Save `ball-physics-lip` (a putt from 2 units at about 130% power, expecting `ball:lip` or not `sunk`) and `ball-physics-minpind` (`physics.minPinD` in [0, 8] after a shot). Then add a real-key rollout check, a wedge onto green, fairway, rough and sand, to prove green > fairway > rough > sand. After that, give the golfer a rim light or a colour the lawn lacks so it stands out.
-
-SCORE: 7.6
-
 ## Iteration 19
 **Did**: `src/aimline.js` `updateAimLine`: putt preview `aimDots` instances now scale 2.4x (tapering to 1.44x) so the break line is thicker. Nothing else changed.
 **Saw**: No look, `test` or `perf` run this session; the change is unseen. Fault lines unchanged from Judge 18 (`divots`/`landPuffs` never seen, `toNonIndexed` warning).
 **Next**: 1) `look` at 6 units on the sloped green: `aimDots` should cover above 0.5% and bend. 2) Stage a sand wedge with real keys and look 5 frames after the first bounce for `landPuffs`/`divots`. 3) Add `ball-physics-lip` and `-minpind` checks.
 **Open**: If `puttTrack` returns only ~3 points, the dots are still sparse: interpolate between points in `updateAimLine`. Puff change from Iteration 18 still unconfirmed.
+
+### Judge 19
+
+**Judge, session 19: ball-physics lane**
+
+I opened the page, looked at the tee and at a 5.8-unit putt, played one real-key putt and one wedge shot, and ran `perf` once. I did not run `test`. I did not see a tree, sheep or house drive or a lip-out, and I did not check the saved checks.
+
+My real-key putt was not a valid pass. I waited on `meter.stage` 3, so Space fired the third click at once and read MISS-HIT. The ball then rolled to 2.17 units from the pin (`minPinD` 2.166) and the meter reset to 0 afterwards. For the real-key putt, wait for the snap, then press Space.
+
+0. **Make putting easier (top priority)**: 8.5. The Iteration 19 change works. `aimDots` ×19 cover 0.83% at 5.8 units, a thick white bright ribbon that tapers toward the cup. At 2.2 units they cover 2.1%. The ribbon reads clearly in the tilt-shift look and bends with `puttBreak` 0.329. `needPower` is 0.548 for 5.8 units and 0.704 for 2.2 units, comfortable notches. The `ball-physics-putt-mid-easy` check was not re-run, and my own putt was invalid.
+1. **Ball physics polished**: 8. The wedge went `air` → `roll` with `carryYd` 28, `rollYd` 4, `bounces` 2 and the `firstBounce` on green. The `landPreview` ring was at (-0.25, 12.15) on the tee. I did not measure sand or rough rollout.
+2. **Trail, landing ring, putt preview**: 8.5. `ballTrail` showed (0.013%, thin), and `landRing` showed as a large cream ring around the landing. The putt preview ribbon is now good.
+3. **Impact and landing feedback**: 7. `landPuffs` are visible for the first time in six sessions (2.3% [532, 469, 711, 603]), so the Iteration 18 `pools.js` fix works. The puff is a soft pale haze with little colour. `divots` are still never visible, and I saw no sand puff or splash. My shot started from "sand" but the lie read rough and the ball landed on the green.
+4. **Meter timing and reset**: 7.5. Real keys gave the sequence POWER, SNAP, then the result label. `meter.power` reset to 0 and the label cleared after the shot. The stage, power and label fields behave. The `swing` action gave PERFECT.
+5. **Events and observe data**: 8. `physics` shows `spin`, `carryYd`, `rollYd`, `bounces`, `lastBounce`, `firstBounce`, `puttBreak`, `minPinD` and `landPreview`. `minPinD` tracked 9 → 2.166 → 0.821. I did not watch `ball:*` events.
+6. **Saved checks `ball-physics-*`**: 7.5. Not re-run; Iteration 18 reported 20 of 20 passing. `ball-physics-lip`, `-minpind` and the real-key rollout checks are still missing.
+7. **Looks as LOOK.md says**: 8.5. Painted grass, the tilt-shift blur at top and bottom, cream haze, teal sea and warm light all hold. The golfer is only slightly distinct from the lawn (subject brightness 56% against 62% around it, edge contrast 0.122). The ball is tiny (`ball1` 0.029–0.18%).
+8. **Edit scope**: 9. The only change is in `src/aimline.js`.
+9. **Keep as is**: 8.5. The HUD has 4–5 panels with 0 overlap, 0 off-screen and 0 cut off. The `clubp` yardage updates with the lie (wedge 74 → 58 YD in rough). The round flow is intact.
+
+**Faults**: 8. There were no console errors this session, and the `rotate(NaN)` error did not recur because I avoided the bad `aim` call. The only warning is `toNonIndexed` (unknown source). `divots` and `tree*`/`house` parts are "Never visible" only because they were out of view. `perf` read 1125 ms a frame, 308 draw calls and 486k triangles at host load 2.2. That is a software renderer, so it is no budget signal.
+
+**Next:**
+1. **Make `divots` and the sand puff show (asked again).** Place the ball on the real sand patch by position, not just `surface:"sand"`. For example, use the sand patch near (-4, 14.5) on hole 1 and check that `ball.surface` reads sand in the reply. Then play a real-key wedge, with Space, a wait, and Space at `needPower` read from `meter.power`. Don't use `until meter.stage` for the snap. After the first bounce, call `look` with `sample` at the puff pixels. `landPuffs` should be a sand colour (warm tan, not pale green-white) and `divots` should be listed with a size above 0 and visible. Also make the puff denser and more saturated so it stands out against the tilt-shift blur.
+2. **Add the missing checks and re-run them.** Save `ball-physics-lip` (a putt from 2 units at about 130% power, expecting `ball:lip` or not `sunk`) and `ball-physics-minpind` (`physics.minPinD` in [0, 8] after a shot; I saw 2.166 and 0.821). Then add a real-key rollout check, a wedge onto green, fairway, rough and sand, to prove green > fairway > rough > sand. After saving, run `test` once to confirm that `ball-physics-putt-mid-easy` still passes with the thicker preview dots.
+3. **Give the golfer and ball more contrast.** The golfer's subject brightness is 56% against 62% around it, and the ball is 0.03–0.18% of the frame. Add a brighter ball core with a warm rim light or a slightly bigger `ball1` in flight. Check it with `look` and `sample` at the ball pixels: the ball should read as white against the green. Then verify the cup drop with a real-key 2-unit putt, expecting `ball.mode` `sunk` and a `look` frame showing the rattle.
+
+SCORE: 8.0
