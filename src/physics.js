@@ -1,13 +1,13 @@
 import './aimline.js';   // load order: each file runs after the one before it (COORDINATION.md)
 import * as THREE from 'three';
-import { rand } from './util.js';
+import { clamp, rand } from './util.js';
 import { ST, fire } from './shared.js';
 import { BELL, COW, HOUSE, H_COT, H_HOUSE, H_LH, H_POND, LH, LH_COT, POND, heightAt, surfaceAt } from './course.js';
 import { treeObjs } from './island.js';
 import { spawnParticles, spawnRipple } from './effects.js';
 import { play } from './sound.js';
 import { BR, GR, SURF, pick, tmpV } from './rules.js';
-import { burst, dust, emit, trail } from './pools.js';
+import { burst, dust, emit, trail, puff } from './pools.js';
 import { sheepBonked } from './sheep.js';
 import { G, curP } from './round.js';
 import { setSub, showBanner } from './hud.js';
@@ -22,7 +22,7 @@ export const ROUND = [{ name: 'lighthouse', x: LH.x, z: LH.z, r: LH.r + 0.12, to
 
 // ---------------------------------------------------------------- the ball's physics: arc with wind and side spin, bounce and roll by surface, hazards
 export const waterY = () => H_POND + 0.06;
-export function newSim() { return { pos: new THREE.Vector3(), vel: new THREE.Vector3(), mode: 'rest', bounces: 0, landT: 0.7, wx: 0, wz: 0, curve: 0, fx: 1, fz: 0, t: 0, surf: 'fairway', ev: [], hasLanded: false, entry: new THREE.Vector3(), live: true, sunkT: 0 }; }
+export function newSim() { return { pos: new THREE.Vector3(), vel: new THREE.Vector3(), mode: 'rest', bounces: 0, landT: 0.7, wx: 0, wz: 0, curve: 0, fx: 1, fz: 0, t: 0, surf: 'fairway', ev: [], hasLanded: false, entry: new THREE.Vector3(), live: true, sunkT: 0, minPinD: 9 }; }
 export const SIM = newSim();
 export const ball = { pos: SIM.pos };          // the island's cow watches this
 export const sheepList = [];
@@ -75,7 +75,7 @@ export function stepSim(b, dt) {
       if (surf === 'sand') { v.multiplyScalar(0.1); v.y = 0; b.mode = 'roll'; b.ev.push('sandHit'); return; }
       const ret = b.bounces === 0 ? b.landT * S.t / 0.8 : S.t;
       tmpV.copy(v).addScaledVector(_n, -vn).multiplyScalar(ret);
-      v.copy(tmpV).addScaledVector(_n, -vn * S.e); b.bounces++; b.ev.push('bounce');
+      v.copy(tmpV).addScaledVector(_n, -vn * S.e); if (b.bounces === 0 && b.curve) { const hv2 = Math.hypot(v.x, v.z) || 1; v.x += (-v.z / hv2) * b.curve * 0.22; v.z += (v.x / hv2) * b.curve * 0.22; } b.bounces++; b.ev.push('bounce');
       if (-vn * S.e < 0.75 || b.bounces > 5) { v.y = 0; b.mode = 'roll'; }
     }
   } else if (b.mode === 'roll') {
@@ -87,12 +87,17 @@ export function stepSim(b, dt) {
     let sp = Math.hypot(v.x, v.z);
     const roll = S.roll * (surf === 'rough' ? 1 : 1) + (surf === 'sand' ? 0 : 0);
     if (sp > 1e-4) { const ns = Math.max(0, sp - roll * dt); v.x *= ns / sp; v.z *= ns / sp; sp = ns; }
-    // the cup: a ball that is slow enough over it drops; one just off it is pulled in a little
+    // the cup: a slow ball over it drops, a quick one lips out (bends round the rim) or runs over; one just off it is pulled in a little
     if (surf === 'green' && b.pin) {
-      const dx = b.pin.x - p.x, dz = b.pin.z - p.z, d = Math.hypot(dx, dz);
-      if (d < 0.13 && sp < 3.4) { b.mode = 'sunk'; b.ev.push('sunk'); p.x = b.pin.x; p.z = b.pin.z; v.set(0, 0, 0); return; }
-      if (d < 0.3 && sp < 1.6) { v.x += dx / d * 4.0 * dt; v.z += dz / d * 4.0 * dt; }
-      if (d < 0.2 && sp >= 3.4 && !b.lipped) { b.lipped = true; b.ev.push('lip'); }
+      const dx = b.pin.x - p.x, dz = b.pin.z - p.z, d = Math.hypot(dx, dz) || 1e-4;
+      if (d < 0.23) {
+        const vcap = 1.6 * (1 - d / 0.23) + 0.18;
+        if (sp < vcap) { b.mode = 'sunk'; b.ev.push('sunk'); p.x = b.pin.x; p.z = b.pin.z; v.set(0, 0, 0); return; }
+        if (d < 0.2 && sp > 1.5 && sp < 3.6 && !b.lipped) {   // caught the rim: swerve off to the far side
+          b.lipped = true; b.ev.push('lip'); const side = (v.x * dz - v.z * dx) > 0 ? -1 : 1, an = side * (0.55 + 0.5 * (d / 0.2)), c = Math.cos(an), sn = Math.sin(an);
+          const vx = v.x * c - v.z * sn, vz = v.x * sn + v.z * c; v.x = vx * 0.82; v.z = vz * 0.82;
+        }
+      } else if (d < 0.5 && sp < 1.5) { v.x += dx / d * 4.5 * dt; v.z += dz / d * 4.5 * dt; }
     }
     p.x += v.x * dt; p.z += v.z * dt; p.y = heightAt(p.x, p.z) + BR * 0.8;
     if (b.live) collideWorld(b, p.y);
@@ -100,28 +105,34 @@ export function stepSim(b, dt) {
   } else if (b.mode === 'sunk') { b.sunkT += dt; }
 }
 // where the aim line takes a full-power shot: the ground track of a free flight (wind and spin included), used for the dotted preview
-export function previewShot(club, aimYaw, power, H, startPos, lie, out) {
-  const s = newSim(); s.live = false; s.pos.copy(startPos); launchOn(s, club, power, 0, aimYaw, H, lie);
+export function previewShot(club, aimYaw, power, H, startPos, lie, out, acc = 0) {
+  const s = newSim(); s.live = false; s.pos.copy(startPos); launchOn(s, club, power, acc, aimYaw, H, lie);
   let n = 0; out.length = 0;
-  while (s.mode === 'air' && n++ < 400) { stepSim(s, 1 / 60); if (n % 3 === 0) out.push([s.pos.x, s.pos.z, s.pos.y]); if (s.hasLanded) break; }
+  while (s.mode === 'air' && n++ < 800) { stepSim(s, 1 / 120); if (n % 6 === 0) out.push([s.pos.x, s.pos.z, s.pos.y]); if (s.hasLanded) break; }
   out.push([s.pos.x, s.pos.z, s.pos.y]); return s.pos;
 }
+// putter reach at full meter: a little past the pin, so the cyan notch sits near 0.8 for any putt length
+export const puttRange = d => Math.max(1.6, d * 1.22 + 0.5);
 export function launchOn(s, club, power, acc, aimYaw, H, lie) {
   const wv = H.wv, f = aimYaw + acc * (club.putt ? 0.05 : 0.04);
-  s.fx = Math.cos(f); s.fz = Math.sin(f); s.bounces = 0; s.hasLanded = false; s.t = 0; s.ev = []; s.lipped = false; s.sheep = null; s.treeHit = null;
+  s.fx = Math.cos(f); s.fz = Math.sin(f); s.bounces = 0; s.hasLanded = false; s.t = 0; s.ev = []; s.lipped = false; s.minPinD = 9; s.sheep = null; s.treeHit = null;
   s.pin = { x: H.pinX, z: H.pinZ }; s.wx = wv.x * 0.26; s.wz = wv.y * 0.26; s.landT = club.land;
   if (club.putt) {
-    const v = Math.sqrt(2 * SURF.green.roll * club.putt * Math.max(0.02, power)); s.vel.set(s.fx * v, 0, s.fz * v); s.mode = 'roll'; s.curve = 0; s.wx = s.wz = 0; return;
+    // forgiving putts: a power within 0.2 of the flat-ground notch counts half, so a press near the cyan line still drops
+    const dp = Math.hypot(s.pin.x - s.pos.x, s.pin.z - s.pos.z), rg = puttRange(dp), pf = Math.min(1, dp / rg), x = power - pf, ax = Math.abs(x);
+    const pe = dp < 0.3 ? power : Math.max(0.02, pf + Math.sign(x) * (x < 0 ? (ax < 0.2 ? ax * 0.3 : 0.06 + (ax - 0.2)) : (ax < 0.06 ? ax * 0.5 : 0.03 + (ax - 0.06))));
+    const v = Math.sqrt(2 * (SURF[surfaceAt(s.pos.x, s.pos.z)]?.roll ?? SURF.green.roll) * rg * pe);; s.vel.set(s.fx * v, 0, s.fz * v); s.mode = 'roll'; s.curve = 0; s.wx = s.wz = 0; return;
   }
   const carry = Math.max(0.5, club.carry * power * lie * (1 - 0.1 * Math.abs(acc))), th = club.loft;
   const v = Math.sqrt(carry * GR / Math.sin(2 * th));
   s.vel.set(s.fx * v * Math.cos(th), v * Math.sin(th), s.fz * v * Math.cos(th)); s.mode = 'air'; s.curve = acc * 2.4; s.pos.y += 0.02;
 }
 // one step of a ball in flight: the sim at 240 Hz, its events, the trail, then settle when it stops
+let _lastTrail = null;
 export function stepFlight(dt) {
   G.flightT += dt; ST.cowWatch = 0.3; const n = Math.max(1, Math.ceil(dt * 240)), h = dt / n;
-  for (let i = 0; i < n; i++) { stepSim(SIM, h); if (SIM.ev.length) flightEvents(); if (SIM.mode === 'rest' || SIM.mode === 'sunk' || SIM.mode === 'water' || SIM.mode === 'ob') break; }
-  if (SIM.mode === 'air' || (SIM.mode === 'roll' && Math.hypot(SIM.vel.x, SIM.vel.z) > 1.2)) emit(trail, SIM.pos.x, SIM.pos.y, SIM.pos.z, { life: 0.45, sp: 0.05, up: 0.05, g: 0, color: '#fff3c0' });
+  for (let i = 0; i < n; i++) { stepSim(SIM, h); if (SIM.mode === 'roll' && SIM.pin) SIM.minPinD = Math.min(SIM.minPinD ?? 9, Math.hypot(SIM.pin.x - SIM.pos.x, SIM.pin.z - SIM.pos.z)); if (SIM.ev.length) flightEvents(); if (SIM.mode === 'rest' || SIM.mode === 'sunk' || SIM.mode === 'water' || SIM.mode === 'ob') break; }
+  if (SIM.mode === 'air' || (SIM.mode === 'roll' && Math.hypot(SIM.vel.x, SIM.vel.z) > 1.2)) { const L = _lastTrail; const nn = L ? Math.min(4, Math.ceil(L.distanceTo(SIM.pos) / 0.12)) : 1; for (let i = 1; i <= nn; i++) { const k = i / nn; emit(trail, L ? L.x + (SIM.pos.x - L.x) * k : SIM.pos.x, L ? L.y + (SIM.pos.y - L.y) * k : SIM.pos.y, L ? L.z + (SIM.pos.z - L.z) * k : SIM.pos.z, { life: 0.75, sp: 0.02, up: 0.03, g: 0, color: SIM.mode === 'air' ? '#fff3c0' : '#ffe9a0' }); } _lastTrail = SIM.pos.clone(); } else _lastTrail = null;
   if (G.flightT > 22 && SIM.mode !== 'rest') { SIM.mode = 'rest'; SIM.vel.set(0, 0, 0); }
   if (SIM.mode === 'rest' || SIM.mode === 'sunk' || SIM.mode === 'water' || SIM.mode === 'ob') { G.phase = 'settle'; G.resolveT = SIM.mode === 'rest' ? 0.7 : SIM.mode === 'sunk' ? 0.5 : 1.7; }
 }
@@ -130,11 +141,16 @@ export function flightEvents() {
   const b = SIM, p = curP();
   for (const e of b.ev) {
     fire('ball:' + e, { ball: b, player: p });
-    if (e === 'land') { burst(b.pos.x, b.pos.z, b.surf === 'sand' ? 18 : 8, b.surf === 'sand' ? '#e3cf94' : b.surf === 'green' ? '#a5d07a' : '#7fa653', 1.1, 2.2); play('thud'); }
-    else if (e === 'bounce') { burst(b.pos.x, b.pos.z, 3, '#8fb860', 0.6, 1.2); play('thud', 0.5); }
-    else if (e === 'sandHit') { burst(b.pos.x, b.pos.z, 22, '#e3cf94', 1.6, 2.6); play('sand'); setSub('PLUGGED IN THE SAND'); }
+    if (e === 'land') {
+      const sf = b.surf, sp = Math.hypot(b.vel.x, b.vel.z);
+      puff(b.pos.x, b.pos.z, sf === 'sand' ? 7 : 5, sf === 'sand' ? '#c9b988' : sf === 'green' ? '#9ec27a' : '#a9c27a', sf === 'sand' ? 0.9 : 0.6);
+      if (sf === 'sand') burst(b.pos.x, b.pos.z, 26, '#e3cf94', 1.6, 2.8); else if (sf === 'green') burst(b.pos.x, b.pos.z, 7, '#b9e08a', 0.9, 1.6); else if (sf === 'rough') burst(b.pos.x, b.pos.z, 12, '#5f8a3d', 1.0, 2.0); else burst(b.pos.x, b.pos.z, 10, '#8fb860', 1.2, 2.2);
+      play('land', sf, clamp(0.6 + sp * 0.05, 0.6, 1.3));
+    }
+    else if (e === 'bounce') { burst(b.pos.x, b.pos.z, 3, b.surf === 'green' ? '#b9e08a' : '#8fb860', 0.6, 1.2); play('land', b.surf, 0.45); }
+    else if (e === 'sandHit') { puff(b.pos.x, b.pos.z, 8, '#c9b988', 1.0); burst(b.pos.x, b.pos.z, 22, '#e3cf94', 1.6, 2.6); play('sand'); setSub('PLUGGED IN THE SAND'); }
     else if (e === 'tree') { play('rustle'); if (b.treeHit) { const t = b.treeHit.t; for (let i = 0; i < 8; i++) emit(dust, b.pos.x, b.pos.y, b.pos.z, { life: 0.9, sp: 1, up: 1.4, g: 4, color: pick(['#3a7a2f', '#4a8a35', '#7aa845']) }); } setSub(pick(['INTO THE BRANCHES!', 'LEAVES EVERYWHERE!', 'A TREE GETS IN THE WAY'])); }
-    else if (e === 'wall') { play('clank'); setSub('OFF THE WALL'); }
+    else if (e === 'wall') { play('clank'); burst(b.pos.x, b.pos.z, 6, '#e8dcc0', 0.8, 1.4); setSub('OFF THE WALL'); }
     else if (e === 'sheep') {
       const s = b.sheep; if (s) sheepBonked(s, b);
       G.sheepHits++; play('baa', rand(0.9, 1.2)); showBanner('BAA!', 'BOUNCED OFF A SHEEP', 1.6); G.hitStop = 0.1; ST.flash = 0.4; ST.flashHold = 0.05;

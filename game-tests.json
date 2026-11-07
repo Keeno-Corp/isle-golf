@@ -762,6 +762,1213 @@
           "op": "exists"
         }
       ]
+    },
+    {
+      "id": "ball-physics-putt-sinks",
+      "title": "ball-physics-putt-sinks",
+      "state": {},
+      "actions": [
+        {
+          "action": "newRound",
+          "players": 1
+        },
+        {
+          "action": "start",
+          "players": 1
+        },
+        {
+          "action": "next"
+        },
+        {
+          "wait": 20
+        },
+        {
+          "state": {
+            "ball": {
+              "x": -3.7,
+              "z": 11.95
+            }
+          }
+        },
+        {
+          "action": "club",
+          "name": "putter"
+        },
+        {
+          "action": "aim",
+          "at": "pin"
+        },
+        {
+          "wait": 5
+        },
+        {
+          "key": "Space",
+          "frames": 1
+        },
+        {
+          "wait": 66
+        },
+        {
+          "key": "Space",
+          "frames": 1
+        },
+        {
+          "wait": 41
+        },
+        {
+          "key": "Space",
+          "frames": 1
+        },
+        {
+          "until": {
+            "phase": [
+              "aim",
+              "holed",
+              "card"
+            ]
+          },
+          "max": 600
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "ball.mode",
+          "op": "==",
+          "value": "sunk"
+        },
+        {
+          "path": "physics.mode",
+          "op": "==",
+          "value": "sunk"
+        }
+      ]
+    },
+    {
+      "id": "ball-physics-putt-mid-easy",
+      "title": "ball-physics-putt-mid-easy",
+      "state": {},
+      "actions": [
+        {
+          "action": "newRound",
+          "players": 1
+        },
+        {
+          "action": "start",
+          "players": 1
+        },
+        {
+          "action": "next"
+        },
+        {
+          "wait": 20
+        },
+        {
+          "state": {
+            "ball": {
+              "x": -8,
+              "z": 11.95
+            }
+          }
+        },
+        {
+          "action": "club",
+          "name": "putter"
+        },
+        {
+          "action": "aim",
+          "at": "pin"
+        },
+        {
+          "wait": 5
+        },
+        {
+          "key": "Space",
+          "frames": 1
+        },
+        {
+          "wait": 56
+        },
+        {
+          "key": "Space",
+          "frames": 1
+        },
+        {
+          "wait": 34
+        },
+        {
+          "key": "Space",
+          "frames": 1
+        },
+        {
+          "until": {
+            "phase": [
+              "aim",
+              "holed",
+              "card"
+            ]
+          },
+          "max": 700
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "ball.mode",
+          "op": "==",
+          "value": "sunk"
+        }
+      ]
+    },
+    {
+      "id": "ball-physics-putt-too-hard",
+      "title": "ball-physics-putt-too-hard",
+      "state": {},
+      "actions": [
+        {
+          "action": "newRound",
+          "players": 1
+        },
+        {
+          "action": "start",
+          "players": 1
+        },
+        {
+          "action": "next"
+        },
+        {
+          "wait": 20
+        },
+        {
+          "state": {
+            "ball": {
+              "x": -3.7,
+              "z": 11.95
+            }
+          }
+        },
+        {
+          "action": "club",
+          "name": "putter"
+        },
+        {
+          "action": "aim",
+          "at": "pin"
+        },
+        {
+          "wait": 5
+        },
+        {
+          "key": "Space",
+          "frames": 1
+        },
+        {
+          "wait": 87
+        },
+        {
+          "key": "Space",
+          "frames": 1
+        },
+        {
+          "wait": 54
+        },
+        {
+          "key": "Space",
+          "frames": 1
+        },
+        {
+          "until": {
+            "phase": [
+              "aim",
+              "holed",
+              "card"
+            ]
+          },
+          "max": 700
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "ball.mode",
+          "op": "in",
+          "value": [
+            "rest",
+            "roll"
+          ]
+        },
+        {
+          "path": "strokes",
+          "op": "==",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "ball-physics-preview-matches-bounce",
+      "title": "ball-physics-preview-matches-bounce",
+      "state": {},
+      "actions": [
+        {
+          "action": "newRound",
+          "players": 1
+        },
+        {
+          "action": "next"
+        },
+        {
+          "wait": 5
+        },
+        {
+          "state": {
+            "wind": {
+              "speed": 0,
+              "degrees": 0
+            }
+          }
+        },
+        {
+          "action": "club",
+          "name": "iron"
+        },
+        {
+          "key": "Space",
+          "frames": 1
+        },
+        {
+          "wait": 60
+        },
+        {
+          "key": "Space",
+          "frames": 1
+        },
+        {
+          "wait": 38
+        },
+        {
+          "key": "Space",
+          "frames": 1
+        },
+        {
+          "until": {
+            "phase": [
+              "settle",
+              "aim"
+            ]
+          },
+          "max": 500
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "physics.firstBounce.x",
+          "op": ">=",
+          "value": -2.53
+        },
+        {
+          "path": "physics.firstBounce.x",
+          "op": "<=",
+          "value": -2.33
+        },
+        {
+          "path": "physics.firstBounce.z",
+          "op": ">=",
+          "value": 11.08
+        },
+        {
+          "path": "physics.firstBounce.z",
+          "op": "<=",
+          "value": 11.28
+        }
+      ]
+    },
+    {
+      "id": "ball-physics-wind-8-drifts",
+      "title": "ball-physics-wind-8-drifts",
+      "state": {},
+      "actions": [
+        {
+          "action": "newRound",
+          "players": 1
+        },
+        {
+          "action": "start",
+          "players": 1
+        },
+        {
+          "action": "next"
+        },
+        {
+          "wait": 20
+        },
+        {
+          "state": {
+            "wind": {
+              "speed": 8,
+              "degrees": 90
+            }
+          }
+        },
+        {
+          "action": "club",
+          "name": "driver"
+        },
+        {
+          "wait": 5
+        },
+        {
+          "key": "Space",
+          "frames": 1
+        },
+        {
+          "wait": 56
+        },
+        {
+          "key": "Space",
+          "frames": 1
+        },
+        {
+          "wait": 34
+        },
+        {
+          "key": "Space",
+          "frames": 1
+        },
+        {
+          "until": {
+            "phase": [
+              "aim",
+              "holed",
+              "card"
+            ]
+          },
+          "max": 900
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "physics.firstBounce.z",
+          "op": ">=",
+          "value": 11.9
+        },
+        {
+          "path": "physics.firstBounce.z",
+          "op": "<=",
+          "value": 20
+        }
+      ]
+    },
+    {
+      "id": "ball-physics-wind-0-baseline",
+      "title": "ball-physics-wind-0-baseline",
+      "state": {},
+      "actions": [
+        {
+          "action": "newRound",
+          "players": 1
+        },
+        {
+          "action": "start",
+          "players": 1
+        },
+        {
+          "action": "next"
+        },
+        {
+          "wait": 20
+        },
+        {
+          "state": {
+            "wind": {
+              "speed": 0,
+              "degrees": 90
+            }
+          }
+        },
+        {
+          "action": "club",
+          "name": "driver"
+        },
+        {
+          "wait": 5
+        },
+        {
+          "key": "Space",
+          "frames": 1
+        },
+        {
+          "wait": 56
+        },
+        {
+          "key": "Space",
+          "frames": 1
+        },
+        {
+          "wait": 34
+        },
+        {
+          "key": "Space",
+          "frames": 1
+        },
+        {
+          "until": {
+            "phase": [
+              "aim",
+              "holed",
+              "card"
+            ]
+          },
+          "max": 900
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "physics.firstBounce.z",
+          "op": ">=",
+          "value": 0
+        },
+        {
+          "path": "physics.firstBounce.z",
+          "op": "<=",
+          "value": 11.4
+        }
+      ]
+    },
+    {
+      "id": "ball-physics-driver-slice-right",
+      "title": "ball-physics-driver-slice-right",
+      "state": {},
+      "actions": [
+        {
+          "action": "newRound",
+          "players": 1
+        },
+        {
+          "action": "next"
+        },
+        {
+          "state": {
+            "wind": {
+              "speed": 0,
+              "degrees": 0
+            }
+          }
+        },
+        {
+          "action": "club",
+          "name": "driver"
+        },
+        {
+          "action": "aim",
+          "degrees": -5
+        },
+        {
+          "action": "swing",
+          "power": 0.9,
+          "accuracy": 0.6
+        },
+        {
+          "until": {
+            "phase": "aim",
+            "strokes": 1
+          },
+          "max": 900
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "physics.firstBounce.z",
+          "op": ">=",
+          "value": 12.5
+        },
+        {
+          "path": "physics.firstBounce.z",
+          "op": "<=",
+          "value": 20
+        }
+      ]
+    },
+    {
+      "id": "ball-physics-driver-hook-left",
+      "title": "ball-physics-driver-hook-left",
+      "state": {},
+      "actions": [
+        {
+          "action": "newRound",
+          "players": 1
+        },
+        {
+          "action": "next"
+        },
+        {
+          "state": {
+            "wind": {
+              "speed": 0,
+              "degrees": 0
+            }
+          }
+        },
+        {
+          "action": "club",
+          "name": "driver"
+        },
+        {
+          "action": "aim",
+          "degrees": -5
+        },
+        {
+          "action": "swing",
+          "power": 0.9,
+          "accuracy": -0.6
+        },
+        {
+          "until": {
+            "phase": "aim",
+            "strokes": 1
+          },
+          "max": 900
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "physics.firstBounce.z",
+          "op": ">=",
+          "value": 0
+        },
+        {
+          "path": "physics.firstBounce.z",
+          "op": "<=",
+          "value": 10.8
+        }
+      ]
+    },
+    {
+      "id": "ball-physics-slope-break",
+      "title": "ball-physics-slope-break",
+      "state": {},
+      "actions": [
+        {
+          "action": "newRound",
+          "players": 1
+        },
+        {
+          "action": "start",
+          "players": 1
+        },
+        {
+          "action": "next"
+        },
+        {
+          "wait": 20
+        },
+        {
+          "state": {
+            "ball": {
+              "x": -5.7,
+              "z": 11.95
+            }
+          }
+        },
+        {
+          "action": "club",
+          "name": "putter"
+        },
+        {
+          "action": "aim",
+          "at": "pin"
+        },
+        {
+          "wait": 5
+        },
+        {
+          "key": "Space",
+          "frames": 1
+        },
+        {
+          "wait": 40
+        },
+        {
+          "key": "Space",
+          "frames": 1
+        },
+        {
+          "wait": 30
+        },
+        {
+          "key": "Space",
+          "frames": 1
+        },
+        {
+          "wait": 120
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "physics.puttBreak",
+          "op": ">=",
+          "value": 0.2
+        },
+        {
+          "path": "physics.puttBreak",
+          "op": "<=",
+          "value": 5
+        }
+      ]
+    },
+    {
+      "id": "ball-physics-rollout-fairway",
+      "title": "ball-physics-rollout-fairway",
+      "state": {},
+      "actions": [
+        {
+          "action": "newRound",
+          "players": 1
+        },
+        {
+          "action": "next"
+        },
+        {
+          "wait": 20
+        },
+        {
+          "state": {
+            "ball": {
+              "x": -10.4,
+              "z": 13
+            }
+          }
+        },
+        {
+          "action": "club",
+          "name": "wedge"
+        },
+        {
+          "action": "aim",
+          "degrees": 0
+        },
+        {
+          "action": "swing",
+          "power": 0.5,
+          "accuracy": 0
+        },
+        {
+          "until": {
+            "phase": "settle"
+          },
+          "max": 900
+        },
+        {
+          "wait": 120
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "physics.rollYd",
+          "op": ">=",
+          "value": 0
+        },
+        {
+          "path": "physics.rollYd",
+          "op": "<=",
+          "value": 6
+        },
+        {
+          "path": "physics.firstBounce.surf",
+          "op": "==",
+          "value": "fairway"
+        }
+      ]
+    },
+    {
+      "id": "ball-physics-rollout-green",
+      "title": "ball-physics-rollout-green",
+      "state": {},
+      "actions": [
+        {
+          "action": "newRound",
+          "players": 1
+        },
+        {
+          "action": "next"
+        },
+        {
+          "wait": 20
+        },
+        {
+          "state": {
+            "ball": {
+              "x": -6.5,
+              "z": 12.6
+            }
+          }
+        },
+        {
+          "action": "club",
+          "name": "wedge"
+        },
+        {
+          "action": "aim",
+          "degrees": 0
+        },
+        {
+          "action": "swing",
+          "power": 0.5,
+          "accuracy": 0
+        },
+        {
+          "until": {
+            "phase": "settle"
+          },
+          "max": 900
+        },
+        {
+          "wait": 120
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "physics.rollYd",
+          "op": ">=",
+          "value": 7
+        },
+        {
+          "path": "physics.rollYd",
+          "op": "<=",
+          "value": 40
+        },
+        {
+          "path": "physics.firstBounce.surf",
+          "op": "==",
+          "value": "green"
+        }
+      ]
+    },
+    {
+      "id": "ball-physics-rollout-sand",
+      "title": "ball-physics-rollout-sand",
+      "state": {},
+      "actions": [
+        {
+          "action": "newRound",
+          "players": 1
+        },
+        {
+          "action": "next"
+        },
+        {
+          "wait": 20
+        },
+        {
+          "state": {
+            "ball": {
+              "x": -7.3,
+              "z": 11
+            }
+          }
+        },
+        {
+          "action": "club",
+          "name": "wedge"
+        },
+        {
+          "action": "aim",
+          "degrees": 0
+        },
+        {
+          "action": "swing",
+          "power": 0.5,
+          "accuracy": 0
+        },
+        {
+          "until": {
+            "phase": "settle"
+          },
+          "max": 900
+        },
+        {
+          "wait": 120
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "physics.rollYd",
+          "op": ">=",
+          "value": 0
+        },
+        {
+          "path": "physics.rollYd",
+          "op": "<=",
+          "value": 1
+        },
+        {
+          "path": "physics.firstBounce.surf",
+          "op": "==",
+          "value": "sand"
+        }
+      ]
+    },
+    {
+      "id": "ball-physics-rollout-rough",
+      "title": "ball-physics-rollout-rough",
+      "state": {},
+      "actions": [
+        {
+          "action": "newRound",
+          "players": 1
+        },
+        {
+          "action": "next"
+        },
+        {
+          "wait": 20
+        },
+        {
+          "state": {
+            "ball": {
+              "x": -8.4,
+              "z": 9
+            }
+          }
+        },
+        {
+          "action": "club",
+          "name": "wedge"
+        },
+        {
+          "action": "aim",
+          "degrees": 0
+        },
+        {
+          "action": "swing",
+          "power": 0.5,
+          "accuracy": 0
+        },
+        {
+          "until": {
+            "phase": "settle"
+          },
+          "max": 900
+        },
+        {
+          "wait": 120
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "physics.rollYd",
+          "op": ">=",
+          "value": 0
+        },
+        {
+          "path": "physics.rollYd",
+          "op": "<=",
+          "value": 3
+        },
+        {
+          "path": "physics.firstBounce.surf",
+          "op": "==",
+          "value": "rough"
+        }
+      ]
+    },
+    {
+      "id": "ball-physics-house-wall",
+      "title": "ball-physics-house-wall",
+      "state": {},
+      "actions": [
+        {
+          "action": "newRound",
+          "players": 1
+        },
+        {
+          "state": {
+            "hole": 4,
+            "skipIntro": true
+          }
+        },
+        {
+          "wait": 10
+        },
+        {
+          "state": {
+            "ball": {
+              "x": -9.5,
+              "z": -9
+            }
+          }
+        },
+        {
+          "action": "club",
+          "name": "driver"
+        },
+        {
+          "action": "aim",
+          "degrees": 270
+        },
+        {
+          "wait": 5
+        },
+        {
+          "key": "Space",
+          "frames": 1
+        },
+        {
+          "wait": 16
+        },
+        {
+          "key": "Space",
+          "frames": 1
+        },
+        {
+          "wait": 20
+        },
+        {
+          "key": "Space",
+          "frames": 1
+        },
+        {
+          "until": {
+            "phase": "settle"
+          },
+          "max": 900
+        },
+        {
+          "wait": 150
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "physics.hits.wall",
+          "op": ">=",
+          "value": 1
+        },
+        {
+          "path": "physics.hits.wall",
+          "op": "<=",
+          "value": 5
+        },
+        {
+          "path": "hole",
+          "op": "==",
+          "value": 5
+        }
+      ]
+    },
+    {
+      "id": "ball-physics-tree",
+      "title": "ball-physics-tree",
+      "state": {},
+      "actions": [
+        {
+          "action": "newRound",
+          "players": 1
+        },
+        {
+          "state": {
+            "hole": 4,
+            "skipIntro": true
+          }
+        },
+        {
+          "wait": 10
+        },
+        {
+          "state": {
+            "ball": {
+              "x": -4.6,
+              "z": -9
+            }
+          }
+        },
+        {
+          "action": "club",
+          "name": "driver"
+        },
+        {
+          "action": "aim",
+          "degrees": 265
+        },
+        {
+          "wait": 5
+        },
+        {
+          "key": "Space",
+          "frames": 1
+        },
+        {
+          "wait": 16
+        },
+        {
+          "key": "Space",
+          "frames": 1
+        },
+        {
+          "wait": 20
+        },
+        {
+          "key": "Space",
+          "frames": 1
+        },
+        {
+          "until": {
+            "phase": "settle"
+          },
+          "max": 900
+        },
+        {
+          "wait": 150
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "physics.hits.tree",
+          "op": ">=",
+          "value": 1
+        },
+        {
+          "path": "physics.hits.tree",
+          "op": "<=",
+          "value": 5
+        },
+        {
+          "path": "ball.x",
+          "op": ">=",
+          "value": -6.1
+        },
+        {
+          "path": "ball.x",
+          "op": "<=",
+          "value": -3.1
+        },
+        {
+          "path": "ball.z",
+          "op": ">=",
+          "value": -14.1
+        },
+        {
+          "path": "ball.z",
+          "op": "<=",
+          "value": -11.1
+        }
+      ]
+    },
+    {
+      "id": "ball-physics-sheep",
+      "title": "ball-physics-sheep",
+      "state": {},
+      "actions": [
+        {
+          "action": "newRound",
+          "players": 1
+        },
+        {
+          "action": "next"
+        },
+        {
+          "wait": 10
+        },
+        {
+          "state": {
+            "ball": {
+              "x": -6.2,
+              "z": 6.6
+            }
+          }
+        },
+        {
+          "action": "club",
+          "name": "driver"
+        },
+        {
+          "action": "aim",
+          "degrees": 90
+        },
+        {
+          "wait": 5
+        },
+        {
+          "key": "Space",
+          "frames": 1
+        },
+        {
+          "wait": 16
+        },
+        {
+          "key": "Space",
+          "frames": 1
+        },
+        {
+          "wait": 20
+        },
+        {
+          "key": "Space",
+          "frames": 1
+        },
+        {
+          "until": {
+            "phase": "settle"
+          },
+          "max": 900
+        },
+        {
+          "wait": 150
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "physics.hits.sheep",
+          "op": ">=",
+          "value": 1
+        },
+        {
+          "path": "physics.hits.sheep",
+          "op": "<=",
+          "value": 5
+        },
+        {
+          "path": "sheepHits",
+          "op": ">=",
+          "value": 1
+        },
+        {
+          "path": "sheepHits",
+          "op": "<=",
+          "value": 5
+        },
+        {
+          "path": "ball.x",
+          "op": ">=",
+          "value": -4.8
+        },
+        {
+          "path": "ball.x",
+          "op": "<=",
+          "value": 0
+        },
+        {
+          "path": "ball.z",
+          "op": ">=",
+          "value": 4
+        },
+        {
+          "path": "ball.z",
+          "op": "<=",
+          "value": 8.3
+        }
+      ]
     }
   ]
 }

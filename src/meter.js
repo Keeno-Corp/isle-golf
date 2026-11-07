@@ -9,6 +9,7 @@ import { aimDots, aimRing, gridLines, slopeGrid } from './aimline.js';
 import { SIM, launchOn } from './physics.js';
 import { G, curClub, curH, curP, startRound } from './round.js';
 import { advanceCard, showTitle } from './hud.js';
+import './ballfx.js';
 // ---------------------------------------------------------------- the meter: click 1 starts the power bar, click 2 sets power, click 3 snaps the accuracy needle back to the line
 export const METER = { up: 1.15, upPutt: 1.6, down: 1.0, snapEq: 0.05, window: 0.32 };
 export function meterClick() {
