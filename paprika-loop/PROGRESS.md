@@ -902,3 +902,9 @@ Mean: (7+8+6+9+8+7+4+6+6+7+7+8+6)/13 = 6.8.
 3. **Look at the swing, putt and walk at 1.3×.** Use `interact` with `look: true` at meter stage 1, stage 2, the swing top and the follow-through. Confirm `club_head` meets the ball and `club_grip` meets `golfer_glove`, with `golferClip` 'backswing' then 'follow'. After that, show the cow's shuffle with `ball` placed near her and `cow.state` changing.
 
 SCORE: 6.8
+
+## Iteration 21
+**Did** No source changes. Opened the game and looked at ISLA's hole-1 aim view (2 players, `skipIntro`) to test the Judge's "keep the golfer in frame" item before moving him.
+**Saw** On ISLA's turn the golfer is fully in frame: camera (-17.6, 11.3, 17.7), `Subject` 0.61%, 19 of 26 `golfer_*` parts, `golfer_cap` at y 591-633 of 800, nothing cut by the bottom edge. The orange footballer stands to the right in `Idle_Loop`. No console errors. The only fault line is `ballShadow1`/`ballShadow2` z-fighting at y 4.49, which is not in my files. I did not look at FINN's view (the camera there was reported at (-15, 8, 11.8)) and ran no `perf`.
+**Next** 1) Look at FINN's aim view in the same state: if the cap or shirt touches the bottom edge, raise `STANCE` or shift the golfer along the aim line in `placeGolfer` (`src/pose.js`) so he sits further from the camera. 2) Save `creatures-sheep-bonk` (ball 0.8 units from sheep 3 at (-6.1,13.25) within 20 frames of `skipIntro`, wedge power, expect `sheepHits` 1). 3) Look at the swing, putt and walk at 1.3× with `interact` `look: true`, then the cow's shuffle.
+**Open** FINN-view framing unconfirmed. The bonk check is unsaved. Swing and putt poses at 1.3× are unlooked.

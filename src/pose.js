@@ -186,3 +186,5 @@ addUpdate(dt => {
 on('holed', e => { if (!foot.ready) return; if (/BIRDIE|EAGLE|ALBATROSS|HOLE IN ONE|PAR/.test(e.result || '')) { footClip(/PAR/.test(e.result) && !/BIRDIE/.test(e.result) ? 'Dance_Loop' : 'Celebration'); foot.cheer = 3.5; } });
 on('ball:land', ({ ball }) => { if (!foot.ready || foot.cheer > 0) return; const q = surfaceAt(ball.pos.x, ball.pos.z); if (q === 'fairway' || q === 'green') { footClip('Celebration'); foot.cheer = 2.2; } });
 on('ball:sheep', () => { if (foot.ready) { footClip('Celebration'); foot.cheer = 2; } });
+// the two ball shadows share a face plane (z-fighting): give the second its own material, pulled toward the camera
+{ let fixed = false; addUpdate(() => { if (fixed) return; const s = scene.getObjectByName('ballShadow2'); if (!s) return; s.material = s.material.clone(); s.material.polygonOffset = true; s.material.polygonOffsetFactor = -1; s.material.polygonOffsetUnits = -1; fixed = true; }); }
