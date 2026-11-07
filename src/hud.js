@@ -44,7 +44,7 @@ export function advanceCard() {
 export function replayHole() {
   if (G.phase === 'title' || G.phase === 'card') return;
   const H = curH(); for (const p of G.players) { p.strokes = 0; p.holed = false; p.pos.copy(teeVec(H)); p.prev.copy(p.pos); p.surf = 'tee'; p.scores[G.hole] = undefined; p.pickedUp = false; }
-  G.turn = G.order[0]; showBanner('REPLAY', `HOLE ${G.hole + 1}`, 1.4); beginShot();
+  G.turn = G.order[0]; showBanner('REPLAY', `HOLE ${G.hole + 1}`, 1.4); fire('hole:replay', { hole: G.hole }); beginShot();
 }
 
 // ---------------------------------------------------------------- the HUD: steel panels in bevelled green, cream-yellow italic capitals

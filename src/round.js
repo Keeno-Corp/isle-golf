@@ -20,6 +20,7 @@ export const pinDist = (p, H) => Math.hypot(H.pinX - p.x, H.pinZ - p.z);
 export const scoreName = (s, par) => s === 1 ? 'HOLE IN ONE!' : s - par <= -3 ? 'ALBATROSS!' : s - par === -2 ? 'EAGLE!' : s - par === -1 ? 'BIRDIE!' : s - par === 0 ? 'PAR' : s - par === 1 ? 'BOGEY' : s - par === 2 ? 'DOUBLE BOGEY' : '+' + (s - par);
 export const vsPar = n => n === 0 ? 'EVEN' : n > 0 ? '+' + n : String(n);
 export function startRound(n) {
+  fire('round:start', { next: G.round + 1 });   // fires before beginHole so daily can exit cleanly
   G.nPlayers = clamp(n | 0 || 1, 1, 4); G.round++;
   G.players = KITS.slice(0, G.nPlayers).map((k, i) => ({ i, kit: k, name: k.name, scores: [], strokes: 0, holed: false, pos: new THREE.Vector3(), prev: new THREE.Vector3(), surf: 'tee', pickedUp: false }));
   G.order = G.players.map(p => p.i);
@@ -63,6 +64,7 @@ export function resolveShot() {
     p.strokes++; p.pos.copy(p.prev); p.surf = p.strokes <= 2 && p.prev.distanceTo(teeVec(H)) < 0.1 ? 'tee' : surfaceAt(p.prev.x, p.prev.z); setSub((G.players.length > 1 ? p.name + ' · ' : '') + 'PLAY AGAIN FROM THE SAME SPOT, +1 STROKE');
   } else { p.pos.copy(b.pos); p.pos.y = heightAt(p.pos.x, p.pos.z) + BR * 0.8; p.surf = b.surf === 'water' ? 'rough' : surfaceAt(p.pos.x, p.pos.z); }
   if (p.strokes >= H.par + 3 && !p.holed) { p.holed = true; p.pickedUp = true; p.strokes = H.par + 3; p.scores[G.hole] = H.par + 3; G.lastResult = 'PICKED UP'; showBanner('PICKED UP', `${p.name} · ${H.par + 3} STROKES, THAT IS PLENTY`, 2); G.phase = 'holed'; G.resolveT = 2; return; }
+  fire('shot:rest', { x: p.pos.x, z: p.pos.z, strokes: p.strokes });  // p.pos finalised; sunk/pickup both return early above
   nextTurnOrCard();
 }
 export function nextTurnOrCard() {
