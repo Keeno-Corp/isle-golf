@@ -1,4 +1,6 @@
 import './meter.js';   // load order: each file runs after the one before it (COORDINATION.md)
+import * as THREE from 'three';
+import { camera } from './stage.js';
 import { clamp } from './util.js';
 import { ST, fire } from './shared.js';
 import { HOLES, YD } from './course.js';
@@ -23,7 +25,7 @@ export function buildCard(final) {
     h += `<tr><td class="nm"><i style="background:${p.kit.col}"></i>${p.name}</td>${cells}<td><b>${tot}</b></td><td><b>${vsPar(tot - par)}</b></td></tr>`;
   }
   h += '</table>';
-  const stamps = G.players.map(p => { const s = p.scores[G.hole]; if (s === undefined) return ''; const n = p.pickedUp ? 'PICK UP' : scoreName(s, HOLES[G.hole].par).replace('!', ''); return `<div class="stamp ${cellClass(s, HOLES[G.hole].par)}" style="--rot:${(p.i * 7 - 8)}deg"><em>${G.players.length > 1 ? p.name : 'HOLE ' + (G.hole + 1)}</em>${n}</div>`; }).join('');
+  const stamps = G.players.map(p => { const s = p.scores[G.hole]; if (s === undefined) return ''; const n = p.pickedUp ? 'PICKED UP' : scoreName(s, HOLES[G.hole].par).replace('!', ''); return `<div class="stamp ${cellClass(s, HOLES[G.hole].par)}" style="--rot:${(p.i * 7 - 8)}deg"><em>${G.players.length > 1 ? p.name : 'HOLE ' + (G.hole + 1)}</em>${n}</div>`; }).join('');
   h += `<div class="stamps">${stamps}</div>`;
   if (final) {
     const best = [...G.players].sort((a, b) => a.total - b.total)[0];
@@ -31,9 +33,10 @@ export function buildCard(final) {
     h += `<div class="fin">${G.players.length > 1 ? best.name + ' WINS WITH ' + best.total : 'YOU FINISHED ON ' + best.total}  (${vsPar(best.vs)})${rec}</div>`;
   }
   h += `<div class="go">${final ? 'SPACE · BACK TO THE FIRST TEE' : 'SPACE · NEXT HOLE'}</div>`;
-  hud.card.innerHTML = h; if (final) G.phase = 'card';
+  hud.card.innerHTML = h; if (final) { G.phase = 'card'; G.finalAt = ST.gameTime; }
 }
 export function advanceCard() {
+  if (G.hole >= 8 && ST.gameTime - (G.finalAt ?? -9) < 1) return; // final card ignores Space for 1 s of game time (the paused test clock does not move performance.now)
   hud.card.style.display = 'none';
   if (G.hole >= 8) { G.phase = 'title'; showTitle(true); return; }
   beginHole(G.hole + 1);
@@ -55,23 +58,24 @@ style.textContent = `
 #holep .who{display:flex;align-items:center;gap:7px;font-size:18px;color:#fff6c8}#holep .who i{display:inline-block;width:13px;height:13px;border-radius:50%;border:2px solid #fff6c8}
 #windp{position:absolute;right:16px;top:14px;padding:6px 12px;min-width:150px;display:flex;align-items:center;gap:12px}
 #windp .arr{width:46px;height:46px;transition:transform .2s}#windp .t{font-size:30px;line-height:1;color:#fff6c8}#windp .t small{display:block;font-size:15px;color:#a8f0d8}
-#banner{position:absolute;left:50%;top:13%;transform:translateX(-50%);text-align:center;white-space:nowrap}
-#banner b{display:block;font-size:66px;line-height:1;color:#f7e27a;text-shadow:3px 3px 0 #000,-2px -2px 0 #000,0 0 18px rgba(255,214,120,.8);-webkit-text-stroke:1.5px #3a3408}
+#banner{position:absolute;left:max(26%,200px);top:26%;transform:translateX(-50%);text-align:center;white-space:nowrap}
+#banner b{display:block;font-size:46px;line-height:1;color:#f7e27a;text-shadow:3px 3px 0 #000,-2px -2px 0 #000,0 0 18px rgba(255,214,120,.8);-webkit-text-stroke:1.5px #3a3408}
 #banner i{display:inline-block;margin-top:6px;font-size:22px;padding:3px 16px;color:#fff6c8;background:linear-gradient(180deg,#4a6a5c,#233c33 45%,#122219);border:2px solid #7ba08a;border-radius:4px;box-shadow:0 0 8px rgba(255,214,120,.45)}
 #banner i:empty{display:none}#banner{opacity:0;transition:opacity .35s}#banner.on{opacity:1}
 #banner.on b{animation:slam .45s cubic-bezier(.2,1.6,.4,1)}@keyframes slam{0%{transform:scale(2.4) skewX(-12deg);opacity:0}100%{transform:scale(1);opacity:1}}
-#sub{position:absolute;left:50%;top:calc(13% + 100px);transform:translateX(-50%);font-size:22px;padding:4px 16px;color:#fff6c8;opacity:0;transition:opacity .4s;white-space:nowrap}#sub.on{opacity:1}
+#tag{position:absolute;left:0;top:0;display:none;transform:translate(-50%,-100%);font-size:18px;padding:2px 10px;color:#fff6c8;background:rgba(20,48,36,.88);border:2px solid #fff6c8;border-radius:12px;white-space:nowrap;pointer-events:none}#tag:after{content:'';position:absolute;left:50%;bottom:-9px;margin-left:-6px;border:6px solid transparent;border-top-color:#fff6c8;border-bottom:0}#tag i{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:6px;border:2px solid #fff6c8;vertical-align:-1px}
+#sub{position:absolute;left:27%;top:calc(26% + 112px);transform:translateX(-50%);font-size:22px;padding:4px 16px;color:#fff6c8;opacity:0;transition:opacity .4s;white-space:nowrap}#sub.on{opacity:1}
 #clubp{position:absolute;left:16px;bottom:16px;padding:8px 12px;min-width:200px}
 #clubp div{display:flex;justify-content:space-between;gap:18px;font-size:20px;padding:2px 8px;color:#9fc4b2;border-radius:4px}#clubp div.on{background:rgba(247,226,122,.22);color:#fff6c8;box-shadow:inset 0 0 0 1px #f7e27a}
 #clubp div span{color:#f4e39a;font-size:16px}#clubp .lie{margin-top:4px;border-top:1px solid #6b8f7c;padding-top:4px;font-size:16px;color:#a8f0d8}
 #meterp{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);width:480px;padding:8px 14px 10px;opacity:.0;transition:opacity .2s}#meterp.on{opacity:1}
-#meterp .lab{display:flex;justify-content:space-between;font-size:20px;color:#fff6c8}
+#meterp .lab{display:flex;justify-content:space-between;font-size:20px;color:#fff6c8;text-shadow:0 1px 3px #000,0 0 6px #000}
 #meterp .bar{position:relative;height:30px;margin-top:4px;border-radius:15px;background:#0c1712;border:2px solid #7ba08a;overflow:hidden}
 #meterp .fill{position:absolute;left:0;top:0;bottom:0;width:0;background:linear-gradient(90deg,#6fd36a,#e9e24a 60%,#ff7a3a)}
 #meterp .snap{position:absolute;left:0;top:0;bottom:0;width:4.5%;background:rgba(255,246,200,.28);border-right:3px solid #fff6c8}
 #meterp .needle{position:absolute;top:-2px;bottom:-2px;width:5px;margin-left:-2px;background:#fff;box-shadow:0 0 8px #fff;display:none}
 #meterp .notch{position:absolute;top:0;bottom:0;width:3px;background:#4ad8e8;box-shadow:0 0 6px #4ad8e8}
-#hinter{position:absolute;right:16px;bottom:14px;padding:4px 10px;background:rgba(18,34,25,.72);border-radius:5px;font-size:14px;line-height:1.5;text-align:right;color:#f4e39a;opacity:.7;text-shadow:1px 1px 0 #000}#hinter b{color:#fff6c8}
+#hinter{position:absolute;right:16px;bottom:14px;padding:4px 10px;background:rgba(18,34,25,.72);border-radius:5px;font-size:17px;line-height:1.5;text-align:right;color:#f4e39a;opacity:.92;text-shadow:1px 1px 0 #000}#hinter b{color:#fff6c8}
 #title{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:9%;pointer-events:none}
 #title h1{margin:0;font-size:120px;line-height:.95;color:#f7e27a;text-shadow:5px 5px 0 #000,-3px -3px 0 #000,0 0 30px rgba(255,214,120,.8);-webkit-text-stroke:2px #3a3408;letter-spacing:2px}
 #title .sub{font-size:26px;color:#fff6c8;margin:10px 0 26px;padding:4px 20px}
@@ -99,10 +103,10 @@ hudEl.innerHTML = `<div id="holep" class="steel"></div>
 <div id="meterp" class="steel"><div class="lab"><span class="l1">POWER</span><span class="l2"></span></div><div class="bar"><div class="fill"></div><div class="snap"></div><div class="notch"></div><div class="needle"></div></div></div>
 <div id="hinter"></div>
 <div id="title"><h1>ISLE GOLF</h1><div class="sub steel">TILT-SHIFT ARCADE GOLF ON SHEPHERD ISLE</div><div class="pl"><span>PLAYERS</span><b data-n="1" class="on">1</b><b data-n="2">2</b><b data-n="3">3</b><b data-n="4">4</b></div><div class="go steel">PRESS SPACE TO TEE OFF</div></div>
-<div id="card" class="steel"></div><div id="hitPop"></div>`;
+<div id="card" class="steel"></div><div id="hitPop"></div><div id="tag"></div>`;
 document.body.appendChild(hudEl);
 export const $ = s => hudEl.querySelector(s);
-export const hud = { holep: $('#holep'), windp: $('#windp'), arrow: $('#windArrow'), wt: $('#windp .t'), banner: $('#banner'), sub: $('#sub'), clubp: $('#clubp'), meter: $('#meterp'), fill: $('#meterp .fill'), needle: $('#meterp .needle'), notch: $('#meterp .notch'), l1: $('#meterp .l1'), l2: $('#meterp .l2'), help: $('#hinter'), title: $('#title'), card: $('#card'), pop: $('#hitPop') };
+export const hud = { holep: $('#holep'), windp: $('#windp'), arrow: $('#windArrow'), wt: $('#windp .t'), banner: $('#banner'), sub: $('#sub'), clubp: $('#clubp'), meter: $('#meterp'), fill: $('#meterp .fill'), needle: $('#meterp .needle'), notch: $('#meterp .notch'), l1: $('#meterp .l1'), l2: $('#meterp .l2'), help: $('#hinter'), title: $('#title'), card: $('#card'), pop: $('#hitPop'), tag: $('#tag') };
 hud.help.innerHTML = '<b>A/D</b> aim · <b>W/S</b> club · <b>SPACE</b> swing (3 clicks)<br><b>C</b> hole view · <b>R</b> replay hole · <b>M</b> sound';
 export function showTitle(on) { hud.title.style.display = on ? 'flex' : 'none'; if (on) { G.phase = 'title'; hud.card.style.display = 'none'; hideGolfer(); hud.help.style.opacity = .0; } else hud.help.style.opacity = .7; }
 export function setPlayersSel(n) { G.nPlayers = n; hud.title.querySelectorAll('.pl b').forEach(b => b.classList.toggle('on', +b.dataset.n === n)); }
@@ -132,7 +136,17 @@ export function needPower() {
   for (let i = 0; i < 9; i++) { const mid = (lo + hi) / 2; if (runDist(c, mid, H, p, G.aim) < d) lo = mid; else hi = mid; }
   _needVal = (lo + hi) / 2; return _needVal;
 }
+const _tv = new THREE.Vector3();
+function updateTag() {
+  const t = hud.tag, ok = G.phase === 'aim' && G.players.length > 0;
+  if (!ok) { t.style.display = 'none'; return; }
+  const p = curP(); _tv.set(p.pos.x, (p.pos.y ?? 4.5) + 0.85, p.pos.z).project(camera);
+  if (_tv.z > 1) { t.style.display = 'none'; return; }
+  const k = p.name + p.kit.col; if (t._k !== k) { t._k = k; t.innerHTML = `<i style="background:${p.kit.col}"></i>${p.name}`; }
+  t.style.display = 'block'; t.style.transform = `translate(${Math.min((_tv.x * .5 + .5) * innerWidth - 55, innerWidth - 300).toFixed(0)}px,${Math.max((-_tv.y * .5 + .5) * innerHeight, 110).toFixed(0)}px) translate(-50%,-100%)`;
+}
 export function updateHUD() {
+  updateTag();
   if (G.phase === 'title' || G.phase === 'card') { hud.holep.style.display = hud.windp.style.display = hud.clubp.style.display = 'none'; hud.meter.classList.remove('on'); if (G.phase === 'card') { hud.banner.classList.remove('on'); hud.sub.classList.remove('on'); } return; }
   hud.holep.style.display = hud.windp.style.display = hud.clubp.style.display = 'block'; hud.windp.style.display = 'flex';
   const p = curP(), H = curH(), d = pinDist(p.pos, H), w = windInfo(), c = curClub();
@@ -143,10 +157,11 @@ export function updateHUD() {
     hud.holep.innerHTML = `<div class="h">HOLE ${G.hole + 1}<small>PAR ${H.par}</small></div><div class="r"><span>STROKES ${p.strokes}</span><span>${Math.round(d * YD)} YD</span></div><div class="r"><span>ROUND ${vsPar(run - parRun)}</span><span>${H.name}</span></div>` + (G.players.length > 1 ? `<div class="who"><i style="background:${p.kit.col}"></i>${p.name}</div>` : '');
     hud.clubp.innerHTML = CLUBS.map((k, i) => `<div class="${i === G.club ? 'on' : ''}">${k.name}<span>${k.putt ? 'GREEN' : Math.round(k.carry * YD * (i === G.club ? lieMul() : 1)) + ' YD'}</span></div>`).join('') + `<div class="lie">LIE · ${p.surf === 'tee' ? 'TEE' : p.surf.toUpperCase()}</div>`;
     hud.wt.innerHTML = `${Math.round(w.speed)} MPH<small>${w.text}</small>`;
-    hud.arrow.setAttribute('transform', `rotate(${w.rel})`);
+    hud.arrow.setAttribute('transform', `rotate(${Number.isFinite(w.rel) ? w.rel : 0})`);
   }
   const m = G.m;
   hud.meter.classList.toggle('on', G.phase === 'aim' && m.stage > 0 || G.phase === 'swing');
+  hud.help.style.visibility = hud.meter.classList.contains('on') ? 'hidden' : '';
   if (G.phase === 'aim' || G.phase === 'swing') {
     hud.fill.style.width = (m.power * 100).toFixed(1) + '%';
     hud.needle.style.display = m.stage >= 2 ? 'block' : 'none';

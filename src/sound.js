@@ -1,5 +1,6 @@
 import './effects.js';   // load order: each file runs after the one before it (COORDINATION.md)
 import { G } from './round.js';
+import { addUpdate } from './shared.js';
 // ---------------------------------------------------------------- sound (WebAudio, synthesized, starts on the first tap)
 export let AC = null, master = null;
 export function audio() {
@@ -68,5 +69,20 @@ Object.assign(SFX, {
   cup: () => { tone({ f: 300, f2: 180, dur: 0.12, g: 0.15, type: 'triangle' }); tone({ f: 1500, dur: 0.5, g: 0.06, at: 0.06 }); },
   ding: () => { tone({ f: 1046, dur: 1.1, g: 0.08, attack: 0.004 }); tone({ f: 1568, dur: 0.8, g: 0.04, attack: 0.004, at: 0.02 }); },
 });
-export const play = (k, ...a) => { if (G.sound && AC) SFX[k](...a); };
+Object.assign(SFX, {
+  gull: () => { for (const [at, f] of [[0, 1500], [0.28, 1350], [0.5, 1650]]) { tone({ f, f2: f * 0.62, dur: 0.26, type: 'triangle', g: 0.05, at, bp: 2200, attack: 0.03, vib: 40, vibF: 18 }); } },
+  surf: () => { noise({ dur: 2.2, g: 0.07, f: 700, q: 0.3 }); noise({ dur: 1.6, g: 0.04, f: 1800, q: 0.3, at: 0.3 }); },
+  birdie: () => { [659, 784, 988, 1318, 988, 1318, 1568].forEach((f, i) => tone({ f, dur: 0.45, g: 0.1, type: 'triangle', at: i * 0.1 })); tone({ f: 330, dur: 1.2, g: 0.06, at: 0.1 }); },
+  meterTick: (p = 0.5) => tone({ f: 600 + p * 700, dur: 0.035, g: 0.06, type: 'square', bp: 2400 }),
+  perfect: () => { tone({ f: 1318, dur: 0.5, g: 0.09, attack: 0.004 }); tone({ f: 1976, dur: 0.6, g: 0.05, attack: 0.004, at: 0.07 }); },
+  nice: () => tone({ f: 988, f2: 1318, dur: 0.25, g: 0.08, type: 'triangle' }),
+  groan: () => { tone({ f: 260, f2: 130, dur: 0.7, type: 'sawtooth', g: 0.08, bp: 500, vib: 6, vibF: 5, attack: 0.05 }); tone({ f: 200, f2: 110, dur: 0.8, type: 'triangle', g: 0.07, at: 0.1 }); },
+  rattle: () => { for (let i = 0; i < 5; i++) { tone({ f: 1800 - i * 150, f2: 1200, dur: 0.05, type: 'square', g: 0.04, bp: 2400, at: i * (0.07 + i * 0.012) }); } tone({ f: 200, f2: 80, dur: 0.18, g: 0.15, at: 0.4 }); },
+  pin: () => { tone({ f: 523, dur: 0.18, g: 0.06, type: 'triangle' }); tone({ f: 784, dur: 0.25, g: 0.06, type: 'triangle', at: 0.09 }); },
+});
+export const play = (k, ...a) => { if (!G.sound || !AC) return; const f = SFX[k]; if (typeof f !== 'function') return; try { f(...a); } catch (e) { } };
+// ambience: surf washes in now and then, gulls from main.js
+let surfT = 3; addUpdate(dt => { if (G.phase === 'title') return; surfT -= dt; if (surfT < 0) { surfT = 5 + Math.random() * 4; play('surf'); } });
+// meter tick: a bright tick every few percent while the power bar rises
+let lastTick = -1; addUpdate(() => { const m = G.m; if (G.phase === 'aim' && m.stage === 1) { const k = Math.floor(m.power * 16); if (k !== lastTick) { lastTick = k; if (k > 0) play('meterTick', m.power); } } else lastTick = -1; });
 addEventListener('pointerdown', () => audio()); addEventListener('keydown', () => audio());
