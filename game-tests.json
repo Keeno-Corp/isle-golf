@@ -704,6 +704,116 @@
           "value": 11.4
         }
       ]
+    },
+    {
+      "id": "ball-physics-driver-slice-right",
+      "title": "ball-physics-driver-slice-right",
+      "state": {},
+      "actions": [
+        {
+          "action": "newRound",
+          "players": 1
+        },
+        {
+          "action": "next"
+        },
+        {
+          "state": {
+            "wind": {
+              "speed": 0,
+              "degrees": 0
+            }
+          }
+        },
+        {
+          "action": "club",
+          "name": "driver"
+        },
+        {
+          "action": "aim",
+          "degrees": -5
+        },
+        {
+          "action": "swing",
+          "power": 0.9,
+          "accuracy": 0.6
+        },
+        {
+          "until": {
+            "phase": "aim",
+            "strokes": 1
+          },
+          "max": 900
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "physics.firstBounce.z",
+          "op": ">=",
+          "value": 12.5
+        },
+        {
+          "path": "physics.firstBounce.z",
+          "op": "<=",
+          "value": 20
+        }
+      ]
+    },
+    {
+      "id": "ball-physics-driver-hook-left",
+      "title": "ball-physics-driver-hook-left",
+      "state": {},
+      "actions": [
+        {
+          "action": "newRound",
+          "players": 1
+        },
+        {
+          "action": "next"
+        },
+        {
+          "state": {
+            "wind": {
+              "speed": 0,
+              "degrees": 0
+            }
+          }
+        },
+        {
+          "action": "club",
+          "name": "driver"
+        },
+        {
+          "action": "aim",
+          "degrees": -5
+        },
+        {
+          "action": "swing",
+          "power": 0.9,
+          "accuracy": -0.6
+        },
+        {
+          "until": {
+            "phase": "aim",
+            "strokes": 1
+          },
+          "max": 900
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "physics.firstBounce.z",
+          "op": ">=",
+          "value": 0
+        },
+        {
+          "path": "physics.firstBounce.z",
+          "op": "<=",
+          "value": 10.8
+        }
+      ]
     }
   ]
 }

@@ -155,3 +155,9 @@ paprika-loop/PROMPT.md changed before session 5; the Next lists above were writt
 3. Show a landing puff and the collisions (asked again). Use `interact` with `look: true` about 5 frames after the first bounce, once on fairway and once in sand, and the call should show a dust or sand puff at the `landRingPreview` spot. Then save real-key drives into a tree, a sheep and the hole 5 house. Each should fire `ball:tree`, `ball:sheep` or `ball:wall`, and the check should `expect` the changed direction or a drop near the trunk.
 
 SCORE: 6.8
+
+## Iteration 6
+**Did**: No code changed. Added two saved checks in game-tests.json: `ball-physics-driver-slice-right` (driver, wind 0, aim -5, `swing` power 0.9 accuracy +0.6; expects `physics.firstBounce.z` 12.5-20; got 13.07) and `ball-physics-driver-hook-left` (accuracy -0.6; expects 0-10.8; got 9.99). The aim line is z≈11.4 at x≈3, so slice lands ~1.7 right and hook ~1.4 left of it.
+**Saw**: Both checks pass when saved (12 saved checks now). The slice case rolled 68 yd (`rollYd`); the hook case rolled 4 yd into rough. `physics` now shows `carryYd`, `rollYd`, `bounces`, `lastBounce`, `firstBounce` {x,z,surf}, `puttBreak` and `landPreview` after a shot. I did not run the full `test` suite, look or perf.
+**Next**: lip-out check that fires `ball:lip`; the wedge roll-out order; tree, sheep and house checks; a look at the landing puffs and at the putt dots on a slope; a fixed-aim wind pair.
+**Open**: the two new checks use the `swing` action's accuracy, not real Space presses. `firstBounce` is absent from observe until the ball lands, so a check must wait for the shot to finish.

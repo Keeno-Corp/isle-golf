@@ -1,11 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 5
-**Did**: PROMPT item 0 (easier putting) was already done in iteration 4; no code changed this session. Added two saved checks in game-tests.json: `ball-physics-wind-8-drifts` (driver, real keys, wind 8 at 90°, expects `physics.firstBounce.z` 11.9-20; got 12.407) and `ball-physics-wind-0-baseline` (same swing with wind 0, expects 0-11.4; got 10.848).
-**Saw**: `test` passed 10 of 10 (6 are ours). The two wind shots differ by about 1.56 units in z, but auto-aim compensates for the wind, so the pair is not a clean drift measure. No look or perf run.
-**Next**: lip-out check that fires `ball:lip`; the driver late/early snap checks; wedge roll-out order; tree/sheep/house; look at the putt dots on a slope and at the landing puffs; whether `setState` takes `ball:{x,z}` (the mid-easy check uses it and passes).
-**Open**: wind checks pin an auto-aim-dependent value, so they may break if the aim logic changes. The earlier "setState ball throws" fault was not reproduced.
-
 ### Judge 5
 
 **Judge, session 5: ball-physics lane**
@@ -29,3 +23,9 @@ The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.m
 3. Show a landing puff and the collisions (asked again). Use `interact` with `look: true` about 5 frames after the first bounce, once on fairway and once in sand, and the call should show a dust or sand puff at the `landRingPreview` spot. Then save real-key drives into a tree, a sheep and the hole 5 house. Each should fire `ball:tree`, `ball:sheep` or `ball:wall`, and the check should `expect` the changed direction or a drop near the trunk.
 
 SCORE: 6.8
+
+## Iteration 6
+**Did**: No code changed. Added two saved checks in game-tests.json: `ball-physics-driver-slice-right` (driver, wind 0, aim -5, `swing` power 0.9 accuracy +0.6; expects `physics.firstBounce.z` 12.5-20; got 13.07) and `ball-physics-driver-hook-left` (accuracy -0.6; expects 0-10.8; got 9.99). The aim line is z≈11.4 at x≈3, so slice lands ~1.7 right and hook ~1.4 left of it.
+**Saw**: Both checks pass when saved (12 saved checks now). The slice case rolled 68 yd (`rollYd`); the hook case rolled 4 yd into rough. `physics` now shows `carryYd`, `rollYd`, `bounces`, `lastBounce`, `firstBounce` {x,z,surf}, `puttBreak` and `landPreview` after a shot. I did not run the full `test` suite, look or perf.
+**Next**: lip-out check that fires `ball:lip`; the wedge roll-out order; tree, sheep and house checks; a look at the landing puffs and at the putt dots on a slope; a fixed-aim wind pair.
+**Open**: the two new checks use the `swing` action's accuracy, not real Space presses. `firstBounce` is absent from observe until the ball lands, so a check must wait for the shot to finish.
