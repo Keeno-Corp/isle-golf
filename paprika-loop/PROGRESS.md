@@ -1058,3 +1058,9 @@ SCORE: 7.0
 **Saw** `test` 11/11 pass (99.6 s). Hole 7 `meter.needPower` 0.749, 214 yd, driver; `expect` [0.745,0.95] ✓ (0.75 floor missed by 0.001). No look/perf this session. toNonIndexed warning still prints at `open`.
 **Next** (1) pin/golfer readability: `pin_pole` clipped on hole 7 aim view, shorten in src/pins.js (pins lane); golfer contrast and tighter C view (`cViewSpan` is just tee-pin distance, so the C camera fit is in the camera lane); (2) cliffRocks/seaStacks into hole 1/9 aim views in src/island.js/course.js; (3) nudge hole 7 tee about 0.05 further west for needPower >= 0.75.
 **Open** Items 2 and 3 of the judge's Next list untouched; they sit in other lanes' files (pins.js, camera), which this lane does not edit.
+
+## Iteration 19
+**Did** Moved Mid Meadow (hole 7) tee in `src/course.js` from [-9.5,6.5] to [-9.55,6.5] so `meter.needPower` should reach >= 0.75 (hole is ~0.3 yd longer).
+**Saw** Not rerun in the page this session (little time); previous reading 0.749. No look/perf.
+**Next** (1) rerun `test` and `interact` hole 7 `expect {"meter.needPower":[0.75,0.95]}`; (2) pin_pole clip and golfer contrast / tighter `cViewSpan` (pins.js, camera lanes); (3) cliffRocks/seaStacks into hole 1/9 aim views (island.js).
+**Open** Tee edit unverified. Items 2 and 3 are in other lanes' files.
