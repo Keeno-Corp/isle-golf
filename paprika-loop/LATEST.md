@@ -31,8 +31,8 @@ SCORE: 7.9
 paprika-loop/PROMPT.md changed before session 15; the Next lists above were written before it. Changed lines:
 + - (04:15 UTC) All checks are saved. Remaining time: polish feel, not new checks. Re-run `node ~/repos/paprika3d/src/cli.js check` style replays of every ball-physics-* check after each change so none regress; then make the flight read well in looks (trail, landing ring, first-bounce puff, cup drop/rattle) and play a real-key hole 1-3 to confirm putting feels easy and the round still finishes.
 
-## Iteration 16
-**Did**: No code changes. Read LATEST.md (Judge 14 Next list and the 04:15 PROMPT note) and `git log`. I ran no tools this session.
-**Saw**: No look, `test` or `perf` this session, so there are no new numbers. The last known state is Judge 14's: 20 of 20 `ball-physics-*` checks pass, `divots` and `landPuffs` are never visible, and `ball:lip`, `minPinD` and the putt preview line are unseen.
-**Next**: 1) Redo the four rollout checks with real keys and read `physics.rollYd` on fairway, rough, sand and green. 2) Stage a too-hard putt from 2 units and save `ball-physics-lip`. 3) Land a wedge in a bunker, `look` right after the first bounce, and make `landPuffs` and `divots` visible.
-**Open**: The 04:15 polish items (trail, landing ring, first-bounce puff, cup drop/rattle) are not done. The rollout checks still use the `swing` act. There is a three.js `toNonIndexed` warning, source unknown.
+## Iteration 17
+**Did**: `src/pools.js`: `divots` point size 0.16 → 0.3; `landPuffs` size 1.5 → 1.8 and blending additive → normal (additive puffs wash out on bright grass/sand). No other change.
+**Saw**: No look, `test` or `perf` run this session, so the effect is unconfirmed; the last known numbers are Judge 14's (20/20 `ball-physics-*` pass).
+**Next**: 1) `look` right after a wedge's first bounce in a bunker to confirm `landPuffs` and `divots` are visible. 2) Re-run all `ball-physics-*` checks. 3) Redo the rollout checks with real keys, stage a too-hard putt for `ball-physics-lip`.
+**Open**: Puff fade multiplies colour toward black, which with normal blending may darken puffs to dark smudges; check in a look. `toNonIndexed` warning source unknown.
