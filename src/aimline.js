@@ -8,6 +8,8 @@ import { CLUBS, LIE, _cm } from './rules.js';
 import { setClubLook } from './golfer.js';
 import { launchOn, newSim, previewShot, puttRange, stepSim } from './physics.js';
 import { G, curClub, curH, curP, pinDist } from './round.js';
+import { aimTarget } from './pins.js';
+import { needPower } from './hud.js';
 
 // ---------------------------------------------------------------- the aim line and the putting grid
 export const aimDots = new THREE.InstancedMesh(new THREE.CircleGeometry(0.085, 10).rotateX(-Math.PI / 2), new THREE.MeshBasicMaterial({ color: '#fffbe0', transparent: true, opacity: 1, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -4, polygonOffsetUnits: -4 }), 40);
@@ -22,20 +24,14 @@ export const gridLines = (() => {
   const l = new THREE.LineSegments(g, new THREE.LineBasicMaterial({ color: '#f3f0d0', transparent: true, opacity: 0.3, depthWrite: false })); l.name = 'slopeGridLines'; l.frustumCulled = false; l.renderOrder = 3; l.visible = false; scene.add(l); return l; })();
 export function autoClub() {
   const p = curP(), H = curH(), d = pinDist(p.pos, H), surf = p.surf;
-  if (surf === 'green' || d < 2.3) return 3;
-  if (surf === 'sand') return d > 9 ? 1 : 2;
-  if (d > 13.4 && (surf === 'tee' || surf === 'fairway')) return 0;
-  if (d > 7.0) return 1;
-  return 2;
+  let club = surf === 'green' || d < 2.3 ? 3 : surf === 'sand' ? (d > 9 ? 1 : 2) : d > 13.4 && (surf === 'tee' || surf === 'fairway') ? 0 : d > 7.0 ? 1 : 2;
+  const t = aimTarget(H, p.pos, club), aim = Math.atan2(t.z - p.pos.z, t.x - p.pos.x);
+  if (needPower(club, aim) > 1) club = 0;
+  return club;
 }
 export function autoAim() {
-  const p = curP(), H = curH(), d = pinDist(p.pos, H), c = CLUBS[G.club];
-  if (c.putt || d < Math.max(c.carry * 0.78, 5)) return Math.atan2(H.pinZ - p.pos.z, H.pinX - p.pos.x);
-  // a long way out: follow the fairway round its corner, as far along it as the club carries
-  let bi = 0, bd = 1e9; H.samp.forEach((s, i) => { const q = (s[0] - p.pos.x) ** 2 + (s[1] - p.pos.z) ** 2; if (q < bd) { bd = q; bi = i; } });
-  let tx = H.pinX, tz = H.pinZ, run = 0;
-  for (let i = bi + 1; i < H.samp.length; i++) { run += Math.hypot(H.samp[i][0] - H.samp[i - 1][0], H.samp[i][1] - H.samp[i - 1][1]); if (run > c.carry * 0.8) { tx = H.samp[i][0]; tz = H.samp[i][1]; break; } }
-  return Math.atan2(tz - p.pos.z, tx - p.pos.x);
+  const p = curP(), t = aimTarget(curH(), p.pos, G.club);
+  return Math.atan2(t.z - p.pos.z, t.x - p.pos.x);
 }
 export function onClubChanged() {
   const c = curClub(); setClubLook(c); slopeGrid.visible = gridLines.visible = c.putt && (G.phase === 'aim' || G.phase === 'intro'); if (c.putt) buildSlopeGrid(); updateAimLine();

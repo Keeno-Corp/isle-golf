@@ -128,12 +128,12 @@ export function runDist(club, power, H, p, aim) {
   while ((s.mode === 'air' || s.mode === 'roll') && n++ < 900) stepSim(s, 1 / 40);
   return (s.pos.x - p.pos.x) * Math.cos(aim) + (s.pos.z - p.pos.z) * Math.sin(aim);
 }
-export function needPower() {
-  const p = curP(), H = curH(), c = curClub(), key = [G.hole, G.club, p.pos.x.toFixed(2), p.pos.z.toFixed(2), (G.aim).toFixed(2)].join();
+export function needPower(clubIndex = G.club, aim = G.aim) {
+  const p = curP(), H = curH(), c = CLUBS[clubIndex], key = [G.hole, clubIndex, p.pos.x.toFixed(2), p.pos.z.toFixed(2), aim.toFixed(2)].join();
   if (key === _needKey) return _needVal; _needKey = key;
-  const d = (H.pinX - p.pos.x) * Math.cos(G.aim) + (H.pinZ - p.pos.z) * Math.sin(G.aim);
-  let lo = 0.03, hi = 1.0; if (runDist(c, hi, H, p, G.aim) < d) { _needVal = 1.05; return _needVal; }
-  for (let i = 0; i < 9; i++) { const mid = (lo + hi) / 2; if (runDist(c, mid, H, p, G.aim) < d) lo = mid; else hi = mid; }
+  const d = (H.pinX - p.pos.x) * Math.cos(aim) + (H.pinZ - p.pos.z) * Math.sin(aim);
+  let lo = 0.03, hi = 1.0; if (runDist(c, hi, H, p, aim) < d) { _needVal = 1.05; return _needVal; }
+  for (let i = 0; i < 9; i++) { const mid = (lo + hi) / 2; if (runDist(c, mid, H, p, aim) < d) lo = mid; else hi = mid; }
   _needVal = (lo + hi) / 2; return _needVal;
 }
 const _tv = new THREE.Vector3();

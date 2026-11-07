@@ -47,7 +47,7 @@ export function beginShot() {
 export function resolveShot() {
   const p = curP(), H = curH(), b = SIM; let msg = '';
   G.lastLip = false;
-  if (b.mode === 'rest' && curClub().putt && G.minPinD < 0.6 && pinDist(b.pos, H) < 3) { fire('hud-round:lipout', { dist: G.minPinD }); play('groan'); showBanner('SO CLOSE!', 'LIPPED OUT BY A HAIR', 1.6); G.lastLip = true; G.lastCall = 'SO CLOSE!'; }
+  if (b.mode === 'rest' && curClub().putt && SIM.minPinD < 0.6 && pinDist(b.pos, H) < 3) { fire('hud-round:lipout', { dist: SIM.minPinD }); play('groan'); showBanner('SO CLOSE!', 'LIPPED OUT BY A HAIR', 1.6); G.lastLip = true; G.lastCall = 'SO CLOSE!'; }
   else if (b.mode === 'rest') { const yd = Math.round(pinDist(b.pos, H) * YD); if (yd > 0) { G.lastCall = yd + ' YD TO PIN'; fire('hud-round:rest', { yards: yd }); if (yd >= 3) { showBanner(yd + ' YD TO PIN', '', 1.4); play('pin'); } } }
   if (b.mode === 'sunk') {
     p.holed = true; p.scores[G.hole] = p.strokes; p.pos.set(H.pinX, H.pinY, H.pinZ); const nm = scoreName(p.strokes, H.par);
@@ -77,7 +77,7 @@ export function nextTurnOrCard() {
 
 // ---------------------------------------------------------------- hud-round extras
 on('swing', ({ acc }) => { const a = Math.abs(acc); if (a < 0.001) { showBanner('PERFECT!', '', 0.9); play('perfect'); fire('hud-round:call', { call: 'PERFECT' }); } else if (a < 0.2) { showBanner('NICE!', '', 0.9); play('nice'); fire('hud-round:call', { call: 'NICE' }); } });
-addObserve(() => ({ hudRound: { order: G.order.map(i => G.players[i]?.name), turn: curP()?.name, lastCall: G.banner || G.lastCall || '', lipOut: !!G.lastLip, minPinD: +(G.minPinD || 0).toFixed(2), cardOpen: G.phase === 'card', final: G.phase === 'card' && G.hole >= 8, best: (() => { try { return +localStorage.getItem('isleGolfBest' + G.nPlayers) || null; } catch (e) { return null; } })() } }));
+addObserve(() => ({ hudRound: { order: G.order.map(i => G.players[i]?.name), turn: curP()?.name, lastCall: G.banner || G.lastCall || '', lipOut: !!G.lastLip, minPinD: +SIM.minPinD.toFixed(2), cardOpen: G.phase === 'card', final: G.phase === 'card' && G.hole >= 8, best: (() => { try { return +localStorage.getItem('isleGolfBest' + G.nPlayers) || null; } catch (e) { return null; } })() } }));
 
 // clear the hole intro banner once the swing meter starts (hud-round lane)
 let _introCleared = false; addUpdate(() => { if (G.phase === 'aim' && G.m.stage === 1) { if (!_introCleared && ST.bannerT > 0) { hud.banner.classList.remove('on'); hud.sub.classList.remove('on'); ST.bannerT = 0; ST.subT = 0; } _introCleared = true; } else _introCleared = false; });
