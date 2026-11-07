@@ -185,4 +185,3 @@ export function updateDither(sceneW, sceneH) {
   });
 }
 export const ditherState = () => ({ patched, active: info.active, subjectNdc: [+U.uDS.value.x.toFixed(3), +U.uDS.value.y.toFixed(3)], depth: +U.uDS.value.z.toFixed(2), radius: +U.uDS.value.w.toFixed(3), occluders: info.occluders.slice(), nearFades: info.active ? liveNear() : [] });
-
