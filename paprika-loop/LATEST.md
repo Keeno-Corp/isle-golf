@@ -1,49 +1,45 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-### Judge 9
-
-**Judge 9: scores**
-
-00. **Odyssey-style dithering**: 6. The hole 1 intro look reports `look.dither` active (`subjectNdc` [0.033,0.352], `radius` 0.13), and `look-dither-occluder-tree` passes. Three things from the last verdict are still open. There is no saved near-plane check. There is no zoomed look showing the dither survivors are raw and unblurred. `nearFades` accuracy against a picture is unproven; I did not re-check it this session.
-
-0. **Wider framing, smoother ground**: 8. The `camera.fov` reads 31.88 in the intro and 33 on the aim view in the last verdict. The `golfer_body` sits at [1132,520,1181,581] and `look.ball.y` is -0.501, so both are above the bottom 20%. The `grass*` ground reads smooth, with no blocky texels. There is still no before/after pair.
-
-1. **Look lane goal**: 7. The intro at `camPitchDeg` 55.5 shows both `pin_pole` and `ball1`, so the pin is in frame mid-flyover. The top is blurred and the lower band is sharp. Shadows fall lower-right. The holed camera and night were not looked at this session.
-
-2. **Look check 1 (aim blur band)**: 7. The intro frame has the top blurred and `golfer_body` crisp. I did not look at the aim view of holes 1, 5 and 9 this session.
-
-3. **Look check 2 (C on holes 5, 6, 9)**: 8. The saves `look-c-hole5-broadside`, `look-c-hole6-pitch` and `look-c-hole9-broadside` pass on rerun.
-
-4. **Look check 3 (flyover, real-key drive)**: 7. The flyover at `flyoverT` 0.399 has the pin on screen at NDC (-0.655, 0.497). I did not re-run the drive or the 25/50/75 looks.
-
-5. **Look check 4 (sea, key light, night)**: 7. The sea shows at the top right of the aim view, and shadows fall lower-right. I took no title `sample` and no night look this session.
-
-6. **Critic views and course findings**: 5. A pink boulder is still visible at the cliff edge, at about [660,60]. The `pin_flag` is only 0.0086% of the frame in this intro view, so it is nearly invisible from this camera. There is still no meter picture, scorecard picture or flight picture from this session.
-
-7. **LOOK.md Checks**: 7. The brush pass, haze and warm sun hold in the intro look.
-
-8. **Edit scope and load-order imports**: 9. The sources are still only stage, post and camera.
-
-9. **Observe hook, saved checks, lane notes**: 7. `look.camPitchDeg`, `flyoverT`, `ball`, `pin`, `golfer` and `dither` are all present, and 10 of 10 saved checks pass. The near-plane save is still missing, and so is a putt-dither save.
-
-10. **Faults**: 8. There are no console errors, only the `toNonIndexed` warning. `perf` reads 307 draws and 485,787 triangles, which is at the baseline and not a regression. The 1251 ms frame is SwiftShader at host load 2.9, so it is noise.
-
-**Next:**
-1. **Close the dither proof (asked again).**
-   - Save `look-dither-nearplane`. Use `setState` to place the ball behind `tree7` or `tree3` on hole 5 (zero-based hole 4, check `observe().hole` first). Press real A/D keys, expect `look.dither.active` true and `look.dither.nearFades` non-empty, and save.
-   - Then run one `look` with `zoom` on the dither circle at `subjectNdc`. It should show the surviving pixels raw and crisp inside a blurred scene.
-   - Also check that every name in `nearFades` has a rect on screen.
-2. **Run the missing critic views.** Take the Space meter, the real-key putt and the scorecard.
-   - For the putt, take `look` at 4, 12 and 24 frames after `phase: "holed"`, with `look.ball.y` above -0.6.
-   - Then take the scorecard. Add a before/after aim pair for the wider framing.
-3. **Make `pin_flag` readable on the far-pin aim and intro views.** It is 0.0086% of the frame in the intro. Either keep it in the sharp band or enlarge the flag's screen footprint through the camera pullback, not the course files. One `look` on hole 1 intro and hole 5 aim should show the flag above 0.03%.
-
-Record the pink boulders in `lanes/look.md` once as a course-lane item. After any sea tweak, `sample` the title at (5,400), which was #218981 last time.
-
-SCORE: 7.2
-
 ## Iteration 10
 **Did**: No source edits. Saved `look-dither-hole5-tree7-circle` in game-tests.json (hole 5 fixture, ball -3,-5.4, real A key: `look.dither.active`, `occluders[0]` tree7_leaves0, `radius` in 0.2–0.4). Tried saving `look-dither-nearplane` with `nearFades.0` existing; it failed because nearFades is empty in this fixture (nothing within the 3.4 fade range), so it was not saved.
 **Saw**: Hole 5 aim: the `look` picture shows tree7_leaves0 (15% of frame) with a Bayer-dither circle (radius 0.298) round the golfer. The golfer inside it is crisp and the tree outside is solid, so the survivors are raw, not blurred. Hole 1 aim: the current pin's red flag is readable at about [690,325] in the picture; `pin_flag` ×7 sums to 0.13% across all holes, and the hole 5 aim view shows its flag at about [215,170]. The pink boulders are still visible at the cliff edge (course lane). `test` and `perf` not run.
 **Next**: save a near-plane check by setState-ing the ball right beside a tree (find one with nearFades non-empty); Space-meter, real-key putt (4/12/24 frames after holed) and scorecard pictures; a before/after aim pair for the wider framing; sample title (5,400) after any sea tweak.
 **Open**: `nearFades` accuracy is still unproven against a picture; no near-plane save; pink boulders are a course-lane item, not yet in lanes/look.md.
+
+### Judge 10
+
+**Judge 10: scores**
+
+00. **Odyssey-style dithering**: 6. Hole 5 aim (real A key) reports `look.dither` active, with `subjectNdc` [0.073,-0.248] and `nearFades` ["tree4_leaves0"], so the near-fade list is no longer empty. `tree7_leaves0` is on screen at 5.4%. Three gaps remain:
+  - There is no saved `look-dither-nearplane`, though this fixture now gives a non-empty `nearFades`.
+  - `nearFades` is unchecked against a picture. `tree4_leaves0` is in the "not found by the ID image" list, so I could not confirm it is on screen.
+  - The aim picture shows no visible dither on the near tree, so the near-fade is unproven.
+
+0. **Wider framing, smoother ground**: 8. `camera.fov` is 32.9 on the hole 5 aim and 32.2 on hole 1. `look.ball.y` is -0.379 on hole 5 and -0.469 on hole 1, both above the bottom 20%. The `grass*` ground reads smooth and painted. There is still no before/after pair. On the hole 1 aim, `golfer_body` is only 0.061% of the frame ([425,533,456,574]), so the pullback is slightly too far there.
+
+1. **Look lane goal**: 7. Hole 1 and hole 5 aim views keep the top blurred and the golfer and ball sharp, with shadows to the lower right. Holed camera, flyover and night were not re-run this session.
+
+2. **Look check 1 (aim blur band)**: 8. Holes 5 and 1 pass: the top fifth is blurred, `golfer_body` is crisp, and the ball is above the bottom 20%. Hole 9 was not looked at.
+
+3. **Look check 2 (C on 5, 6, 9)**: 7. Not re-run this session. The last verdict had the three `look-c-*` saves passing.
+
+4. **Look check 3 (flyover, real-key drive)**: 6. Not re-run. After my Space press, the aim state jumped from hole 5 to hole 1 (`hole` 1, `aimDeg` 357.7). I do not know whether that is a `start`/`skipIntro` quirk or a bug. It cost me the meter picture.
+
+5. **Look check 4 (sea, key light, night)**: 7. Sea shows at the top right of the hole 5 aim view, and shadows fall lower-right. No title `sample` and no night look this session.
+
+6. **Critic views and course findings**: 5. A `pink boulder` cluster is still prominent at the right edge of the hole 5 aim view. A pink shrub sits at bottom right on hole 1, at about [840,550]. On hole 5 `pin_flag` is 0.093% and on hole 1 it is 0.17%, both readable. There is no meter, putt-drop or scorecard picture yet. Pink boulders are still not in `lanes/look.md`.
+
+7. **LOOK.md Checks**: 7. The brush pass, haze, teal sea and warm sun hold in both aim views.
+
+8. **Edit scope and load-order imports**: 9. Sources are still only stage, post and camera.
+
+9. **Observe hook, saved checks, lane notes**: 7. `look.camPitchDeg` (23.8 and 37), `focusY`, `ball`, `pin`, `golfer` and `dither` are all present. `look.dither` has no `radius` field in the hole 5 reply, so that key is inconsistent. The near-plane save is still missing.
+
+10. **Faults**: 8. Console shows only the `toNonIndexed` warning. `perf` reads 181 draws and 367k triangles, down from the 307 / 486k baseline. The 1009 ms frame is SwiftShader at host load 3.6, so it is noise.
+
+**Next:**
+1. **Save the near-plane check (asked again).** On hole 5 (zero-based 4) the fixture already gives `nearFades:["tree4_leaves0"]`. Use `setState {hole:4, skipIntro:true}`, wait 40, press A for 10 frames. Expect `look.dither.nearFades.0` to equal `tree4_leaves0`, then save as `look-dither-nearplane`. One `look` with `zoom` on `tree4_leaves0`'s rect should show Bayer holes in it. If no holes show, the `nearFades` metadata is wrong and needs fixing in the projection and depth logic. Also make `look.dither.radius` always present when active.
+2. **Run the missing critic views, using `" "` as the key name (not `space`).** Take the Space meter, then a real-key putt. Use `look` at 4, 12 and 24 frames after `phase:"holed"` with `look.ball.y` above -0.6. Then take the scorecard. Find out why Space after a `setState` hole pick returned to hole 1, and avoid it by clicking only after `phase` is `aim`.
+3. **Fix the over-small golfer on hole 1 aim.** `golfer_body` is 0.061% of the frame. Tighten the aim pullback on short par 3s, or fit it to the tee→pin distance, so the golfer is at least about 0.15%. Hole 5 is 0.18%. Check with one `look` on hole 1 aim. Also record the pink boulders in `lanes/look.md` once as a course-lane item, and add a before/after aim pair for the wider framing.
+
+SCORE: 7.2
