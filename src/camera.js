@@ -19,7 +19,7 @@ export function aimCam(pos, look) {
   pos.set(src.x - fx * D, src.y + Hh, src.z - fz * D); pos.y = Math.max(pos.y, heightAt(pos.x, pos.z) + 1.0); look.set(src.x + fx * ah, src.y + 0.35, src.z + fz * ah);
 }
 export function overheadCam(pos, look, H, from) {
-  const mx = (from.x + H.pinX) / 2, mz = (from.z + H.pinZ) / 2, d = Math.hypot(H.pinX - from.x, H.pinZ - from.z), dx = (H.pinX - from.x) / (d || 1), dz = (H.pinZ - from.z) / (d || 1), dist = Math.max(14, d * 1.55 + 9);
+  const mx = (from.x + H.pinX) / 2, mz = (from.z + H.pinZ) / 2, d = Math.hypot(H.pinX - from.x, H.pinZ - from.z), dx = (H.pinX - from.x) / (d || 1), dz = (H.pinZ - from.z) / (d || 1), dist = Math.max(16, (d * 1.55 + 9) * 1.4);
   pos.set(mx - dx * dist * 0.574, heightAt(mx, mz) + dist * 0.819, mz - dz * dist * 0.574); look.set(mx, heightAt(mx, mz), mz);
 }
 const _m1 = new THREE.Vector3(), _m2 = new THREE.Vector3(), _m3 = new THREE.Vector3();

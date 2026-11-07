@@ -67,3 +67,14 @@ SCORE: 5.7
    - Record the pink `cliffRocks` in `lanes/look.md` for the course lane.
 
 SCORE: 5.1
+
+## The request changed
+
+paprika-loop/PROMPT.md changed before session 3; the Next lists above were written before it. Changed lines:
++ 0. **NEW OWNER FEEDBACK — TOP PRIORITY (JC, after playing):** "make the ground tiling les pixelated looking. And make putting a little easier. And make it so that the main character isn't the football player. And improve the animations. Also spacing is a little too close. Make it a little wider". **Look lane owns the framing and renderer/post portion:** pull the aim and flight cameras back, modestly widen the view (about 32–34° while preserving LOOK.md's narrow-lens miniature feel), so more of the hole and island reads. Keep the ball above the bottom 20%, the golfer and ball crisp inside the moving focus band, and no flat/unblurred frame. Help course fix pixelated ground using suitable texture min/mag filtering and renderer anisotropy in stage.js, and ensure post.js brush/smear does not amplify blocky texels. Preserve frame budget. Other lanes own easier putting, character replacement and animation; do not edit their files. Prove the wider framing with before/after aim and flight views and check ground at close and distant views.
+
+## Iteration 3
+**Did** (camera.js): `overheadCam` distance is now `max(16, (d*1.55+9)*1.4)` (was `max(14, d*1.55+9)`), so C fits tee and pin with margin.
+**Saw**: The judge's "pin projection is wrong" is not a bug. `ndc()` of (pinX, pinY+0.6, pinZ) matches `find('pinN')` world positions on all 9 holes. The pin reads x≈0 because auto-aim points at it, and the earlier odd numbers came from reading `observe` right after `setState` before the camera snapped. In the C shot on hole 5 the flag at the far left was another hole's pin. C after the 1.3 fit, holes 5, 6, 9: pitch 55, `look.ball.y` -0.54, -0.59, -0.68 (0.8 before), pin y ≈0.53–0.56; I raised it to 1.4 afterwards and only hole 9 was rechecked (ball -0.63). Flyover on hole 9: pin on screen at 25% (y 0.60) and 50% (y 0.64, pitch 47). At 75% pitch is 14° and the ball is off-screen (y -1.56) mid-transition to aim. Not run: `perf`, flight and holed looks, night, the critic views and `test` saves.
+**Next**: (1) re-record the `look-` saves with 0-based `hole`; (2) real-key drive, looking at 3 moments of flight; (3) flag contrast in post.js and the pink `cliffRocks` (still red-pink on hole 5 C), recorded for the course lane; (4) smooth the 75% flyover leg so the ball is on screen before the aim cam lands.
+**Open**: The flyover ball leaves the frame between 50% and 75% (ball y -0.99 to -1.56). The golfer in C is tiny (about 0.015% of the picture) because the camera frames the whole hole.
