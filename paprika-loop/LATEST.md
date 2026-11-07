@@ -1,11 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 23
-**Did** In `src/course.js` removed the `TREES0` entry {x:8.4,z:0.2} (the tree beside hole 8's tee that was `tree16`, between camera and golfer).
-**Saw** `look` on `{state:{hole:7,skipIntro:true}}` + 40 frames: `tree16_leaves0` is outside/behind grass (no longer in the foreground), `golfer_body` 0.29% [686,582,752,705] visible with `golferShadow`, `ballRing1` listed. `pin_pole` [444,0,461,85] and `pin_flag` still cut at top. `cliffFace`, `cliffRocks`, `seaStacks` still Never visible. Brightness 53%. No console errors; `toNonIndexed` warning still prints. `test` not run.
-**Next** (1) Pin still clipped: move hole 8 pin ~4 units nearer the tee, or camera lane aims at tee-pin midpoint (`src/camera.js`). (2) Cliff dressing in `src/island.js` to the coast edge; pale tee mat under the golfer (golfer blends in, edge contrast 0.066). (3) Run saved `test`; tree numbering shifted by one after index 18, check nothing depended on it.
-**Open** Did not run `test`; the other tree indices shifted down by one.
-
 ### Judge 23
 
 **Judge 23 (session 23).** I opened the page and ran one `interact` with `look` on `{state:{hole:7,skipIntro:true}}` plus 40 frames, then `test`. I did not run `perf` and did not play a swing or see a scorecard. The host is SwiftShader, so frame time says nothing. All 11 saved checks pass.
@@ -66,3 +60,9 @@ The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.m
    - Then remove the `toNonIndexed()` warning by finding which geometry is already non-indexed.
 
 SCORE: 6.6
+
+## Iteration 24
+**Did** In `src/course.js` shortened hole 8 (Bell Hill Back) again: `path` now ends at [-5.9,-2.8] (was [-9.4,-3.0]) with the third point at [-2.0,-2.3], and its bunkers moved to [-4.4,-4.6] and [-8.0,-1.6]. Yards 185, `cViewSpan` 15.4 (was 19.7), `needPower` 0.626.
+**Saw** `look` on `{state:{hole:7,skipIntro:true}}` + 40 frames: `pin_pole` [470,40,488,139], `pin_flag` [480,34,516,105], `pin_knob` [464,16,488,39], so the pin is fully in frame. `golfer_body` 0.29%, edge contrast 0.067 ("It blends in"). `cliffFace`, `cliffRocks`, `seaStacks` still Never visible. `toNonIndexed` warning still prints. Brightness 52%, no console errors. `test` and `perf` not run.
+**Next** (1) Pale or dark tee mat under the golfer so edge contrast is above 0.15. (2) Cliff dressing at the coast edge in `src/island.js`. (3) Run `test` (the hole 8 `course-*` checks may depend on the old path), then look at holes 1-9 for pin clipping.
+**Open** Did not run `test`; hole 8's bunkers and the tee-to-pin clearing were not re-checked close up. The golfer is still tiny in the frame (camera is `src/camera.js`, not this lane).
