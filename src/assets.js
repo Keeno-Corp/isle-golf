@@ -4,7 +4,7 @@ import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
 
 // models from the paprika3d library (assets/CREDITS.md): the mallards, the cow (the ducklings were cut: 2 px tall behind the sedge from every camera)
 export const gltfL = new GLTFLoader(); gltfL.setMeshoptDecoder(MeshoptDecoder);
-export const playerP = Promise.resolve({ scene: new THREE.Group(), animations: [] });   // the football figure is gone: pins.js still awaits this name
+export const playerP = gltfL.loadAsync('./assets/player-anim.glb');
 export const [duckGLB, cowGLB] = await Promise.all(['duck-1ef909', 'vaca-2-771611'].map(f => gltfL.loadAsync('./assets/' + f + '.glb')));
 // the pond birds are a hand's height on screen: their 1024 px colour maps go down to 256 px and every other map (normal, roughness, AO, specular) is dropped (they cost 32 MB of GPU memory for detail no viewer sees)
 export function shrinkMaps(glb, size) {
