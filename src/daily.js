@@ -27,6 +27,7 @@ export const DAILY = {
   todaysFirst: 0,
   _savedFirst: false,
   _orig: null,
+  teePos: null,
 };
 
 // ---------------------------------------------------------------- FNV-1a hash — better distribution than djb2 for adjacent date strings
@@ -97,8 +98,7 @@ export function exitDaily() {
   G.dailyOn = false;
   DAILY._orig = null;
   DAILY.cardShown = false;
-  G.dailyTeeX = null;
-  G.dailyTeeZ = null;
+  DAILY.teePos = null;
 }
 
 // ---------------------------------------------------------------- Start daily challenge
@@ -170,8 +170,7 @@ export function startDaily(dateStr) {
 
   // Initial tee position (after nudge)
   DAILY.shots = [[+p.pos.x.toFixed(3), +p.pos.z.toFixed(3)]];
-  G.dailyTeeX = p.pos.x;
-  G.dailyTeeZ = p.pos.z;
+  DAILY.teePos = { x: p.pos.x, z: p.pos.z };
 
   // Override beginHole banner with daily header
   showBanner('DAILY HOLE · ' + dateStr, `PAR ${H.par} · ${H.yards} YD · ${H.name.toUpperCase()}`, 3.2);
@@ -205,13 +204,18 @@ on('hole:replay', ({ hole }) => {
   p.prev.copy(p.pos);
   SIM.pos.copy(p.pos);
   // Record the nudged position
-  G.dailyTeeX = p.pos.x;
-  G.dailyTeeZ = p.pos.z;
+  DAILY.teePos = { x: p.pos.x, z: p.pos.z };
   DAILY.shots = [[+p.pos.x.toFixed(3), +p.pos.z.toFixed(3)]];
   DAILY.strokes = 0;
   DAILY.cardShown = false;
   DAILY.result = '';
   DAILY.shareText = '';
+});
+
+// hud-round:tee-surf fired by beginShot after normal classification — override p.surf for nudged daily tee
+on('hud-round:tee-surf', ({ p, H }) => {
+  if (!DAILY.on || H.i !== DAILY.holeIndex || p.strokes !== 0 || !DAILY.teePos) return;
+  if (Math.hypot(p.pos.x - DAILY.teePos.x, p.pos.z - DAILY.teePos.z) < 0.5) p.surf = 'tee';
 });
 
 // ---------------------------------------------------------------- Hole end: cup AND pickup both reach here via openCard → hole:end
