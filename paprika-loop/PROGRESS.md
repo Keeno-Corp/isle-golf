@@ -869,3 +869,9 @@ Mean: (8+8+8+6+6+7+4+6+8+7+6+8+6)/13 = 6.8.
 3. **Check the swing, putt and walk at 1.3×, and make him bigger on screen.** `Subject` is 0.61% here, so push the golfer to about 1.5× or tighten the aim view. Take stepped looks at backswing top, follow and a putt (`interact` with `look: true`) and confirm `club_head` meets the ball and `club_grip` meets `golfer_glove`. Raise `STANCE` slightly if the body sits too close.
 
 SCORE: 6.8
+
+## Iteration 20
+**Did** Saved two checks in `game-tests.json` (12 now): `creatures-par-dance` (3 strokes on hole 1 → `golferClip` 'Dance_Loop', strokes 3) and `creatures-bogey-dismay` (4 strokes → 'Dismay'). Recipe: `{action:"start"}`, `{state:{hole:0,skipIntro:true}}`, `wait 20`, `{state:{ball:{x:-4.5,z:11.95}}}`, putter, `aim at pin`, `swing power 0.03` (miss) 2 or 3 times with `until phase aim`, then ball at (-2.3,11.95) and `swing power 0.2`. No source changes.
+**Saw** Both reactions play: footballer also goes Dance_Loop on par. `setState({strokes})` is ignored; use real strokes. Bonk check not saved: sheep 3 grazes at (-6.1,13.25) until about frame 70 after the start, then walks west; two tries (ball at -8.2,10.1 and -7.6,13.25, putter 0.3) gave `sheepHits` 0 because the ball arrived after the sheep moved. No `perf` run, no console errors seen.
+**Next** 1) Bonk: put the ball 0.8 units from a sheep within 20 frames of `skipIntro` (sheep 3 at (-6.1,13.25) is still then), use a wedge or driver power so contact is fast, expect `sheepHits` 1, then save `creatures-sheep-bonk`. 2) Save `creatures-kit-colours` (players 2, play to FINN's turn, expect `shirtColour` '#3b78c9'). 3) Look at swing, putt and walk at 1.3×; pull the camera back at hole-out so the golfer's celebration is in frame.
+**Open** Bonk and kit-colour checks still unsaved; swing/putt poses at 1.3× unlooked.

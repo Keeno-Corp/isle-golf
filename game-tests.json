@@ -624,6 +624,211 @@
           "value": "Celebration"
         }
       ]
+    },
+    {
+      "id": "creatures-par-dance",
+      "title": "creatures-par-dance",
+      "state": {},
+      "actions": [
+        {
+          "action": "start",
+          "players": 1
+        },
+        {
+          "state": {
+            "hole": 0,
+            "skipIntro": true
+          }
+        },
+        {
+          "wait": 20
+        },
+        {
+          "state": {
+            "ball": {
+              "x": -4.5,
+              "z": 11.95
+            }
+          }
+        },
+        {
+          "action": "club",
+          "name": "putter"
+        },
+        {
+          "action": "aim",
+          "at": "pin"
+        },
+        {
+          "action": "swing",
+          "power": 0.03,
+          "accuracy": 0
+        },
+        {
+          "until": {
+            "phase": "aim"
+          },
+          "max": 600
+        },
+        {
+          "action": "aim",
+          "at": "pin"
+        },
+        {
+          "action": "swing",
+          "power": 0.03,
+          "accuracy": 0
+        },
+        {
+          "until": {
+            "phase": "aim"
+          },
+          "max": 600
+        },
+        {
+          "state": {
+            "ball": {
+              "x": -2.3,
+              "z": 11.95
+            }
+          }
+        },
+        {
+          "action": "aim",
+          "at": "pin"
+        },
+        {
+          "action": "swing",
+          "power": 0.2,
+          "accuracy": 0
+        },
+        {
+          "wait": 120
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "creatures.golferClip",
+          "op": "==",
+          "value": "Dance_Loop"
+        },
+        {
+          "path": "strokes",
+          "op": "==",
+          "value": 3
+        }
+      ]
+    },
+    {
+      "id": "creatures-bogey-dismay",
+      "title": "creatures-bogey-dismay",
+      "state": {},
+      "actions": [
+        {
+          "action": "start",
+          "players": 1
+        },
+        {
+          "state": {
+            "hole": 0,
+            "skipIntro": true
+          }
+        },
+        {
+          "wait": 20
+        },
+        {
+          "state": {
+            "ball": {
+              "x": -4.5,
+              "z": 11.95
+            }
+          }
+        },
+        {
+          "action": "club",
+          "name": "putter"
+        },
+        {
+          "action": "aim",
+          "at": "pin"
+        },
+        {
+          "action": "swing",
+          "power": 0.03,
+          "accuracy": 0
+        },
+        {
+          "until": {
+            "phase": "aim"
+          },
+          "max": 600
+        },
+        {
+          "action": "aim",
+          "at": "pin"
+        },
+        {
+          "action": "swing",
+          "power": 0.03,
+          "accuracy": 0
+        },
+        {
+          "until": {
+            "phase": "aim"
+          },
+          "max": 600
+        },
+        {
+          "action": "aim",
+          "at": "pin"
+        },
+        {
+          "action": "swing",
+          "power": 0.03,
+          "accuracy": 0
+        },
+        {
+          "until": {
+            "phase": "aim"
+          },
+          "max": 600
+        },
+        {
+          "state": {
+            "ball": {
+              "x": -2.3,
+              "z": 11.95
+            }
+          }
+        },
+        {
+          "action": "aim",
+          "at": "pin"
+        },
+        {
+          "action": "swing",
+          "power": 0.2,
+          "accuracy": 0
+        },
+        {
+          "wait": 120
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "creatures.golferClip",
+          "op": "==",
+          "value": "Dismay"
+        },
+        {
+          "path": "strokes",
+          "op": "==",
+          "value": 4
+        }
+      ]
     }
   ]
 }
