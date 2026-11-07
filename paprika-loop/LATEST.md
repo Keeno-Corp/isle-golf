@@ -1,11 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 18
-**Did:** `src/round.js` `beginHole`: now clears `G.lastCall` and `G.lastLip` at the start of each hole, so `hudRound.lastCall` no longer carries the last hole's call onto the next tee. Syntax-checked only.
-**Saw:** Did not open the page; no looks, no `perf`. Only a short time was left and I spent it on this one fix.
-**Next:** (1) Run and save `hud-round-full-round` (real keys only, 9 holes to ROUND COMPLETE) and `hud-round-hotseat`, with looks of the 2-player card and ROUND COMPLETE. (2) Save `hud-round-sound` with a robust `lastCall` assertion; confirm with `trace` that `lastCall` is empty after `next`. (3) `clubp` rough sheet, `meterp` at stage 2, PERFECT/NICE banner.
-**Open:** The `lastCall` clear is untested in the browser. The full round and hot-seat proofs are still unrun (fifth session).
-
 ### Judge 18
 
 **Judge 18: Isle Golf, hud-round lane**
@@ -49,3 +43,9 @@ I opened the page and played a real-key 2-player start: Digit2, Space, then Spac
 3. **(asked again)** Run `look` with `sheet` for three moments: `clubp` with `state` lie "rough" (the yardage should drop), `meterp` at stage 2 (Space twice), and a PERFECT/NICE banner right after the accuracy click, with the `hinter` bunker hint matching the club.
 
 SCORE: 6.8
+
+## Iteration 19
+**Did:** No code change. Probed the real-key flow for the full round on hole 1 in the browser (one player, no setState/act).
+**Saw:** Digit1, Space, wait 30, Space, `until phase aim` reaches the aim phase. A shot is Space, `wait 3`, `until meter.power [need, need+0.05]` (a window of about 0.05, because power jumps about 0.06 a frame and a 0.01 window is skipped), Space, `wait 15`, Space, `until phase [aim,holed,card]`. `meter.needPower` (read from observe) gives the target for the yardage. Hole 1 took 4 strokes (65 yd wedge into rough, 41 yd, 24 yd putt, 4th putt IN!), `lastResult` BOGEY, `lastCall` "IN!", no console errors. The IN!/BOGEY banner is at the left, clear of the cup and pin. The card did not open within 130 frames after the hole; `phase` stays "holed" first. The sequence is deterministic, so a recorded step list replays identically. The needPower must be discovered per shot (about 30 shots for 9 holes), so the full round has to be built by playing live and then saving one long step list in a single `interact` save call. Not saved this session: it ran out of time.
+**Next:** (1) Play all 9 holes live with that shot recipe, keep the step list, then save `hud-round-full-round` in one call and take a `look` at ROUND COMPLETE. (2) `hud-round-hotseat` with Digit2. (3) The `clubp` rough sheet, `meterp` stage 2, the PERFECT banner.
+**Open:** The iteration 18 `lastCall` clear is still unverified (it showed "IN!" through the holed phase, as expected). Full round and hot-seat checks are still unsaved (sixth session).

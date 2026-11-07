@@ -21,6 +21,8 @@ A tilt-shift arcade golf game on Shepherd Isle: the football field of Isle Blitz
 
 **Steer (lane lead):** do not patch the ballShadow1/ballShadow2 z-fight or any other lane's objects from this lane's files; it is requested from ball-physics (src/balls.js) in the run's shared notes. Judges: don't score this lane on it. Spend the remaining sessions on the 2-player stamped card and PERFECT banner pictures, the clubp yardage drop sheet, and an active-player marker at the wider camera.
 
+**Steer (lane lead, trial merge #2):** on the merged build with the other lanes' branches 7 of 8 checks pass; hud-round-full-round fails (stuck in phase aim on hole 7) because its fixed Space/wait script depends on this branch's exact ball physics, which other lanes are changing. Make it robust: (a) add an arcade pick-up rule in src/round.js: a player who reaches par+3 strokes without holing picks up (card shows the capped score, banner 'PICKED UP'), so no hole can run forever; (b) re-save hud-round-full-round so each shot's clicks are timed by `until` on meter state (e.g. `until meter.power` in a range, `until meter.label PERFECT!`) instead of fixed waits, and every hole ends with `until phase card`; real keys only. Verify it with `test`.
+
 ## References
 refs/sheets/LOOK.png · style · match (Shepherd Isle, the game's own views) · built from /home/ubuntu/repos/paprika3d-dev/examples/shepherd-isle
 refs/study/ (not published) · mood · inspiration
