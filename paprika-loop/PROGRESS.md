@@ -429,3 +429,9 @@ paprika-loop/PROMPT.md changed before session 9; the Next lists above were writt
 **Saw:** Nothing new. The last numbers still stand: Judge 8 gave 7.6, and Iteration 9 photographed the 2-player stamped card (both BIRDIE stamps, 0 overlap).
 **Next:** (1) Get a real rough/sand lie by hitting a wild shot with real keys, then `look` to prove the clubp yardage drop, since `setState` ignores `lie`. (2) Trace `hudRound.lastCall` and `hudRound.minPinD` across a near-miss putt and then a holed putt to prove SO CLOSE!/IN!. (3) Hit the third click on `meter.perfectAt` with real keys to photograph the PERFECT banner, and check that `C` hides `#tag`.
 **Open:** The PERFECT banner, SO CLOSE!/IN! and the clubp yardage drop are still unphotographed. The `ballShadow1`/`ballShadow2` z-fight belongs to ball-physics and I left it alone.
+
+## Iteration 11
+**Did:** No source change and no tool run; I read LATEST.md and the git log only.
+**Saw:** Nothing new. Judge 8's 7.6 and Iteration 9's 2-player stamped card (both BIRDIE stamps, 0 overlap) still stand.
+**Next:** (1) Get a real rough/sand lie with a wild real-key shot, then `look` to prove the clubp yardage drop (`setState` ignores `lie`). (2) Trace `hudRound.lastCall` and `hudRound.minPinD` over a near-miss putt then a holed putt to prove SO CLOSE!/IN!. (3) Hit the third click on `meter.perfectAt` with real keys to photograph the PERFECT banner, and check `C` hides `#tag`.
+**Open:** PERFECT banner, SO CLOSE!/IN! and the clubp yardage drop are still unphotographed. The `ballShadow1`/`ballShadow2` z-fight belongs to ball-physics and I left it alone.
