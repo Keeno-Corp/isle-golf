@@ -1647,3 +1647,9 @@ Tee mat is paler and the golfer reads a bit better, but edge contrast is still 0
    - Then move the ducks and `pond_lily` to the hole 6 pond centre. `look` on `{state:{hole:5,skipIntro:true}}` should list `pond_lily` or the duck with pixels.
 
 SCORE: 6.9
+
+## Iteration 28
+**Did:** `src/island.js`: `cliffRocks` and `seaStacks` now have `frustumCulled = false` (and a bounding sphere computed after `rocks.count` is set), in case culling hid them. Not looked at with `look`.
+**Saw:** Nothing run this session (about 15 minutes left); no `look` or `perf` numbers.
+**Next:** `look` on `{state:{hole:1,skipIntro:true}}` to see whether `cliffRocks` or `seaStacks` left Never visible. If not, the instances sit under the grass or outside the camera view, so move them with the `out` offset. Then the golfer edge contrast (0.123) and `pin_flag` at the green.
+**Open:** Whether the culling change fixed anything is unchecked. The `toNonIndexed()` warning at `open` is unchanged.

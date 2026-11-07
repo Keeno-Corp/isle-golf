@@ -306,6 +306,7 @@ cliffRing('cliffFace', 0, 0, edgeR, 900);
     stacks.setMatrixAt(ks, m.compose(p, q, s)); stacks.setColorAt(ks++, stackCols[(Math.random() * stackCols.length) | 0].clone().lerp(new THREE.Color(1, 1, 1), 0.6));
   }
   rocks.count = k;
+  rocks.frustumCulled = false; stacks.frustumCulled = false; rocks.computeBoundingSphere?.(); stacks.computeBoundingSphere?.();
   scene.add(rocks, stacks);
 }
 
