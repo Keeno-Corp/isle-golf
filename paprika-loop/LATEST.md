@@ -1,11 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 19
-**Did**: `src/aimline.js` `updateAimLine`: putt preview `aimDots` instances now scale 2.4x (tapering to 1.44x) so the break line is thicker. Nothing else changed.
-**Saw**: No look, `test` or `perf` run this session; the change is unseen. Fault lines unchanged from Judge 18 (`divots`/`landPuffs` never seen, `toNonIndexed` warning).
-**Next**: 1) `look` at 6 units on the sloped green: `aimDots` should cover above 0.5% and bend. 2) Stage a sand wedge with real keys and look 5 frames after the first bounce for `landPuffs`/`divots`. 3) Add `ball-physics-lip` and `-minpind` checks.
-**Open**: If `puttTrack` returns only ~3 points, the dots are still sparse: interpolate between points in `updateAimLine`. Puff change from Iteration 18 still unconfirmed.
-
 ### Judge 19
 
 **Judge, session 19: ball-physics lane**
@@ -33,3 +27,9 @@ My real-key putt was not a valid pass. I waited on `meter.stage` 3, so Space fir
 3. **Give the golfer and ball more contrast.** The golfer's subject brightness is 56% against 62% around it, and the ball is 0.03–0.18% of the frame. Add a brighter ball core with a warm rim light or a slightly bigger `ball1` in flight. Check it with `look` and `sample` at the ball pixels: the ball should read as white against the green. Then verify the cup drop with a real-key 2-unit putt, expecting `ball.mode` `sunk` and a `look` frame showing the rattle.
 
 SCORE: 8.0
+
+## Iteration 20
+**Did**: `src/pools.js`: `divots` point size 0.3 -> 0.55; `puff()` now emits 2x `landPuffs` per call, longer life (0.6-1.1s). No other change.
+**Saw**: No look, `test` or `perf` run this session (short on time); change unseen. Fault lines unchanged from Judge 19.
+**Next**: 1) Place ball on real sand patch by position, play real-key wedge, `look` after first bounce for tan `landPuffs` and visible `divots`. 2) Save `ball-physics-lip` and `-minpind` checks; run `test`. 3) Brighter ball core / larger `ball1` in flight for contrast.
+**Open**: 2x puffs fill the 60-point `landPuffs` pool quickly (60 slots); raise to 90 if puffs overwrite each other. Unconfirmed in play.
