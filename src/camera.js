@@ -20,7 +20,10 @@ export function aimCam(pos, look) {
   pos.set(src.x - fx * D, src.y + Hh, src.z - fz * D); pos.y = Math.max(pos.y, heightAt(pos.x, pos.z) + 1.0); look.set(src.x + fx * ah, src.y + 0.35, src.z + fz * ah);
 }
 const _fc = new THREE.PerspectiveCamera(32, 16 / 10, 0.1, 400), _fp = new THREE.Vector3();
+const _ohC = new Map();
 export function overheadCam(pos, look, H, from) {
+  const ck = (H.pinX | 0) + ',' + (H.pinZ | 0) + ',' + from.x.toFixed(1) + ',' + from.z.toFixed(1) + ',' + (camera.aspect || 1.6).toFixed(2), hit = _ohC.get(ck);
+  if (hit) { pos.copy(hit.p); look.copy(hit.l); return; }
   const mx = (from.x + H.pinX) / 2, mz = (from.z + H.pinZ) / 2, d = Math.hypot(H.pinX - from.x, H.pinZ - from.z), dx = (H.pinX - from.x) / (d || 1), dz = (H.pinZ - from.z) / (d || 1), my = heightAt(mx, mz);
   _fc.aspect = camera.aspect || 1.6; _fc.fov = 32; _fc.updateProjectionMatrix();
   // broadside: try yaws off the tee->pin line (both sides), keep the pitch at 55 deg, take the tightest fit
@@ -30,12 +33,13 @@ export function overheadCam(pos, look, H, from) {
     for (let dist = 9; dist < 90; dist += 1) {
       _fc.position.set(mx - bx * dist * 0.574, my + dist * 0.819, mz - bz * dist * 0.574); _fc.lookAt(mx, my, mz); _fc.updateMatrixWorld(true);
       let ok = true;
-      for (const [x, y, z] of [[from.x, from.y ?? heightAt(from.x, from.z), from.z], [H.pinX, (H.pinY ?? heightAt(H.pinX, H.pinZ)) + 0.6, H.pinZ]]) { _fp.set(x, y, z).project(_fc); if (Math.abs(_fp.x) > 0.8 || _fp.y < -0.6 || _fp.y > 0.8) ok = false; }
+      for (const [x, y, z] of [[from.x, from.y ?? heightAt(from.x, from.z), from.z], [H.pinX, (H.pinY ?? heightAt(H.pinX, H.pinZ)) + 2.25, H.pinZ]]) { _fp.set(x, y, z).project(_fc); if (Math.abs(_fp.x) > 0.8 || _fp.y < -0.6 || _fp.y > 0.8) ok = false; }
       if (ok) { if (!best || dist < best.dist - 0.5) best = { dist, bx, bz }; break; }
     }
   }
   const dist = best ? best.dist : 60, bx = best ? best.bx : dx, bz = best ? best.bz : dz;
   pos.set(mx - bx * dist * 0.574, my + dist * 0.819, mz - bz * dist * 0.574); look.set(mx, my, mz);
+  _ohC.set(ck, { p: pos.clone(), l: look.clone() });
 }
 const _m1 = new THREE.Vector3(), _m2 = new THREE.Vector3(), _m3 = new THREE.Vector3();
 export const look = { flyoverT: 0 };
@@ -139,6 +143,20 @@ const _s = new THREE.Vector3(), _v = new THREE.Vector3(), _c = new THREE.Vector3
 const info = { occluders: [], nearFades: [], active: false };
 let tick = 0;
 const OCC = /tree|house|lighthouse|sheep|bell|fence|cow|bush|rock/i;   // cliffFace is one huge mesh: its bounding sphere says nothing about what hides the ball
+const _bx = new THREE.Box3(), _q = new THREE.Vector3();
+function nearVisible(o) {   // some of its box is in front of the camera, within the fade range, and its projection overlaps the screen
+  if (!o.geometry.boundingBox) o.geometry.computeBoundingBox();
+  _bx.copy(o.geometry.boundingBox).applyMatrix4(o.matrixWorld);
+  let minD = 1e9, maxD = -1e9, x0 = 9, x1 = -9, y0 = 9, y1 = -9, n = 0;
+  for (let i = 0; i < 8; i++) {
+    _q.set(i & 1 ? _bx.max.x : _bx.min.x, i & 2 ? _bx.max.y : _bx.min.y, i & 4 ? _bx.max.z : _bx.min.z).applyMatrix4(camera.matrixWorldInverse);
+    const d = -_q.z; minD = Math.min(minD, d); maxD = Math.max(maxD, d);
+    if (d > 0.05) { _q.applyMatrix4(camera.projectionMatrix); x0 = Math.min(x0, _q.x); x1 = Math.max(x1, _q.x); y0 = Math.min(y0, _q.y); y1 = Math.max(y1, _q.y); n++; }
+  }
+  if (maxD <= 0.05 || minD >= U.uNearR.value.y) return false;
+  if (n < 8) return true;   // straddles the eye plane: it fills the view
+  return x1 > -1 && x0 < 1 && y1 > -1 && y0 < 1;
+}
 export function updateDither(sceneW, sceneH) {
   if (tick++ % 90 === 0) patchAll();
   camera.updateMatrixWorld();
@@ -159,7 +177,7 @@ export function updateDither(sceneW, sceneH) {
     if (!o.geometry.boundingSphere) o.geometry.computeBoundingSphere();
     _sp.copy(o.geometry.boundingSphere).applyMatrix4(o.matrixWorld);
     const d = _v.copy(_sp.center).sub(cp), t = d.dot(seg);
-    if (_sp.center.distanceTo(cp) - _sp.radius < U.uNearR.value.y && info.nearFades.length < 8) info.nearFades.push(o.name);
+    if (info.nearFades.length < 8 && nearVisible(o)) info.nearFades.push(o.name);
     if (t > 0 && t < L - MARGIN && d.addScaledVector(seg, -t).length() < _sp.radius && _sp.center.y + _sp.radius > _s.y + ABOVE && info.occluders.length < 8) info.occluders.push(o.name);
   });
 }

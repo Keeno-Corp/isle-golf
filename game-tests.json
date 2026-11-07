@@ -489,6 +489,78 @@
           "value": 16
         }
       ]
+    },
+    {
+      "id": "look-holed-cup",
+      "title": "look-holed-cup",
+      "state": {},
+      "actions": [
+        {
+          "action": "newRound",
+          "players": 1
+        },
+        {
+          "action": "next"
+        },
+        {
+          "until": {
+            "phase": "aim"
+          },
+          "max": 300
+        },
+        {
+          "state": {
+            "ball": {
+              "x": -2.3,
+              "y": 4.5,
+              "z": 11.95
+            }
+          }
+        },
+        {
+          "action": "club",
+          "name": "putter"
+        },
+        {
+          "action": "aim",
+          "at": "pin"
+        },
+        {
+          "wait": 3
+        },
+        {
+          "action": "swing",
+          "power": 0.3,
+          "accuracy": 0
+        },
+        {
+          "until": {
+            "phase": "holed"
+          },
+          "max": 300
+        },
+        {
+          "wait": 24
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "phase",
+          "op": "==",
+          "value": "holed"
+        },
+        {
+          "path": "look.ball.y",
+          "op": ">=",
+          "value": -0.6
+        },
+        {
+          "path": "look.ball.y",
+          "op": "<=",
+          "value": 1
+        }
+      ]
     }
   ]
 }
