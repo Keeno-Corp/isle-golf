@@ -143,26 +143,29 @@ const _s = new THREE.Vector3(), _v = new THREE.Vector3(), _c = new THREE.Vector3
 const info = { occluders: [], nearFades: [], active: false };
 let tick = 0;
 const OCC = /tree|house|lighthouse|sheep|bell|fence|cow|bush|rock/i;   // cliffFace is one huge mesh: its bounding sphere says nothing about what hides the ball
-const _bx = new THREE.Box3(), _q = new THREE.Vector3();
-function nearVisible(o) {   // some of its box is in front of the camera, within the fade range, and its projection overlaps the screen
+const _q = new THREE.Vector3(), _mm = new THREE.Matrix4();
+let nearCand = [];
+const _cv = Array.from({ length: 8 }, () => new THREE.Vector3()), _cp = new THREE.Vector3();
+const EDGES = [[0,1],[2,3],[4,5],[6,7],[0,2],[1,3],[4,6],[5,7],[0,4],[1,5],[2,6],[3,7]];
+function nearVisible(o) {   // oriented box clipped to the near plane: some of it within the fade range and its projected rect overlaps the screen
   if (!o.geometry.boundingBox) o.geometry.computeBoundingBox();
-  _bx.copy(o.geometry.boundingBox).applyMatrix4(o.matrixWorld);
-  let minD = 1e9, maxD = -1e9, x0 = 9, x1 = -9, y0 = 9, y1 = -9, n = 0;
-  for (let i = 0; i < 8; i++) {
-    _q.set(i & 1 ? _bx.max.x : _bx.min.x, i & 2 ? _bx.max.y : _bx.min.y, i & 4 ? _bx.max.z : _bx.min.z).applyMatrix4(camera.matrixWorldInverse);
-    const d = -_q.z; minD = Math.min(minD, d); maxD = Math.max(maxD, d);
-    if (d > 0.05) { _q.applyMatrix4(camera.projectionMatrix); x0 = Math.min(x0, _q.x); x1 = Math.max(x1, _q.x); y0 = Math.min(y0, _q.y); y1 = Math.max(y1, _q.y); n++; }
-  }
+  const bb = o.geometry.boundingBox; _mm.multiplyMatrices(camera.matrixWorldInverse, o.matrixWorld);
+  let minD = 1e9, maxD = -1e9;
+  for (let i = 0; i < 8; i++) { _cv[i].set(i & 1 ? bb.max.x : bb.min.x, i & 2 ? bb.max.y : bb.min.y, i & 4 ? bb.max.z : bb.min.z).applyMatrix4(_mm); const d = -_cv[i].z; minD = Math.min(minD, d); maxD = Math.max(maxD, d); }
   if (maxD <= 0.05 || minD >= U.uNearR.value.y) return false;
-  if (n < 8) return true;   // straddles the eye plane: it fills the view
+  let x0 = 9, x1 = -9, y0 = 9, y1 = -9;
+  const add = v => { _q.copy(v).applyMatrix4(camera.projectionMatrix); x0 = Math.min(x0, _q.x); x1 = Math.max(x1, _q.x); y0 = Math.min(y0, _q.y); y1 = Math.max(y1, _q.y); };
+  for (let i = 0; i < 8; i++) if (-_cv[i].z > 0.05) add(_cv[i]);
+  for (const [i, j] of EDGES) { const da = -_cv[i].z - 0.05, db = -_cv[j].z - 0.05; if (da * db < 0) { _cp.lerpVectors(_cv[i], _cv[j], da / (da - db)); add(_cp); } }
   return x1 > -1 && x0 < 1 && y1 > -1 && y0 < 1;
 }
+function liveNear() { camera.updateMatrixWorld(); const r = []; for (const o of nearCand) { if (o.visible && r.length < 8 && nearVisible(o)) r.push(o.name); } return r; }
 export function updateDither(sceneW, sceneH) {
   if (tick++ % 90 === 0) patchAll();
   camera.updateMatrixWorld();
   U.uCamW.value.copy(camera.matrixWorld); U.uDR.value.x = sceneW; U.uDR.value.y = sceneH; U.uDR.value.w = camera.aspect;
   const live = (G.phase === 'aim' || G.phase === 'swing' || G.phase === 'flight' || G.phase === 'settle' || G.phase === 'holed') && !G.overhead;
-  info.occluders.length = 0; info.nearFades.length = 0; info.active = live;
+  info.occluders.length = 0; info.nearFades.length = 0; nearCand = []; info.active = live;
   if (!live) { U.uDS.value.z = -9; return; }
   if (G.phase === 'aim' || G.phase === 'swing') _s.set(golfer.bx ?? 0, (golfer.by ?? 0) + 0.45, golfer.bz ?? 0); else _s.copy(SIM.pos);
   _v.copy(_s).applyMatrix4(camera.matrixWorldInverse);
@@ -177,9 +180,9 @@ export function updateDither(sceneW, sceneH) {
     if (!o.geometry.boundingSphere) o.geometry.computeBoundingSphere();
     _sp.copy(o.geometry.boundingSphere).applyMatrix4(o.matrixWorld);
     const d = _v.copy(_sp.center).sub(cp), t = d.dot(seg);
-    if (info.nearFades.length < 8 && nearVisible(o)) info.nearFades.push(o.name);
+    nearCand.push(o);
     if (t > 0 && t < L - MARGIN && d.addScaledVector(seg, -t).length() < _sp.radius && _sp.center.y + _sp.radius > _s.y + ABOVE && info.occluders.length < 8) info.occluders.push(o.name);
   });
 }
-export const ditherState = () => ({ patched, active: info.active, subjectNdc: [+U.uDS.value.x.toFixed(3), +U.uDS.value.y.toFixed(3)], depth: +U.uDS.value.z.toFixed(2), radius: +U.uDS.value.w.toFixed(3), occluders: info.occluders.slice(), nearFades: info.nearFades.slice() });
+export const ditherState = () => ({ patched, active: info.active, subjectNdc: [+U.uDS.value.x.toFixed(3), +U.uDS.value.y.toFixed(3)], depth: +U.uDS.value.z.toFixed(2), radius: +U.uDS.value.w.toFixed(3), occluders: info.occluders.slice(), nearFades: info.active ? liveNear() : [] });
 

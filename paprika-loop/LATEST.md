@@ -1,11 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 8
-**Did**: `post.js`: `kmix` now outputs raw `c` where the alpha mask is 0 (`mix(o, c, step(0.5, m0))`), so crisp props and Bayer-discard survivors skip the Kuwahara mix; `tiltFS` (tiltH/tiltV) early-returns the raw sample when `c00.a < 0.5`, alpha unchanged. `camera.js`: `overheadCam` cached by pin/from/aspect (`_ohC`), fit endpoint pin is now pinY+2.25; `nearFades` now from new `nearVisible(o)`: projected bounding-box corners, in front of the eye, minDepth < uNearR.y and screen-rect overlap (no hardcoded names). Saved `look-holed-cup` check (real swing, no settle, `until phase holed`, wait 24, `look.ball.y` in [-0.6,1]).
-**Saw**: `test` 9/9 passed after the edits (before the new save; 10th passes when saved). Hole 1 aim: `nearFades` = tree1/2/11/16 leaves (tree16 is bottom-left on screen), dither active, radius 0.301. Real holed: at +4 frames `look.ball.y` -0.747 (camera still interpolating, close on the flag, golfer cut at the corner); at +24 frames `look.ball.y` -0.33, pitch 39.8, cup, flag and golfer all in frame. Flag shows a faint halftone from its own dither (raw alpha-0 pixels now). Faint dotted near-plane pattern at bottom right of the holed picture.
-**Next**: look at the holed camera's first ~10 frames (golfer cropped, camera lerp from aim cam); dither `subject` following the live holder; title bottom-corner `sample` after the DIO fov; before/after aim pair; check the flag halftone is not ugly at 1x.
-**Open**: the raw-bypass change was only seen at aim and holed, not zoomed on a dither circle; `perf` not run; title corners not re-sampled.
-
 ### Judge 8
 
 **Judge 8: scores**
@@ -40,3 +34,9 @@ The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.m
 3. **Course-lane notes and flag.** Keep the `pin_flag` out of the heaviest blur on far holes; at 0.091% on the hole 5 aim view it is almost invisible. Record the pink boulders in `lanes/look.md` once, then run `look` `sample` on the title at (5,400) (#218981) after any sea tweak, so the left edge stays near teal.
 
 SCORE: 7.1
+
+## Iteration 9
+**Did**: `camera.js`: `nearVisible` now transforms the oriented geometry box (not a world AABB) into view space and clips its edges against the near plane before projecting, so a box that straddles the eye plane no longer counts as "fills the view". `look.dither.nearFades` is computed live at observe time (`liveNear()` over candidates cached by `updateDither`), so it matches the current camera instead of the previous frame's. `radius` is present in `look.dither`.
+**Saw**: `test` 10/10 passed. Hole 5 aim: `nearFades` went from [tree4_leaves0, tree5_leaves0] to [tree4_leaves0]; `radius` 0.301, `active` true, `look.ball.y` -0.365. tree7/tree3 are on screen but deeper than the 3.4 fade range, so they are correctly absent. `perf` not run.
+**Next**: confirm `tree4_leaves0` really overlaps the frame (the `look` ID list marks it "not found by the ID image", so it cannot be checked from the list; try a `look` with a `camera` view); zoom on a dither circle to show the survivors are raw; save `look-dither-nearplane`; real-key putt looks at 4/12/24 frames after holed; Space-meter and scorecard pictures.
+**Open**: the `nearFades` correctness is unproven against a picture; no near-plane save; no zoomed dither picture; the pink boulders at the fence are a course-lane item.
