@@ -62,7 +62,7 @@ export function resolveShot() {
   } else if (b.mode === 'ob') {
     p.strokes++; p.pos.copy(p.prev); p.surf = p.strokes <= 2 && p.prev.distanceTo(teeVec(H)) < 0.1 ? 'tee' : surfaceAt(p.prev.x, p.prev.z); setSub((G.players.length > 1 ? p.name + ' · ' : '') + 'PLAY AGAIN FROM THE SAME SPOT, +1 STROKE');
   } else { p.pos.copy(b.pos); p.pos.y = heightAt(p.pos.x, p.pos.z) + BR * 0.8; p.surf = b.surf === 'water' ? 'rough' : surfaceAt(p.pos.x, p.pos.z); }
-  if (p.strokes >= 9 && !p.holed) { p.holed = true; p.pickedUp = true; p.scores[G.hole] = Math.max(9, p.strokes); showBanner('PICK UP', 'NINE STROKES IS PLENTY', 2); G.phase = 'holed'; G.resolveT = 2; return; }
+  if (p.strokes >= H.par + 3 && !p.holed) { p.holed = true; p.pickedUp = true; p.strokes = H.par + 3; p.scores[G.hole] = H.par + 3; G.lastResult = 'PICKED UP'; showBanner('PICKED UP', `${p.name} · ${H.par + 3} STROKES, THAT IS PLENTY`, 2); G.phase = 'holed'; G.resolveT = 2; return; }
   nextTurnOrCard();
 }
 export function nextTurnOrCard() {

@@ -25,7 +25,7 @@ export function buildCard(final) {
     h += `<tr><td class="nm"><i style="background:${p.kit.col}"></i>${p.name}</td>${cells}<td><b>${tot}</b></td><td><b>${vsPar(tot - par)}</b></td></tr>`;
   }
   h += '</table>';
-  const stamps = G.players.map(p => { const s = p.scores[G.hole]; if (s === undefined) return ''; const n = p.pickedUp ? 'PICK UP' : scoreName(s, HOLES[G.hole].par).replace('!', ''); return `<div class="stamp ${cellClass(s, HOLES[G.hole].par)}" style="--rot:${(p.i * 7 - 8)}deg"><em>${G.players.length > 1 ? p.name : 'HOLE ' + (G.hole + 1)}</em>${n}</div>`; }).join('');
+  const stamps = G.players.map(p => { const s = p.scores[G.hole]; if (s === undefined) return ''; const n = p.pickedUp ? 'PICKED UP' : scoreName(s, HOLES[G.hole].par).replace('!', ''); return `<div class="stamp ${cellClass(s, HOLES[G.hole].par)}" style="--rot:${(p.i * 7 - 8)}deg"><em>${G.players.length > 1 ? p.name : 'HOLE ' + (G.hole + 1)}</em>${n}</div>`; }).join('');
   h += `<div class="stamps">${stamps}</div>`;
   if (final) {
     const best = [...G.players].sort((a, b) => a.total - b.total)[0];
