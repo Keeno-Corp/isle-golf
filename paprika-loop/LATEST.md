@@ -1,11 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 18
-**Did**: Restored the `src/camera.js` non-putt flight camera to D 7.8 / H 3.9, as the changed PROMPT.md asks (the owner wants a wider flight view). I tried D 5.0 / H 2.8 for a moment and reverted it before any picture. The faster k 8 is unchanged. I saved five new `look-` checks in `game-tests.json`: `look-flyover-25`, `look-flyover-50`, `look-flyover-75`, `look-drive-mid` and `look-night-hole5`. The last two first failed a fresh reload with `state_not_realized`, because a top-level `state` of `hole:4, skipIntro:true` doesn't match `observe()`. I changed them to an empty `state` with `newRound` plus a `state` step in `actions`, the way `pond-costs-a-stroke` does it.
-**Saw**: `test` from a fresh reload passes 18 of 18. The drive check, with real Space ×3, reads `look.ball.y` -0.16 and `look.ball.on` true at 25 frames into flight on hole 5. The camera was at fov 33 and pitch 21.6°. The flyover reads `look.flyoverT` 0.254, 0.504 and 0.754 at 57, 114 and 171 frames, and `look.pin.on` is true at 50%. Night on hole 5 reaches phase aim, and `look.dither.nearFades` names `tree4_leaves0`. I took no pictures and ran no `perf` this session.
-**Next**: (1) Save `look-drive-early` and `look-drive-late`, and aim checks for holes 1 and 5. (2) Save the real-key holed and scorecard checks, then take the scorecard picture. (3) Make no more camera refinements until those are saved. The owner wants the wide flight view kept, so don't zoom back in on the ball.
-**Open**: `look-drive-mid` and `look-night-hole5` set their hole with a `state` step, so the fixture is not checked against `observe()`. I have not looked at a picture of the restored flight camera.
-
 ### Judge 18
 
 **Judge 18: scores**
@@ -31,3 +25,14 @@ I took two pictures this session: the hole 5 aim view (`look-1`) and a real-key 
 3. **Keep the ball readable in the wide flight view.** `ball1` is 0.026% of the picture. Don't zoom the camera in, because the owner wants it wide. Try a larger flight-time ball highlight or `ballRing` in `src/stage.js`, within the stage-owned code. Done is `look` with `sample` on the `ball1` box [630, 469, 649, 487], showing a brighter ring or halo of about 30 px with `look.ball.y` unchanged.
 
 SCORE: 7.5
+
+## The request changed
+
+paprika-loop/PROMPT.md changed before session 19; the Next lists above were written before it. Changed lines:
++ - **Iteration17 intervention / newest priority:** Owner explicitly asked WIDER flight framing; judge's >=0.06% ball and >=0.1% C-golfer rules are invented and conflict with it. Restore non-putt flight D7.8/H3.9 (iteration17 untested D6.2/H3.3 is zooming back in); keeping faster k8 is fine if proven. Do not change C again. After that NO CAMERA REFINEMENTS until missing checks saved and test rerun. Actual booleans are `look.ball.on` and `look.pin.on`, NEVER `.onScreen` (judge is giving a nonexistent path). Save separate look-flyover-25/50/75 (introDur3.8≈228frames, quarter57/half114/threequarter171), look-drive-early/mid/late (real threeSpace and three cumulative waits), look-night-hole5 (N, wait120) and aim1/5. `newRound` starts intro; `next` skips it, so do not use next in flyover checks. Fresh title Space proof separately, newRound action for deterministic flyover saved check is equivalent start input. Use look.pin.on:true at50%. `test` final fresh reload must pass all. These missing saves have been requested for6 sessions; complete them now rather than short no-proof source tweaks.
+
+## Iteration 19
+**Did**: Saved four missing checks in `game-tests.json`, copied from the `look-drive-mid` template (newRound + `state` step + real Space ×3): `look-drive-early` (8 frames after flight starts), `look-drive-late` (70 frames), `look-aim-hole1` and `look-aim-hole5` (aim, wait 10). Each expects `look.ball.on` true and `look.ball.y` within ±0.6. I made no source edits. The file was rewritten with indent 1, so the git diff is large, but the content of the existing checks is unchanged.
+**Saw**: `test` from a fresh reload passes 22 of 22 (306 s). That includes the four baseline checks and the new ids. I took no pictures and ran no `perf`.
+**Next**: (1) Take the real-key putt, holed and scorecard pictures (`until phase holed`, `wait 4` and `wait 24` with `look`, no `settle`). (2) Look at the ball's visibility in the wide flight view (a `ballRing` or halo in `src/stage.js`). (3) Record the pink-boulder shrubs once for the course lane.
+**Open**: The new aim checks use `state` steps, so the hole isn't checked against `observe()`. They only check `look.ball.on` and `look.ball.y`, not the blur band. No pictures of the restored flight camera yet.

@@ -1,965 +1,1181 @@
 {
-  "v": 1,
-  "keypoints": [
+ "v": 1,
+ "keypoints": [
+  {
+   "id": "tee-shot-three-clicks",
+   "title": "tee-shot-three-clicks",
+   "state": {},
+   "actions": [
     {
-      "id": "tee-shot-three-clicks",
-      "title": "tee-shot-three-clicks",
-      "state": {},
-      "actions": [
-        {
-          "action": "newRound",
-          "players": 1
-        },
-        {
-          "action": "next"
-        },
-        {
-          "wait": 5
-        },
-        {
-          "key": "Space"
-        },
-        {
-          "wait": 50
-        },
-        {
-          "key": "Space"
-        },
-        {
-          "wait": 28
-        },
-        {
-          "key": "Space"
-        },
-        {
-          "until": {
-            "phase": "aim",
-            "strokes": 1
-          },
-          "max": 900
-        }
-      ],
-      "frames": 0,
-      "expect": [
-        {
-          "path": "phase",
-          "op": "==",
-          "value": "aim"
-        },
-        {
-          "path": "strokes",
-          "op": "==",
-          "value": 1
-        },
-        {
-          "path": "hole",
-          "op": "==",
-          "value": 1
-        },
-        {
-          "path": "meter.stage",
-          "op": "==",
-          "value": 0
-        }
-      ]
+     "action": "newRound",
+     "players": 1
     },
     {
-      "id": "putt-drops-in-cup",
-      "title": "putt-drops-in-cup",
-      "state": {},
-      "actions": [
-        {
-          "action": "newRound",
-          "players": 1
-        },
-        {
-          "action": "next"
-        },
-        {
-          "state": {
-            "ball": {
-              "x": -1.673,
-              "z": 12.655
-            }
-          }
-        },
-        {
-          "action": "aim",
-          "at": "pin"
-        },
-        {
-          "action": "club",
-          "name": "putter"
-        },
-        {
-          "action": "swing",
-          "power": 0.054,
-          "accuracy": 0,
-          "settle": true
-        },
-        {
-          "until": {
-            "phase": "card"
-          },
-          "max": 600
-        }
-      ],
-      "frames": 0,
-      "expect": [
-        {
-          "path": "phase",
-          "op": "==",
-          "value": "card"
-        },
-        {
-          "path": "scores.0.holed",
-          "op": "==",
-          "value": true
-        },
-        {
-          "path": "scores.0.strokes",
-          "op": "==",
-          "value": 1
-        },
-        {
-          "path": "lastResult",
-          "op": "==",
-          "value": "HOLE IN ONE!"
-        }
-      ]
+     "action": "next"
     },
     {
-      "id": "pond-costs-a-stroke",
-      "title": "pond-costs-a-stroke",
-      "state": {},
-      "actions": [
-        {
-          "action": "newRound",
-          "players": 1
-        },
-        {
-          "state": {
-            "hole": 5,
-            "skipIntro": true
-          }
-        },
-        {
-          "action": "club",
-          "name": "wedge"
-        },
-        {
-          "action": "aim",
-          "degrees": 57.6
-        },
-        {
-          "action": "swing",
-          "power": 0.9,
-          "accuracy": 0,
-          "settle": true
-        },
-        {
-          "wait": 5
-        }
-      ],
-      "frames": 0,
-      "expect": [
-        {
-          "path": "phase",
-          "op": "==",
-          "value": "aim"
-        },
-        {
-          "path": "strokes",
-          "op": "==",
-          "value": 2
-        },
-        {
-          "path": "hole",
-          "op": "==",
-          "value": 6
-        },
-        {
-          "path": "banner",
-          "op": "==",
-          "value": "SPLASH!"
-        }
-      ]
+     "wait": 5
     },
     {
-      "id": "hot-seat-passes-turn",
-      "title": "hot-seat-passes-turn",
-      "state": {},
-      "actions": [
-        {
-          "action": "start",
-          "players": 2
-        },
-        {
-          "action": "next"
-        },
-        {
-          "action": "swing",
-          "power": 0.7,
-          "accuracy": 0,
-          "settle": true
-        },
-        {
-          "wait": 5
-        }
-      ],
-      "frames": 0,
-      "expect": [
-        {
-          "path": "phase",
-          "op": "==",
-          "value": "aim"
-        },
-        {
-          "path": "players",
-          "op": "==",
-          "value": 2
-        },
-        {
-          "path": "player",
-          "op": "==",
-          "value": "FINN"
-        },
-        {
-          "path": "strokes",
-          "op": "==",
-          "value": 0
-        }
-      ]
+     "key": "Space"
     },
     {
-      "id": "look-c-hole6-pitch",
-      "title": "look-c-hole6-pitch",
-      "state": {},
-      "actions": [
-        {
-          "state": {
-            "hole": 5,
-            "skipIntro": true
-          }
-        },
-        {
-          "wait": 40
-        },
-        {
-          "key": "KeyC"
-        },
-        {
-          "wait": 60
-        }
-      ],
-      "frames": 0,
-      "expect": [
-        {
-          "path": "look.camPitchDeg",
-          "op": ">=",
-          "value": 45
-        },
-        {
-          "path": "look.camPitchDeg",
-          "op": "<=",
-          "value": 65
-        },
-        {
-          "path": "look.ball.y",
-          "op": ">=",
-          "value": -1
-        },
-        {
-          "path": "look.ball.y",
-          "op": "<=",
-          "value": 1
-        },
-        {
-          "path": "look.pin.y",
-          "op": ">=",
-          "value": -1
-        },
-        {
-          "path": "look.pin.y",
-          "op": "<=",
-          "value": 1
-        }
-      ]
+     "wait": 50
     },
     {
-      "id": "look-aim-hole9-ball-lifted",
-      "title": "look-aim-hole9-ball-lifted",
-      "state": {},
-      "actions": [
-        {
-          "state": {
-            "hole": 8,
-            "skipIntro": true
-          }
-        },
-        {
-          "wait": 90
-        }
-      ],
-      "frames": 0,
-      "expect": [
-        {
-          "path": "look.ball.y",
-          "op": ">=",
-          "value": -0.58
-        },
-        {
-          "path": "look.ball.y",
-          "op": "<=",
-          "value": 0.9
-        }
-      ]
+     "key": "Space"
     },
     {
-      "id": "look-c-hole5-broadside",
-      "title": "look-c-hole5-broadside",
-      "state": {},
-      "actions": [
-        {
-          "state": {
-            "hole": 4,
-            "skipIntro": true
-          }
-        },
-        {
-          "wait": 30
-        },
-        {
-          "key": "c"
-        },
-        {
-          "wait": 90
-        }
-      ],
-      "frames": 0,
-      "expect": [
-        {
-          "path": "hole",
-          "op": "==",
-          "value": 5
-        },
-        {
-          "path": "look.camPitchDeg",
-          "op": ">=",
-          "value": 45
-        },
-        {
-          "path": "look.camPitchDeg",
-          "op": "<=",
-          "value": 65
-        },
-        {
-          "path": "look.ball.on",
-          "op": "==",
-          "value": true
-        },
-        {
-          "path": "look.pin.on",
-          "op": "==",
-          "value": true
-        }
-      ]
+     "wait": 28
     },
     {
-      "id": "look-c-hole9-broadside",
-      "title": "look-c-hole9-broadside",
-      "state": {},
-      "actions": [
-        {
-          "state": {
-            "hole": 8,
-            "skipIntro": true
-          }
-        },
-        {
-          "wait": 30
-        },
-        {
-          "key": "c"
-        },
-        {
-          "wait": 90
-        }
-      ],
-      "frames": 0,
-      "expect": [
-        {
-          "path": "hole",
-          "op": "==",
-          "value": 9
-        },
-        {
-          "path": "look.camPitchDeg",
-          "op": ">=",
-          "value": 45
-        },
-        {
-          "path": "look.camPitchDeg",
-          "op": "<=",
-          "value": 65
-        },
-        {
-          "path": "look.ball.on",
-          "op": "==",
-          "value": true
-        },
-        {
-          "path": "look.pin.on",
-          "op": "==",
-          "value": true
-        }
-      ]
+     "key": "Space"
     },
     {
-      "id": "look-dither-occluder-tree",
-      "title": "look-dither-occluder-tree",
-      "state": {},
-      "actions": [
-        {
-          "action": "newRound",
-          "players": 1
-        },
-        {
-          "action": "next"
-        },
-        {
-          "state": {
-            "hole": 4,
-            "skipIntro": true
-          }
-        },
-        {
-          "state": {
-            "ball": {
-              "x": -3,
-              "z": -5.4
-            }
-          }
-        },
-        {
-          "wait": 20
-        },
-        {
-          "key": "KeyA",
-          "frames": 12
-        },
-        {
-          "key": "KeyC"
-        },
-        {
-          "wait": 20
-        },
-        {
-          "key": "KeyC"
-        },
-        {
-          "wait": 60
-        }
-      ],
-      "frames": 0,
-      "expect": [
-        {
-          "path": "phase",
-          "op": "==",
-          "value": "aim"
-        },
-        {
-          "path": "look.dither.active",
-          "op": "==",
-          "value": true
-        },
-        {
-          "path": "look.golfer.on",
-          "op": "==",
-          "value": true
-        },
-        {
-          "path": "look.dither.depth",
-          "op": ">=",
-          "value": 4
-        },
-        {
-          "path": "look.dither.depth",
-          "op": "<=",
-          "value": 16
-        }
-      ]
-    },
-    {
-      "id": "look-holed-cup",
-      "title": "look-holed-cup",
-      "state": {},
-      "actions": [
-        {
-          "action": "newRound",
-          "players": 1
-        },
-        {
-          "action": "next"
-        },
-        {
-          "until": {
-            "phase": "aim"
-          },
-          "max": 300
-        },
-        {
-          "state": {
-            "ball": {
-              "x": -2.3,
-              "y": 4.5,
-              "z": 11.95
-            }
-          }
-        },
-        {
-          "action": "club",
-          "name": "putter"
-        },
-        {
-          "action": "aim",
-          "at": "pin"
-        },
-        {
-          "wait": 3
-        },
-        {
-          "action": "swing",
-          "power": 0.3,
-          "accuracy": 0
-        },
-        {
-          "until": {
-            "phase": "holed"
-          },
-          "max": 300
-        },
-        {
-          "wait": 24
-        }
-      ],
-      "frames": 0,
-      "expect": [
-        {
-          "path": "phase",
-          "op": "==",
-          "value": "holed"
-        },
-        {
-          "path": "look.ball.y",
-          "op": ">=",
-          "value": -0.6
-        },
-        {
-          "path": "look.ball.y",
-          "op": "<=",
-          "value": 1
-        }
-      ]
-    },
-    {
-      "id": "look-dither-hole5-tree7-circle",
-      "title": "look-dither-hole5-tree7-circle",
-      "state": {},
-      "actions": [
-        {
-          "action": "newRound",
-          "players": 1
-        },
-        {
-          "action": "next"
-        },
-        {
-          "state": {
-            "hole": 4,
-            "skipIntro": true
-          }
-        },
-        {
-          "state": {
-            "ball": {
-              "x": -3,
-              "z": -5.4
-            }
-          }
-        },
-        {
-          "wait": 20
-        },
-        {
-          "key": "KeyA",
-          "frames": 12
-        },
-        {
-          "wait": 30
-        }
-      ],
-      "frames": 0,
-      "expect": [
-        {
-          "path": "phase",
-          "op": "==",
-          "value": "aim"
-        },
-        {
-          "path": "look.dither.active",
-          "op": "==",
-          "value": true
-        },
-        {
-          "path": "look.dither.occluders.0",
-          "op": "==",
-          "value": "tree7_leaves0"
-        },
-        {
-          "path": "look.dither.radius",
-          "op": ">=",
-          "value": 0.2
-        },
-        {
-          "path": "look.dither.radius",
-          "op": "<=",
-          "value": 0.4
-        }
-      ]
-    },
-    {
-      "id": "look-dither-nearplane",
-      "title": "look-dither-nearplane",
-      "state": {},
-      "actions": [
-        {
-          "action": "newRound",
-          "players": 1
-        },
-        {
-          "action": "next"
-        },
-        {
-          "state": {
-            "hole": 4,
-            "skipIntro": true
-          }
-        },
-        {
-          "wait": 40
-        },
-        {
-          "key": "KeyA",
-          "frames": 10
-        },
-        {
-          "wait": 10
-        }
-      ],
-      "frames": 0,
-      "expect": [
-        {
-          "path": "look.dither.nearFades.0",
-          "op": "==",
-          "value": "tree4_leaves0"
-        },
-        {
-          "path": "look.dither.radius",
-          "op": ">=",
-          "value": 0.2
-        },
-        {
-          "path": "look.dither.radius",
-          "op": "<=",
-          "value": 0.4
-        },
-        {
-          "path": "phase",
-          "op": "==",
-          "value": "aim"
-        }
-      ]
-    },
-    {
-      "id": "look-sunk-cup-closeup",
-      "title": "look-sunk-cup-closeup",
-      "state": {},
-      "actions": [
-        {
-          "action": "newRound",
-          "players": 1
-        },
-        {
-          "action": "next"
-        },
-        {
-          "until": {
-            "phase": "aim"
-          },
-          "max": 300
-        },
-        {
-          "state": {
-            "ball": {
-              "x": -2.3,
-              "y": 4.5,
-              "z": 11.95
-            }
-          }
-        },
-        {
-          "action": "club",
-          "name": "putter"
-        },
-        {
-          "action": "aim",
-          "at": "pin"
-        },
-        {
-          "wait": 3
-        },
-        {
-          "key": " ",
-          "frames": 3
-        },
-        {
-          "wait": 10
-        },
-        {
-          "key": " ",
-          "frames": 3
-        },
-        {
-          "until": {
-            "phase": "settle"
-          },
-          "max": 200
-        },
-        {
-          "wait": 6
-        }
-      ],
-      "frames": 0,
-      "expect": [
-        {
-          "path": "phase",
-          "op": "==",
-          "value": "settle"
-        },
-        {
-          "path": "ball.mode",
-          "op": "==",
-          "value": "sunk"
-        },
-        {
-          "path": "look.ball.y",
-          "op": ">=",
-          "value": -0.75
-        },
-        {
-          "path": "look.ball.y",
-          "op": "<=",
-          "value": -0.3
-        },
-        {
-          "path": "camera.fov",
-          "op": ">=",
-          "value": 30
-        },
-        {
-          "path": "camera.fov",
-          "op": "<=",
-          "value": 31.9
-        }
-      ]
-    },
-    {
-      "id": "look-flyover-50",
-      "title": "look-flyover-50",
-      "state": {},
-      "actions": [
-        {
-          "action": "newRound",
-          "players": 1
-        },
-        {
-          "wait": 114
-        }
-      ],
-      "frames": 0,
-      "expect": [
-        {
-          "path": "look.pin.on",
-          "op": "==",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": "look-flyover-25",
-      "title": "look-flyover-25",
-      "state": {},
-      "actions": [
-        {
-          "action": "newRound",
-          "players": 1
-        },
-        {
-          "wait": 57
-        }
-      ],
-      "frames": 0,
-      "expect": [
-        {
-          "path": "look.flyoverT",
-          "op": ">=",
-          "value": 0.2
-        },
-        {
-          "path": "look.flyoverT",
-          "op": "<=",
-          "value": 0.3
-        },
-        {
-          "path": "phase",
-          "op": "==",
-          "value": "intro"
-        }
-      ]
-    },
-    {
-      "id": "look-flyover-75",
-      "title": "look-flyover-75",
-      "state": {},
-      "actions": [
-        {
-          "action": "newRound",
-          "players": 1
-        },
-        {
-          "wait": 171
-        }
-      ],
-      "frames": 0,
-      "expect": [
-        {
-          "path": "look.flyoverT",
-          "op": ">=",
-          "value": 0.7
-        },
-        {
-          "path": "look.flyoverT",
-          "op": "<=",
-          "value": 0.8
-        },
-        {
-          "path": "phase",
-          "op": "==",
-          "value": "intro"
-        }
-      ]
-    },
-    {
-      "id": "look-drive-mid",
-      "title": "look-drive-mid",
-      "state": {},
-      "actions": [
-        {
-          "action": "newRound",
-          "players": 1
-        },
-        {
-          "state": {
-            "hole": 4,
-            "skipIntro": true
-          }
-        },
-        {
-          "wait": 1
-        },
-        {
-          "wait": 150
-        },
-        {
-          "key": "Space"
-        },
-        {
-          "wait": 20
-        },
-        {
-          "key": "Space"
-        },
-        {
-          "wait": 20
-        },
-        {
-          "key": "Space"
-        },
-        {
-          "until": {
-            "phase": "flight"
-          }
-        },
-        {
-          "wait": 25
-        }
-      ],
-      "frames": 0,
-      "expect": [
-        {
-          "path": "look.ball.y",
-          "op": ">=",
-          "value": -0.6
-        },
-        {
-          "path": "look.ball.y",
-          "op": "<=",
-          "value": 0.6
-        },
-        {
-          "path": "look.ball.on",
-          "op": "==",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": "look-night-hole5",
-      "title": "look-night-hole5",
-      "state": {},
-      "actions": [
-        {
-          "action": "newRound",
-          "players": 1
-        },
-        {
-          "state": {
-            "hole": 4,
-            "skipIntro": true
-          }
-        },
-        {
-          "wait": 1
-        },
-        {
-          "wait": 150
-        },
-        {
-          "key": "KeyN"
-        },
-        {
-          "wait": 120
-        }
-      ],
-      "frames": 0,
-      "expect": [
-        {
-          "path": "phase",
-          "op": "==",
-          "value": "aim"
-        }
-      ]
+     "until": {
+      "phase": "aim",
+      "strokes": 1
+     },
+     "max": 900
     }
-  ]
+   ],
+   "frames": 0,
+   "expect": [
+    {
+     "path": "phase",
+     "op": "==",
+     "value": "aim"
+    },
+    {
+     "path": "strokes",
+     "op": "==",
+     "value": 1
+    },
+    {
+     "path": "hole",
+     "op": "==",
+     "value": 1
+    },
+    {
+     "path": "meter.stage",
+     "op": "==",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "id": "putt-drops-in-cup",
+   "title": "putt-drops-in-cup",
+   "state": {},
+   "actions": [
+    {
+     "action": "newRound",
+     "players": 1
+    },
+    {
+     "action": "next"
+    },
+    {
+     "state": {
+      "ball": {
+       "x": -1.673,
+       "z": 12.655
+      }
+     }
+    },
+    {
+     "action": "aim",
+     "at": "pin"
+    },
+    {
+     "action": "club",
+     "name": "putter"
+    },
+    {
+     "action": "swing",
+     "power": 0.054,
+     "accuracy": 0,
+     "settle": true
+    },
+    {
+     "until": {
+      "phase": "card"
+     },
+     "max": 600
+    }
+   ],
+   "frames": 0,
+   "expect": [
+    {
+     "path": "phase",
+     "op": "==",
+     "value": "card"
+    },
+    {
+     "path": "scores.0.holed",
+     "op": "==",
+     "value": true
+    },
+    {
+     "path": "scores.0.strokes",
+     "op": "==",
+     "value": 1
+    },
+    {
+     "path": "lastResult",
+     "op": "==",
+     "value": "HOLE IN ONE!"
+    }
+   ]
+  },
+  {
+   "id": "pond-costs-a-stroke",
+   "title": "pond-costs-a-stroke",
+   "state": {},
+   "actions": [
+    {
+     "action": "newRound",
+     "players": 1
+    },
+    {
+     "state": {
+      "hole": 5,
+      "skipIntro": true
+     }
+    },
+    {
+     "action": "club",
+     "name": "wedge"
+    },
+    {
+     "action": "aim",
+     "degrees": 57.6
+    },
+    {
+     "action": "swing",
+     "power": 0.9,
+     "accuracy": 0,
+     "settle": true
+    },
+    {
+     "wait": 5
+    }
+   ],
+   "frames": 0,
+   "expect": [
+    {
+     "path": "phase",
+     "op": "==",
+     "value": "aim"
+    },
+    {
+     "path": "strokes",
+     "op": "==",
+     "value": 2
+    },
+    {
+     "path": "hole",
+     "op": "==",
+     "value": 6
+    },
+    {
+     "path": "banner",
+     "op": "==",
+     "value": "SPLASH!"
+    }
+   ]
+  },
+  {
+   "id": "hot-seat-passes-turn",
+   "title": "hot-seat-passes-turn",
+   "state": {},
+   "actions": [
+    {
+     "action": "start",
+     "players": 2
+    },
+    {
+     "action": "next"
+    },
+    {
+     "action": "swing",
+     "power": 0.7,
+     "accuracy": 0,
+     "settle": true
+    },
+    {
+     "wait": 5
+    }
+   ],
+   "frames": 0,
+   "expect": [
+    {
+     "path": "phase",
+     "op": "==",
+     "value": "aim"
+    },
+    {
+     "path": "players",
+     "op": "==",
+     "value": 2
+    },
+    {
+     "path": "player",
+     "op": "==",
+     "value": "FINN"
+    },
+    {
+     "path": "strokes",
+     "op": "==",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "id": "look-c-hole6-pitch",
+   "title": "look-c-hole6-pitch",
+   "state": {},
+   "actions": [
+    {
+     "state": {
+      "hole": 5,
+      "skipIntro": true
+     }
+    },
+    {
+     "wait": 40
+    },
+    {
+     "key": "KeyC"
+    },
+    {
+     "wait": 60
+    }
+   ],
+   "frames": 0,
+   "expect": [
+    {
+     "path": "look.camPitchDeg",
+     "op": ">=",
+     "value": 45
+    },
+    {
+     "path": "look.camPitchDeg",
+     "op": "<=",
+     "value": 65
+    },
+    {
+     "path": "look.ball.y",
+     "op": ">=",
+     "value": -1
+    },
+    {
+     "path": "look.ball.y",
+     "op": "<=",
+     "value": 1
+    },
+    {
+     "path": "look.pin.y",
+     "op": ">=",
+     "value": -1
+    },
+    {
+     "path": "look.pin.y",
+     "op": "<=",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": "look-aim-hole9-ball-lifted",
+   "title": "look-aim-hole9-ball-lifted",
+   "state": {},
+   "actions": [
+    {
+     "state": {
+      "hole": 8,
+      "skipIntro": true
+     }
+    },
+    {
+     "wait": 90
+    }
+   ],
+   "frames": 0,
+   "expect": [
+    {
+     "path": "look.ball.y",
+     "op": ">=",
+     "value": -0.58
+    },
+    {
+     "path": "look.ball.y",
+     "op": "<=",
+     "value": 0.9
+    }
+   ]
+  },
+  {
+   "id": "look-c-hole5-broadside",
+   "title": "look-c-hole5-broadside",
+   "state": {},
+   "actions": [
+    {
+     "state": {
+      "hole": 4,
+      "skipIntro": true
+     }
+    },
+    {
+     "wait": 30
+    },
+    {
+     "key": "c"
+    },
+    {
+     "wait": 90
+    }
+   ],
+   "frames": 0,
+   "expect": [
+    {
+     "path": "hole",
+     "op": "==",
+     "value": 5
+    },
+    {
+     "path": "look.camPitchDeg",
+     "op": ">=",
+     "value": 45
+    },
+    {
+     "path": "look.camPitchDeg",
+     "op": "<=",
+     "value": 65
+    },
+    {
+     "path": "look.ball.on",
+     "op": "==",
+     "value": true
+    },
+    {
+     "path": "look.pin.on",
+     "op": "==",
+     "value": true
+    }
+   ]
+  },
+  {
+   "id": "look-c-hole9-broadside",
+   "title": "look-c-hole9-broadside",
+   "state": {},
+   "actions": [
+    {
+     "state": {
+      "hole": 8,
+      "skipIntro": true
+     }
+    },
+    {
+     "wait": 30
+    },
+    {
+     "key": "c"
+    },
+    {
+     "wait": 90
+    }
+   ],
+   "frames": 0,
+   "expect": [
+    {
+     "path": "hole",
+     "op": "==",
+     "value": 9
+    },
+    {
+     "path": "look.camPitchDeg",
+     "op": ">=",
+     "value": 45
+    },
+    {
+     "path": "look.camPitchDeg",
+     "op": "<=",
+     "value": 65
+    },
+    {
+     "path": "look.ball.on",
+     "op": "==",
+     "value": true
+    },
+    {
+     "path": "look.pin.on",
+     "op": "==",
+     "value": true
+    }
+   ]
+  },
+  {
+   "id": "look-dither-occluder-tree",
+   "title": "look-dither-occluder-tree",
+   "state": {},
+   "actions": [
+    {
+     "action": "newRound",
+     "players": 1
+    },
+    {
+     "action": "next"
+    },
+    {
+     "state": {
+      "hole": 4,
+      "skipIntro": true
+     }
+    },
+    {
+     "state": {
+      "ball": {
+       "x": -3,
+       "z": -5.4
+      }
+     }
+    },
+    {
+     "wait": 20
+    },
+    {
+     "key": "KeyA",
+     "frames": 12
+    },
+    {
+     "key": "KeyC"
+    },
+    {
+     "wait": 20
+    },
+    {
+     "key": "KeyC"
+    },
+    {
+     "wait": 60
+    }
+   ],
+   "frames": 0,
+   "expect": [
+    {
+     "path": "phase",
+     "op": "==",
+     "value": "aim"
+    },
+    {
+     "path": "look.dither.active",
+     "op": "==",
+     "value": true
+    },
+    {
+     "path": "look.golfer.on",
+     "op": "==",
+     "value": true
+    },
+    {
+     "path": "look.dither.depth",
+     "op": ">=",
+     "value": 4
+    },
+    {
+     "path": "look.dither.depth",
+     "op": "<=",
+     "value": 16
+    }
+   ]
+  },
+  {
+   "id": "look-holed-cup",
+   "title": "look-holed-cup",
+   "state": {},
+   "actions": [
+    {
+     "action": "newRound",
+     "players": 1
+    },
+    {
+     "action": "next"
+    },
+    {
+     "until": {
+      "phase": "aim"
+     },
+     "max": 300
+    },
+    {
+     "state": {
+      "ball": {
+       "x": -2.3,
+       "y": 4.5,
+       "z": 11.95
+      }
+     }
+    },
+    {
+     "action": "club",
+     "name": "putter"
+    },
+    {
+     "action": "aim",
+     "at": "pin"
+    },
+    {
+     "wait": 3
+    },
+    {
+     "action": "swing",
+     "power": 0.3,
+     "accuracy": 0
+    },
+    {
+     "until": {
+      "phase": "holed"
+     },
+     "max": 300
+    },
+    {
+     "wait": 24
+    }
+   ],
+   "frames": 0,
+   "expect": [
+    {
+     "path": "phase",
+     "op": "==",
+     "value": "holed"
+    },
+    {
+     "path": "look.ball.y",
+     "op": ">=",
+     "value": -0.6
+    },
+    {
+     "path": "look.ball.y",
+     "op": "<=",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": "look-dither-hole5-tree7-circle",
+   "title": "look-dither-hole5-tree7-circle",
+   "state": {},
+   "actions": [
+    {
+     "action": "newRound",
+     "players": 1
+    },
+    {
+     "action": "next"
+    },
+    {
+     "state": {
+      "hole": 4,
+      "skipIntro": true
+     }
+    },
+    {
+     "state": {
+      "ball": {
+       "x": -3,
+       "z": -5.4
+      }
+     }
+    },
+    {
+     "wait": 20
+    },
+    {
+     "key": "KeyA",
+     "frames": 12
+    },
+    {
+     "wait": 30
+    }
+   ],
+   "frames": 0,
+   "expect": [
+    {
+     "path": "phase",
+     "op": "==",
+     "value": "aim"
+    },
+    {
+     "path": "look.dither.active",
+     "op": "==",
+     "value": true
+    },
+    {
+     "path": "look.dither.occluders.0",
+     "op": "==",
+     "value": "tree7_leaves0"
+    },
+    {
+     "path": "look.dither.radius",
+     "op": ">=",
+     "value": 0.2
+    },
+    {
+     "path": "look.dither.radius",
+     "op": "<=",
+     "value": 0.4
+    }
+   ]
+  },
+  {
+   "id": "look-dither-nearplane",
+   "title": "look-dither-nearplane",
+   "state": {},
+   "actions": [
+    {
+     "action": "newRound",
+     "players": 1
+    },
+    {
+     "action": "next"
+    },
+    {
+     "state": {
+      "hole": 4,
+      "skipIntro": true
+     }
+    },
+    {
+     "wait": 40
+    },
+    {
+     "key": "KeyA",
+     "frames": 10
+    },
+    {
+     "wait": 10
+    }
+   ],
+   "frames": 0,
+   "expect": [
+    {
+     "path": "look.dither.nearFades.0",
+     "op": "==",
+     "value": "tree4_leaves0"
+    },
+    {
+     "path": "look.dither.radius",
+     "op": ">=",
+     "value": 0.2
+    },
+    {
+     "path": "look.dither.radius",
+     "op": "<=",
+     "value": 0.4
+    },
+    {
+     "path": "phase",
+     "op": "==",
+     "value": "aim"
+    }
+   ]
+  },
+  {
+   "id": "look-sunk-cup-closeup",
+   "title": "look-sunk-cup-closeup",
+   "state": {},
+   "actions": [
+    {
+     "action": "newRound",
+     "players": 1
+    },
+    {
+     "action": "next"
+    },
+    {
+     "until": {
+      "phase": "aim"
+     },
+     "max": 300
+    },
+    {
+     "state": {
+      "ball": {
+       "x": -2.3,
+       "y": 4.5,
+       "z": 11.95
+      }
+     }
+    },
+    {
+     "action": "club",
+     "name": "putter"
+    },
+    {
+     "action": "aim",
+     "at": "pin"
+    },
+    {
+     "wait": 3
+    },
+    {
+     "key": " ",
+     "frames": 3
+    },
+    {
+     "wait": 10
+    },
+    {
+     "key": " ",
+     "frames": 3
+    },
+    {
+     "until": {
+      "phase": "settle"
+     },
+     "max": 200
+    },
+    {
+     "wait": 6
+    }
+   ],
+   "frames": 0,
+   "expect": [
+    {
+     "path": "phase",
+     "op": "==",
+     "value": "settle"
+    },
+    {
+     "path": "ball.mode",
+     "op": "==",
+     "value": "sunk"
+    },
+    {
+     "path": "look.ball.y",
+     "op": ">=",
+     "value": -0.75
+    },
+    {
+     "path": "look.ball.y",
+     "op": "<=",
+     "value": -0.3
+    },
+    {
+     "path": "camera.fov",
+     "op": ">=",
+     "value": 30
+    },
+    {
+     "path": "camera.fov",
+     "op": "<=",
+     "value": 31.9
+    }
+   ]
+  },
+  {
+   "id": "look-flyover-50",
+   "title": "look-flyover-50",
+   "state": {},
+   "actions": [
+    {
+     "action": "newRound",
+     "players": 1
+    },
+    {
+     "wait": 114
+    }
+   ],
+   "frames": 0,
+   "expect": [
+    {
+     "path": "look.pin.on",
+     "op": "==",
+     "value": true
+    }
+   ]
+  },
+  {
+   "id": "look-flyover-25",
+   "title": "look-flyover-25",
+   "state": {},
+   "actions": [
+    {
+     "action": "newRound",
+     "players": 1
+    },
+    {
+     "wait": 57
+    }
+   ],
+   "frames": 0,
+   "expect": [
+    {
+     "path": "look.flyoverT",
+     "op": ">=",
+     "value": 0.2
+    },
+    {
+     "path": "look.flyoverT",
+     "op": "<=",
+     "value": 0.3
+    },
+    {
+     "path": "phase",
+     "op": "==",
+     "value": "intro"
+    }
+   ]
+  },
+  {
+   "id": "look-flyover-75",
+   "title": "look-flyover-75",
+   "state": {},
+   "actions": [
+    {
+     "action": "newRound",
+     "players": 1
+    },
+    {
+     "wait": 171
+    }
+   ],
+   "frames": 0,
+   "expect": [
+    {
+     "path": "look.flyoverT",
+     "op": ">=",
+     "value": 0.7
+    },
+    {
+     "path": "look.flyoverT",
+     "op": "<=",
+     "value": 0.8
+    },
+    {
+     "path": "phase",
+     "op": "==",
+     "value": "intro"
+    }
+   ]
+  },
+  {
+   "id": "look-drive-mid",
+   "title": "look-drive-mid",
+   "state": {},
+   "actions": [
+    {
+     "action": "newRound",
+     "players": 1
+    },
+    {
+     "state": {
+      "hole": 4,
+      "skipIntro": true
+     }
+    },
+    {
+     "wait": 1
+    },
+    {
+     "wait": 150
+    },
+    {
+     "key": "Space"
+    },
+    {
+     "wait": 20
+    },
+    {
+     "key": "Space"
+    },
+    {
+     "wait": 20
+    },
+    {
+     "key": "Space"
+    },
+    {
+     "until": {
+      "phase": "flight"
+     }
+    },
+    {
+     "wait": 25
+    }
+   ],
+   "frames": 0,
+   "expect": [
+    {
+     "path": "look.ball.y",
+     "op": ">=",
+     "value": -0.6
+    },
+    {
+     "path": "look.ball.y",
+     "op": "<=",
+     "value": 0.6
+    },
+    {
+     "path": "look.ball.on",
+     "op": "==",
+     "value": true
+    }
+   ]
+  },
+  {
+   "id": "look-night-hole5",
+   "title": "look-night-hole5",
+   "state": {},
+   "actions": [
+    {
+     "action": "newRound",
+     "players": 1
+    },
+    {
+     "state": {
+      "hole": 4,
+      "skipIntro": true
+     }
+    },
+    {
+     "wait": 1
+    },
+    {
+     "wait": 150
+    },
+    {
+     "key": "KeyN"
+    },
+    {
+     "wait": 120
+    }
+   ],
+   "frames": 0,
+   "expect": [
+    {
+     "path": "phase",
+     "op": "==",
+     "value": "aim"
+    }
+   ]
+  },
+  {
+   "id": "look-drive-early",
+   "title": "look-drive-early",
+   "state": {},
+   "actions": [
+    {
+     "action": "newRound",
+     "players": 1
+    },
+    {
+     "state": {
+      "hole": 4,
+      "skipIntro": true
+     }
+    },
+    {
+     "wait": 1
+    },
+    {
+     "wait": 150
+    },
+    {
+     "key": "Space"
+    },
+    {
+     "wait": 20
+    },
+    {
+     "key": "Space"
+    },
+    {
+     "wait": 20
+    },
+    {
+     "key": "Space"
+    },
+    {
+     "until": {
+      "phase": "flight"
+     }
+    },
+    {
+     "wait": 8
+    }
+   ],
+   "frames": 0,
+   "expect": [
+    {
+     "path": "look.ball.y",
+     "op": ">=",
+     "value": -0.6
+    },
+    {
+     "path": "look.ball.y",
+     "op": "<=",
+     "value": 0.6
+    },
+    {
+     "path": "look.ball.on",
+     "op": "==",
+     "value": true
+    }
+   ]
+  },
+  {
+   "id": "look-drive-late",
+   "title": "look-drive-late",
+   "state": {},
+   "actions": [
+    {
+     "action": "newRound",
+     "players": 1
+    },
+    {
+     "state": {
+      "hole": 4,
+      "skipIntro": true
+     }
+    },
+    {
+     "wait": 1
+    },
+    {
+     "wait": 150
+    },
+    {
+     "key": "Space"
+    },
+    {
+     "wait": 20
+    },
+    {
+     "key": "Space"
+    },
+    {
+     "wait": 20
+    },
+    {
+     "key": "Space"
+    },
+    {
+     "until": {
+      "phase": "flight"
+     }
+    },
+    {
+     "wait": 70
+    }
+   ],
+   "frames": 0,
+   "expect": [
+    {
+     "path": "look.ball.y",
+     "op": ">=",
+     "value": -0.6
+    },
+    {
+     "path": "look.ball.y",
+     "op": "<=",
+     "value": 0.6
+    },
+    {
+     "path": "look.ball.on",
+     "op": "==",
+     "value": true
+    }
+   ]
+  },
+  {
+   "id": "look-aim-hole1",
+   "title": "look-aim-hole1",
+   "state": {},
+   "actions": [
+    {
+     "action": "newRound",
+     "players": 1
+    },
+    {
+     "state": {
+      "hole": 0,
+      "skipIntro": true
+     }
+    },
+    {
+     "wait": 1
+    },
+    {
+     "wait": 150
+    },
+    {
+     "wait": 10
+    }
+   ],
+   "frames": 0,
+   "expect": [
+    {
+     "path": "look.ball.y",
+     "op": ">=",
+     "value": -0.6
+    },
+    {
+     "path": "look.ball.y",
+     "op": "<=",
+     "value": 0.6
+    },
+    {
+     "path": "look.ball.on",
+     "op": "==",
+     "value": true
+    }
+   ]
+  },
+  {
+   "id": "look-aim-hole5",
+   "title": "look-aim-hole5",
+   "state": {},
+   "actions": [
+    {
+     "action": "newRound",
+     "players": 1
+    },
+    {
+     "state": {
+      "hole": 4,
+      "skipIntro": true
+     }
+    },
+    {
+     "wait": 1
+    },
+    {
+     "wait": 150
+    },
+    {
+     "wait": 10
+    }
+   ],
+   "frames": 0,
+   "expect": [
+    {
+     "path": "look.ball.y",
+     "op": ">=",
+     "value": -0.6
+    },
+    {
+     "path": "look.ball.y",
+     "op": "<=",
+     "value": 0.6
+    },
+    {
+     "path": "look.ball.on",
+     "op": "==",
+     "value": true
+    }
+   ]
+  }
+ ]
 }
