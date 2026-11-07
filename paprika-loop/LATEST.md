@@ -1,11 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 11
-**Did** `src/pose.js` `poseNm`: `backswing` now reports whenever `G.m.stage` is 1 or 2 in phase `aim` or `meter` (the HUD shows the meter during `aim`, so the old `phase === 'meter'` test never held; this is why Judge 10 saw no `backswing`).
-**Saw** Syntax check only (`node --check`); no `look`, `interact` or `perf` this session.
-**Next** 1) Drive trace of `creatures.golferClip` expecting address, backswing, downswing, follow. 2) Hole-out checks for Dance_Loop, Dismay, Celebration (no `setState` ball with x, z only; use `swing` action or eval). 3) `creatures-kit-colours`, bonk replay, `asset_search` for golfer and sheep; footballer look and brighter cap.
-**Open** Backswing, reactions, kit colours, bonk, footballer view all still unproven.
-
 ### Judge 11
 
 **Judge 11.** I played one real-key drive on hole 1 with a trace of `golferClip`, then a putt attempt and `perf`. The putt did not hole out, so the par, bogey and birdie reactions, the sheep bonk and the 2-player shirt are still unseen. I did not retry `asset_search`.
@@ -55,3 +49,9 @@ The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.m
    - Run `asset_search` for "low poly golfer" and "low poly sheep" and record the hit or miss in `lanes/creatures.md`.
 
 SCORE: 5.8
+
+## Iteration 12
+**Did** No source change. Opened the game, started a 1-player game, and called `golferClip` through `import('/src/golfer.js')` in `eval`. Added a Session 12 note to `lanes/creatures.md`.
+**Saw** `creatures.golferClip` read `Dance_Loop`, `Dismay` and `Celebration` in turn, so all three reaction clips work. The Celebration look shows the arms up, a red shirt, `golfer_cap` and `golfer_face`. The golfer takes 0.56% of the picture, edge contrast 0.146 (above 0.1), subject 63% against 57% around it. Firing `holed` with `{result:'PAR'}` did not change the clip: par and birdie are played by `src/round.js:52`, not by `src/pose.js`. `Never visible` still lists `cow_hide`, `cliffRocks`, `seaStacks`, `fencePosts`, `fenceRails` and `divots`. `footballer_helmetShell`, `footballer_helmetStripe` and `footballer_facemask` are still "Not found by the ID image". No `perf`, no saved check, no `asset_search`.
+**Next** 1) A real hole-out: real swings to the green, then putt with `until:{phase:"holed"}`, and save `creatures-par-dance`. 2) A `look` of the footballer, `camera` [-15,3,14.5] → [-11.5,1,12.8]. 3) `creatures-kit-colours` in a 1-player and a 2-player game, and the bonk replay.
+**Open** The reactions are proven only by calling `golferClip` directly, not by a real hole-out. Kit colours, the sheep bonk and the footballer's clean helmet are still unproven.
