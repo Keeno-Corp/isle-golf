@@ -814,6 +814,80 @@
           "value": 10.8
         }
       ]
+    },
+    {
+      "id": "ball-physics-slope-break",
+      "title": "ball-physics-slope-break",
+      "state": {},
+      "actions": [
+        {
+          "action": "newRound",
+          "players": 1
+        },
+        {
+          "action": "start",
+          "players": 1
+        },
+        {
+          "action": "next"
+        },
+        {
+          "wait": 20
+        },
+        {
+          "state": {
+            "ball": {
+              "x": -5.7,
+              "z": 11.95
+            }
+          }
+        },
+        {
+          "action": "club",
+          "name": "putter"
+        },
+        {
+          "action": "aim",
+          "at": "pin"
+        },
+        {
+          "wait": 5
+        },
+        {
+          "key": "Space",
+          "frames": 1
+        },
+        {
+          "wait": 40
+        },
+        {
+          "key": "Space",
+          "frames": 1
+        },
+        {
+          "wait": 30
+        },
+        {
+          "key": "Space",
+          "frames": 1
+        },
+        {
+          "wait": 120
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "physics.puttBreak",
+          "op": ">=",
+          "value": 0.2
+        },
+        {
+          "path": "physics.puttBreak",
+          "op": "<=",
+          "value": 5
+        }
+      ]
     }
   ]
 }

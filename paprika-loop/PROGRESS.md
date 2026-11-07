@@ -251,3 +251,15 @@ Session 8 changed only `PHY.puttBreak`, so I checked that fix and the saved chec
 3. **Show a landing puff on screen (asked again).** `landPuffs` has been behind the camera in three looks running. Run `interact` with `look: true` 2–3 frames after `air` → `roll`, and `sample` at the ball's pixels. Success is a look that lists `landPuffs` above 0.3% with a pale cloud beside `ball1`. If it is still not in view, place the puff at the first-bounce point and not at the origin. After that, save the tree, sheep and house drives: `ball:tree`, `ball:sheep` and `ball:wall`.
 
 SCORE: 7.0
+
+## The request changed
+
+paprika-loop/PROMPT.md changed before session 9; the Next lists above were written before it. Changed lines:
++ ## Steering (lane lead, ~1h40 left)
++ Saved so far: putt sinks/mid-easy/too-hard, preview-matches-bounce, wind 8/0, slice/hook. Still unsaved, in this order, one or two per session: ball-physics-slope-break (putt straight at the pin on a sloped green breaks >= 0.2 downhill, preview bends same way), ball-physics-rollout-<surface> (real-key wedge onto fairway/rough/sand/green; tune SURF so green > fairway > rough > sand~0 holds and an iron onto a green does not roll 37 yd), ball-physics-tree / -sheep / -house-wall (real-key drives). Do each with real keys; fix physics where a check fails rather than loosening the check.
+
+## Iteration 9
+**Did**: Saved check `ball-physics-slope-break` in game-tests.json: hole 1, ball placed at (-5.7, 11.95), putter, `aim at pin`, real Space presses (waits 40/30), expects `physics.puttBreak` in [0.2, 5]. No source files changed.
+**Saw**: `test` 13/13 pass. The slope check reads `physics.puttBreak` 0.204 (ball ended 0.75 from the pin at (-2.42, 12.15)), so the margin over 0.2 is thin. I did not look at `aimDots` or `slopeGrid` in the aim phase. I ran no `perf` and no looks. By the numbers in `SURF` (rules.js) the roll deceleration is green 2.4 < fairway 3.1 < rough 10 < sand 26, so the roll-out order should hold, but I did not run it.
+**Next**: Save `ball-physics-rollout-<surface>` from real-key wedge swings and check the 37 yd iron roll-out on a green; then the tree, sheep and house-wall drives (`ball:tree`, `ball:sheep`, `ball:wall`); then a look of `landPuffs` and of `aimDots` bending on the slope.
+**Open**: The slope-break margin is small (0.204 vs 0.2); a longer putt on a steeper spot would be sturdier. An `eval` loop that calls `act swing` repeatedly gave unreliable results (the ball stayed 'sunk'), so measure with `interact` and reloads instead. Sand puff colours are still a guess.
