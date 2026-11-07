@@ -234,13 +234,13 @@
     {
       "id": "look-c-hole6-pitch",
       "title": "look-c-hole6-pitch",
-      "state": {
-        "hole": 5,
-        "skipIntro": true
-      },
+      "state": {},
       "actions": [
         {
-          "wait": 1
+          "state": {
+            "hole": 5,
+            "skipIntro": true
+          }
         },
         {
           "wait": 40
@@ -289,13 +289,13 @@
     {
       "id": "look-aim-hole9-ball-lifted",
       "title": "look-aim-hole9-ball-lifted",
-      "state": {
-        "hole": 8,
-        "skipIntro": true
-      },
+      "state": {},
       "actions": [
         {
-          "wait": 1
+          "state": {
+            "hole": 8,
+            "skipIntro": true
+          }
         },
         {
           "wait": 90
@@ -312,6 +312,181 @@
           "path": "look.ball.y",
           "op": "<=",
           "value": 0.9
+        }
+      ]
+    },
+    {
+      "id": "look-c-hole5-broadside",
+      "title": "look-c-hole5-broadside",
+      "state": {},
+      "actions": [
+        {
+          "state": {
+            "hole": 4,
+            "skipIntro": true
+          }
+        },
+        {
+          "wait": 30
+        },
+        {
+          "key": "c"
+        },
+        {
+          "wait": 90
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "hole",
+          "op": "==",
+          "value": 5
+        },
+        {
+          "path": "look.camPitchDeg",
+          "op": ">=",
+          "value": 45
+        },
+        {
+          "path": "look.camPitchDeg",
+          "op": "<=",
+          "value": 65
+        },
+        {
+          "path": "look.ball.on",
+          "op": "==",
+          "value": true
+        },
+        {
+          "path": "look.pin.on",
+          "op": "==",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "look-c-hole9-broadside",
+      "title": "look-c-hole9-broadside",
+      "state": {},
+      "actions": [
+        {
+          "state": {
+            "hole": 8,
+            "skipIntro": true
+          }
+        },
+        {
+          "wait": 30
+        },
+        {
+          "key": "c"
+        },
+        {
+          "wait": 90
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "hole",
+          "op": "==",
+          "value": 9
+        },
+        {
+          "path": "look.camPitchDeg",
+          "op": ">=",
+          "value": 45
+        },
+        {
+          "path": "look.camPitchDeg",
+          "op": "<=",
+          "value": 65
+        },
+        {
+          "path": "look.ball.on",
+          "op": "==",
+          "value": true
+        },
+        {
+          "path": "look.pin.on",
+          "op": "==",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "look-dither-occluder-tree",
+      "title": "look-dither-occluder-tree",
+      "state": {},
+      "actions": [
+        {
+          "action": "newRound",
+          "players": 1
+        },
+        {
+          "action": "next"
+        },
+        {
+          "state": {
+            "hole": 4,
+            "skipIntro": true
+          }
+        },
+        {
+          "state": {
+            "ball": {
+              "x": -3,
+              "z": -5.4
+            }
+          }
+        },
+        {
+          "wait": 20
+        },
+        {
+          "key": "KeyA",
+          "frames": 12
+        },
+        {
+          "key": "KeyC"
+        },
+        {
+          "wait": 20
+        },
+        {
+          "key": "KeyC"
+        },
+        {
+          "wait": 60
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "phase",
+          "op": "==",
+          "value": "aim"
+        },
+        {
+          "path": "look.dither.active",
+          "op": "==",
+          "value": true
+        },
+        {
+          "path": "look.golfer.on",
+          "op": "==",
+          "value": true
+        },
+        {
+          "path": "look.dither.depth",
+          "op": ">=",
+          "value": 4
+        },
+        {
+          "path": "look.dither.depth",
+          "op": "<=",
+          "value": 16
         }
       ]
     }

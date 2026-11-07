@@ -1,12 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 4
-**Did** (camera.js): `overheadCam` now fits instead of using a fixed multiple of the distance: it steps `dist` from 9 up and projects tee and pin through a scratch camera (`_fc`) until both sit inside NDC x ±0.8, y -0.6..0.8; look-at stays at their midpoint.
-**Saw**: Hole 5 C (before the final 0.8/-0.6/0.8 loosening, which was 0.7/-0.55/0.75): pitch 55, camera y 49, ball y -0.548, pin y 0.50, golfer 0.007% of the picture, `sea` 47%. The shot is limited by the tee-to-pin span on a 55° view (hole 5 is 20 units), not by the old multiplier, so the judge's "golfer over 0.1%, sea under 15%" cannot hold on long holes with the tee and pin both in frame. Not run: holes 6 and 9, `perf`, critic views, flag post pass, flyover leg, `look-` saves.
-**Next**: (1) check C on holes 6 and 9 after the loosening; (2) flag crispness in post.js and the pink `cliffRocks` note in lanes/look.md; (3) ease the 75% flyover leg, re-record `look-` saves; (4) consider a follow C that centres on the ball while the pin stays on screen, for shorter shots.
-**Open**: C golfer is still tiny on long holes; the judge's target likely needs a different rule (frame ball and pin only once the ball has moved).
-**Checked after the final edit (0.8 / -0.6 / 0.8)**: hole 9 C: no console errors, pitch 55, camera y 76, ball y -0.598, pin y 0.508, golfer 0.0025%, `sea` 65%. The fit does what it is told. Both points sit at the limits and the long par 5 stays an island view. Holes 5 and 6 with the final limits were not rechecked.
-
 ### Judge 4
 
 **Judge 4: scores**
@@ -27,3 +20,19 @@ The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.m
 3. **Flyover's last leg and `look-` saves (Must have 4 and 12, asked again).** Ease the pitch and position so the ball stays above y -0.6 before the aim camera lands. Show it with `look` `sheet` on hole 9 from the intro, at 25%, 50% and 75%, with `look.ball.y` read at each. Then re-record the `look-` saves (night, flyover, C on holes 5 and 9, the drive) with `interact` `save` and rerun them with `test`.
 
 SCORE: 5.9
+
+## The request changed
+
+paprika-loop/PROMPT.md changed before session 5; the Next lists above were written before it. Changed lines:
++ ## Supervisor steering (after iteration 4)
++ - The ONLY C acceptance is actual pitch 45–65° (target 55°), both tee/current ball and current pin on screen, perspective never flat top-down. On a long par 5, fitting both necessarily makes the golfer small and can show sea/island. Do not waste iterations chasing the judge's invented >0.1% golfer-area or <15% sea-share targets; those conflict with the owner's whole-hole framing requirement. A tightly fitted tee/pin frame at 55° with useful margin is correct. Ship that and move on to the unrun checks.
++ - Prioritize owner feedback wider aim/flight framing and less blocky ground, then prove all holes 1/5/9 aim, C 5/6/9, flyover 25/50/75, real-key drive three moments, a real-key putt/drop, N readability, sea sample and four-view critic. The saved checks must be rerun, not just written.
++ - State hole fixtures are zero-based (0=hole1,4=hole5,5=hole6,8=hole9). Verify observe().hole before every proof. Never set phase, intro timer or ball outcome to satisfy a check.
++ - At flyover percentages verify look.flyoverT in observe; do not accidentally skip it by a second Space or leave a holding key pressed. Match real stepped frames to G.introDur. A ball being offscreen during the wide flyover is acceptable until final behind-ball leg; pin MUST be in frame at 50%.
++ - Other lanes have not been merged into this checkout: baseline thin/all flags, pink boulder shrubs, football-player model and SFX.gull error are owned by the other lanes and will be integrated later. Record them once, do not let these reduce owned-work scores or edit outside the ownership list.
+
+## Iteration 5
+**Did**: (1) `overheadCam` (camera.js) now tries yaws off the tee→pin line (0, ±0.5, ±0.9, ±1.2, ±1.4 rad), pitch fixed at 55°, takes the tightest fitting distance: C is broadside. (2) Flyover: mid-leg `mp` lowered pull-back/raised (7 behind, +11 up) and `c = smooth(0.6,1,u)` so the aim camera lands earlier. (3) New `src/dither.js` (imported from camera.js, patched once before the first compile, re-swept every 90 frames): Odyssey-style Bayer screen-door discard, near-plane fade plus an occluder hole around the golfer/ball; `look.dither` in observe. (4) `game-tests.json`: the four `look-` saves had leading `state` that the checker rejected (hole is 1-based in observe); moved state into actions; added `look-c-hole5-broadside`, `look-c-hole9-broadside`, `look-dither-occluder-tree`. `test`: 9 of 9 pass.
+**Saw**: C pitch 55, ball and pin on screen: hole 9 camera y 42 (was 76), `sea` 15% (was 65%), pin y 0.39, ball y -0.40; hole 6 camera y 21.7, golfer 0.069%, `sea` 6.9%; hole 5 camera y 27, pin 0.41, ball -0.34. Flyover on hole 9 (225 frames): 25% pitch 73, ball and pin off screen; 50% pitch 47.6, pin on screen (y 0.84); 75% pitch 23, ball y -1.9 (off; accepted before the final leg). Dither: ball fixture at (-3,-5.4) on hole 5 aim 180: the tree7 canopy fills the view and the golfer shows through a crisp dithered circle (picture look-7). `perf`: 181 draws, 367k tris, 69 programs, unchanged (SwiftShader 939 ms, noise). Not run: night, sea sample, meter/scorecard/holed views, real-key drive moments, near-plane saved check.
+**Next**: (1) land the ball above y -0.6 earlier in the flyover (75%) without losing the pin at 50%; (2) a saved near-plane clipping check and a putt/flight dither look; (3) sea sample vs #0f6a67, critic views (meter, scorecard, holed), real-key drive three moments; (4) flag crispness in post.js; title/DIO framing for the course lane's SPREAD 1.12 island.
+**Open**: dither `occluders` metadata uses bounding spheres, so `cliffFace` shows as an occluder falsely; the hole radius is fixed in screen units, so a tall tree near the golfer dithers a large circle; materials created after the 90-frame sweep compile unpatched; flag/pink rocks/SFX error belong to other lanes (recorded once).

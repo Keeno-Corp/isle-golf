@@ -9,6 +9,8 @@ import { G, curClub, curH, curP } from './round.js';
 import { _d0, _hp } from './pose.js';
 import { golfer } from './golfer.js';
 import { addObserve, addAction } from './shared.js';
+import { PR } from './stage.js';
+import { updateDither, ditherState, patchAll } from './dither.js';
 
 // ---------------------------------------------------------------- camera: high behind the ball, narrow FOV; follows the ball in flight; pulls back to the diorama for each flyover
 export const cam = { pos: new THREE.Vector3(1, 44, 68), look: new THREE.Vector3(0, 2.2, 1), fov: 26, dio: 1, focus: new THREE.Vector3(), fy: 0.5 };
@@ -22,14 +24,19 @@ const _fc = new THREE.PerspectiveCamera(32, 16 / 10, 0.1, 400), _fp = new THREE.
 export function overheadCam(pos, look, H, from) {
   const mx = (from.x + H.pinX) / 2, mz = (from.z + H.pinZ) / 2, d = Math.hypot(H.pinX - from.x, H.pinZ - from.z), dx = (H.pinX - from.x) / (d || 1), dz = (H.pinZ - from.z) / (d || 1), my = heightAt(mx, mz);
   _fc.aspect = camera.aspect || 1.6; _fc.fov = 32; _fc.updateProjectionMatrix();
-  let dist = 9;   // tightest distance that keeps tee and pin inside NDC x ±0.7, y -0.55..0.75
-  for (; dist < 90; dist += 1) {
-    _fc.position.set(mx - dx * dist * 0.574, my + dist * 0.819, mz - dz * dist * 0.574); _fc.lookAt(mx, my, mz); _fc.updateMatrixWorld(true);
-    let ok = true;
-    for (const [x, y, z] of [[from.x, from.y ?? heightAt(from.x, from.z), from.z], [H.pinX, (H.pinY ?? heightAt(H.pinX, H.pinZ)) + 0.6, H.pinZ]]) { _fp.set(x, y, z).project(_fc); if (Math.abs(_fp.x) > 0.8 || _fp.y < -0.6 || _fp.y > 0.8) ok = false; }
-    if (ok) break;
+  // broadside: try yaws off the tee->pin line (both sides), keep the pitch at 55 deg, take the tightest fit
+  let best = null;
+  for (const yaw of [0, 0.5, -0.5, 0.9, -0.9, 1.2, -1.2, 1.4, -1.4]) {
+    const c = Math.cos(yaw), sn = Math.sin(yaw), bx = dx * c - dz * sn, bz = dx * sn + dz * c;
+    for (let dist = 9; dist < 90; dist += 1) {
+      _fc.position.set(mx - bx * dist * 0.574, my + dist * 0.819, mz - bz * dist * 0.574); _fc.lookAt(mx, my, mz); _fc.updateMatrixWorld(true);
+      let ok = true;
+      for (const [x, y, z] of [[from.x, from.y ?? heightAt(from.x, from.z), from.z], [H.pinX, (H.pinY ?? heightAt(H.pinX, H.pinZ)) + 0.6, H.pinZ]]) { _fp.set(x, y, z).project(_fc); if (Math.abs(_fp.x) > 0.8 || _fp.y < -0.6 || _fp.y > 0.8) ok = false; }
+      if (ok) { if (!best || dist < best.dist - 0.5) best = { dist, bx, bz }; break; }
+    }
   }
-  pos.set(mx - dx * dist * 0.574, my + dist * 0.819, mz - dz * dist * 0.574); look.set(mx, my, mz);
+  const dist = best ? best.dist : 60, bx = best ? best.bx : dx, bz = best ? best.bz : dz;
+  pos.set(mx - bx * dist * 0.574, my + dist * 0.819, mz - bz * dist * 0.574); look.set(mx, my, mz);
 }
 const _m1 = new THREE.Vector3(), _m2 = new THREE.Vector3(), _m3 = new THREE.Vector3();
 export const look = { flyoverT: 0 };
@@ -44,9 +51,9 @@ export function updateCamera(dt) {
     const o1 = new THREE.Vector3(), l1 = new THREE.Vector3(); overheadCam(o1, l1, H, P.pos);
     const mid = _m1.set((P.pos.x * 0.7 + H.pinX * 0.3), 0, (P.pos.z * 0.7 + H.pinZ * 0.3)); mid.y = heightAt(mid.x, mid.z);
     const dd = Math.hypot(H.pinX - P.pos.x, H.pinZ - P.pos.z) || 1, ux = (H.pinX - P.pos.x) / dd, uz = (H.pinZ - P.pos.z) / dd;
-    const mp = _m2.set(P.pos.x - ux * 9, P.pos.y + 7, P.pos.z - uz * 9); mp.y = Math.max(mp.y, heightAt(mp.x, mp.z) + 3);
+    const mp = _m2.set(P.pos.x - ux * 7, P.pos.y + 11, P.pos.z - uz * 7); mp.y = Math.max(mp.y, heightAt(mp.x, mp.z) + 3);
     const ml = _m3.set(P.pos.x + ux * dd * 0.55, heightAt(P.pos.x + ux * dd * 0.55, P.pos.z + uz * dd * 0.55) + 0.5, P.pos.z + uz * dd * 0.55);
-    const a = smooth(0, 0.35, u), b = smooth(0.35, 0.68, u), c = smooth(0.68, 1, u);
+    const a = smooth(0, 0.35, u), b = smooth(0.35, 0.68, u), c = smooth(0.6, 1, u);
     cPos.copy(DIO.pos).lerp(o1, a).lerp(mp, b).lerp(_hp, c); cLook.copy(DIO.look).lerp(l1, a).lerp(ml, b).lerp(_d0, c);
     fov = lerp(DIO.fov, 32, a); fov = lerp(fov, 30, b); fov = lerp(fov, 33, c); snap = true; look.flyoverT = u;
     if (G.phase === 'intro' && u < 0.12 && cam.snapTitle) { }
@@ -65,12 +72,15 @@ export function updateCamera(dt) {
   }
   camera.position.copy(cam.pos); camera.fov = cam.fov; camera.updateProjectionMatrix(); camera.lookAt(cam.look);
   cam.dio = smooth(14, 40, cam.pos.y);
+  if (!ditherInit) { ditherInit = true; patchAll(); }
+  updateDither(Math.round(innerWidth * PR), Math.round(innerHeight * PR));
 }
+let ditherInit = false;
 
 // ---------------------------------------------------------------- look lane observe: pitch, flyover, focus band, screen NDC of ball / pin / golfer
 const _p = new THREE.Vector3();
 function ndc(x, y, z) { camera.updateMatrixWorld(); _p.set(x, y, z).project(camera); return { x: +_p.x.toFixed(3), y: +_p.y.toFixed(3), on: _p.z < 1 && Math.abs(_p.x) <= 1 && Math.abs(_p.y) <= 1 }; }
 addObserve(() => {
   const H = G.hole < 9 ? curH() : HOLES[0], d = new THREE.Vector3(); camera.getWorldDirection(d);
-  return { look: { camPitchDeg: +(Math.asin(clamp(-d.y, -1, 1)) * 180 / Math.PI).toFixed(1), flyoverT: +(G.phase === 'intro' ? look.flyoverT : 0).toFixed(3), focusY: +cam.fy.toFixed(3), ball: ndc(SIM.pos.x, SIM.pos.y, SIM.pos.z), pin: ndc(H.pinX, H.pinY + 0.6, H.pinZ), golfer: ndc(golfer.bx ?? 0, (golfer.by ?? 0) + 0.4, golfer.bz ?? 0) } };
+  return { look: { camPitchDeg: +(Math.asin(clamp(-d.y, -1, 1)) * 180 / Math.PI).toFixed(1), flyoverT: +(G.phase === 'intro' ? look.flyoverT : 0).toFixed(3), focusY: +cam.fy.toFixed(3), ball: ndc(SIM.pos.x, SIM.pos.y, SIM.pos.z), pin: ndc(H.pinX, H.pinY + 0.6, H.pinZ), golfer: ndc(golfer.bx ?? 0, (golfer.by ?? 0) + 0.4, golfer.bz ?? 0), dither: ditherState() } };
 });
