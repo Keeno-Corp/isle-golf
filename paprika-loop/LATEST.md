@@ -1,75 +1,70 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-### Judge 3
-
-I've run the aim look, a 2-player swing, the shirt check and `perf`. I'm writing the verdict now.
-
-**Verdict, session 3: the golfer is clean and reads well, and FINN's shirt is blue. The footballer is in the scene but small and standing in rough. Sheep now walk, but only after some frames. The ball-bonk, cow, dismay, walk and putt moments are still unproven.**
-
-I did not run a sheep hit, a dismay case or the walk-to-ball look. I did not run a `ball:cow` check, a par case or a stepped drive in this session.
-
-- **0. TOP PRIORITY, not the football player, better animations, wider spacing: 7.**
-  - The aim look shows `golfer_cap`, `golfer_face`, `golfer_shirt`, `golfer_slack` and `club_grip`. It reads as a toy golfer with a wide stance, and the golfer is not the football player.
-  - After the swing, `creatures.golferClip` read `Idle_Loop` for all 316 frames. I did not see a swing clip name, so the swing animation is not visible in the trace.
-  - Putt, walk and dismay were not seen.
-  - Sheep now go from `graze` to `walk` (sheep 3 at frame 128, sheep 6 at frame 279), but I did not see eased starts or stops.
-- **0b. Clean footballer as a side character: 5.**
-  - `footballer_helmetShell` shows as a glossy blue helmet on an orange jersey, and `creatures.footballer` reports {x -12.56, z 11.34, visible true}.
-  - He takes only 0.11% of the picture, at [317, 659, 341, 721].
-  - He stands in tall rough, so his legs are hidden by grass.
-  - His helmet reads a little ball-like. I did not see him cheer.
-- **1. Toy golfer, readable poses, club looks like a club: 7.**
-  - `club_shaft` and `club_head` read as an iron, and the cap has a brim.
-  - Only the address pose was seen this session. The backswing and follow-through were not.
-- **2. Kit colours per player: 7.**
-  - `creatures.shirt` reads `#3b78c9` on FINN's turn, and the look shows a blue polo.
-  - ISLA's red polo shows in the first look.
-  - My pixel `sample` missed the shirt (the camera I gave it showed only sky), so there is no sampled colour.
-- **3. Hole-out reactions: 5.** Nothing was run this session. Session 2 showed `Celebration` cut off at the cup, and par and dismay are untried.
-- **4. Sheep wander into play: 6.**
-  - 9 of 10 sheep switched to `walk` with targets in the fairway, such as sheep 3 heading to (-6.6, 5.6) and sheep 6 to (8, 12.9).
-  - They start in `graze`, and the first look shows no sheep walking, so the wandering is slow to start.
-- **5. Ball bonks a sheep: 3.** `sheepHits` is still 0. There is no `creatures-sheep-hit` check and no heart look. This was asked in sessions 2 and 3.
-- **6. Cow reacts: 4.** `creatures.cow.yaw` moves (1.95), but `cow_hide` was out of view and I did not run a `ball:cow` check.
-- **7. Stepped real-key drive poses: 4.** I played the three Space presses, but the long wait ran past the swing and only the end state was seen. The camera crowds the golfer in the swing frame, as in session 2.
-- **8. Looks as LOOK.md says: 5.**
-  - "Stands out" edge contrast is 0.118 at address and 0.126 after the swing.
-  - The golfer takes 0.47% of the picture.
-  - `Surfaces:` still reports `ballShadow1` and `ballShadow2` z-fighting at y 4.49.
-  - Creature materials look clean and crisp, with no grime.
-- **9. File discipline and docs: 6.** `lanes/creatures.md` was written and I saw no sign of edits outside the lane's files, but I did not check the diff.
-- **10. Keep the rest: 7.** The title, intro, aim, swing and flight phases ran, and the HUD, meter, wind and club list are intact. The turn passed to FINN after the shot.
-- **Faults: 5.**
-  - One console error: `SFX[k] is not a function (src/sound.js:71:61)` during the swing. It is in `src/sound.js`, not a lane file, but it is a fault the page raises.
-  - `ballShadow1` is Never visible, and the shadow z-fight is reported.
-  - `perf` read a 1413 ms frame with 181 draw calls and 367,688 triangles, on a software renderer (host load 2.7), so it is not a frame-time signal.
-  - The triangle count is heavy, mostly `bushes*` and `grass*`.
-
-**Next:**
-1. **Prove the sheep bonk and the cow moment (lowest scores).**
-   - Take a sheep from `creatures.sheep`, for example one with a target in the fairway. Place the ball in front of it with `setState`, then swing with Space ×3.
-   - The `interact` `expect` should show `creatures.sheepHits: 1` and that sheep's state as `hop`, `flee` or `tumble`. A `look` then shows the heart.
-   - Save it as `creatures-sheep-hit`.
-   - Do the same for `ball:cow`: a moo and shuffle counter in `creatures.cow` and a `cow_hide` look. Start 3–4 sheep in `walk` at the first frame, not `graze`.
-2. **Show each golfer pose and reaction in one `sheet`.**
-   - Use a camera near [-14, 2.5, 15] looking at [-11.2, 1, 12.8]. My `sample` at that camera hit only sky.
-   - Moments: stage 1, stage 2, backswing, follow-through, putt, walk, par `Dance_Loop`, bogey/water dismay, and birdie `Celebration`.
-   - Use `golferClip` to confirm each clip name.
-   - Fix the camera crowding at the swing and the cut-off celebration at the cup.
-   - Then `sample` the `golfer_shirt` pixels for FINN #3b78c9 and ISLA #d8503a, and save `creatures-` checks.
-3. **Make the footballer and the golfer stand out.**
-   - Move the footballer onto short grass using the `surfaceAt` check. He is currently in rough with his legs hidden, and he takes 0.11% of the picture.
-   - Increase the footballer's scale a little. Add a back flare to the helmet, since the shell is a bit ball-like.
-   - Show his `Celebration` after a good shot.
-   - Raise the golfer's contrast: a brighter cap or shirt, or a thin outline, to get "Stands out" edge contrast above 0.15.
-   - Tell the owner of `src/sound.js` about the `SFX[k]` error and the `ballShadow` z-fight, or work around them inside the lane's files.
-   - The remaining code-built creatures are `sheep*` and `cow_hide`. Run `asset_search` for "low poly sheep" and "cow", and keep the code-built ones only if the results are unusable. Record that in the Open part.
-
-SCORE: 5.6
-
 ## Iteration 5
 **Did** `src/sheep.js` line 22: every third sheep (`i % 3 === 0`) now starts with `wait: 0`, so it walks at frame 0 instead of grazing. `src/pose.js`: `foot` (footballer) height 0.62 → 0.74, and his stand spot is moved onto fairway/green/tee (`surfaceAt` imported from course.js) by trying six alternate offsets when the default behind-left spot is rough.
 **Saw** All 6 saved checks pass after the edits (incl. `creatures-ball-bonks-sheep`, `creatures-real-key-drive-pose`). I did not take a new look, run `perf`, or sample footballer pixels this session, so the footballer's framing and the sheep's early walking are unseen.
 **Next** 1) After `sheepHits` hits 1, take a `look` from a fixed camera near [-9, 2.5, 15] looking at [-6, 0.5, 12.5] to see the heart and `hit-stop`. 2) Stepped drive: trace `creatures.golferClip`/`pose` for backswing and follow-through names. 3) Par `Dance_Loop`, bogey dismay, putt and walk looks; `ball:cow` check. 4) Look at footballer at hole 1 aim view to confirm he is on short grass.
 **Open** Not verified by sight: footballer new spot and size. Other lanes' `SFX[k]` error and `ballShadow` z-fight remain. Sheep/cow still code-built, no `asset_search` done.
 **Late look (iter 5)** Hole 1 aim, 30 frames: footballer at (-12.5, 12.84), `Idle_Loop`, `footballer_helmetShell` at [358,750,383,771], bottom-left edge of the picture, partly cut off (0.1% of frame); golfer 0.37%, edge contrast 0.107. Sheep 0/3/6/9 have targets but all still read `graze` at frame ~30, so the `wait: 0` start does not show as `walk` yet (probably the `walk` state needs `d > 0.12` after easing). No console errors. Next: move the footballer up/inward so he is fully in frame, and make the early-walk state show.
+
+### Judge 5
+
+**Verdict, session 5: the golfer is clean and the swing now moves through distinct poses. The footballer is fully in frame on the tee, but the sheep, cow, reaction and putt moments are still unproven by sight.**
+
+I ran the hole 1 aim look, one real-key swing (Space ×3) with a trace, and `perf`. I did not run a sheep hit, a dismay case, a par case, a walk, a putt or a `ball:cow` check this session.
+
+- **0. TOP PRIORITY, not the football player, better animations, wider spacing: 7.**
+  - The aim look shows `golfer_cap`, `golfer_face`, `golfer_shirt`, `golfer_slack` and `club_grip`, a toy golfer with a wide stance.
+  - The swing trace shows `creatures.pose` going 0 → -0.61 (frame 29) → 0.59 (frame 41), so a backswing and a through-swing exist. The frame at the top shows the club raised behind the head, with `club_shaft` and `club_head` visible.
+  - `creatures.golferClip` stayed `"Idle_Loop"` for all 41 frames, so the swing is not named there, as the Steer asks.
+  - Putt, walk and dismay were not seen.
+- **0b. Clean footballer as a side character: 7.**
+  - He now stands on the tee beside the golfer, at (-12.5, 12.84), with `footballer_helmetShell` at [601, 640, 629, 663]. The helmet is a clean glossy blue and the jersey is orange with the number 4.
+  - He takes only 0.055% of the picture, so he is small. His clip stayed `Idle_Loop`, and I did not see him cheer.
+  - He stands close to the golfer's line, behind the ball side. In the swing look he sits just ahead of the golfer's club, so the two overlap.
+- **1. Toy golfer, readable poses, club looks like a club: 7.**
+  - The cap with `golfer_brim`, the face and the thin iron shaft with a small head all read at the address and at the top of the backswing.
+  - The follow-through frame was not captured.
+- **2. Kit colours per player: 6.**
+  - The 1-player game showed ISLA with an orange-red shirt. The 2-player blue-versus-red check was not re-run, and I took no `sample` of `golfer_shirt`.
+  - The earlier verdict recorded `#3b78c9` for FINN.
+- **3. Hole-out reactions: 4.**
+  - Nothing was run. `Celebration` was seen cut off at the cup in session 2, and par and dismay are untried.
+- **4. Sheep wander into play: 5.**
+  - All 10 sheep read `graze` at frame 63. Sheep 0, 3, 6 and 9 have targets (for example sheep 3 heading to (-5.5, 1)) but have not started walking.
+  - The `wait: 0` change from the last iteration shows no effect after 63 frames.
+- **5. Ball bonks a sheep: 4.**
+  - `sheepHits` is 0 throughout. The saved check `creatures-ball-bonks-sheep` exists and passed for the builder, but I did not see a heart or hit-stop look.
+- **6. Cow reacts: 4.**
+  - `creatures.cow.yaw` moved to 2.29, and `cow_hide` was in view after the swing but small.
+  - `cow.state` stayed `graze`, and I ran no `ball:cow` check.
+- **7. Stepped real-key drive poses: 6.**
+  - The swing look at the top of the backswing is clear, and `pose` changes from frame 1. The camera sits fixed behind and above, and the golfer is only 0.47% of the picture.
+  - No `golferClip` name changes appear in the trace.
+- **8. Looks as LOOK.md says: 6.**
+  - The creature materials are clean and crisp.
+  - The golfer's edge contrast is 0.123, and he is 0.48% of the picture. The Shepherd Isle style is kept.
+- **9. File discipline and docs: 6.** `lanes/creatures.md` exists. I did not check the diff.
+- **10. Keep the rest: 7.** The title, flyover skip, aim, meter, swing and flight phases ran, and the HUD, wind and club list are intact.
+- **Faults: 5.**
+  - I saw no console errors in these runs, and the `SFX[k]` error did not appear in this swing.
+  - `ballShadow1` is still reported as `Never visible`, and the `Surfaces:` z-fight from other lanes remains.
+  - `perf` read a 1559 ms median frame with 181 draw calls and 367,688 triangles. That is on a software renderer (host load 2.5), so it is not a frame-time signal.
+  - The triangle count is heavy, mostly `grass*` ×2425 and `bushes*`.
+  - `sheep*`, `cow_hide` and the golfer are still code-built. The builder's Open records no `asset_search` for them.
+
+**Next:**
+1. **Make the sheep walk visibly and prove the bonk (asked again).**
+   - The `wait: 0` start does not show as `walk` at frame 63. Force `state: 'walk'` with a visible step for sheep 0, 3, 6 and 9 in the first frames, or lower the `d > 0.12` gate.
+   - The call that shows it done is `interact` with `{wait: 90}` and `trace: creatures.sheep.3.state`. It should read `walk` before frame 60 and the sheep's x or z should change.
+   - Then place the ball in front of that walking sheep with `setState` and swing with Space ×3. `expect` `creatures.sheepHits: 1`, and `look` at [-9, 2.5, 15] → [-6, 0.5, 12.5] to show the heart.
+2. **Put the swing and the reactions in `creatures.golferClip`, and show them in one `sheet` (asked again).**
+   - Report `address`, `backswing`, `downswing` and `follow` from `creatures.golferClip`. It is `Idle_Loop` through the whole swing now.
+   - Then take a `look` `sheet` with a closer camera, for example [-15, 3, 14.5] → [-11.5, 1, 12.8]. Frames: stage 1, top of backswing, follow-through, putt, walk, par `Dance_Loop`, bogey dismay and birdie `Celebration`.
+   - Move the footballer a step off the ball-side so he does not overlap the club, and have him cheer after a good shot. The `sheet` shows it done.
+3. **Cow, then asset searches.**
+   - Add a `creatures-cow-reacts` check: place the ball next to `cow_hide`, swing, and `expect` `creatures.cow.state` to leave `graze` for look-up or shuffle, with a `look` of the cow.
+   - Run `asset_search` for "low poly sheep" and "low poly cow", and record the result in Open. Swap in anything usable.
+   - Raise the golfer's contrast with a brighter cap or a thin outline, toward an edge contrast above 0.15.
+
+SCORE: 5.6
