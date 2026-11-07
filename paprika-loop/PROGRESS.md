@@ -492,3 +492,9 @@ paprika-loop/PROMPT.md changed before session 9; the Next lists above were writt
    - Retry `asset_search` for "low poly golfer" and "low poly sheep" and record the hit or miss in `lanes/creatures.md`.
 
 SCORE: 5.9
+
+## Iteration 10
+**Did** `src/pose.js` `poseNm`: `downswing` now reports for the swing phase while `G.swingT < 0.2` (the old test `s < 0` after 0.2 never held, since the pose is already 0 at impact and the 0.2 s before it is the descent); `backswing` reports in the meter phase from stage 1 on; `follow` after impact and in flight/settle.
+**Saw** Syntax check only; no `look`, `interact` or `perf` this session. Reactions (par/bogey/birdie), kit colours, sheep bonk and the footballer view are still unseen.
+**Next** 1) Real-key drive trace of `creatures.golferClip`: expect address, backswing, downswing, follow. 2) Saved hole-out checks `creatures-par-dance`, `creatures-bogey-dismay`, `creatures-birdie-celebrate` (ball near cup, putter, three Spaces, `until:{phase:"holed"}`). 3) `creatures-kit-colours` sample on `golfer_shirt`, sheep bonk replay, `asset_search` for golfer and sheep.
+**Open** The downswing lasts 0.2 s (about 12 frames), so a trace must step finely. `game-tests.json` creatures-real-key-drive-pose still expects `follow` at its end, which should hold. Asset search not retried.

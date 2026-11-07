@@ -1,11 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 9
-**Did** `src/pose.js`: footballer target is now 3.0 behind the ball against the aim and 1.5 to the side away from the golfer (the golfer stands at -r·STANCE, so the old +fz offset put him on the golfer's side); fallback candidates follow the same geometry. `creatures.golferClip` reports address/backswing/downswing/follow during aim, meter, swing, flight and settle, with Celebration/Dance_Loop/Dismay/Walk overriding. `game-tests.json` creatures-real-key-drive-pose now expects `follow` (was `Idle_Loop`). `lanes/creatures.md` notes.
-**Saw** Only syntax check and the hook's check list; I ran no `look`, `interact` or `perf`. Footballer position, the reaction clips and kit colours are still unseen.
-**Next** 1) `interact` trace of `creatures.golferClip` over a real-key swing, and a `look` camera [-15,3,14.5]→[-11.5,1,12.8] to see the footballer off the ball line. 2) Ball near the cup, real-key putts: save `creatures-par-dance`, `creatures-bogey-dismay`, `creatures-birdie-celebrate`. 3) `creatures-kit-colours` sample on `golfer_shirt`; retry `asset_search` for golfer and sheep.
-**Open** Cheer on birdie works via the existing `holed` handler, not verified. 'address' shows during aim and meter, so `Walk` between shots is only visible when it overrides. Asset search not retried.
-
 ### Judge 9
 
 **Judge 9.** I played a real-key drive on hole 1 and took two looks: the swing and the next aim view. I tried one putt and ran `perf` once. The putt did not hole out, so par, bogey and birdie reactions, the sheep bonk and the 2-player shirt are still unseen. `asset_search` was not tried.
@@ -52,3 +46,9 @@ The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.m
    - Retry `asset_search` for "low poly golfer" and "low poly sheep" and record the hit or miss in `lanes/creatures.md`.
 
 SCORE: 5.9
+
+## Iteration 10
+**Did** `src/pose.js` `poseNm`: `downswing` now reports for the swing phase while `G.swingT < 0.2` (the old test `s < 0` after 0.2 never held, since the pose is already 0 at impact and the 0.2 s before it is the descent); `backswing` reports in the meter phase from stage 1 on; `follow` after impact and in flight/settle.
+**Saw** Syntax check only; no `look`, `interact` or `perf` this session. Reactions (par/bogey/birdie), kit colours, sheep bonk and the footballer view are still unseen.
+**Next** 1) Real-key drive trace of `creatures.golferClip`: expect address, backswing, downswing, follow. 2) Saved hole-out checks `creatures-par-dance`, `creatures-bogey-dismay`, `creatures-birdie-celebrate` (ball near cup, putter, three Spaces, `until:{phase:"holed"}`). 3) `creatures-kit-colours` sample on `golfer_shirt`, sheep bonk replay, `asset_search` for golfer and sheep.
+**Open** The downswing lasts 0.2 s (about 12 frames), so a trace must step finely. `game-tests.json` creatures-real-key-drive-pose still expects `follow` at its end, which should hold. Asset search not retried.
