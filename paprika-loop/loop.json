@@ -35,13 +35,24 @@
       "score": 6.4,
       "judgeTurns": 11,
       "judgeTokens": 196715
+    },
+    {
+      "n": 4,
+      "turns": 49,
+      "tokens": 2356227,
+      "costUsd": 0.8931744999999999,
+      "minutes": 19.7,
+      "commit": "5ff941a",
+      "score": 6.5,
+      "judgeTurns": 12,
+      "judgeTokens": 241288
     }
   ],
   "best": {
-    "n": 3,
-    "commit": "91a26f3",
-    "score": 6.4,
-    "brief": "78d3a0f687d4"
+    "n": 4,
+    "commit": "5ff941a",
+    "score": 6.5,
+    "brief": "fe133723e428"
   },
   "brief": "# Isle Golf — ball-physics lane (team run golf1)\n## What it is\nA tilt-shift arcade golf game on Shepherd Isle: the football field of Isle Blitz is regrown into a nine-hole links course with sheep, a pond, the lighthouse and the sea along the cliffs. This loop is the ball-physics lane: four other loops are changing other files at the same time (see COORDINATION.md).\n## Must have\n1. Ball physics polished like Wii Sports Golf / Mario Golf: Super Rush feel (the owner: \"make sure the ball physics are polished\", \"like how wii golf or the modern nintendo mario golf games are well polished and feel good, but keep our same tilt shift mini style\"): flight arc, spin (hook and slice from the meter's snap timing) and wind drift; a crisp first bounce, then bounce and roll-out that differ by surface (fairway, rough, sand plugs, fast green); cup lip-outs and drops with a rattle and a satisfying drop (the cup pulls a slow ball in); collisions with trees (leaves shake), sheep (bounce off) and the house and walls; putting break on slopes.\n2. A readable ball trail, a landing-spot preview ring, and a putt preview line that bends with the break.\n3. Impact and landing feedback in physics.js `flightEvents`: dust and sand puffs, splashes. Ball sounds (thud, sand, cup, splash, rustle, clank, hit) may be replaced from a new file of this lane (e.g. src/ballsfx.js, imported from one of the lane's own files) with `Object.assign(SFX, {...})` built on sound.js's `tone`/`noise`.\n4. Tight, frame-fair swing timing in meter.js; meter fields (G.m stage/t/t2/power/tp/acc/label) reset after each shot.\n5. Fire events for other lanes (ball:land|bounce|sandHit|tree|wall|sheep|cow|water|ob|sunk|lip, swing; new ones named physics:<thing>); the look lane owns the camera, hud-round owns the HUD meter display. Extra observe data goes under one `physics` key via addObserve (e.g. physics: { spin, carryYd, rollYd, lastBounce, puttBreak, firstBounce, landPreview }). Document everything provided in lanes/ball-physics.md.\n6. Checks that prove it, each with real swings (Space, wait, Space at the cyan notch, wait, Space; A/D aim, W/S club; setState only to place the ball or set wind), each saved with interact's `save` named `ball-physics-<what>`:\n   - A perfect snap vs a late snap with the driver: the late one ends >= 1 unit right of the aim line, the early one left.\n   - With {state:{wind:{speed:8, degrees:90}}} vs speed 0, the landing point moves >= 0.5 units downwind.\n   - On a no-wind perfect swing, the preview ring sits within 1.5 units of the real first bounce.\n   - The same real-key wedge swing landing on fairway, rough, sand and green gives roll-out green > fairway > rough > sand (sand ~0, plugged). Each first bounce fires ball:land once and shows a puff in a look.\n   - The putter with the right power from 2 units sinks the ball (ball.mode 'sunk', the cup sound plays); 30% too hard over the cup lips out or runs past (ball:lip, or not sunk).\n   - On a sloped green, a putt aimed straight at the pin breaks downhill >= 0.2 units, and the preview line bends the same way.\n   - Real-key drives: into a tree fires ball:tree and the ball drops near the trunk; into a sheep fires ball:sheep and the ball changes direction; into the house on the hole 5 dogleg fires ball:wall. A look of a ball in flight shows the trail.\n7. Looks as LOOK.md says: its Checks hold (painted brush pass, tilt-shift band on the ball, cream-green haze, teal sea, warm low sun). This game draws through a post pass: take pictures with `interact` + `look: true` right after stepped frames.\n8. Edit only src/physics.js, src/balls.js, src/rules.js, src/aimline.js, src/meter.js, src/pools.js, new src files of this lane (imported from one of those), lanes/ball-physics.md and game-tests.json (keep the 4 existing checks; add yours with ids prefixed ball-physics-). Never edit other src files; each src file's first line `import './<previous>.js'` stays. If something needs another file, note it under \"Needs from others\" in lanes/ball-physics.md.\n9. Keep as they are: plays as DESIGN.md's Core loop and Controls say (aim, club, three-click meter, mouse or keyboard, C hole camera, R replay); a full playable 9 holes the player can finish with real inputs; stroke play and scorecard, hot seat; HUD layout; window.__game observe()/act(); 60 fps; the golfer matches CHARACTERS.md; no real golf brands on screen.\n## References\nrefs/sheets/LOOK.png · style · match (Shepherd Isle, the game's own views)\nrefs/study/ (not published) · mood · inspiration\nFeel: Wii Sports Golf, Mario Golf: Super Rush (inspiration for ball feel only; no names on screen).\n## Sheets\nLOOK.md · CHARACTERS.md · DESIGN.md · COORDINATION.md · refs/sheets/LOOK.png\n"
 }

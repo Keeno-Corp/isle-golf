@@ -120,3 +120,14 @@ SCORE: 6.4
 3. Show landing puffs and collisions (asked again). Take `interact` with `look: true` about 5 frames after the first bounce, once on fairway (dust) and once in sand. Then add real-key drives into a tree, a sheep and the hole 5 house to fire `ball:tree|sheep|wall`. A puff should show at the `landRingPreview` spot.
 
 SCORE: 6.5
+
+## The request changed
+
+paprika-loop/PROMPT.md changed before session 5; the Next lists above were written before it. Changed lines:
++ 0. TOP PRIORITY, the owner after playing it: "make putting a little easier". Do this first: a more forgiving cup capture (larger capture radius and a higher max capture speed, still with lip-outs for clearly too-hard putts), a clearer putt preview line that shows the break (thicker, brighter, readable on the green in the tilt-shift look), softer (slower) green speed, and a putter power scale based on the distance to the pin (full meter ~ a bit past the pin, so the cyan notch is a comfortable, reasonable press for any putt length). Prove it with a saved check `ball-physics-putt-mid-easy`: from a mid-length putt (6-9 units from the pin, ball placed by setState), the default auto-aim and real keys (Space, wait, Space near the cyan notch within a reasonable tolerance, e.g. +-8% power off the perfect point, Space) drops the ball (ball.mode 'sunk'). Keep the 2-unit sink and the 30%-too-hard lip/run-past checks true with the new tuning.
+
+## Iteration 5
+**Did**: PROMPT item 0 (easier putting) was already done in iteration 4; no code changed this session. Added two saved checks in game-tests.json: `ball-physics-wind-8-drifts` (driver, real keys, wind 8 at 90°, expects `physics.firstBounce.z` 11.9-20; got 12.407) and `ball-physics-wind-0-baseline` (same swing with wind 0, expects 0-11.4; got 10.848).
+**Saw**: `test` passed 10 of 10 (6 are ours). The two wind shots differ by about 1.56 units in z, but auto-aim compensates for the wind, so the pair is not a clean drift measure. No look or perf run.
+**Next**: lip-out check that fires `ball:lip`; the driver late/early snap checks; wedge roll-out order; tree/sheep/house; look at the putt dots on a slope and at the landing puffs; whether `setState` takes `ball:{x,z}` (the mid-easy check uses it and passes).
+**Open**: wind checks pin an auto-aim-dependent value, so they may break if the aim logic changes. The earlier "setState ball throws" fault was not reproduced.

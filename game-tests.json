@@ -550,6 +550,160 @@
           "value": 11.28
         }
       ]
+    },
+    {
+      "id": "ball-physics-wind-8-drifts",
+      "title": "ball-physics-wind-8-drifts",
+      "state": {},
+      "actions": [
+        {
+          "action": "newRound",
+          "players": 1
+        },
+        {
+          "action": "start",
+          "players": 1
+        },
+        {
+          "action": "next"
+        },
+        {
+          "wait": 20
+        },
+        {
+          "state": {
+            "wind": {
+              "speed": 8,
+              "degrees": 90
+            }
+          }
+        },
+        {
+          "action": "club",
+          "name": "driver"
+        },
+        {
+          "wait": 5
+        },
+        {
+          "key": "Space",
+          "frames": 1
+        },
+        {
+          "wait": 56
+        },
+        {
+          "key": "Space",
+          "frames": 1
+        },
+        {
+          "wait": 34
+        },
+        {
+          "key": "Space",
+          "frames": 1
+        },
+        {
+          "until": {
+            "phase": [
+              "aim",
+              "holed",
+              "card"
+            ]
+          },
+          "max": 900
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "physics.firstBounce.z",
+          "op": ">=",
+          "value": 11.9
+        },
+        {
+          "path": "physics.firstBounce.z",
+          "op": "<=",
+          "value": 20
+        }
+      ]
+    },
+    {
+      "id": "ball-physics-wind-0-baseline",
+      "title": "ball-physics-wind-0-baseline",
+      "state": {},
+      "actions": [
+        {
+          "action": "newRound",
+          "players": 1
+        },
+        {
+          "action": "start",
+          "players": 1
+        },
+        {
+          "action": "next"
+        },
+        {
+          "wait": 20
+        },
+        {
+          "state": {
+            "wind": {
+              "speed": 0,
+              "degrees": 90
+            }
+          }
+        },
+        {
+          "action": "club",
+          "name": "driver"
+        },
+        {
+          "wait": 5
+        },
+        {
+          "key": "Space",
+          "frames": 1
+        },
+        {
+          "wait": 56
+        },
+        {
+          "key": "Space",
+          "frames": 1
+        },
+        {
+          "wait": 34
+        },
+        {
+          "key": "Space",
+          "frames": 1
+        },
+        {
+          "until": {
+            "phase": [
+              "aim",
+              "holed",
+              "card"
+            ]
+          },
+          "max": 900
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "physics.firstBounce.z",
+          "op": ">=",
+          "value": 0
+        },
+        {
+          "path": "physics.firstBounce.z",
+          "op": "<=",
+          "value": 11.4
+        }
+      ]
     }
   ]
 }
