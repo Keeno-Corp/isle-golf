@@ -53,7 +53,7 @@ export function updateAimLine() {
   if (c.putt) {
     // the putt preview: roll a ghost ball along the aim at the power that stops it at the cup, so the dots bend with the break
     const pts = puttTrack(p, H, c), n = pts.length;
-    for (let i = 0; i < 40; i++) { if (i >= n) { _cm.position.set(0, -50, 0); _cm.scale.setScalar(0.001); } else { _cm.position.set(pts[i][0], heightAt(pts[i][0], pts[i][1]) + 0.03, pts[i][1]); _cm.scale.setScalar(1 - i / n * 0.45); } _cm.rotation.set(0, 0, 0); _cm.updateMatrix(); aimDots.setMatrixAt(i, _cm.matrix); }
+    for (let i = 0; i < 40; i++) { if (i >= n) { _cm.position.set(0, -50, 0); _cm.scale.setScalar(0.001); } else { _cm.position.set(pts[i][0], heightAt(pts[i][0], pts[i][1]) + 0.03, pts[i][1]); _cm.scale.setScalar(2.4 * (1 - i / n * 0.4)); } _cm.rotation.set(0, 0, 0); _cm.updateMatrix(); aimDots.setMatrixAt(i, _cm.matrix); }
     aimRing.visible = false;
   } else {
     const end = previewShot(c, G.aim, 1, H, p.pos, lieMul(), track), N = Math.min(40, track.length + 1);

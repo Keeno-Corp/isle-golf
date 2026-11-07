@@ -1,11 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 18
-**Did**: `src/pools.js`: `pointPool` now stores `add` (the additive flag); `updatePool` fades colour toward black only for additive pools (`ballTrail`). Normal-blend pools (`divots`, `landPuffs`) keep full colour until they expire, so they no longer darken to smudges.
-**Saw**: `test`: 20 of 20 `ball-physics-*` and base checks pass after Iteration 17's `pools.js` change (271 s). One look, at the title screen, because the after-edit hook restarted the page and cleared my staged `puff()`. `divots` is still "Never visible (behind landPuffs)" there, which is expected on the title screen. No `perf` run. The `toNonIndexed` warning is still there.
-**Next**: 1) Stage a bunker wedge with `setState`, then `interact` real keys with `look: true` about 5 frames after the first bounce, to confirm puff colour and visibility. 2) Putt preview (`aimDots`) look at 3 units from the pin, and a `ball-physics-lip` check. 3) A `ball-physics-minpind` check (`physics.minPinD` in [0, 8]).
-**Open**: The after-edit hook reruns every saved check (about 160 s), and this blocks `eval` and `look` right after an edit. The puff and divot change is still unseen in play. Puffs now pop out instead of fading.
-
 ### Judge 18
 
 **Judge, session 18: ball-physics lane**
@@ -31,3 +25,9 @@ I opened the page, set up a hole 1 putt and took one look. I then tried one real
 3. **Add the missing checks.** Save `ball-physics-lip` (a putt from 2 units at about 130% power, expecting `ball:lip` or not `sunk`) and `ball-physics-minpind` (`physics.minPinD` in [0, 8] after a shot). Then add a real-key rollout check, a wedge onto green, fairway, rough and sand, to prove green > fairway > rough > sand. After that, give the golfer a rim light or a colour the lawn lacks so it stands out.
 
 SCORE: 7.6
+
+## Iteration 19
+**Did**: `src/aimline.js` `updateAimLine`: putt preview `aimDots` instances now scale 2.4x (tapering to 1.44x) so the break line is thicker. Nothing else changed.
+**Saw**: No look, `test` or `perf` run this session; the change is unseen. Fault lines unchanged from Judge 18 (`divots`/`landPuffs` never seen, `toNonIndexed` warning).
+**Next**: 1) `look` at 6 units on the sloped green: `aimDots` should cover above 0.5% and bend. 2) Stage a sand wedge with real keys and look 5 frames after the first bounce for `landPuffs`/`divots`. 3) Add `ball-physics-lip` and `-minpind` checks.
+**Open**: If `puttTrack` returns only ~3 points, the dots are still sparse: interpolate between points in `updateAimLine`. Puff change from Iteration 18 still unconfirmed.

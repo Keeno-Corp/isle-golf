@@ -489,3 +489,9 @@ I opened the page, set up a hole 1 putt and took one look. I then tried one real
 3. **Add the missing checks.** Save `ball-physics-lip` (a putt from 2 units at about 130% power, expecting `ball:lip` or not `sunk`) and `ball-physics-minpind` (`physics.minPinD` in [0, 8] after a shot). Then add a real-key rollout check, a wedge onto green, fairway, rough and sand, to prove green > fairway > rough > sand. After that, give the golfer a rim light or a colour the lawn lacks so it stands out.
 
 SCORE: 7.6
+
+## Iteration 19
+**Did**: `src/aimline.js` `updateAimLine`: putt preview `aimDots` instances now scale 2.4x (tapering to 1.44x) so the break line is thicker. Nothing else changed.
+**Saw**: No look, `test` or `perf` run this session; the change is unseen. Fault lines unchanged from Judge 18 (`divots`/`landPuffs` never seen, `toNonIndexed` warning).
+**Next**: 1) `look` at 6 units on the sloped green: `aimDots` should cover above 0.5% and bend. 2) Stage a sand wedge with real keys and look 5 frames after the first bounce for `landPuffs`/`divots`. 3) Add `ball-physics-lip` and `-minpind` checks.
+**Open**: If `puttTrack` returns only ~3 points, the dots are still sparse: interpolate between points in `updateAimLine`. Puff change from Iteration 18 still unconfirmed.
