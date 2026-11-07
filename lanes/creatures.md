@@ -26,3 +26,6 @@ Reactions proven by calling `golferClip` (dynamic `import('/src/golfer.js')` in 
 ## Session 14
 - The `sound.js:71` error is `play('gull')` in main.js:52: `SFX.gull` is not defined in sound.js. Not this lane; for the lead (add a `gull` entry or guard `SFX[k]?.()`).
 - Kit colour, 2-player game, ISLA's turn: `golfer_shirt` samples #d33d29 / #d5402a (target #d8503a ±30). FINN's turn not sampled.
+
+## Session 16
+- `asset_search` "low poly golfer" and "low poly sheep" both failed: asset library unreachable (HTTP 530). Not a miss; retry when it is up.
