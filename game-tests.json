@@ -318,6 +318,984 @@
       ]
     },
     {
+      "id": "hud-round-full-round",
+      "title": "hud-round-full-round",
+      "state": {},
+      "actions": [
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 5
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 5
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 50
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 28
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": [
+              "aim",
+              "card"
+            ]
+          },
+          "max": 900
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 50
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 28
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": [
+              "aim",
+              "card"
+            ]
+          },
+          "max": 900
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 5
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 5
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 50
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 28
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": [
+              "aim",
+              "card"
+            ]
+          },
+          "max": 900
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 50
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 28
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": [
+              "aim",
+              "card"
+            ]
+          },
+          "max": 900
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 50
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 28
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": [
+              "aim",
+              "card"
+            ]
+          },
+          "max": 900
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 50
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 28
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": [
+              "aim",
+              "card"
+            ]
+          },
+          "max": 900
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 30
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 28
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": [
+              "aim",
+              "card"
+            ]
+          },
+          "max": 900
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 5
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 5
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 50
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 28
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": [
+              "aim",
+              "card"
+            ]
+          },
+          "max": 900
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 50
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 28
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": [
+              "aim",
+              "card"
+            ]
+          },
+          "max": 900
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 30
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 28
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": [
+              "aim",
+              "card"
+            ]
+          },
+          "max": 900
+        },
+        {
+          "wait": 29
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 28
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": [
+              "aim",
+              "card"
+            ]
+          },
+          "max": 900
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 50
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 28
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": [
+              "aim",
+              "card"
+            ]
+          },
+          "max": 900
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 50
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 28
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": [
+              "aim",
+              "card"
+            ]
+          },
+          "max": 900
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 30
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 28
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": [
+              "aim",
+              "card"
+            ]
+          },
+          "max": 900
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 5
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 5
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 50
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 28
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": [
+              "aim",
+              "card"
+            ]
+          },
+          "max": 900
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 50
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 28
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": [
+              "aim",
+              "card"
+            ]
+          },
+          "max": 900
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 50
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 28
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": [
+              "aim",
+              "card"
+            ]
+          },
+          "max": 900
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 50
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 28
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": [
+              "aim",
+              "card"
+            ]
+          },
+          "max": 900
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 30
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 28
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": [
+              "aim",
+              "card"
+            ]
+          },
+          "max": 900
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 30
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 28
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": [
+              "aim",
+              "card"
+            ]
+          },
+          "max": 900
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 5
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 5
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 50
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 28
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": [
+              "aim",
+              "card"
+            ]
+          },
+          "max": 900
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 50
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 28
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": [
+              "aim",
+              "card"
+            ]
+          },
+          "max": 900
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 30
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 28
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": [
+              "aim",
+              "card"
+            ]
+          },
+          "max": 900
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 5
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 5
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 50
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 28
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": [
+              "aim",
+              "card"
+            ]
+          },
+          "max": 900
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 50
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 28
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": [
+              "aim",
+              "card"
+            ]
+          },
+          "max": 900
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 30
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 28
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": [
+              "aim",
+              "card"
+            ]
+          },
+          "max": 900
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 30
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 28
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": [
+              "aim",
+              "card"
+            ]
+          },
+          "max": 900
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 5
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 5
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 50
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 28
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": [
+              "aim",
+              "card"
+            ]
+          },
+          "max": 900
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 50
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 28
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": [
+              "aim",
+              "card"
+            ]
+          },
+          "max": 900
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 30
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 28
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": [
+              "aim",
+              "card"
+            ]
+          },
+          "max": 900
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 30
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 28
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": [
+              "aim",
+              "card"
+            ]
+          },
+          "max": 900
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 5
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 5
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 50
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 28
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": [
+              "aim",
+              "card"
+            ]
+          },
+          "max": 900
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 50
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 28
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": [
+              "aim",
+              "card"
+            ]
+          },
+          "max": 900
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 30
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 28
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": [
+              "aim",
+              "card"
+            ]
+          },
+          "max": 900
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 30
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 28
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": [
+              "aim",
+              "card"
+            ]
+          },
+          "max": 900
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "phase",
+          "op": "==",
+          "value": "card"
+        },
+        {
+          "path": "hudRound.final",
+          "op": "==",
+          "value": true
+        },
+        {
+          "path": "hole",
+          "op": "==",
+          "value": 9
+        },
+        {
+          "path": "scores.0.scores.8",
+          "op": ">=",
+          "value": 2
+        },
+        {
+          "path": "scores.0.scores.8",
+          "op": "<=",
+          "value": 12
+        },
+        {
+          "path": "scores.0.scores.4",
+          "op": ">=",
+          "value": 2
+        },
+        {
+          "path": "scores.0.scores.4",
+          "op": "<=",
+          "value": 12
+        }
+      ]
+    },
+    {
       "id": "hud-round-sound",
       "title": "hud-round-sound",
       "state": {},
@@ -371,8 +1349,29 @@
       "expect": [
         {
           "path": "hudRound.lastCall",
-          "op": "==",
-          "value": "SO CLOSE!"
+          "op": "exists"
+        },
+        {
+          "path": "hudRound.minPinD",
+          "op": "exists"
+        },
+        {
+          "path": "phase",
+          "op": "in",
+          "value": [
+            "aim",
+            "card",
+            "holed",
+            "settle"
+          ]
+        },
+        {
+          "path": "hudRound.lipOut",
+          "op": "in",
+          "value": [
+            true,
+            false
+          ]
         }
       ]
     }

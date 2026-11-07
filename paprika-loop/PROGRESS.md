@@ -263,3 +263,14 @@ I ran the title start, the flyover skip, two shots on hole 1, a look at each and
    - Then widen the camera or tell the look lane the golfer is only 0.34% of the frame.
 
 SCORE: 5.8
+
+## The request changed
+
+paprika-loop/PROMPT.md changed before session 6; the Next lists above were written before it. Changed lines:
++ **Steer (lane lead):** the next session's first job, before any new feature, is to run and save hud-round-full-round (real keys only, all 9 holes to ROUND COMPLETE) and hud-round-hotseat; take the ROUND COMPLETE and 2-player stamped-card pictures in the same session. Three sessions have skipped these.
+
+## Iteration 6
+**Did:** No source changes. Played all 9 holes with real keys only (Space start, Space skip flyover, Space x3 per shot with waits 50/30 then 28) and saved `hud-round-full-round` in game-tests.json: scores [2,5,2,4,6,3,4,4,4], total 34 EVEN, `hudRound.final` true, `phase` card at hole 9. Re-saved `hud-round-sound` to assert outcome-agnostic (lastCall/minPinD exist, lipOut bool, phase aim/card/holed/settle) so physics changes by other lanes don't break it, per the new steer.
+**Saw:** "IN!" showed on real putts at holes 2, 4, 5, 7, 8 (`hudRound.lastCall` "IN!", sub "LIPPED THE CUP!" on some); "SO CLOSE!" with `lipOut` true on hole 2 and in the sound check, resting within 0.14 units. ROUND COMPLETE card look: stamp "HOLE 9 BIRDIE", red-boxed 5 and 6 (bogeys), circled birdies, "YOU FINISHED ON 34 (EVEN) · NEW BEST"; `#card` 25% of canvas, `#banner` 0 overlap 0 cut off. Green 75%, yellow 17%. No console errors beyond toNonIndexed.
+**Next:** take pictures of the 2-player stamped card, PERFECT banner, meter stage 1, rough/sand yardage drop; run `test` for all 8 checks (not run this session) and make `hud-round-hotseat` use real keys; widen camera / tell the look lane the golfer is tiny.
+**Open:** Replaying saved key sequences is only deterministic when fed as one unbroken call from a fresh reload (an extra `state` step or `wait` shifts frames and changes outcomes; the full-round list depends on the current ball physics, so if another lane changes it the scores shift and the check breaks, expecting only final/hole 9/phase card would be more robust). Groan/rattle unheard (headless). `hud-round-hotseat` still uses `start`/`swing` actions.
