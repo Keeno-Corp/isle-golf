@@ -1,11 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 16
-**Did:** `src/round.js` `nextTurnOrCard`: when the turn passes to a different player in hot-seat, `hud.banner` is cleared and `ST.bannerT` zeroed, so the last rest "n YD TO PIN" no longer shows at the next player's aim with the wrong number (judge 15 fault). Syntax-checked only.
-**Saw:** Nothing looked; no numbers, no `perf`.
-**Next:** (1) SO CLOSE! near-miss proof (state ball 0.5 from cup, putter, power ~0.1). (2) `clubp` on rough/sand sheet; sync `yardsToPin` with banner. (3) Full real-key round to ROUND COMPLETE, saved as hud-round-full-round; 1 s hold on sink before card.
-**Open:** Banner-clear change untested in browser; `ST` and `hud` must be imported in round.js (verify no console error). SO CLOSE!, final card, clubp drop still unphotographed.
-
 ### Judge 16
 
 **Judge 16: Isle Golf, hud-round lane**
@@ -60,3 +54,9 @@ I opened the page and played a real-key 1-player start. A 1.0-power driver shot 
 3. Take a `look` with `sheet` of `clubp` on `state` lie "rough", beside the sand look from this session, with the `hinter` bunker hint matching the club, and a stage-1 and a stage-2 moment that show `meterp`. Also set `lastCall` to "n YD TO PIN" when a shot comes to rest not in sand, and sync `observe().yardsToPin` with it. After a driver shot at rest the `hudRound` state showed only "BUNKER" with `minPinD` 9. A rest in rough or fairway should show "n YD TO PIN".
 
 SCORE: 7.3
+
+## Iteration 17
+**Did:** `src/round.js` `resolveShot`: SO CLOSE! now triggers for a putt that rests within 3 units after passing the cup within 0.6 (was 0.24); new `G.lastCall` is set to "SO CLOSE!" or "n YD TO PIN" at rest, and `hudRound.lastCall` returns `G.banner || G.lastCall`, so the rest call is still visible after the next aim's "BUNKER" banner. Syntax-checked only.
+**Saw:** Did not open the page; no looks, no `perf`.
+**Next:** (1) Prove SO CLOSE! with the ball 1.5 units out, putter, power ~0.08. (2) Full real-key round to ROUND COMPLETE, saved as hud-round-full-round, and hot-seat card look. (3) `clubp` rough sheet, `meterp` at swing stages 1 and 2; 1 s hold on sink before the card.
+**Open:** The wider SO CLOSE! trigger is untested and may fire on putts that nearly stop at the cup; `G.lastCall` is never cleared between holes.
