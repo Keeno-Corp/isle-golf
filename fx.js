@@ -662,9 +662,9 @@ function picture(v2) {
   };
 }
 async function bake(object, o = {}) {
-  const [{ GLTFExporter }, { clone }] = await Promise.all([import("three/addons/exporters/GLTFExporter.js"), import("three/addons/utils/SkeletonUtils.js")]);
+  const { GLTFExporter } = await import("three/addons/exporters/GLTFExporter.js");
   object.updateWorldMatrix(true, false);
-  const root = clone(object);
+  const root = object.clone();
   object.matrixWorld.decompose(root.position, root.quaternion, root.scale);
   return await new GLTFExporter().parseAsync(root, { binary: true, animations: o.animations ?? [] });
 }

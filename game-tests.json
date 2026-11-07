@@ -2,121 +2,39 @@
   "v": 1,
   "keypoints": [
     {
-      "id": "run-play-gains-yards",
-      "title": "run-play-gains-yards",
+      "id": "tee-shot-three-clicks",
+      "title": "tee-shot-three-clicks",
       "state": {},
       "actions": [
         {
-          "until": {
-            "phase": "select"
-          }
+          "action": "newRound",
+          "players": 1
         },
         {
-          "action": "play",
-          "index": 2
+          "action": "next"
         },
         {
-          "wait": 20
+          "wait": 5
         },
         {
-          "action": "snap"
+          "key": "Space"
         },
         {
-          "action": "move",
-          "x": 0,
-          "y": 1
+          "wait": 50
         },
         {
-          "action": "turbo",
-          "on": true
+          "key": "Space"
         },
         {
-          "until": {
-            "phase": [
-              "dead",
-              "between",
-              "select",
-              "pat"
-            ]
-          },
-          "max": 400
+          "wait": 28
+        },
+        {
+          "key": "Space"
         },
         {
           "until": {
-            "phase": [
-              "select",
-              "pat",
-              "kickoff"
-            ]
-          },
-          "max": 400
-        }
-      ],
-      "frames": 0,
-      "expect": [
-        {
-          "path": "lastPlay.result",
-          "op": "in",
-          "value": [
-            "tackle",
-            "oob",
-            "td"
-          ]
-        },
-        {
-          "path": "lastPlay.yards",
-          "op": ">=",
-          "value": 1
-        },
-        {
-          "path": "lastPlay.yards",
-          "op": "<=",
-          "value": 100
-        }
-      ],
-      "page": "/"
-    },
-    {
-      "id": "touchdown-near-goal",
-      "title": "touchdown-near-goal",
-      "state": {},
-      "actions": [
-        {
-          "until": {
-            "phase": "select"
-          }
-        },
-        {
-          "state": {
-            "los": 98,
-            "onFire": {
-              "home": true
-            }
-          }
-        },
-        {
-          "action": "play",
-          "index": 1
-        },
-        {
-          "wait": 20
-        },
-        {
-          "action": "snap"
-        },
-        {
-          "wait": 45
-        },
-        {
-          "action": "pass",
-          "receiver": 0
-        },
-        {
-          "until": {
-            "phase": [
-              "pat",
-              "between"
-            ]
+            "phase": "aim",
+            "strokes": 1
           },
           "max": 900
         }
@@ -124,1262 +42,194 @@
       "frames": 0,
       "expect": [
         {
-          "path": "score.home",
-          "op": ">=",
-          "value": 6
-        },
-        {
-          "path": "score.home",
-          "op": "<=",
-          "value": 99
-        },
-        {
           "path": "phase",
           "op": "==",
-          "value": "pat"
+          "value": "aim"
+        },
+        {
+          "path": "strokes",
+          "op": "==",
+          "value": 1
+        },
+        {
+          "path": "hole",
+          "op": "==",
+          "value": 1
+        },
+        {
+          "path": "meter.stage",
+          "op": "==",
+          "value": 0
         }
-      ],
-      "page": "/"
+      ]
     },
     {
-      "id": "late-hit-no-flag",
-      "title": "late-hit-no-flag",
+      "id": "putt-drops-in-cup",
+      "title": "putt-drops-in-cup",
       "state": {},
       "actions": [
         {
-          "until": {
-            "phase": "select"
+          "action": "newRound",
+          "players": 1
+        },
+        {
+          "action": "next"
+        },
+        {
+          "state": {
+            "ball": {
+              "x": -1.673,
+              "z": 12.655
+            }
           }
         },
         {
-          "action": "play",
-          "index": 2
+          "action": "aim",
+          "at": "pin"
         },
         {
-          "wait": 20
+          "action": "club",
+          "name": "putter"
         },
         {
-          "action": "snap"
-        },
-        {
-          "action": "move",
-          "x": 0,
-          "y": 1
-        },
-        {
-          "until": {
-            "phase": "dead"
-          },
-          "max": 400
-        },
-        {
-          "wait": 10
-        },
-        {
-          "action": "tackle"
+          "action": "swing",
+          "power": 0.054,
+          "accuracy": 0,
+          "settle": true
         },
         {
           "until": {
-            "phase": "between"
+            "phase": "card"
           },
-          "max": 400
+          "max": 600
         }
       ],
       "frames": 0,
       "expect": [
         {
-          "path": "lateHits",
-          "op": ">=",
+          "path": "phase",
+          "op": "==",
+          "value": "card"
+        },
+        {
+          "path": "scores.0.holed",
+          "op": "==",
+          "value": true
+        },
+        {
+          "path": "scores.0.strokes",
+          "op": "==",
           "value": 1
         },
         {
-          "path": "down",
+          "path": "lastResult",
+          "op": "==",
+          "value": "HOLE IN ONE!"
+        }
+      ]
+    },
+    {
+      "id": "pond-costs-a-stroke",
+      "title": "pond-costs-a-stroke",
+      "state": {},
+      "actions": [
+        {
+          "action": "newRound",
+          "players": 1
+        },
+        {
+          "state": {
+            "hole": 5,
+            "skipIntro": true
+          }
+        },
+        {
+          "action": "club",
+          "name": "wedge"
+        },
+        {
+          "action": "aim",
+          "degrees": 57.6
+        },
+        {
+          "action": "swing",
+          "power": 0.9,
+          "accuracy": 0,
+          "settle": true
+        },
+        {
+          "wait": 5
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "phase",
+          "op": "==",
+          "value": "aim"
+        },
+        {
+          "path": "strokes",
           "op": "==",
           "value": 2
         },
         {
-          "path": "possession",
+          "path": "hole",
           "op": "==",
-          "value": "home"
-        },
-        {
-          "path": "los",
-          "op": ">=",
-          "value": 20
-        },
-        {
-          "path": "los",
-          "op": "<=",
-          "value": 30
-        }
-      ],
-      "page": "/"
-    },
-    {
-      "id": "pass-completed",
-      "title": "pass-completed",
-      "state": {
-        "defPlay": "DEEP ZONE"
-      },
-      "actions": [
-        {
-          "wait": 1
-        },
-        {
-          "until": {
-            "phase": "select"
-          }
-        },
-        {
-          "action": "play",
-          "index": 1
-        },
-        {
-          "wait": 20
-        },
-        {
-          "action": "snap"
-        },
-        {
-          "wait": 70
-        },
-        {
-          "action": "pass",
-          "receiver": 2
-        },
-        {
-          "until": {
-            "phase": "between"
-          },
-          "max": 600
-        }
-      ],
-      "frames": 0,
-      "expect": [
-        {
-          "path": "lastPlay.completed",
-          "op": "==",
-          "value": true
-        },
-        {
-          "path": "defPlay",
-          "op": "==",
-          "value": "DEEP ZONE"
-        }
-      ],
-      "page": "/"
-    },
-    {
-      "id": "first-down-reachable",
-      "title": "first-down-reachable",
-      "state": {
-        "defPlay": "ZONE"
-      },
-      "actions": [
-        {
-          "wait": 1
-        },
-        {
-          "until": {
-            "phase": "select"
-          }
-        },
-        {
-          "action": "play",
-          "index": 1
-        },
-        {
-          "wait": 10
-        },
-        {
-          "action": "snap"
-        },
-        {
-          "wait": 45
-        },
-        {
-          "action": "pass",
-          "receiver": 2
-        },
-        {
-          "action": "move",
-          "x": 0,
-          "y": 1
-        },
-        {
-          "action": "turbo",
-          "on": true
-        },
-        {
-          "until": {
-            "phase": [
-              "dead"
-            ]
-          },
-          "max": 400
-        },
-        {
-          "until": {
-            "phase": [
-              "select",
-              "pat",
-              "kickoff"
-            ]
-          },
-          "max": 400
-        },
-        {
-          "action": "turbo",
-          "on": false
-        },
-        {
-          "action": "move",
-          "x": 0,
-          "y": 0
-        },
-        {
-          "wait": 60
-        },
-        {
-          "action": "play",
-          "index": 1
-        },
-        {
-          "wait": 10
-        },
-        {
-          "action": "snap"
-        },
-        {
-          "wait": 45
-        },
-        {
-          "action": "pass",
-          "receiver": 2
-        },
-        {
-          "action": "move",
-          "x": 0,
-          "y": 1
-        },
-        {
-          "action": "turbo",
-          "on": true
-        },
-        {
-          "until": {
-            "phase": [
-              "dead"
-            ]
-          },
-          "max": 400
-        },
-        {
-          "until": {
-            "phase": [
-              "select",
-              "pat",
-              "kickoff"
-            ]
-          },
-          "max": 400
-        },
-        {
-          "action": "turbo",
-          "on": false
-        },
-        {
-          "action": "move",
-          "x": 0,
-          "y": 0
-        },
-        {
-          "wait": 60
-        },
-        {
-          "action": "play",
-          "index": 1
-        },
-        {
-          "wait": 10
-        },
-        {
-          "action": "snap"
-        },
-        {
-          "wait": 45
-        },
-        {
-          "action": "pass",
-          "receiver": 2
-        },
-        {
-          "action": "move",
-          "x": 0,
-          "y": 1
-        },
-        {
-          "action": "turbo",
-          "on": true
-        },
-        {
-          "until": {
-            "phase": [
-              "dead"
-            ]
-          },
-          "max": 400
-        },
-        {
-          "until": {
-            "phase": [
-              "select",
-              "pat",
-              "kickoff"
-            ]
-          },
-          "max": 400
-        }
-      ],
-      "frames": 0,
-      "expect": [
-        {
-          "path": "los",
-          "op": ">=",
-          "value": 35
-        },
-        {
-          "path": "los",
-          "op": "<=",
-          "value": 100
-        },
-        {
-          "path": "possession",
-          "op": "==",
-          "value": "home"
-        }
-      ],
-      "page": "/"
-    },
-    {
-      "id": "scramble-is-a-run-call",
-      "title": "scramble-is-a-run-call",
-      "state": {},
-      "actions": [
-        {
-          "until": {
-            "phase": "select"
-          }
-        },
-        {
-          "action": "play",
-          "index": 3
-        },
-        {
-          "wait": 10
-        },
-        {
-          "action": "snap"
-        },
-        {
-          "action": "move",
-          "x": 0.3,
-          "y": 1
-        },
-        {
-          "action": "turbo",
-          "on": true
-        },
-        {
-          "until": {
-            "phase": [
-              "dead"
-            ]
-          },
-          "max": 600
-        },
-        {
-          "until": {
-            "phase": [
-              "select",
-              "pat",
-              "kickoff"
-            ]
-          },
-          "max": 400
-        }
-      ],
-      "frames": 0,
-      "expect": [
-        {
-          "path": "lastPlay.completed",
-          "op": "==",
-          "value": false
-        },
-        {
-          "path": "announcer",
-          "op": "in",
-          "value": [
-            "The quarterback takes off!",
-            "He tucks it and runs!",
-            "Scrambling for daylight!",
-            "Stuffed!",
-            "Short gain.",
-            "Not much there.",
-            "Dropped for a loss!",
-            "Stopped in the backfield!",
-            "He is loose!",
-            "Breaks free!",
-            "Look at him go!",
-            "Out of bounds!",
-            "Shoved out among the sheep!"
-          ]
-        }
-      ],
-      "page": "/"
-    },
-    {
-      "id": "kickoff-resets-los",
-      "title": "kickoff-resets-los",
-      "state": {},
-      "actions": [
-        {
-          "until": {
-            "phase": "select"
-          }
-        },
-        {
-          "state": {
-            "los": 98,
-            "defPlay": "DEEP ZONE"
-          }
-        },
-        {
-          "action": "play",
-          "index": 0
-        },
-        {
-          "action": "snap"
-        },
-        {
-          "action": "move",
-          "x": 0,
-          "y": 1
-        },
-        {
-          "action": "turbo",
-          "on": true
-        },
-        {
-          "until": {
-            "phase": "pat"
-          },
-          "max": 400
-        },
-        {
-          "until": {
-            "phase": "select"
-          },
-          "max": 600
-        }
-      ],
-      "frames": 0,
-      "expect": [
-        {
-          "path": "los",
-          "op": "==",
-          "value": 25
-        },
-        {
-          "path": "call",
-          "op": "==",
-          "value": "1ST AND 30"
-        },
-        {
-          "path": "score.away",
-          "op": "==",
-          "value": 0
-        },
-        {
-          "path": "score.home",
-          "op": ">=",
           "value": 6
         },
         {
-          "path": "score.home",
-          "op": "<=",
-          "value": 7
-        },
-        {
-          "path": "possession",
+          "path": "banner",
           "op": "==",
-          "value": "away"
+          "value": "SPLASH!"
         }
-      ],
-      "page": "/"
+      ]
     },
     {
-      "id": "carrier-run-clip",
-      "title": "carrier-run-clip",
+      "id": "hot-seat-passes-turn",
+      "title": "hot-seat-passes-turn",
       "state": {},
       "actions": [
         {
-          "until": {
-            "phase": "select"
-          }
+          "action": "start",
+          "players": 2
         },
         {
-          "action": "play",
-          "index": 0
+          "action": "next"
+        },
+        {
+          "action": "swing",
+          "power": 0.7,
+          "accuracy": 0,
+          "settle": true
         },
         {
           "wait": 5
-        },
-        {
-          "action": "snap"
-        },
-        {
-          "action": "move",
-          "x": 0,
-          "y": 1
-        },
-        {
-          "action": "turbo",
-          "on": true
-        },
-        {
-          "wait": 20
         }
       ],
       "frames": 0,
       "expect": [
         {
-          "path": "players.0.clip",
-          "op": "in",
-          "value": [
-            "Jog_Fwd_Loop",
-            "Jog_Fwd_LeanL_Loop",
-            "Jog_Fwd_LeanR_Loop",
-            "Sprint_Enter",
-            "Sprint_Loop"
-          ]
-        },
-        {
-          "path": "players.0.state",
+          "path": "phase",
           "op": "==",
-          "value": "run"
-        }
-      ],
-      "page": "/"
-    },
-    {
-      "id": "tackle-hit-clip",
-      "title": "tackle-hit-clip",
-      "state": {},
-      "actions": [
-        {
-          "until": {
-            "phase": "select"
-          }
+          "value": "aim"
         },
         {
-          "action": "play",
-          "index": 0
-        },
-        {
-          "wait": 5
-        },
-        {
-          "action": "snap"
-        },
-        {
-          "action": "move",
-          "x": 0,
-          "y": 1
-        },
-        {
-          "action": "turbo",
-          "on": true
-        },
-        {
-          "until": {
-            "phase": "dead"
-          },
-          "max": 900
-        },
-        {
-          "wait": 3
-        }
-      ],
-      "frames": 0,
-      "expect": [
-        {
-          "path": "players.0.clip",
-          "op": "in",
-          "value": [
-            "Hit_Chest",
-            "Hit_Head",
-            "Hit_Shoulder_L",
-            "Hit_Shoulder_R",
-            "Death01",
-            "Death02",
-            "Roll"
-          ]
-        }
-      ],
-      "page": "/"
-    },
-    {
-      "id": "turbo-sprint-clip",
-      "title": "turbo-sprint-clip",
-      "state": {},
-      "actions": [
-        {
-          "until": {
-            "phase": "select"
-          },
-          "max": 900
-        },
-        {
-          "action": "play",
-          "index": 0
-        },
-        {
-          "until": {
-            "phase": "presnap"
-          }
-        },
-        {
-          "wait": 10
-        },
-        {
-          "action": "snap"
-        },
-        {
-          "action": "move",
-          "x": 1,
-          "y": 0
-        },
-        {
-          "action": "turbo",
-          "on": true
-        },
-        {
-          "wait": 40
-        }
-      ],
-      "frames": 0,
-      "expect": [
-        {
-          "path": "players.0.clip",
+          "path": "players",
           "op": "==",
-          "value": "Sprint_Loop"
+          "value": 2
         },
         {
-          "path": "players.1.clip",
-          "op": "in",
-          "value": [
-            "Push_Loop",
-            "Jog_Fwd_Loop",
-            "Jog_Fwd_LeanL_Loop",
-            "Jog_Fwd_LeanR_Loop"
-          ]
-        }
-      ],
-      "page": "/"
-    },
-    {
-      "id": "slant-completes",
-      "title": "slant-completes",
-      "state": {},
-      "actions": [
-        {
-          "until": {
-            "phase": "select"
-          }
-        },
-        {
-          "action": "play",
-          "index": 0
-        },
-        {
-          "wait": 20
-        },
-        {
-          "action": "snap"
-        },
-        {
-          "wait": 25
-        },
-        {
-          "action": "pass",
-          "receiver": 0
-        },
-        {
-          "until": {
-            "phase": "between"
-          },
-          "max": 600
-        }
-      ],
-      "frames": 0,
-      "expect": [
-        {
-          "path": "lastPlay.completed",
+          "path": "player",
           "op": "==",
-          "value": true
-        }
-      ],
-      "page": "/"
-    },
-    {
-      "id": "cpu-sweep-gets-tackled",
-      "title": "cpu-sweep-gets-tackled",
-      "state": {},
-      "actions": [
-        {
-          "until": {
-            "phase": "select"
-          }
+          "value": "FINN"
         },
         {
-          "state": {
-            "possession": "away",
-            "phase": "select",
-            "offPlay": "TOSS SWEEP"
-          }
-        },
-        {
-          "action": "play",
-          "index": 2
-        },
-        {
-          "until": {
-            "phase": "live"
-          },
-          "max": 400
-        },
-        {
-          "until": {
-            "phase": "dead"
-          },
-          "max": 900
-        },
-        {
-          "until": {
-            "phase": [
-              "between",
-              "select",
-              "pat"
-            ]
-          },
-          "max": 300
-        }
-      ],
-      "frames": 0,
-      "expect": [
-        {
-          "path": "lastPlay.result",
+          "path": "strokes",
           "op": "==",
-          "value": "tackle"
-        },
-        {
-          "path": "lastPlay.yards",
-          "op": ">=",
-          "value": -10
-        },
-        {
-          "path": "lastPlay.yards",
-          "op": "<=",
-          "value": 25
-        }
-      ],
-      "page": "/"
-    },
-    {
-      "id": "on-fire-three-catches",
-      "title": "on-fire-three-catches",
-      "state": {},
-      "actions": [
-        {
-          "until": {
-            "phase": "select"
-          }
-        },
-        {
-          "action": "play",
-          "index": 0
-        },
-        {
-          "wait": 20
-        },
-        {
-          "action": "snap"
-        },
-        {
-          "wait": 25
-        },
-        {
-          "action": "pass",
-          "receiver": 0
-        },
-        {
-          "until": {
-            "phase": "between"
-          },
-          "max": 600
-        },
-        {
-          "until": {
-            "phase": "select"
-          },
-          "max": 600
-        },
-        {
-          "action": "play",
-          "index": 0
-        },
-        {
-          "wait": 20
-        },
-        {
-          "action": "snap"
-        },
-        {
-          "wait": 25
-        },
-        {
-          "action": "pass",
-          "receiver": 0
-        },
-        {
-          "until": {
-            "phase": "between"
-          },
-          "max": 600
-        },
-        {
-          "until": {
-            "phase": "select"
-          },
-          "max": 600
-        },
-        {
-          "action": "play",
-          "index": 0
-        },
-        {
-          "wait": 20
-        },
-        {
-          "action": "snap"
-        },
-        {
-          "wait": 25
-        },
-        {
-          "action": "pass",
-          "receiver": 0
-        },
-        {
-          "until": {
-            "phase": "between"
-          },
-          "max": 600
-        }
-      ],
-      "frames": 0,
-      "expect": [
-        {
-          "path": "onFire.home",
-          "op": "==",
-          "value": true
-        },
-        {
-          "path": "streak",
-          "op": ">=",
-          "value": 3
-        },
-        {
-          "path": "streak",
-          "op": "<=",
-          "value": 9
-        }
-      ],
-      "page": "/"
-    },
-    {
-      "id": "clock-runs-between-plays",
-      "title": "clock-runs-between-plays",
-      "state": {},
-      "actions": [
-        {
-          "until": {
-            "phase": "select"
-          },
-          "max": 900
-        },
-        {
-          "action": "play",
-          "index": 0
-        },
-        {
-          "wait": 20
-        },
-        {
-          "action": "snap"
-        },
-        {
-          "wait": 25
-        },
-        {
-          "action": "pass",
-          "receiver": 0
-        },
-        {
-          "until": {
-            "phase": "select"
-          },
-          "max": 900
-        },
-        {
-          "action": "play",
-          "index": 0
-        },
-        {
-          "wait": 20
-        },
-        {
-          "action": "snap"
-        },
-        {
-          "wait": 25
-        },
-        {
-          "action": "pass",
-          "receiver": 0
-        },
-        {
-          "until": {
-            "phase": "select"
-          },
-          "max": 900
-        },
-        {
-          "action": "play",
-          "index": 0
-        },
-        {
-          "wait": 20
-        },
-        {
-          "action": "snap"
-        },
-        {
-          "wait": 25
-        },
-        {
-          "action": "pass",
-          "receiver": 0
-        },
-        {
-          "until": {
-            "phase": "between"
-          },
-          "max": 900
-        }
-      ],
-      "frames": 0,
-      "expect": [
-        {
-          "path": "clock",
-          "op": ">=",
           "value": 0
-        },
-        {
-          "path": "clock",
-          "op": "<=",
-          "value": 105
-        },
-        {
-          "path": "streak",
-          "op": "==",
-          "value": 3
         }
-      ],
-      "page": "/"
-    },
-    {
-      "id": "hero-camera-near-goal",
-      "title": "hero-camera-near-goal",
-      "state": {},
-      "actions": [
-        {
-          "until": {
-            "phase": "select"
-          }
-        },
-        {
-          "state": {
-            "los": 88
-          }
-        },
-        {
-          "action": "play",
-          "index": 2
-        },
-        {
-          "wait": 20
-        },
-        {
-          "action": "snap"
-        },
-        {
-          "action": "move",
-          "x": 0,
-          "y": 1
-        },
-        {
-          "action": "turbo",
-          "on": true
-        },
-        {
-          "wait": 75
-        }
-      ],
-      "frames": 0,
-      "expect": [
-        {
-          "path": "hit.fov",
-          "op": ">=",
-          "value": 21
-        },
-        {
-          "path": "hit.fov",
-          "op": "<=",
-          "value": 24
-        },
-        {
-          "path": "phase",
-          "op": "==",
-          "value": "live"
-        }
-      ],
-      "page": "/"
-    },
-    {
-      "id": "touchdown-scorer-celebrates",
-      "title": "touchdown-scorer-celebrates",
-      "state": {},
-      "actions": [
-        {
-          "until": {
-            "phase": "select"
-          }
-        },
-        {
-          "state": {
-            "los": 98,
-            "onFire": {
-              "home": true
-            }
-          }
-        },
-        {
-          "action": "play",
-          "index": 1
-        },
-        {
-          "wait": 20
-        },
-        {
-          "action": "snap"
-        },
-        {
-          "wait": 45
-        },
-        {
-          "action": "pass",
-          "receiver": 0
-        },
-        {
-          "until": {
-            "score.home": 6
-          },
-          "max": 600
-        },
-        {
-          "wait": 30
-        }
-      ],
-      "frames": 0,
-      "expect": [
-        {
-          "path": "players.4.clip",
-          "op": "in",
-          "value": [
-            "Celebration",
-            "BackFlip",
-            "Dance_Loop"
-          ]
-        }
-      ],
-      "page": "/"
-    },
-    {
-      "id": "night-halftime-benches",
-      "title": "night-halftime-benches",
-      "state": {},
-      "actions": [
-        {
-          "until": {
-            "phase": "select"
-          }
-        },
-        {
-          "state": {
-            "clock": 1,
-            "night": true
-          }
-        },
-        {
-          "action": "play",
-          "index": 2
-        },
-        {
-          "wait": 10
-        },
-        {
-          "action": "snap"
-        },
-        {
-          "until": {
-            "phase": "halftime"
-          },
-          "max": 900
-        },
-        {
-          "wait": 300
-        }
-      ],
-      "frames": 0,
-      "expect": [
-        {
-          "path": "phase",
-          "op": "==",
-          "value": "halftime"
-        },
-        {
-          "path": "night",
-          "op": "==",
-          "value": true
-        }
-      ],
-      "page": "/"
-    },
-    {
-      "id": "defenders-shuffle-while-reading",
-      "title": "defenders-shuffle-while-reading",
-      "state": {},
-      "actions": [
-        {
-          "until": {
-            "phase": "select"
-          }
-        },
-        {
-          "action": "play",
-          "index": 2
-        },
-        {
-          "wait": 20
-        },
-        {
-          "action": "snap"
-        },
-        {
-          "wait": 10
-        }
-      ],
-      "frames": 0,
-      "expect": [
-        {
-          "path": "players.9.clip",
-          "op": "in",
-          "value": [
-            "Jog_Left_Loop",
-            "Jog_Right_Loop"
-          ]
-        },
-        {
-          "path": "players.11.clip",
-          "op": "in",
-          "value": [
-            "Jog_Left_Loop",
-            "Jog_Right_Loop"
-          ]
-        },
-        {
-          "path": "phase",
-          "op": "==",
-          "value": "live"
-        }
-      ],
-      "page": "/"
-    },
-    {
-      "id": "spin-shows",
-      "title": "spin-shows",
-      "state": {},
-      "actions": [
-        {
-          "until": {
-            "phase": "select"
-          }
-        },
-        {
-          "action": "play",
-          "index": 3
-        },
-        {
-          "wait": 10
-        },
-        {
-          "action": "snap"
-        },
-        {
-          "action": "move",
-          "x": 0.3,
-          "y": 1
-        },
-        {
-          "action": "turbo",
-          "on": true
-        },
-        {
-          "wait": 10
-        },
-        {
-          "action": "spin"
-        },
-        {
-          "wait": 8
-        }
-      ],
-      "frames": 0,
-      "expect": [
-        {
-          "path": "players.0.state",
-          "op": "==",
-          "value": "spin"
-        },
-        {
-          "path": "carrier",
-          "op": "==",
-          "value": "rams_QB"
-        }
-      ],
-      "page": "/"
+      ]
     }
   ]
 }
