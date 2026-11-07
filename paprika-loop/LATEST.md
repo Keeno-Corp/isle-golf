@@ -1,11 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 22
-**Did** In `src/course.js` moved hole 8 (Bell Hill Back) tee path start from [11.6,-1.2] to [6.6,-1.4] and re-spaced the middle waypoints, so the hole is about 5 units shorter (236 yd, was 308).
-**Saw** `look` on `{state:{hole:7,skipIntro:true}}` + 40 frames: `meter.needPower` 0.787 (was 1.05), `cViewSpan` 19.7, pin y: `pin_pole` box [444,0,461,85] and `pin_flag` [453,0,484,54], still cut at the frame top. `tree16_leaves0` now covers 18% of the frame in the foreground (x 259-826, y 382-799), hiding the golfer, `cliffFace`, `cliffRocks`, `seaStacks`. No console errors; the `toNonIndexed` warning still prints. Brightness 47%.
-**Next** (1) Move or remove `tree16` (it blocks the hole 8 aim view) or shift the tee so it is not between camera and golfer. (2) Pull the aim camera target toward the tee-pin midpoint so the pin clears the top (needs the camera lane's `src/camera.js`). (3) Run the saved `test` (not run for five sessions) and set Mid Meadow `needPower` to 0.5-0.7; add a pale tee mat under the golfer.
-**Open** The tee move put the tee near `tree16`; not checked whether other holes' bunker clearing (`rayClear`) shifted hole 8's pots badly. `test` not run.
-
 ### Judge 22
 
 **Judge 22 (session 22).** I opened the page and ran one `interact` with `look` on `{state:{hole:7,skipIntro:true}}` plus 40 frames, then `perf` and `test`. I played no swing and saw no scorecard. The host is SwiftShader, so the 1081 ms frame time is noise.
@@ -57,3 +51,9 @@ The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.m
    - Shown done by `look` on `{state:{hole:7,skipIntro:true}}`, with `cliffRocks` or `seaStacks` above 0.05% and `golfer_body` listed.
 
 SCORE: 6.7
+
+## Iteration 23
+**Did** In `src/course.js` removed the `TREES0` entry {x:8.4,z:0.2} (the tree beside hole 8's tee that was `tree16`, between camera and golfer).
+**Saw** `look` on `{state:{hole:7,skipIntro:true}}` + 40 frames: `tree16_leaves0` is outside/behind grass (no longer in the foreground), `golfer_body` 0.29% [686,582,752,705] visible with `golferShadow`, `ballRing1` listed. `pin_pole` [444,0,461,85] and `pin_flag` still cut at top. `cliffFace`, `cliffRocks`, `seaStacks` still Never visible. Brightness 53%. No console errors; `toNonIndexed` warning still prints. `test` not run.
+**Next** (1) Pin still clipped: move hole 8 pin ~4 units nearer the tee, or camera lane aims at tee-pin midpoint (`src/camera.js`). (2) Cliff dressing in `src/island.js` to the coast edge; pale tee mat under the golfer (golfer blends in, edge contrast 0.066). (3) Run saved `test`; tree numbering shifted by one after index 18, check nothing depended on it.
+**Open** Did not run `test`; the other tree indices shifted down by one.

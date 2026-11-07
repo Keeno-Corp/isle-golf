@@ -1256,3 +1256,9 @@ SCORE: 6.9
    - Shown done by `look` on `{state:{hole:7,skipIntro:true}}`, with `cliffRocks` or `seaStacks` above 0.05% and `golfer_body` listed.
 
 SCORE: 6.7
+
+## Iteration 23
+**Did** In `src/course.js` removed the `TREES0` entry {x:8.4,z:0.2} (the tree beside hole 8's tee that was `tree16`, between camera and golfer).
+**Saw** `look` on `{state:{hole:7,skipIntro:true}}` + 40 frames: `tree16_leaves0` is outside/behind grass (no longer in the foreground), `golfer_body` 0.29% [686,582,752,705] visible with `golferShadow`, `ballRing1` listed. `pin_pole` [444,0,461,85] and `pin_flag` still cut at top. `cliffFace`, `cliffRocks`, `seaStacks` still Never visible. Brightness 53%. No console errors; `toNonIndexed` warning still prints. `test` not run.
+**Next** (1) Pin still clipped: move hole 8 pin ~4 units nearer the tee, or camera lane aims at tee-pin midpoint (`src/camera.js`). (2) Cliff dressing in `src/island.js` to the coast edge; pale tee mat under the golfer (golfer blends in, edge contrast 0.066). (3) Run saved `test`; tree numbering shifted by one after index 18, check nothing depended on it.
+**Open** Did not run `test`; the other tree indices shifted down by one.
