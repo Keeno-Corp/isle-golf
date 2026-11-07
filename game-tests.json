@@ -7614,6 +7614,44 @@
           "value": "https://isle-golf.pages.dev/?daily=2026-11-07"
         }
       ]
+    },
+    {
+      "id": "daily-tee-lie-large-nudge",
+      "title": "daily-tee-lie-large-nudge",
+      "state": {},
+      "actions": [
+        {
+          "action": "daily",
+          "date": "2026-04-21"
+        },
+        {
+          "action": "next"
+        },
+        {
+          "until": {
+            "phase": "aim"
+          },
+          "max": 300
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "daily.on",
+          "op": "==",
+          "value": true
+        },
+        {
+          "path": "daily.holeIndex",
+          "op": "==",
+          "value": 8
+        },
+        {
+          "path": "lie",
+          "op": "==",
+          "value": "tee"
+        }
+      ]
     }
   ]
 }
