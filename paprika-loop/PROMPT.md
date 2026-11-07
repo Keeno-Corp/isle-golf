@@ -31,3 +31,8 @@ A session that only re-runs checks scores nothing. Each session must change code
 3. Par -> 'Dance_Loop', bogey -> a dismay clip, the putting stroke (small pendulum) and the walk to the ball, each seen in a look.
 4. The footballer near the tee/green framed so he reads in the aim view (not hidden in rough), clean glossy helmet.
 5. Cow reacts to a shot landing near her (look up/turn/moo/shuffle), proven by `creatures.cow.state`.
+## Steer (lane lead, after session 7)
+- Footballer placement is wrong: he stands in front of the golfer under the ball's line. Put him BEHIND the tee (2.5-3.5 units back from the ball against the aim direction, ~1.5 to the side away from the golfer), facing the golfer, so he never blocks the shot or the aim view. He cheers (Celebration) on a good landing, a sheep bonk and a birdie.
+- `creatures.golferClip` names every swing phase: 'address', 'backswing', 'downswing', 'follow', then the reaction clip. Keep 'Celebration' (birdie or better), 'Dance_Loop' (par), 'Dismay' (bogey+).
+- Prove and save, with looks: a par hole-out -> Dance_Loop, a bogey -> Dismay, a birdie -> Celebration (ball set near the cup, real-key putt); the putting stroke; the walk to the ball.
+- One `asset_search` for "low poly golfer" and "low poly sheep"; record hit or miss in lanes/creatures.md. Keep the code-built golfer unless a hit is clearly better in the Shepherd Isle style.
