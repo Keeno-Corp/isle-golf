@@ -33,10 +33,10 @@ export function buildCard(final) {
     h += `<div class="fin">${G.players.length > 1 ? best.name + ' WINS WITH ' + best.total : 'YOU FINISHED ON ' + best.total}  (${vsPar(best.vs)})${rec}</div>`;
   }
   h += `<div class="go">${final ? 'SPACE · BACK TO THE FIRST TEE' : 'SPACE · NEXT HOLE'}</div>`;
-  hud.card.innerHTML = h; if (final) { G.phase = 'card'; G.finalAt = performance.now(); }
+  hud.card.innerHTML = h; if (final) { G.phase = 'card'; G.finalAt = ST.gameTime; }
 }
 export function advanceCard() {
-  if (G.hole >= 8 && performance.now() - (G.finalAt || 0) < 1000) return; // final card ignores Space for 1 s
+  if (G.hole >= 8 && ST.gameTime - (G.finalAt ?? -9) < 1) return; // final card ignores Space for 1 s of game time (the paused test clock does not move performance.now)
   hud.card.style.display = 'none';
   if (G.hole >= 8) { G.phase = 'title'; showTitle(true); return; }
   beginHole(G.hole + 1);
