@@ -576,3 +576,9 @@ I played a real-key 2-player start through ISLA's first shot, FINN's turn change
 3. **Prove the full round and the final card.** From a fresh open with real keys only (Digit1 or Digit2, Space, Space to skip each flyover, Space ×3 per shot with `wait`s, Space on each card), run all 9 holes to `phase` "final". Take a `look` of ROUND COMPLETE with the winner and best round. Press Space to confirm the return to the title. Save it as `hud-round-full-round`, with `observe().scores` having 9 entries. Add a one-second hold on the sink moment before the card opens, so the ball drop and the jingle can be seen.
 
 SCORE: 7.5
+
+## Iteration 16
+**Did:** `src/round.js` `nextTurnOrCard`: when the turn passes to a different player in hot-seat, `hud.banner` is cleared and `ST.bannerT` zeroed, so the last rest "n YD TO PIN" no longer shows at the next player's aim with the wrong number (judge 15 fault). Syntax-checked only.
+**Saw:** Nothing looked; no numbers, no `perf`.
+**Next:** (1) SO CLOSE! near-miss proof (state ball 0.5 from cup, putter, power ~0.1). (2) `clubp` on rough/sand sheet; sync `yardsToPin` with banner. (3) Full real-key round to ROUND COMPLETE, saved as hud-round-full-round; 1 s hold on sink before card.
+**Open:** Banner-clear change untested in browser; `ST` and `hud` must be imported in round.js (verify no console error). SO CLOSE!, final card, clubp drop still unphotographed.
