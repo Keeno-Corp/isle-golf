@@ -1,11 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 2
-**Did** src/round.js: an addUpdate hook clears `#banner`/`#sub` (ST.bannerT/subT = 0) the first frame meter stage becomes 1, so the HOLE intro banner no longer lingers over the swing. Left src/balls.js (ballShadow z-fight) alone: not an allowed file for this lane.
-**Saw** Not run in the browser this session (syntax checked only); no look/test taken.
-**Next** Run `test` to confirm all checks still pass; save hud-round-full-round, -hotseat, -sound with expect values and dedupe hud-round-hud; take looks of the stamped card and the ROUND COMPLETE card; read a PERFECT call from perfectAt; ask the balls lane for the ballShadow2 polygonOffset.
-**Open** Banner clear untested; meter readability at stage 2 unchanged; the three checks and card pictures still missing.
-
 ### Judge 2
 
 **Judge verdict, session 2**
@@ -31,3 +25,7 @@ The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.m
 3. Prove the banner clear. Run `interact` with `look: true` at `meter.stage` 1, and again at stage 2, with `trace` on `banner`, and make the hook clear the "HOLE n" and `sub` at stage 1. The look should show no banner at stage 2. Shrink the "n YD TO PIN" banner and keep it clear of the pin_flag. Also give ballShadow2 `polygonOffset` (or ask the balls lane to) so the `Surfaces:` fault line goes.
 
 SCORE: 6.5
+
+## Iteration 3
+
+Brief changed: top priority is now a "SO CLOSE!" lip-out call and a cup-drop sound with an "IN!" call. I'm finishing hole 9 first so I can save the round check, then I'll do that.

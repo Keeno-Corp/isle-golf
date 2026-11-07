@@ -65,3 +65,7 @@ SCORE: 6.3
 3. Prove the banner clear. Run `interact` with `look: true` at `meter.stage` 1, and again at stage 2, with `trace` on `banner`, and make the hook clear the "HOLE n" and `sub` at stage 1. The look should show no banner at stage 2. Shrink the "n YD TO PIN" banner and keep it clear of the pin_flag. Also give ballShadow2 `polygonOffset` (or ask the balls lane to) so the `Surfaces:` fault line goes.
 
 SCORE: 6.5
+
+## Iteration 3
+
+Brief changed: top priority is now a "SO CLOSE!" lip-out call and a cup-drop sound with an "IN!" call. I'm finishing hole 9 first so I can save the round check, then I'll do that.
