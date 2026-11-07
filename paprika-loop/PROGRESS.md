@@ -423,3 +423,9 @@ paprika-loop/PROMPT.md changed before session 9; the Next lists above were writt
 **Saw:** `phase` reached `card`; `look` shows `#card` "HOLE 1 · PEBBLE STEP" with both rows (ISLA 2, FINN 2, circled), TOT 2, +/- -1, and two BIRDIE stamps (ISLA, FINN) with "SPACE · NEXT HOLE" at the bottom; `hudRound.cardOpen` true; 0 overlap/off-screen/cut off. `lastCall` showed BIRDIE! after ISLA's putt. A `sheet` with `state:{lie:"rough"|"sand"}` did not change the lie (clubp still read "LIE · TEE", yardages equal to the tee's), so the yardage-drop picture is still not proven. Did not run `perf`. Note: this was via `swing settle:true`, not real keys.
 **Next:** prove the clubp yardage drop by getting a real rough/sand lie (hit a wild shot, then `look`); SO CLOSE!/IN! trace on a real putt; PERFECT banner with real keys on the third click; `C` overview hiding `#tag`.
 **Open:** The `lie` state key isn't honoured by `setState`. PERFECT banner and SO CLOSE!/IN! still unphotographed.
+
+## Iteration 10
+**Did:** No source change and no tool run this session; I only read LATEST.md and the git log.
+**Saw:** Nothing new. The last numbers still stand: Judge 8 gave 7.6, and Iteration 9 photographed the 2-player stamped card (both BIRDIE stamps, 0 overlap).
+**Next:** (1) Get a real rough/sand lie by hitting a wild shot with real keys, then `look` to prove the clubp yardage drop, since `setState` ignores `lie`. (2) Trace `hudRound.lastCall` and `hudRound.minPinD` across a near-miss putt and then a holed putt to prove SO CLOSE!/IN!. (3) Hit the third click on `meter.perfectAt` with real keys to photograph the PERFECT banner, and check that `C` hides `#tag`.
+**Open:** The PERFECT banner, SO CLOSE!/IN! and the clubp yardage drop are still unphotographed. The `ballShadow1`/`ballShadow2` z-fight belongs to ball-physics and I left it alone.
