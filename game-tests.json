@@ -1054,112 +1054,6 @@
       ]
     },
     {
-      "id": "ball-physics-sheep",
-      "title": "ball-physics-sheep",
-      "state": {},
-      "actions": [
-        {
-          "action": "newRound",
-          "players": 1
-        },
-        {
-          "action": "next"
-        },
-        {
-          "wait": 10
-        },
-        {
-          "state": {
-            "ball": {
-              "x": -6.2,
-              "z": 6.6
-            }
-          }
-        },
-        {
-          "action": "club",
-          "name": "driver"
-        },
-        {
-          "action": "aim",
-          "degrees": 90
-        },
-        {
-          "wait": 5
-        },
-        {
-          "key": "Space",
-          "frames": 1
-        },
-        {
-          "wait": 16
-        },
-        {
-          "key": "Space",
-          "frames": 1
-        },
-        {
-          "wait": 20
-        },
-        {
-          "key": "Space",
-          "frames": 1
-        },
-        {
-          "until": {
-            "phase": "settle"
-          },
-          "max": 900
-        },
-        {
-          "wait": 150
-        }
-      ],
-      "frames": 0,
-      "expect": [
-        {
-          "path": "physics.hits.sheep",
-          "op": ">=",
-          "value": 1
-        },
-        {
-          "path": "physics.hits.sheep",
-          "op": "<=",
-          "value": 5
-        },
-        {
-          "path": "sheepHits",
-          "op": ">=",
-          "value": 1
-        },
-        {
-          "path": "sheepHits",
-          "op": "<=",
-          "value": 5
-        },
-        {
-          "path": "ball.x",
-          "op": ">=",
-          "value": -4.8
-        },
-        {
-          "path": "ball.x",
-          "op": "<=",
-          "value": 0
-        },
-        {
-          "path": "ball.z",
-          "op": ">=",
-          "value": 4
-        },
-        {
-          "path": "ball.z",
-          "op": "<=",
-          "value": 8.3
-        }
-      ]
-    },
-    {
       "id": "creatures-ball-bonks-sheep",
       "title": "creatures-ball-bonks-sheep",
       "state": {},
@@ -3455,69 +3349,6 @@
       ]
     },
     {
-      "id": "creatures-sheep-bonk",
-      "title": "creatures-sheep-bonk",
-      "state": {
-        "creatures": {
-          "sheep": {
-            "i": 1,
-            "x": -11.2,
-            "z": 15.36,
-            "wait": 600
-          }
-        }
-      },
-      "actions": [
-        {
-          "wait": 1
-        },
-        {
-          "wait": 1
-        },
-        {
-          "action": "aim",
-          "degrees": 0
-        },
-        {
-          "action": "club",
-          "name": "putter"
-        },
-        {
-          "action": "swing",
-          "power": 0.15,
-          "accuracy": 0,
-          "settle": false
-        },
-        {
-          "until": {
-            "sheepHits": 1
-          },
-          "max": 200
-        },
-        {
-          "wait": 5
-        }
-      ],
-      "frames": 0,
-      "expect": [
-        {
-          "path": "sheepHits",
-          "op": "==",
-          "value": 1
-        },
-        {
-          "path": "physics.hits.sheep",
-          "op": "==",
-          "value": 1
-        },
-        {
-          "path": "club",
-          "op": "==",
-          "value": "putter"
-        }
-      ]
-    },
-    {
       "id": "creatures-birdie-celebration",
       "title": "creatures-birdie-celebration",
       "state": {},
@@ -4386,15 +4217,282 @@
       ]
     },
     {
+      "id": "creatures-sheep-bonk",
+      "title": "creatures-sheep-bonk",
+      "state": {},
+      "actions": [
+        {
+          "action": "start",
+          "players": 1
+        },
+        {
+          "action": "next"
+        },
+        {
+          "wait": 5
+        },
+        {
+          "state": {
+            "ball": {
+              "x": -8,
+              "z": 14.8
+            },
+            "creatures": {
+              "sheep": {
+                "i": 3,
+                "x": -6.3,
+                "z": 14.7,
+                "wait": 60
+              }
+            }
+          }
+        },
+        {
+          "wait": 3
+        },
+        {
+          "key": "KeyS",
+          "frames": 3
+        },
+        {
+          "wait": 3
+        },
+        {
+          "key": "Space",
+          "frames": 2
+        },
+        {
+          "until": {
+            "meter.power": [
+              0.28,
+              0.32
+            ]
+          },
+          "max": 200
+        },
+        {
+          "key": "Space",
+          "frames": 1
+        },
+        {
+          "until": {
+            "meter.t": [
+              0.28,
+              0.33
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space",
+          "frames": 1
+        },
+        {
+          "until": {
+            "sheepHits": 1
+          },
+          "max": 200
+        },
+        {
+          "wait": 6
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "sheepHits",
+          "op": "==",
+          "value": 1
+        },
+        {
+          "path": "physics.hits.sheep",
+          "op": "==",
+          "value": 1
+        },
+        {
+          "path": "club",
+          "op": "==",
+          "value": "putter"
+        }
+      ]
+    },
+    {
+      "id": "ball-physics-sheep",
+      "title": "ball-physics-sheep",
+      "state": {},
+      "actions": [
+        {
+          "action": "start",
+          "players": 1
+        },
+        {
+          "action": "next"
+        },
+        {
+          "wait": 5
+        },
+        {
+          "state": {
+            "ball": {
+              "x": -8,
+              "z": 14.8
+            },
+            "creatures": {
+              "sheep": {
+                "i": 3,
+                "x": -6.3,
+                "z": 14.7,
+                "wait": 60
+              }
+            }
+          }
+        },
+        {
+          "wait": 3
+        },
+        {
+          "key": "KeyS",
+          "frames": 3
+        },
+        {
+          "wait": 3
+        },
+        {
+          "key": "Space",
+          "frames": 2
+        },
+        {
+          "until": {
+            "meter.power": [
+              0.28,
+              0.32
+            ]
+          },
+          "max": 200
+        },
+        {
+          "key": "Space",
+          "frames": 1
+        },
+        {
+          "until": {
+            "meter.t": [
+              0.28,
+              0.33
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space",
+          "frames": 1
+        },
+        {
+          "until": {
+            "sheepHits": 1
+          },
+          "max": 200
+        },
+        {
+          "wait": 6
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "physics.hits.sheep",
+          "op": ">=",
+          "value": 1
+        },
+        {
+          "path": "physics.hits.sheep",
+          "op": "<=",
+          "value": 5
+        },
+        {
+          "path": "sheepHits",
+          "op": ">=",
+          "value": 1
+        },
+        {
+          "path": "sheepHits",
+          "op": "<=",
+          "value": 5
+        },
+        {
+          "path": "ball.x",
+          "op": ">=",
+          "value": -8
+        },
+        {
+          "path": "ball.x",
+          "op": "<=",
+          "value": -4
+        },
+        {
+          "path": "ball.z",
+          "op": ">=",
+          "value": 13
+        },
+        {
+          "path": "ball.z",
+          "op": "<=",
+          "value": 17
+        }
+      ]
+    },
+    {
       "id": "hud-round-full-round",
       "title": "hud-round-full-round",
       "state": {},
       "actions": [
         {
+          "key": "Digit1"
+        },
+        {
           "key": "Space"
         },
         {
-          "wait": 3
+          "until": {
+            "phase": "intro"
+          },
+          "max": 200
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": "aim",
+            "hole": 1
+          },
+          "max": 400
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 1,
+            "meter.power": [
+              0.03,
+              0.05
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 2,
+            "meter.t": [
+              0.03,
+              0.06
+            ]
+          },
+          "max": 100
         },
         {
           "key": "Space"
@@ -4403,7 +4501,7 @@
           "until": {
             "phase": "aim"
           },
-          "max": 300
+          "max": 1200
         },
         {
           "key": "Space"
@@ -4412,11 +4510,11 @@
           "until": {
             "meter.stage": 1,
             "meter.power": [
-              0.663,
-              0.671
+              0.03,
+              0.05
             ]
           },
-          "max": 150
+          "max": 100
         },
         {
           "key": "Space"
@@ -4425,23 +4523,20 @@
           "until": {
             "meter.stage": 2,
             "meter.t": [
-              0.678,
-              0.688
+              0.03,
+              0.06
             ]
           },
-          "max": 150
+          "max": 100
         },
         {
           "key": "Space"
         },
         {
           "until": {
-            "phase": [
-              "aim",
-              "card"
-            ]
+            "phase": "aim"
           },
-          "max": 900
+          "max": 1200
         },
         {
           "key": "Space"
@@ -4450,11 +4545,11 @@
           "until": {
             "meter.stage": 1,
             "meter.power": [
-              0.277,
-              0.285
+              0.03,
+              0.05
             ]
           },
-          "max": 150
+          "max": 100
         },
         {
           "key": "Space"
@@ -4463,23 +4558,134 @@
           "until": {
             "meter.stage": 2,
             "meter.t": [
-              0.295,
-              0.305
+              0.03,
+              0.06
             ]
           },
-          "max": 150
+          "max": 100
         },
         {
           "key": "Space"
         },
         {
           "until": {
-            "phase": [
-              "aim",
-              "card"
+            "phase": "aim"
+          },
+          "max": 1200
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 1,
+            "meter.power": [
+              0.03,
+              0.05
             ]
           },
-          "max": 900
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 2,
+            "meter.t": [
+              0.03,
+              0.06
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": "aim"
+          },
+          "max": 1200
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 1,
+            "meter.power": [
+              0.03,
+              0.05
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 2,
+            "meter.t": [
+              0.03,
+              0.06
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": "aim"
+          },
+          "max": 1200
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 1,
+            "meter.power": [
+              0.03,
+              0.05
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 2,
+            "meter.t": [
+              0.03,
+              0.06
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": "card"
+          },
+          "max": 1200
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": "intro"
+          },
+          "max": 400
         },
         {
           "key": "Space"
@@ -4498,11 +4704,11 @@
           "until": {
             "meter.stage": 1,
             "meter.power": [
-              0.88,
-              0.888
+              0.03,
+              0.05
             ]
           },
-          "max": 150
+          "max": 100
         },
         {
           "key": "Space"
@@ -4511,23 +4717,204 @@
           "until": {
             "meter.stage": 2,
             "meter.t": [
-              0.895,
-              0.905
+              0.03,
+              0.06
             ]
           },
-          "max": 150
+          "max": 100
         },
         {
           "key": "Space"
         },
         {
           "until": {
-            "phase": [
-              "aim",
-              "card"
+            "phase": "aim"
+          },
+          "max": 1200
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 1,
+            "meter.power": [
+              0.03,
+              0.05
             ]
           },
-          "max": 900
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 2,
+            "meter.t": [
+              0.03,
+              0.06
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": "aim"
+          },
+          "max": 1200
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 1,
+            "meter.power": [
+              0.03,
+              0.05
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 2,
+            "meter.t": [
+              0.03,
+              0.06
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": "aim"
+          },
+          "max": 1200
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 1,
+            "meter.power": [
+              0.03,
+              0.05
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 2,
+            "meter.t": [
+              0.03,
+              0.06
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": "aim"
+          },
+          "max": 1200
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 1,
+            "meter.power": [
+              0.03,
+              0.05
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 2,
+            "meter.t": [
+              0.03,
+              0.06
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": "aim"
+          },
+          "max": 1200
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 1,
+            "meter.power": [
+              0.03,
+              0.05
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 2,
+            "meter.t": [
+              0.03,
+              0.06
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": "card"
+          },
+          "max": 1200
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": "intro"
+          },
+          "max": 400
         },
         {
           "key": "Space"
@@ -4546,11 +4933,11 @@
           "until": {
             "meter.stage": 1,
             "meter.power": [
-              0.648,
-              0.656
+              0.03,
+              0.05
             ]
           },
-          "max": 150
+          "max": 100
         },
         {
           "key": "Space"
@@ -4559,23 +4946,20 @@
           "until": {
             "meter.stage": 2,
             "meter.t": [
-              0.662,
-              0.672
+              0.03,
+              0.06
             ]
           },
-          "max": 150
+          "max": 100
         },
         {
           "key": "Space"
         },
         {
           "until": {
-            "phase": [
-              "aim",
-              "card"
-            ]
+            "phase": "aim"
           },
-          "max": 900
+          "max": 1200
         },
         {
           "key": "Space"
@@ -4584,11 +4968,11 @@
           "until": {
             "meter.stage": 1,
             "meter.power": [
-              0.692,
-              0.7
+              0.03,
+              0.05
             ]
           },
-          "max": 150
+          "max": 100
         },
         {
           "key": "Space"
@@ -4597,23 +4981,20 @@
           "until": {
             "meter.stage": 2,
             "meter.t": [
-              0.712,
-              0.722
+              0.03,
+              0.06
             ]
           },
-          "max": 150
+          "max": 100
         },
         {
           "key": "Space"
         },
         {
           "until": {
-            "phase": [
-              "aim",
-              "card"
-            ]
+            "phase": "aim"
           },
-          "max": 900
+          "max": 1200
         },
         {
           "key": "Space"
@@ -4622,11 +5003,11 @@
           "until": {
             "meter.stage": 1,
             "meter.power": [
-              0.548,
-              0.556
+              0.03,
+              0.05
             ]
           },
-          "max": 150
+          "max": 100
         },
         {
           "key": "Space"
@@ -4635,23 +5016,20 @@
           "until": {
             "meter.stage": 2,
             "meter.t": [
-              0.562,
-              0.572
+              0.03,
+              0.06
             ]
           },
-          "max": 150
+          "max": 100
         },
         {
           "key": "Space"
         },
         {
           "until": {
-            "phase": [
-              "aim",
-              "card"
-            ]
+            "phase": "aim"
           },
-          "max": 900
+          "max": 1200
         },
         {
           "key": "Space"
@@ -4660,11 +5038,11 @@
           "until": {
             "meter.stage": 1,
             "meter.power": [
-              0.793,
-              0.801
+              0.03,
+              0.05
             ]
           },
-          "max": 150
+          "max": 100
         },
         {
           "key": "Space"
@@ -4673,23 +5051,99 @@
           "until": {
             "meter.stage": 2,
             "meter.t": [
-              0.812,
-              0.822
+              0.03,
+              0.06
             ]
           },
-          "max": 150
+          "max": 100
         },
         {
           "key": "Space"
         },
         {
           "until": {
-            "phase": [
-              "aim",
-              "card"
+            "phase": "aim"
+          },
+          "max": 1200
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 1,
+            "meter.power": [
+              0.03,
+              0.05
             ]
           },
-          "max": 900
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 2,
+            "meter.t": [
+              0.03,
+              0.06
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": "aim"
+          },
+          "max": 1200
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 1,
+            "meter.power": [
+              0.03,
+              0.05
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 2,
+            "meter.t": [
+              0.03,
+              0.06
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": "card"
+          },
+          "max": 1200
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": "intro"
+          },
+          "max": 400
         },
         {
           "key": "Space"
@@ -4706,25 +5160,35 @@
         },
         {
           "until": {
-            "meter.stage": 2,
-            "meter.t": [
-              0.975,
-              0.992
+            "meter.stage": 1,
+            "meter.power": [
+              0.03,
+              0.05
             ]
           },
-          "max": 300
+          "max": 100
         },
         {
           "key": "Space"
         },
         {
           "until": {
-            "phase": [
-              "aim",
-              "card"
+            "meter.stage": 2,
+            "meter.t": [
+              0.03,
+              0.06
             ]
           },
-          "max": 900
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": "aim"
+          },
+          "max": 1200
         },
         {
           "key": "Space"
@@ -4733,11 +5197,11 @@
           "until": {
             "meter.stage": 1,
             "meter.power": [
-              0.215,
-              0.223
+              0.03,
+              0.05
             ]
           },
-          "max": 150
+          "max": 100
         },
         {
           "key": "Space"
@@ -4746,23 +5210,204 @@
           "until": {
             "meter.stage": 2,
             "meter.t": [
-              0.228,
-              0.238
+              0.03,
+              0.06
             ]
           },
-          "max": 150
+          "max": 100
         },
         {
           "key": "Space"
         },
         {
           "until": {
-            "phase": [
-              "aim",
-              "card"
+            "phase": "aim"
+          },
+          "max": 1200
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 1,
+            "meter.power": [
+              0.03,
+              0.05
             ]
           },
-          "max": 900
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 2,
+            "meter.t": [
+              0.03,
+              0.06
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": "aim"
+          },
+          "max": 1200
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 1,
+            "meter.power": [
+              0.03,
+              0.05
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 2,
+            "meter.t": [
+              0.03,
+              0.06
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": "aim"
+          },
+          "max": 1200
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 1,
+            "meter.power": [
+              0.03,
+              0.05
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 2,
+            "meter.t": [
+              0.03,
+              0.06
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": "aim"
+          },
+          "max": 1200
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 1,
+            "meter.power": [
+              0.03,
+              0.05
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 2,
+            "meter.t": [
+              0.03,
+              0.06
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": "aim"
+          },
+          "max": 1200
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 1,
+            "meter.power": [
+              0.03,
+              0.05
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 2,
+            "meter.t": [
+              0.03,
+              0.06
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": "card"
+          },
+          "max": 1200
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": "intro"
+          },
+          "max": 400
         },
         {
           "key": "Space"
@@ -4781,11 +5426,11 @@
           "until": {
             "meter.stage": 1,
             "meter.power": [
-              0.924,
-              0.932
+              0.03,
+              0.05
             ]
           },
-          "max": 150
+          "max": 100
         },
         {
           "key": "Space"
@@ -4794,23 +5439,20 @@
           "until": {
             "meter.stage": 2,
             "meter.t": [
-              0.945,
-              0.955
+              0.03,
+              0.06
             ]
           },
-          "max": 150
+          "max": 100
         },
         {
           "key": "Space"
         },
         {
           "until": {
-            "phase": [
-              "aim",
-              "card"
-            ]
+            "phase": "aim"
           },
-          "max": 900
+          "max": 1200
         },
         {
           "key": "Space"
@@ -4819,11 +5461,11 @@
           "until": {
             "meter.stage": 1,
             "meter.power": [
-              0.518,
-              0.526
+              0.03,
+              0.05
             ]
           },
-          "max": 150
+          "max": 100
         },
         {
           "key": "Space"
@@ -4832,23 +5474,20 @@
           "until": {
             "meter.stage": 2,
             "meter.t": [
-              0.528,
-              0.538
+              0.03,
+              0.06
             ]
           },
-          "max": 150
+          "max": 100
         },
         {
           "key": "Space"
         },
         {
           "until": {
-            "phase": [
-              "aim",
-              "card"
-            ]
+            "phase": "aim"
           },
-          "max": 900
+          "max": 1200
         },
         {
           "key": "Space"
@@ -4857,11 +5496,11 @@
           "until": {
             "meter.stage": 1,
             "meter.power": [
-              0.152,
-              0.16
+              0.03,
+              0.05
             ]
           },
-          "max": 150
+          "max": 100
         },
         {
           "key": "Space"
@@ -4870,23 +5509,169 @@
           "until": {
             "meter.stage": 2,
             "meter.t": [
-              0.162,
-              0.172
+              0.03,
+              0.06
             ]
           },
-          "max": 150
+          "max": 100
         },
         {
           "key": "Space"
         },
         {
           "until": {
-            "phase": [
-              "aim",
-              "card"
+            "phase": "aim"
+          },
+          "max": 1200
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 1,
+            "meter.power": [
+              0.03,
+              0.05
             ]
           },
-          "max": 900
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 2,
+            "meter.t": [
+              0.03,
+              0.06
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": "aim"
+          },
+          "max": 1200
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 1,
+            "meter.power": [
+              0.03,
+              0.05
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 2,
+            "meter.t": [
+              0.03,
+              0.06
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": "aim"
+          },
+          "max": 1200
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 1,
+            "meter.power": [
+              0.03,
+              0.05
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 2,
+            "meter.t": [
+              0.03,
+              0.06
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": "aim"
+          },
+          "max": 1200
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 1,
+            "meter.power": [
+              0.03,
+              0.05
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 2,
+            "meter.t": [
+              0.03,
+              0.06
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": "card"
+          },
+          "max": 1200
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": "intro"
+          },
+          "max": 400
         },
         {
           "key": "Space"
@@ -4905,11 +5690,11 @@
           "until": {
             "meter.stage": 1,
             "meter.power": [
-              0.938,
-              0.946
+              0.03,
+              0.05
             ]
           },
-          "max": 150
+          "max": 100
         },
         {
           "key": "Space"
@@ -4918,23 +5703,20 @@
           "until": {
             "meter.stage": 2,
             "meter.t": [
-              0.962,
-              0.972
+              0.03,
+              0.06
             ]
           },
-          "max": 150
+          "max": 100
         },
         {
           "key": "Space"
         },
         {
           "until": {
-            "phase": [
-              "aim",
-              "card"
-            ]
+            "phase": "aim"
           },
-          "max": 900
+          "max": 1200
         },
         {
           "key": "Space"
@@ -4943,11 +5725,11 @@
           "until": {
             "meter.stage": 1,
             "meter.power": [
-              0.648,
-              0.656
+              0.03,
+              0.05
             ]
           },
-          "max": 150
+          "max": 100
         },
         {
           "key": "Space"
@@ -4956,23 +5738,20 @@
           "until": {
             "meter.stage": 2,
             "meter.t": [
-              0.662,
-              0.672
+              0.03,
+              0.06
             ]
           },
-          "max": 150
+          "max": 100
         },
         {
           "key": "Space"
         },
         {
           "until": {
-            "phase": [
-              "aim",
-              "card"
-            ]
+            "phase": "aim"
           },
-          "max": 900
+          "max": 1200
         },
         {
           "key": "Space"
@@ -4981,11 +5760,11 @@
           "until": {
             "meter.stage": 1,
             "meter.power": [
-              0.09,
-              0.098
+              0.03,
+              0.05
             ]
           },
-          "max": 150
+          "max": 100
         },
         {
           "key": "Space"
@@ -4994,23 +5773,169 @@
           "until": {
             "meter.stage": 2,
             "meter.t": [
-              0.095,
-              0.105
+              0.03,
+              0.06
             ]
           },
-          "max": 150
+          "max": 100
         },
         {
           "key": "Space"
         },
         {
           "until": {
-            "phase": [
-              "aim",
-              "card"
+            "phase": "aim"
+          },
+          "max": 1200
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 1,
+            "meter.power": [
+              0.03,
+              0.05
             ]
           },
-          "max": 900
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 2,
+            "meter.t": [
+              0.03,
+              0.06
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": "aim"
+          },
+          "max": 1200
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 1,
+            "meter.power": [
+              0.03,
+              0.05
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 2,
+            "meter.t": [
+              0.03,
+              0.06
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": "aim"
+          },
+          "max": 1200
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 1,
+            "meter.power": [
+              0.03,
+              0.05
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 2,
+            "meter.t": [
+              0.03,
+              0.06
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": "aim"
+          },
+          "max": 1200
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 1,
+            "meter.power": [
+              0.03,
+              0.05
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 2,
+            "meter.t": [
+              0.03,
+              0.06
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": "card"
+          },
+          "max": 1200
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": "intro"
+          },
+          "max": 400
         },
         {
           "key": "Space"
@@ -5029,11 +5954,11 @@
           "until": {
             "meter.stage": 1,
             "meter.power": [
-              0.953,
-              0.961
+              0.03,
+              0.05
             ]
           },
-          "max": 150
+          "max": 100
         },
         {
           "key": "Space"
@@ -5042,29 +5967,20 @@
           "until": {
             "meter.stage": 2,
             "meter.t": [
-              0.962,
-              0.972
+              0.03,
+              0.06
             ]
           },
-          "max": 150
+          "max": 100
         },
         {
           "key": "Space"
         },
         {
           "until": {
-            "phase": [
-              "aim",
-              "card"
-            ]
+            "phase": "aim"
           },
-          "max": 900
-        },
-        {
-          "key": "KeyW"
-        },
-        {
-          "wait": 2
+          "max": 1200
         },
         {
           "key": "Space"
@@ -5073,11 +5989,11 @@
           "until": {
             "meter.stage": 1,
             "meter.power": [
-              0.344,
-              0.352
+              0.03,
+              0.05
             ]
           },
-          "max": 150
+          "max": 100
         },
         {
           "key": "Space"
@@ -5086,23 +6002,204 @@
           "until": {
             "meter.stage": 2,
             "meter.t": [
-              0.362,
-              0.372
+              0.03,
+              0.06
             ]
           },
-          "max": 150
+          "max": 100
         },
         {
           "key": "Space"
         },
         {
           "until": {
-            "phase": [
-              "aim",
-              "card"
+            "phase": "aim"
+          },
+          "max": 1200
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 1,
+            "meter.power": [
+              0.03,
+              0.05
             ]
           },
-          "max": 900
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 2,
+            "meter.t": [
+              0.03,
+              0.06
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": "aim"
+          },
+          "max": 1200
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 1,
+            "meter.power": [
+              0.03,
+              0.05
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 2,
+            "meter.t": [
+              0.03,
+              0.06
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": "aim"
+          },
+          "max": 1200
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 1,
+            "meter.power": [
+              0.03,
+              0.05
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 2,
+            "meter.t": [
+              0.03,
+              0.06
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": "aim"
+          },
+          "max": 1200
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 1,
+            "meter.power": [
+              0.03,
+              0.05
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 2,
+            "meter.t": [
+              0.03,
+              0.06
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": "aim"
+          },
+          "max": 1200
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 1,
+            "meter.power": [
+              0.03,
+              0.05
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 2,
+            "meter.t": [
+              0.03,
+              0.06
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": "card"
+          },
+          "max": 1200
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": "intro"
+          },
+          "max": 400
         },
         {
           "key": "Space"
@@ -5121,11 +6218,11 @@
           "until": {
             "meter.stage": 1,
             "meter.power": [
-              0.677,
-              0.685
+              0.03,
+              0.05
             ]
           },
-          "max": 150
+          "max": 100
         },
         {
           "key": "Space"
@@ -5134,23 +6231,20 @@
           "until": {
             "meter.stage": 2,
             "meter.t": [
-              0.695,
-              0.705
+              0.03,
+              0.06
             ]
           },
-          "max": 150
+          "max": 100
         },
         {
           "key": "Space"
         },
         {
           "until": {
-            "phase": [
-              "aim",
-              "card"
-            ]
+            "phase": "aim"
           },
-          "max": 900
+          "max": 1200
         },
         {
           "key": "Space"
@@ -5159,11 +6253,11 @@
           "until": {
             "meter.stage": 1,
             "meter.power": [
-              0.1,
-              0.108
+              0.03,
+              0.05
             ]
           },
-          "max": 150
+          "max": 100
         },
         {
           "key": "Space"
@@ -5172,23 +6266,204 @@
           "until": {
             "meter.stage": 2,
             "meter.t": [
-              0.112,
-              0.122
+              0.03,
+              0.06
             ]
           },
-          "max": 150
+          "max": 100
         },
         {
           "key": "Space"
         },
         {
           "until": {
-            "phase": [
-              "aim",
-              "card"
+            "phase": "aim"
+          },
+          "max": 1200
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 1,
+            "meter.power": [
+              0.03,
+              0.05
             ]
           },
-          "max": 900
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 2,
+            "meter.t": [
+              0.03,
+              0.06
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": "aim"
+          },
+          "max": 1200
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 1,
+            "meter.power": [
+              0.03,
+              0.05
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 2,
+            "meter.t": [
+              0.03,
+              0.06
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": "aim"
+          },
+          "max": 1200
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 1,
+            "meter.power": [
+              0.03,
+              0.05
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 2,
+            "meter.t": [
+              0.03,
+              0.06
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": "aim"
+          },
+          "max": 1200
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 1,
+            "meter.power": [
+              0.03,
+              0.05
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 2,
+            "meter.t": [
+              0.03,
+              0.06
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": "aim"
+          },
+          "max": 1200
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 1,
+            "meter.power": [
+              0.03,
+              0.05
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 2,
+            "meter.t": [
+              0.03,
+              0.06
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": "card"
+          },
+          "max": 1200
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": "intro"
+          },
+          "max": 400
         },
         {
           "key": "Space"
@@ -5205,25 +6480,35 @@
         },
         {
           "until": {
-            "meter.stage": 2,
-            "meter.t": [
-              0.975,
-              0.992
+            "meter.stage": 1,
+            "meter.power": [
+              0.03,
+              0.05
             ]
           },
-          "max": 300
+          "max": 100
         },
         {
           "key": "Space"
         },
         {
           "until": {
-            "phase": [
-              "aim",
-              "card"
+            "meter.stage": 2,
+            "meter.t": [
+              0.03,
+              0.06
             ]
           },
-          "max": 900
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": "aim"
+          },
+          "max": 1200
         },
         {
           "key": "Space"
@@ -5232,11 +6517,11 @@
           "until": {
             "meter.stage": 1,
             "meter.power": [
-              0.677,
-              0.685
+              0.03,
+              0.05
             ]
           },
-          "max": 150
+          "max": 100
         },
         {
           "key": "Space"
@@ -5245,23 +6530,20 @@
           "until": {
             "meter.stage": 2,
             "meter.t": [
-              0.695,
-              0.705
+              0.03,
+              0.06
             ]
           },
-          "max": 150
+          "max": 100
         },
         {
           "key": "Space"
         },
         {
           "until": {
-            "phase": [
-              "aim",
-              "card"
-            ]
+            "phase": "aim"
           },
-          "max": 900
+          "max": 1200
         },
         {
           "key": "Space"
@@ -5270,11 +6552,11 @@
           "until": {
             "meter.stage": 1,
             "meter.power": [
-              0.735,
-              0.743
+              0.03,
+              0.05
             ]
           },
-          "max": 150
+          "max": 100
         },
         {
           "key": "Space"
@@ -5283,29 +6565,195 @@
           "until": {
             "meter.stage": 2,
             "meter.t": [
-              0.745,
-              0.755
+              0.03,
+              0.06
             ]
           },
-          "max": 150
+          "max": 100
         },
         {
           "key": "Space"
         },
         {
           "until": {
-            "phase": [
-              "aim",
-              "card"
-            ]
+            "phase": "aim"
           },
-          "max": 900
+          "max": 1200
+        },
+        {
+          "key": "Space"
         },
         {
           "until": {
-            "hudRound.final": true
+            "meter.stage": 1,
+            "meter.power": [
+              0.03,
+              0.05
+            ]
           },
-          "max": 300
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 2,
+            "meter.t": [
+              0.03,
+              0.06
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": "aim"
+          },
+          "max": 1200
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 1,
+            "meter.power": [
+              0.03,
+              0.05
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 2,
+            "meter.t": [
+              0.03,
+              0.06
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": "aim"
+          },
+          "max": 1200
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 1,
+            "meter.power": [
+              0.03,
+              0.05
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 2,
+            "meter.t": [
+              0.03,
+              0.06
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": "aim"
+          },
+          "max": 1200
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 1,
+            "meter.power": [
+              0.03,
+              0.05
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 2,
+            "meter.t": [
+              0.03,
+              0.06
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": "aim"
+          },
+          "max": 1200
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 1,
+            "meter.power": [
+              0.03,
+              0.05
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.stage": 2,
+            "meter.t": [
+              0.03,
+              0.06
+            ]
+          },
+          "max": 100
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": "card"
+          },
+          "max": 1200
         }
       ],
       "frames": 0,
