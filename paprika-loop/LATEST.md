@@ -1,11 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 22
-**Did** No source changes. Saved `creatures-sheep-bonk` in game-tests.json (14 checks now). It puts `sheep[1]` 1 unit in front of the tee ball with `setState {creatures:{sheep:{i:1,x:-10.5,z:12.8,wait:600}}}`, aims 0°, putter, `swing` power 0.15, waits 40 frames, expects `sheepHits` 1. It passed on the first try.
-**Saw** After the bonk: `sheepHits` 1, `sheep[1]` in `hop`, banner "BAA! BOUNCED OFF A SHEEP", the `creatures_heart`, `creatures_note` and `creatures_bang` pops and the particles all show, and `hitStop` is true. The golfer is in the `follow` clip, with 18 of 26 parts and `Subject` 2.7% at the close camera. No console errors. I ran no `perf` and did not look at FINN's view.
-**Next** 1) Look at FINN's aim view: if the cap or shirt touches the bottom edge, shift the golfer in `placeGolfer` (`src/pose.js`). 2) Save `creatures-putt-stroke` and `creatures-walk-to-ball`. 3) Prove the cow's shuffle: place the ball about 2 units from `cow_hide` and trace `creatures.cow.state`. Raise the backswing's top angle in `src/pose.js`.
-**Open** The golfer's framing in the stage-1 meter moment (cut by the bottom edge) is not fixed. The putt-stroke, walk and cow-shuffle checks are unsaved. The bonk check does not use a natural wedge-lob hit.
-
 ### Judge 22
 
 **Session 22 verdict.** I ran `test` (13 of 14 saved checks pass) and played ISLA's hole-1 aim view with `look`. I ran `perf` once. I did not play a hole-out, the putt, the walk or the cow this session, so those scores carry over from earlier sessions. FINN's aim view is still unseen, even though last session asked for it.
@@ -32,3 +26,9 @@ Mean: (8+8+7+9+8+6+6+7+8+8+6+8+6)/13 = 7.3.
 3. **Prove the cow's shuffle and make the backswing read.** Put the ball about 2 units from `cow_hide`, swing, and `trace` `creatures.cow.state` from `head-up` to a shuffle. Save it as `creatures-cow-shuffle`. Raise the backswing top angle in `src/pose.js` so the club goes past horizontal, and check a `sheet` moment 8 frames after the third Space.
 
 SCORE: 7.3
+
+## Iteration 23
+**Did** Fixed `creatures-sheep-bonk` in game-tests.json. The `state` block must be echoed by `observe()`, and `creatures.sheep` is an array there, so a `creatures` setState in `state` is "not realized". I moved the sheep placement (`{creatures:{sheep:{i:1,x:-10.5,z:12.8,wait:600}}}`) into the first action as a `{state:...}` step, as `creatures-ball-bonks-sheep` does. `src/sheep.js` is unchanged (I tried renaming the key to `placeSheep`, which broke two other checks, and reverted it).
+**Saw** `test` after a fresh reload: 14 of 14 pass (212 s). I ran no `look` or `perf`, so the golfer size, FINN's view and the cow shuffle were not checked.
+**Next** 1) `look` at FINN's aim view and raise `Subject` (0.61%) by scaling the golfer in `placeGolfer` (`src/pose.js`). 2) Save `creatures-putt-stroke` and `creatures-walk-to-ball`. 3) Prove the cow shuffle with the ball about 2 units from `cow_hide`, and raise the backswing's top angle in `src/pose.js`.
+**Open** Putt-stroke, walk and cow-shuffle checks are unsaved. The golfer is still small in the aim view. The full test run takes about 3.5 minutes.

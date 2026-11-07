@@ -884,17 +884,20 @@
     {
       "id": "creatures-sheep-bonk",
       "title": "creatures-sheep-bonk",
-      "state": {
-        "creatures": {
-          "sheep": {
-            "i": 1,
-            "x": -10.5,
-            "z": 12.8,
-            "wait": 600
-          }
-        }
-      },
+      "state": {},
       "actions": [
+        {
+          "state": {
+            "creatures": {
+              "sheep": {
+                "i": 1,
+                "x": -10.5,
+                "z": 12.8,
+                "wait": 600
+              }
+            }
+          }
+        },
         {
           "wait": 1
         },
