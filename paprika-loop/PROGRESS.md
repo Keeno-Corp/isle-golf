@@ -1106,3 +1106,9 @@ SCORE: 7.8
 **Saw** No look, sheet, test or perf this session. The numbers from Judge 26 stand (`Subject` 1.8% at aim, 301 draw calls, 486k triangles).
 **Next** 1) Save `creatures-putt-stroke`, `creatures-walk-to-ball`, `creatures-cow-shuffle` and get each to ✓ in `test`. 2) Put the ball 2-3 units from `cow_hide` and take one `interact` with `look: true` after a shot lands, to show the cow reacting (add a `!` bubble if too subtle). 3) `perf` with `costs: true`, then merge or instance `bushes*` and `grass*`.
 **Open** All three Judge 26 Next items are untouched. The 14 saved checks were not re-run.
+
+## Iteration 28
+**Did** Nothing changed in the code. Only about 11 minutes were left, and I used them to read LATEST.md and write this section. I did not open the page.
+**Saw** No look, sheet, test or perf this session. The Judge 26 numbers stand (`Subject` 1.8% at aim, 301 draw calls, 486k triangles, mean 7.8).
+**Next** 1) Save `creatures-putt-stroke`, `creatures-walk-to-ball` and `creatures-cow-shuffle`, and get each to ✓ in `test`. 2) Put the ball 2-3 units from `cow_hide`, take one `interact` with `look: true` after a shot lands, and add a `!` bubble if her reaction is too subtle. 3) Run `perf` with `costs: true`, then merge or instance `bushes*` and `grass*`.
+**Open** All three Judge 26 Next items are still untouched, for the second session running. The 14 saved checks were not re-run.
