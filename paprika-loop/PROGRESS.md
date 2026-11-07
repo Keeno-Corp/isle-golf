@@ -632,3 +632,14 @@ SCORE: 6.9
    - Shown done by `open` with no `three.js warned` line, and `test` showing 10 of 10 ✓.
 
 SCORE: 6.9
+
+## The request changed
+
+paprika-loop/PROMPT.md changed before session 11; the Next lists above were written before it. Changed lines:
++ Steering note 2 (lane lead): par 3s (holes 1-3) must be reachable with the iron at full power (needPower <= 0.95 for the club the game picks) even after SPREAD 1.2; fix it in src/course.js (pull hole 2's pin/tee closer) rather than waiting on another lane. Then the cliff-lip and ribbon checks.
+
+## Iteration 11
+**Did** Par-3 steering note was already met by iter 10 (hole 1 iron needPower 0.705, yards 129; holes 2-3 0.88-0.89). src/island.js line 287: `toNonIndexed` guarded with `if (sg.index)`. Saved `course-h1-ribbon` (hole 1 aim: lie tee, iron, needPower 0.5-0.95; 10 checks now).
+**Saw** Hole 1 aim view: brightness 52%, 0% blown out, pin_flag 0.34%, pin_pole 0.28%, way_ring/diamond/post present, golfer 0.23%. Fairway samples #729e4a, #7da84f, #7da54e: lighter than #5d8a3a by up to 32/255 (edge of the 30 tolerance). `start` then `next` lands on hole 1 correctly. The `toNonIndexed` warning still prints after my guard, so the source is src/sheep.js:16 (sheep lane, not mine) or stage.js. Not run: full `test`, perf, C view.
+**Next** (1) Save `course-cliff-lip` (hole 2 aim, zoom on the cliff lip, blossoms). (2) Pull the hole 8 C-view pin off the top edge (src/camera.js target, note in lanes/course.md). (3) Tell the sheep lane to guard `toNonIndexed` in sheep.js:16.
+**Open** Cliff-lip check not saved (fifth ask). Fairway green is lighter than LOOK's #5d8a3a sample.

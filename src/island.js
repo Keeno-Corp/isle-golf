@@ -284,7 +284,7 @@ cliffRing('cliffFace', 0, 0, edgeR, 900);
       const j = hj - Math.floor(hj), band = 1 + 0.09 * Math.sin(y * 9.0) + (j - 0.5) * 0.16;
       sp.setXYZ(i, x * band, y + (j - 0.5) * 0.12, z * band);
     }
-    sg = sg.toNonIndexed(); sg.computeVertexNormals();
+    if (sg.index) sg = sg.toNonIndexed(); sg.computeVertexNormals();
     const q2 = sg.attributes.position, nn = sg.attributes.normal, vc = new Float32Array(q2.count * 3), c = new THREE.Color();
     const strata = ['#c9b48a', '#9c8762', '#b8a077', '#7d6c4f', '#a8926a'].map(x => new THREE.Color(x)), moss = new THREE.Color('#4f7a36');
     for (let i = 0; i < q2.count; i += 3) {
