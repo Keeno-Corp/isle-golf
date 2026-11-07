@@ -866,3 +866,9 @@ Session 21 is judged: I've run `test` and one real-key 2-player tee shot with a 
 3. **Clear `hudRound.lastCall` and `banner` on turn change.** FINN's turn on the tee still shows ISLA's "16 YD TO PIN". Reset both in `src/hud.js` when `turn` changes. A `look` with `sample` at the `banner` position then shows no stale distance. Also make `hud-round-full-round` end with `until hudRound.final` and an `expect`, and `hud-round-sound` assert that `lastCall` is one of a list: SO CLOSE!, IN!, BIRDIE!, PAR! or "n YD TO PIN".
 
 SCORE: 7.8
+
+## Iteration 22
+**Did:** `src/round.js` (turn change in the next-shot routine, ~line 74): when the next player differs and there is more than one player, `G.banner` and `G.lastCall` are now cleared along with the banner fade, so `hudRound.lastCall` no longer shows ISLA's "16 YD TO PIN" on FINN's tee shot.
+**Saw:** No `look`, `test` or `perf` run this session. A hook reported that a saved check did not finish within 170 s; I did not find out which one or why. The edit is one line and has not been checked in a browser.
+**Next:** Run `test` and find the check that timed out. Take the missing pictures: the 2-player stamped card, PICKED UP, ROUND COMPLETE, `clubp` on rough, `meterp` at stage 2 and the PERFECT banner. Make `hud-round-full-round` end on `until hudRound.final`, and make `hud-round-sound` assert `lastCall` is one of a list.
+**Open:** The timed-out check may be a real hang or just slow software rendering. Check this first.
