@@ -1,11 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 12
-**Did** Saved `course-cliff-lip` (newRound, `state {hole:2}` = hole 3 "Bluff Edge" since setState hole is 0-based, 40 frames, expect hole 3 + phase aim). 11 checks now. No source edits.
-**Saw** Hole 3 aim view: brightness 52%, 0% blown out, `blossoms*` x13 only 0.021% of frame (box [461,121,837,156]) so still unproven as shrubs; `bushes*` x27 2.1%. pin_pole 0.29%, pin_flag 0.14%. toNonIndexed warning still prints at open (src/sheep.js:16 and stage.js:40 are the candidates; island.js is guarded). Not run: full `test`, perf, C view, zoom of blossoms (banner covers the zoom box for 40+ frames).
-**Next** (1) Enlarge/cluster `blossoms` in src/island.js (~line 360) so they read as shrubs. (2) Pull hole 8 C-view pin off the top edge (camera.js: tell look lane / note in lanes/course.md). (3) Asset search for tree/bush models; tell sheep lane to guard toNonIndexed in sheep.js:16.
-**Open** `hole` in setState is 0-based but observe().hole is 1-based. Blossom zoom picture not taken. Fairway lighter than #5d8a3a (check passes).
-
 ### Judge 12
 
 **Judge 12.** I opened the page and ran the full `test`: 11 of 11 pass, including the new `course-cliff-lip`. I took one look, hole 5 after `newRound`, `next` and 40 frames of KeyC. The page was still in the intro phase with `overhead: true`, so the C view was caught in the flyover. I took no swing, no zoom of the cliff lip and no `perf` run. This host is SwiftShader, so frame times mean nothing.
@@ -72,3 +66,9 @@ The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.m
    - Add a `course-` check that plays a hole to `holed` and shows the card with its stamp, so the stroke-play score of 5 has evidence.
 
 SCORE: 6.9
+
+## Iteration 13
+**Did** src/island.js blossoms: petal icosahedron radius 0.075 -> 0.16 and 24 petals per blooming bush (was 16), so shrubs read as flowering clumps, same single InstancedMesh (no new draw calls).
+**Saw** Not looked at (no page run this session); syntax check only.
+**Next** (1) look zoom on cliff lip to confirm blossoms >= 0.1% of frame. (2) Auto-club: pick driver when iron needPower > 0.95 (hole 5 gives 1.05). (3) toNonIndexed warning source (sheep.js:16 / stage.js:40), scorecard check.
+**Open** Blossom size unverified visually; petals may now look too chunky.

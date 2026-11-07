@@ -777,3 +777,9 @@ SCORE: 7.1
    - Add a `course-` check that plays a hole to `holed` and shows the card with its stamp, so the stroke-play score of 5 has evidence.
 
 SCORE: 6.9
+
+## Iteration 13
+**Did** src/island.js blossoms: petal icosahedron radius 0.075 -> 0.16 and 24 petals per blooming bush (was 16), so shrubs read as flowering clumps, same single InstancedMesh (no new draw calls).
+**Saw** Not looked at (no page run this session); syntax check only.
+**Next** (1) look zoom on cliff lip to confirm blossoms >= 0.1% of frame. (2) Auto-club: pick driver when iron needPower > 0.95 (hole 5 gives 1.05). (3) toNonIndexed warning source (sheep.js:16 / stage.js:40), scorecard check.
+**Open** Blossom size unverified visually; petals may now look too chunky.

@@ -360,11 +360,11 @@ export const BUSHES = [];
     const bloom = Math.random() < (near ? 0.4 : 0.1);                            // blossom shrub: green leaf-mass dotted with petals
     const base = cols[(Math.random() * cols.length) | 0];
     inst.setColorAt(i, base.clone().multiplyScalar(rand(0.85, 1.12)));
-    if (bloom) for (let k = 0; k < 16; k++) { const a = rand(0, 6.28), e = rand(0.15, 1.2), rr = 0.5 * sc * 1.05; blossomAt.push([x + Math.cos(a) * Math.cos(e) * rr * s.x / sc * 0.95, p.y + Math.sin(e) * rr * s.y / sc * 0.9, z + Math.sin(a) * Math.cos(e) * rr * s.z / sc * 0.95, k]); }
+    if (bloom) for (let k = 0; k < 24; k++) { const a = rand(0, 6.28), e = rand(0.15, 1.2), rr = 0.5 * sc * 1.05; blossomAt.push([x + Math.cos(a) * Math.cos(e) * rr * s.x / sc * 0.95, p.y + Math.sin(e) * rr * s.y / sc * 0.9, z + Math.sin(a) * Math.cos(e) * rr * s.z / sc * 0.95, k]); }
     BUSHES.push({ x, z, r: sc * 0.55 });
   });
   scene.add(inst);
-  const bg = new THREE.IcosahedronGeometry(0.075, 0), bi = new THREE.InstancedMesh(bg, std(0xffffff, { roughness: 0.8 }), Math.max(1, blossomAt.length)), bm = new THREE.Matrix4();
+  const bg = new THREE.IcosahedronGeometry(0.16, 0), bi = new THREE.InstancedMesh(bg, std(0xffffff, { roughness: 0.8 }), Math.max(1, blossomAt.length)), bm = new THREE.Matrix4();
   const petals = ['#f6d3df', '#fff3e4', '#ee8fae', '#f9e0ea'].map(x => new THREE.Color(x));
   blossomAt.forEach(([x, y, z, k], i) => { bm.makeScale(1, 1, 1).setPosition(x, y, z); bi.setMatrixAt(i, bm); bi.setColorAt(i, petals[(Math.random() * 4) | 0]); });
   bi.name = 'blossoms'; scene.add(bi);
