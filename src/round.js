@@ -39,7 +39,7 @@ export function beginHole(h) {
 }
 export function beginShot() {
   const p = curP(), H = curH(); G.phase = 'aim'; G.m.stage = 0; G.pend = null; G.shotT = 0;
-  p.surf = surfaceAt(p.pos.x, p.pos.z); if (p.strokes === 0 && (p.pos.distanceTo(teeVec(H)) < 0.5 || G.dailyOn)) p.surf = 'tee';
+  p.surf = surfaceAt(p.pos.x, p.pos.z); if (p.strokes === 0 && (p.pos.distanceTo(teeVec(H)) < 0.5 || (G.dailyOn && G.dailyTeeX != null && Math.hypot(p.pos.x - G.dailyTeeX, p.pos.z - G.dailyTeeZ) < 0.5))) p.surf = 'tee';
   SIM.pos.copy(p.pos); SIM.vel.set(0, 0, 0); SIM.mode = 'rest';
   G.club = autoClub(); G.aim = autoAim(); onClubChanged(); showGolfer(true); placeGolfer(); updateBalls();
   golferClip('Idle_Loop'); golfer.pose.back = 0; golfer.pose.through = 0; setSub(G.players.length > 1 ? `${p.name} TO PLAY` : '');

@@ -96,6 +96,8 @@ export function exitDaily() {
   G.dailyOn = false;
   DAILY._orig = null;
   DAILY.cardShown = false;
+  G.dailyTeeX = null;
+  G.dailyTeeZ = null;
 }
 
 // ---------------------------------------------------------------- Start daily challenge
@@ -167,6 +169,8 @@ export function startDaily(dateStr) {
 
   // Initial tee position (after nudge)
   DAILY.shots = [[+p.pos.x.toFixed(3), +p.pos.z.toFixed(3)]];
+  G.dailyTeeX = p.pos.x;
+  G.dailyTeeZ = p.pos.z;
 
   // Override beginHole banner with daily header
   showBanner('DAILY HOLE · ' + dateStr, `PAR ${H.par} · ${H.yards} YD · ${H.name.toUpperCase()}`, 3.2);
@@ -199,6 +203,8 @@ on('hole:replay', ({ hole }) => {
   p.pos.z += DAILY.teeNudge[1];
   p.prev.copy(p.pos);
   SIM.pos.copy(p.pos);
+  G.dailyTeeX = p.pos.x;
+  G.dailyTeeZ = p.pos.z;
   // Record the nudged position
   DAILY.shots = [[+p.pos.x.toFixed(3), +p.pos.z.toFixed(3)]];
   DAILY.strokes = 0;
