@@ -880,6 +880,50 @@
           "value": "FINN"
         }
       ]
+    },
+    {
+      "id": "creatures-sheep-bonk",
+      "title": "creatures-sheep-bonk",
+      "state": {
+        "creatures": {
+          "sheep": {
+            "i": 1,
+            "x": -10.5,
+            "z": 12.8,
+            "wait": 600
+          }
+        }
+      },
+      "actions": [
+        {
+          "wait": 1
+        },
+        {
+          "action": "aim",
+          "degrees": 0
+        },
+        {
+          "action": "club",
+          "name": "putter"
+        },
+        {
+          "action": "swing",
+          "power": 0.15,
+          "accuracy": 0,
+          "settle": false
+        },
+        {
+          "wait": 40
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "sheepHits",
+          "op": "==",
+          "value": 1
+        }
+      ]
     }
   ]
 }
