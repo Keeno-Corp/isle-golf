@@ -14,3 +14,6 @@ asset_search for "low poly sheep" and "low poly golfer" (rigged): library unreac
 - `creatures.golferClip` now reads address/backswing/downswing/follow through aim..settle; reactions (Celebration, Dance_Loop, Dismay, Walk) override.
 - Footballer stands 3.0 back from the ball against the aim, 1.5 to the side away from the golfer.
 - `asset_search` retry not done this session (not run).
+
+## Session 12
+Reactions proven by calling `golferClip` (dynamic `import('/src/golfer.js')` in eval): Dance_Loop, Dismay and Celebration each read back in `creatures.golferClip`. Celebration look: arms up, shirt red, edge contrast 0.146. Firing `holed` alone does not play par/birdie: those are round.js's (round.js:52); pose.js only handles bogey+ Dismay.
