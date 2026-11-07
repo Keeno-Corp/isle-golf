@@ -41,7 +41,7 @@ export function doSwing(power, acc, clubIdx) {
   SIM.pos.copy(p.pos); SIM.vel.set(0, 0, 0); SIM.bounces = 0; SIM.sunkT = 0; SIM.live = true;
   let pw = power, ac = acc; if (G.m.label === 'MISS-HIT!') pw *= 0.6;
   launchOn(SIM, c, pw, ac, G.aim, H, LIE[p.surf] ?? 1);
-  G.phase = 'flight'; G.flightT = 0; G.shotOrigin = p.pos.clone(); slopeGrid.visible = gridLines.visible = aimDots.visible = aimRing.visible = false;
+  G.phase = 'flight'; G.flightT = 0; G.minPinD = 9; G.shotOrigin = p.pos.clone(); slopeGrid.visible = gridLines.visible = aimDots.visible = aimRing.visible = false;
   play('hit', power); trail.p.forEach(q => q.t = q.life);
   if (p.surf === 'sand') { burst(p.pos.x, p.pos.z, 26, '#e3cf94', 2.2, 3.2); play('sand'); } else burst(p.pos.x, p.pos.z, c.putt ? 2 : 8, '#8fb860', 1.0, 1.8);
   ST.cowWatch = 1.5;

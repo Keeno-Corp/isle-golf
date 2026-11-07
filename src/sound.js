@@ -76,6 +76,8 @@ Object.assign(SFX, {
   meterTick: (p = 0.5) => tone({ f: 600 + p * 700, dur: 0.035, g: 0.06, type: 'square', bp: 2400 }),
   perfect: () => { tone({ f: 1318, dur: 0.5, g: 0.09, attack: 0.004 }); tone({ f: 1976, dur: 0.6, g: 0.05, attack: 0.004, at: 0.07 }); },
   nice: () => tone({ f: 988, f2: 1318, dur: 0.25, g: 0.08, type: 'triangle' }),
+  groan: () => { tone({ f: 260, f2: 130, dur: 0.7, type: 'sawtooth', g: 0.08, bp: 500, vib: 6, vibF: 5, attack: 0.05 }); tone({ f: 200, f2: 110, dur: 0.8, type: 'triangle', g: 0.07, at: 0.1 }); },
+  rattle: () => { for (let i = 0; i < 5; i++) { tone({ f: 1800 - i * 150, f2: 1200, dur: 0.05, type: 'square', g: 0.04, bp: 2400, at: i * (0.07 + i * 0.012) }); } tone({ f: 200, f2: 80, dur: 0.18, g: 0.15, at: 0.4 }); },
   pin: () => { tone({ f: 523, dur: 0.18, g: 0.06, type: 'triangle' }); tone({ f: 784, dur: 0.25, g: 0.06, type: 'triangle', at: 0.09 }); },
 });
 export const play = (k, ...a) => { if (!G.sound || !AC) return; const f = SFX[k]; if (typeof f !== 'function') return; try { f(...a); } catch (e) { } };

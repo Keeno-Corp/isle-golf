@@ -316,6 +316,65 @@
           "op": "exists"
         }
       ]
+    },
+    {
+      "id": "hud-round-sound",
+      "title": "hud-round-sound",
+      "state": {},
+      "actions": [
+        {
+          "action": "newRound",
+          "players": 1
+        },
+        {
+          "action": "aim",
+          "at": "pin"
+        },
+        {
+          "action": "swing",
+          "power": 1,
+          "club": "iron",
+          "settle": true
+        },
+        {
+          "wait": 30
+        },
+        {
+          "action": "aim",
+          "at": "pin"
+        },
+        {
+          "action": "swing",
+          "power": 1,
+          "club": "wedge",
+          "settle": true
+        },
+        {
+          "wait": 30
+        },
+        {
+          "action": "aim",
+          "at": "pin"
+        },
+        {
+          "action": "swing",
+          "power": 0.9,
+          "accuracy": 1,
+          "club": "putter",
+          "settle": true
+        },
+        {
+          "wait": 20
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "hudRound.lastCall",
+          "op": "==",
+          "value": "SO CLOSE!"
+        }
+      ]
     }
   ]
 }

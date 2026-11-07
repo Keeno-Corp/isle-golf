@@ -46,10 +46,12 @@ export function beginShot() {
 }
 export function resolveShot() {
   const p = curP(), H = curH(), b = SIM; let msg = '';
-  if (b.mode === 'rest') { const yd = Math.round(pinDist(b.pos, H) * YD); if (yd > 0) { fire('hud-round:rest', { yards: yd }); if (yd >= 3) { showBanner(yd + ' YD TO PIN', '', 1.4); play('pin'); } } }
+  G.lastLip = false;
+  if (b.mode === 'rest' && curClub().putt && G.minPinD < 0.24) { fire('hud-round:lipout', { dist: G.minPinD }); play('groan'); showBanner('SO CLOSE!', 'LIPPED OUT BY A HAIR', 1.6); G.lastLip = true; }
+  else if (b.mode === 'rest') { const yd = Math.round(pinDist(b.pos, H) * YD); if (yd > 0) { fire('hud-round:rest', { yards: yd }); if (yd >= 3) { showBanner(yd + ' YD TO PIN', '', 1.4); play('pin'); } } }
   if (b.mode === 'sunk') {
     p.holed = true; p.scores[G.hole] = p.strokes; p.pos.set(H.pinX, H.pinY, H.pinZ); const nm = scoreName(p.strokes, H.par);
-    showBanner(nm, `${p.name} · ${p.strokes} ${p.strokes === 1 ? 'STROKE' : 'STROKES'}`, 2.4); G.lastResult = nm; fire('holed', { player: p.name, strokes: p.strokes, result: nm }); play(p.strokes <= H.par - 1 ? 'birdie' : 'ding');
+    if (curClub().putt && p.strokes > H.par - 1) { play('rattle'); showBanner('IN!', `${nm} · ${p.name} · ${p.strokes} ${p.strokes === 1 ? 'STROKE' : 'STROKES'}`, 2.4); } else showBanner(nm, `${p.name} · ${p.strokes} ${p.strokes === 1 ? 'STROKE' : 'STROKES'}`, 2.4); G.lastResult = nm; fire('holed', { player: p.name, strokes: p.strokes, result: nm }); play(p.strokes <= H.par - 1 ? 'birdie' : 'ding');
     if (p.strokes <= H.par) { golferClip(p.strokes < H.par ? 'Celebration' : 'Dance_Loop', 0.3); for (let i = 0; i < 24; i++) emit(dust, H.pinX, H.pinY + 0.2, H.pinZ, { life: 1.1, sp: 1.2, up: 3.4, g: 6, color: pick(['#f2d43a', '#ffffff', '#ff7a5a', '#7fe0d4']) }); }
     G.phase = 'holed'; G.resolveT = 2.6; return;
   }
@@ -74,7 +76,7 @@ export function nextTurnOrCard() {
 
 // ---------------------------------------------------------------- hud-round extras
 on('swing', ({ acc }) => { const a = Math.abs(acc); if (a < 0.001) { showBanner('PERFECT!', '', 0.9); play('perfect'); fire('hud-round:call', { call: 'PERFECT' }); } else if (a < 0.2) { showBanner('NICE!', '', 0.9); play('nice'); fire('hud-round:call', { call: 'NICE' }); } });
-addObserve(() => ({ hudRound: { order: G.order.map(i => G.players[i]?.name), turn: curP()?.name, lastCall: G.banner, cardOpen: G.phase === 'card', final: G.phase === 'card' && G.hole >= 8, best: (() => { try { return +localStorage.getItem('isleGolfBest' + G.nPlayers) || null; } catch (e) { return null; } })() } }));
+addObserve(() => ({ hudRound: { order: G.order.map(i => G.players[i]?.name), turn: curP()?.name, lastCall: G.banner, lipOut: !!G.lastLip, minPinD: +(G.minPinD || 0).toFixed(2), cardOpen: G.phase === 'card', final: G.phase === 'card' && G.hole >= 8, best: (() => { try { return +localStorage.getItem('isleGolfBest' + G.nPlayers) || null; } catch (e) { return null; } })() } }));
 
 // clear the hole intro banner once the swing meter starts (hud-round lane)
 let _introCleared = false; addUpdate(() => { if (G.phase === 'aim' && G.m.stage === 1) { if (!_introCleared && ST.bannerT > 1) { hud.banner.classList.remove('on'); hud.sub.classList.remove('on'); ST.bannerT = 0; ST.subT = 0; } _introCleared = true; } else _introCleared = false; });
