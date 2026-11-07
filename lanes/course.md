@@ -15,3 +15,6 @@
 ## Session 2: smooth ground, wider spread
 - Ground: mowing stripes are now a 16 px/m baked texture (`stripeTex` in island.js, from `stripeAt` in course.js) read in the terrain shader with mipmaps + max anisotropy; no vertex-colour stripes. `grainTex` (tileable noise) is read at three scales/rotations for macro and micro variation.
 - Spread: `SPREAD = 1.12` in course.js scales every hand-placed x/z (island, holes, bunkers, trees, house, pond, bell, cottage, path curves, fences). Terrain mesh grew to 78 x 54. **Look lane: the island now overflows the aim/overview frame left and right; pull the camera back / widen FOV ~12%.**
+
+## Session 4: spread 1.2
+- `SPREAD` raised 1.12 -> 1.2 (about 20% over the original 1.0). Terrain 78 x 54 still covers the isle. **Look lane: pull the aim/overview camera back a further ~7%.**

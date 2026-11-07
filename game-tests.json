@@ -78,8 +78,8 @@
         {
           "state": {
             "ball": {
-              "x": -1.673,
-              "z": 12.655
+              "x": -1.82,
+              "z": 13.61
             }
           }
         },
@@ -153,7 +153,7 @@
         },
         {
           "action": "swing",
-          "power": 0.9,
+          "power": 1,
           "accuracy": 0,
           "settle": true
         },

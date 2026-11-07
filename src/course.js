@@ -5,7 +5,7 @@ import { fbm, lerp, smooth } from './util.js';
 // The island is regrown as a nine-hole links course: tees, mown fairways, greens with a gentle tilt, sand pots, the pond as the
 // water hazard, the cliff lip as out of bounds. 1 world unit = 12 yards in the HUD.
 export const YD = 12;
-export const SPREAD = 1.12;   // owner: more room between holes and props. Every hand-placed x/z below is scaled by this; sizes are not
+export const SPREAD = 1.2;    // owner: more room between holes and props. Every hand-placed x/z below is scaled by this; sizes are not
 const SP = v => v * SPREAD;
 export const FIELD_H = 4.4;
 export const ISLE_A = 28.5 * SPREAD, ISLE_B = 19 * SPREAD;
