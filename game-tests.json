@@ -78,8 +78,8 @@
         {
           "state": {
             "ball": {
-              "x": -1.673,
-              "z": 12.655
+              "x": -1.82,
+              "z": 13.61
             }
           }
         },
@@ -153,7 +153,7 @@
         },
         {
           "action": "swing",
-          "power": 0.9,
+          "power": 1,
           "accuracy": 0,
           "settle": true
         },
@@ -228,6 +228,538 @@
           "path": "strokes",
           "op": "==",
           "value": 0
+        }
+      ]
+    },
+    {
+      "id": "course-h6-splash",
+      "title": "course-h6-splash",
+      "state": {},
+      "actions": [
+        {
+          "action": "newRound",
+          "players": 1
+        },
+        {
+          "state": {
+            "hole": 5,
+            "skipIntro": true
+          }
+        },
+        {
+          "wait": 5
+        },
+        {
+          "key": "KeyD",
+          "down": true
+        },
+        {
+          "until": {
+            "aimDeg": [
+              55,
+              60
+            ]
+          },
+          "max": 200
+        },
+        {
+          "key": "KeyD",
+          "down": false
+        },
+        {
+          "key": "KeyS",
+          "frames": 2
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 50
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 28
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 200
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "banner",
+          "op": "==",
+          "value": "SPLASH!"
+        },
+        {
+          "path": "strokes",
+          "op": "==",
+          "value": 2
+        }
+      ]
+    },
+    {
+      "id": "course-h9-drive",
+      "title": "course-h9-drive",
+      "state": {},
+      "actions": [
+        {
+          "action": "newRound",
+          "players": 1
+        },
+        {
+          "state": {
+            "hole": 8,
+            "skipIntro": true
+          }
+        },
+        {
+          "wait": 20
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.power": [
+              0.97,
+              1.2
+            ]
+          },
+          "max": 200
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.t": [
+              0.95,
+              1
+            ]
+          },
+          "max": 200
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": "aim"
+          },
+          "max": 900
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "strokes",
+          "op": "==",
+          "value": 1
+        },
+        {
+          "path": "ball.surface",
+          "op": "in",
+          "value": [
+            "fairway",
+            "green"
+          ]
+        },
+        {
+          "path": "club",
+          "op": "in",
+          "value": [
+            "driver",
+            "iron",
+            "wedge"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "course-h2-carry",
+      "title": "course-h2-carry",
+      "state": {},
+      "actions": [
+        {
+          "action": "newRound",
+          "players": 1
+        },
+        {
+          "state": {
+            "hole": 1,
+            "skipIntro": true
+          }
+        },
+        {
+          "state": {
+            "ball": {
+              "x": 8.96,
+              "z": 15.25
+            }
+          }
+        },
+        {
+          "wait": 3
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "lie",
+          "op": "==",
+          "value": "sand"
+        },
+        {
+          "path": "hole",
+          "op": "==",
+          "value": 2
+        }
+      ]
+    },
+    {
+      "id": "course-h3-carry",
+      "title": "course-h3-carry",
+      "state": {},
+      "actions": [
+        {
+          "action": "newRound",
+          "players": 1
+        },
+        {
+          "state": {
+            "hole": 2,
+            "skipIntro": true
+          }
+        },
+        {
+          "state": {
+            "ball": {
+              "x": 23.62,
+              "z": 4.85
+            }
+          }
+        },
+        {
+          "wait": 3
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "lie",
+          "op": "==",
+          "value": "sand"
+        },
+        {
+          "path": "hole",
+          "op": "==",
+          "value": 3
+        }
+      ]
+    },
+    {
+      "id": "course-h1-ribbon",
+      "title": "course-h1-ribbon",
+      "state": {},
+      "actions": [
+        {
+          "action": "start",
+          "players": 1
+        },
+        {
+          "action": "next"
+        },
+        {
+          "wait": 30
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "hole",
+          "op": "==",
+          "value": 1
+        },
+        {
+          "path": "lie",
+          "op": "==",
+          "value": "tee"
+        },
+        {
+          "path": "meter.needPower",
+          "op": ">=",
+          "value": 0.5
+        },
+        {
+          "path": "meter.needPower",
+          "op": "<=",
+          "value": 0.95
+        },
+        {
+          "path": "club",
+          "op": "==",
+          "value": "iron"
+        }
+      ]
+    },
+    {
+      "id": "course-cliff-lip",
+      "title": "course-cliff-lip",
+      "state": {},
+      "actions": [
+        {
+          "action": "newRound",
+          "players": 1
+        },
+        {
+          "state": {
+            "hole": 2,
+            "skipIntro": true
+          }
+        },
+        {
+          "wait": 40
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "hole",
+          "op": "==",
+          "value": 3
+        },
+        {
+          "path": "phase",
+          "op": "==",
+          "value": "aim"
+        }
+      ]
+    },
+    {
+      "id": "course-only-current-pin",
+      "title": "course-only-current-pin",
+      "state": {},
+      "actions": [
+        {
+          "action": "newRound",
+          "players": 1
+        },
+        {
+          "state": {
+            "hole": 0,
+            "skipIntro": true
+          }
+        },
+        {
+          "wait": 10
+        },
+        {
+          "key": "KeyC",
+          "frames": 1
+        },
+        {
+          "wait": 40
+        },
+        {
+          "state": {
+            "hole": 1,
+            "skipIntro": true
+          }
+        },
+        {
+          "wait": 10
+        },
+        {
+          "key": "KeyC",
+          "frames": 1
+        },
+        {
+          "wait": 40
+        },
+        {
+          "state": {
+            "hole": 2,
+            "skipIntro": true
+          }
+        },
+        {
+          "wait": 10
+        },
+        {
+          "key": "KeyC",
+          "frames": 1
+        },
+        {
+          "wait": 40
+        },
+        {
+          "state": {
+            "hole": 3,
+            "skipIntro": true
+          }
+        },
+        {
+          "wait": 10
+        },
+        {
+          "key": "KeyC",
+          "frames": 1
+        },
+        {
+          "wait": 40
+        },
+        {
+          "state": {
+            "hole": 4,
+            "skipIntro": true
+          }
+        },
+        {
+          "wait": 10
+        },
+        {
+          "key": "KeyC",
+          "frames": 1
+        },
+        {
+          "wait": 40
+        },
+        {
+          "state": {
+            "hole": 5,
+            "skipIntro": true
+          }
+        },
+        {
+          "wait": 10
+        },
+        {
+          "key": "KeyC",
+          "frames": 1
+        },
+        {
+          "wait": 40
+        },
+        {
+          "state": {
+            "hole": 6,
+            "skipIntro": true
+          }
+        },
+        {
+          "wait": 10
+        },
+        {
+          "key": "KeyC",
+          "frames": 1
+        },
+        {
+          "wait": 40
+        },
+        {
+          "state": {
+            "hole": 7,
+            "skipIntro": true
+          }
+        },
+        {
+          "wait": 10
+        },
+        {
+          "key": "KeyC",
+          "frames": 1
+        },
+        {
+          "wait": 40
+        },
+        {
+          "state": {
+            "hole": 8,
+            "skipIntro": true
+          }
+        },
+        {
+          "wait": 10
+        },
+        {
+          "key": "KeyC",
+          "frames": 1
+        },
+        {
+          "wait": 40
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "overhead",
+          "op": "==",
+          "value": true
+        },
+        {
+          "path": "hole",
+          "op": "==",
+          "value": 9
+        },
+        {
+          "path": "course.cViewPinOk",
+          "op": "==",
+          "value": 9
+        },
+        {
+          "path": "course.pinVisible.8",
+          "op": "==",
+          "value": true
+        },
+        {
+          "path": "course.pinVisible.0",
+          "op": "==",
+          "value": false
+        },
+        {
+          "path": "course.pinVisible.1",
+          "op": "==",
+          "value": false
+        },
+        {
+          "path": "course.pinVisible.2",
+          "op": "==",
+          "value": false
+        },
+        {
+          "path": "course.pinVisible.3",
+          "op": "==",
+          "value": false
+        },
+        {
+          "path": "course.pinVisible.4",
+          "op": "==",
+          "value": false
+        },
+        {
+          "path": "course.pinVisible.5",
+          "op": "==",
+          "value": false
+        },
+        {
+          "path": "course.pinVisible.6",
+          "op": "==",
+          "value": false
+        },
+        {
+          "path": "course.pinVisible.7",
+          "op": "==",
+          "value": false
+        },
+        {
+          "path": "course.pinScreen",
+          "op": "exists"
         }
       ]
     }
