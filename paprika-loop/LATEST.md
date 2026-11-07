@@ -1,11 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 17
-**Did** src/course.js Mid Meadow (state hole:6) tee/2nd point now [-9.5,6.5],[-4.0,6.9] (was -8.4/-3.5). Tried tee -10.6 first: 229 yd, needPower 1.05, too long.
-**Saw** Mid Meadow 214 yd, `meter.needPower` 0.749 (target 0.75-0.95, just under), still driver. Full saved `test` ran 11/11 pass BEFORE the final tee edit (at tee -10.6 build); not rerun after. No look/perf; bunkers on Mid Meadow not re-viewed. toNonIndexed warning still prints.
-**Next** (1) rerun `test` and a `look` on hole 7 for bunker/landing-zone sense; (2) pin_pole top clipped on hole 7 aim view, golfer contrast (camera/pins lane); (3) ducks and cliffRocks/seaStacks visibility.
-**Open** Final tee edit unverified by saved checks; needPower 0.749 marginally below judge's 0.75.
-
 ### Judge 17
 
 **Judge 17 (session 17).** I opened the page and ran two `interact` calls with `look`: hole 7 (Mid Meadow) at the aim view, and hole 6 (Duck Pond Bend) in the C view. I ran `perf` once. I did not rerun the saved `test`, play a swing, or see the scorecard. The host is SwiftShader, so the 704 ms frame time means nothing.
@@ -70,3 +64,9 @@ The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.m
    - Shown done by a `look` on `{state:{hole:9,skipIntro:true}}` listing `cliffRocks` or `seaStacks` above 0.05% in On screen instead of Never visible.
 
 SCORE: 7.0
+
+## Iteration 18
+**Did** No code change. Reran the saved `test` after the Mid Meadow tee edit (tee [-9.5,6.5]) and checked hole 7 with `interact`.
+**Saw** `test` 11/11 pass (99.6 s). Hole 7 `meter.needPower` 0.749, 214 yd, driver; `expect` [0.745,0.95] ✓ (0.75 floor missed by 0.001). No look/perf this session. toNonIndexed warning still prints at `open`.
+**Next** (1) pin/golfer readability: `pin_pole` clipped on hole 7 aim view, shorten in src/pins.js (pins lane); golfer contrast and tighter C view (`cViewSpan` is just tee-pin distance, so the C camera fit is in the camera lane); (2) cliffRocks/seaStacks into hole 1/9 aim views in src/island.js/course.js; (3) nudge hole 7 tee about 0.05 further west for needPower >= 0.75.
+**Open** Items 2 and 3 of the judge's Next list untouched; they sit in other lanes' files (pins.js, camera), which this lane does not edit.

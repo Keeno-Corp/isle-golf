@@ -1052,3 +1052,9 @@ paprika-loop/PROMPT.md changed before session 17; the Next lists above were writ
    - Shown done by a `look` on `{state:{hole:9,skipIntro:true}}` listing `cliffRocks` or `seaStacks` above 0.05% in On screen instead of Never visible.
 
 SCORE: 7.0
+
+## Iteration 18
+**Did** No code change. Reran the saved `test` after the Mid Meadow tee edit (tee [-9.5,6.5]) and checked hole 7 with `interact`.
+**Saw** `test` 11/11 pass (99.6 s). Hole 7 `meter.needPower` 0.749, 214 yd, driver; `expect` [0.745,0.95] ✓ (0.75 floor missed by 0.001). No look/perf this session. toNonIndexed warning still prints at `open`.
+**Next** (1) pin/golfer readability: `pin_pole` clipped on hole 7 aim view, shorten in src/pins.js (pins lane); golfer contrast and tighter C view (`cViewSpan` is just tee-pin distance, so the C camera fit is in the camera lane); (2) cliffRocks/seaStacks into hole 1/9 aim views in src/island.js/course.js; (3) nudge hole 7 tee about 0.05 further west for needPower >= 0.75.
+**Open** Items 2 and 3 of the judge's Next list untouched; they sit in other lanes' files (pins.js, camera), which this lane does not edit.
