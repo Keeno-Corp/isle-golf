@@ -7751,6 +7751,91 @@
           "value": true
         }
       ]
+    },
+    {
+      "id": "daily-first-play-saves-and-clears-flag",
+      "title": "daily-first-play-saves-and-clears-flag",
+      "state": {},
+      "actions": [
+        {
+          "action": "daily",
+          "date": "2000-01-01"
+        },
+        {
+          "action": "next"
+        },
+        {
+          "until": {
+            "phase": "aim"
+          },
+          "max": 300
+        },
+        {
+          "action": "swing",
+          "power": 0.6,
+          "accuracy": 0,
+          "settle": true
+        },
+        {
+          "action": "swing",
+          "power": 0.3,
+          "accuracy": 0,
+          "settle": true
+        },
+        {
+          "action": "swing",
+          "power": 0.3,
+          "accuracy": 0,
+          "settle": true
+        },
+        {
+          "action": "swing",
+          "power": 0.3,
+          "accuracy": 0,
+          "settle": true
+        },
+        {
+          "action": "swing",
+          "power": 0.3,
+          "accuracy": 0,
+          "settle": true
+        },
+        {
+          "action": "swing",
+          "power": 0.3,
+          "accuracy": 0,
+          "settle": true
+        },
+        {
+          "until": {
+            "phase": "daily-card"
+          },
+          "max": 600
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "phase",
+          "op": "==",
+          "value": "daily-card"
+        },
+        {
+          "path": "daily.firstPlay",
+          "op": "==",
+          "value": false
+        },
+        {
+          "path": "daily.todaysFirst",
+          "op": ">=",
+          "value": 1
+        },
+        {
+          "path": "daily.todaysFirst",
+          "op": "<=",
+          "value": 10
+        }
+      ]
     }
   ]
 }

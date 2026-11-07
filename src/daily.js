@@ -25,6 +25,7 @@ export const DAILY = {
   cardShown: false,
   firstPlay: false,
   todaysFirst: 0,
+  _savedFirst: false,
   _orig: null,
 };
 
@@ -132,7 +133,7 @@ export function startDaily(dateStr) {
     date: dateStr, holeIndex: cfg.holeIndex, pin: cfg.pin,
     wind: { speed: +cfg.wind.speed.toFixed(4), degrees: +cfg.wind.degrees.toFixed(4) },
     teeNudge: cfg.teeNudge, shots: [], strokes: 0,
-    result: '', shareText: '', cardShown: false,
+    result: '', shareText: '', cardShown: false, _savedFirst: false,
   });
 
   // localStorage: check for prior result today
@@ -203,9 +204,9 @@ on('hole:replay', ({ hole }) => {
   p.pos.z += DAILY.teeNudge[1];
   p.prev.copy(p.pos);
   SIM.pos.copy(p.pos);
+  // Record the nudged position
   G.dailyTeeX = p.pos.x;
   G.dailyTeeZ = p.pos.z;
-  // Record the nudged position
   DAILY.shots = [[+p.pos.x.toFixed(3), +p.pos.z.toFixed(3)]];
   DAILY.strokes = 0;
   DAILY.cardShown = false;
@@ -229,7 +230,8 @@ on('hole:end', () => {
   const finalPt = p.pickedUp ? [+p.pos.x.toFixed(3), +p.pos.z.toFixed(3)] : [+H.pinX.toFixed(3), +H.pinZ.toFixed(3)];
   DAILY.shots.push(finalPt);
 
-  // Save first play to localStorage
+  // Save first play to localStorage; snapshot for showDailyCard badge
+  DAILY._savedFirst = DAILY.firstPlay;
   if (DAILY.firstPlay) {
     try {
       localStorage.setItem('isleGolfDaily_' + DAILY.date, JSON.stringify({
@@ -278,8 +280,8 @@ function showDailyCard() {
   const scoreColor = vsParNum <= -2 ? '#f7e27a' : vsParNum === -1 ? '#7fe0d4' : vsParNum === 0 ? '#f4e39a' : '#ff9a6a';
   const stampClass = vsParNum <= -2 ? 'eagle' : vsParNum === -1 ? 'birdie' : vsParNum === 0 ? 'par' : 'bogey';
 
-  const firstBadge = !DAILY.firstPlay && DAILY.todaysFirst
-    ? `<div style="text-align:center;font-size:17px;color:#a8f0d8;margin-top:6px">TODAY’S FIRST: ${DAILY.todaysFirst}</div>`
+  const firstBadge = !DAILY._savedFirst && DAILY.todaysFirst
+    ? `<div style="text-align:center;font-size:17px;color:#a8f0d8;margin-top:6px">TODAY'S FIRST: ${DAILY.todaysFirst}</div>`
     : '';
 
   const style = `
@@ -500,6 +502,8 @@ addObserve(() => ({
     result: DAILY.result,
     shareText: DAILY.shareText,
     shareUrl: DAILY.shareText ? DAILY.shareText.split('\n').pop() : '',
+    firstPlay: DAILY.firstPlay,
+    todaysFirst: DAILY.todaysFirst,
   }
 }));
 
