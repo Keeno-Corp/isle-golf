@@ -1,12 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 13
-**Did**: `src/camera.js` holed/sunk cup close-up pulled back: cPos = pin + (2.6, 3.0, 4.0) (was 1.9, 2.3, 2.9), cLook = pin + (0, 0.6, 0) (was +0.5). fov 30 and k 7 unchanged. Aim: keep `pin_flag` out of the near fade.
-**Saw**: `test`: 13 of 13 saved checks pass (including `look-sunk-cup-closeup` and `look-holed-cup`) after the change. I took no pictures this session, so I did not confirm that `look.dither.nearFades` no longer names `pin_flag` at settle +6 or holed +4/+12/+24. `perf` not run. Console: only the `toNonIndexed` warning at open.
-**Next**: (1) Real-key putt, then `look` at settle +6 and holed +4/+12/+24: check `pin_flag` and `cup` are intact, `look.ball.y` above -0.6, and take the missing +4/+24 pictures. (2) Save flyover 25/50/75, flight-3-moments and night checks (`look-` ids). (3) Pink boulder into lanes/look.md; `look.golfer` should read the walking `holder.position`.
-**Open**: The flag fade fix is untested by picture. The cup rattle/drop animation is still not seen frame by frame.
-**Iteration 13 addendum (picture taken)**: real-key putt on hole 1, settle +6, ball.mode sunk: cup, `pin_pole` and `pin_flag` (3.2%) all on screen, flag red with a visible Bayer stipple (still partly near-faded, cam still easing from (-2.19,7.08,14.17), fov 31.3). `look.ball` y -0.399 (above -0.6). Golfer 1.6%. Console clean. Next: look again at holed +12/+24 to see if the stipple has gone once the camera has settled; if not, lower `uNearR` for `pin_flag` only.
-
 ### Judge 13
 
 **Judge 13: scores**
@@ -41,3 +34,9 @@ The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.m
 3. **Fix the aim framing on hole 1 and the golfer metadata.** With the ball on the tee, the hole 1 aim shows `look.ball.on` false and `look.golfer.on` false. Use `observe` to check that the ball and golfer sit in the lower-middle of the frame at fov 33. Make `look.golfer` and `look.dither.subjectNdc` read the walking `holder.position`, not the destination. Then add the pink boulder at the hole 1 right edge and on the hole 5 cliff to `lanes/look.md` under the course-lane items, and take the missing meter and scorecard pictures.
 
 SCORE: 7.5
+
+## Iteration 14
+**Did**: No source edits. Verified iteration 13's cup-camera pull-back by picture (real-key Space x2 putt on hole 1 from (-2.3,11.95), holed +24).
+**Saw**: holed +24: camera (0.89,7.44,15.94), fov 30.0, pitch 26.8; `pin_flag` 0.44% crisp red (no stipple), `pin_pole`, `cup`, `cupRim`, `golfer_body` 0.5% all on screen; `look.dither.nearFades` = ["tree15_leaves0"] (no pin_flag); `look.ball.y` -0.328. Console: only the toNonIndexed warning. `perf`/`test` not run.
+**Next**: (1) Save look- checks: flyover 25/50/75 on hole 5, real-key Space x3 drive with look.ball.on at 3 moments, night (N) on hole 5. (2) Hole 1 aim framing: look.ball.on/look.golfer.on were false; make look.golfer read walking holder.position. (3) Pink boulder into lanes/look.md; take the meter and scorecard pictures.
+**Open**: Holed +4 picture still not taken; the three checks above are still unsaved; SFX[k] error in sound.js is another lane's.

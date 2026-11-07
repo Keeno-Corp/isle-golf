@@ -535,3 +535,9 @@ paprika-loop/PROMPT.md changed before session 13; the Next lists above were writ
 3. **Fix the aim framing on hole 1 and the golfer metadata.** With the ball on the tee, the hole 1 aim shows `look.ball.on` false and `look.golfer.on` false. Use `observe` to check that the ball and golfer sit in the lower-middle of the frame at fov 33. Make `look.golfer` and `look.dither.subjectNdc` read the walking `holder.position`, not the destination. Then add the pink boulder at the hole 1 right edge and on the hole 5 cliff to `lanes/look.md` under the course-lane items, and take the missing meter and scorecard pictures.
 
 SCORE: 7.5
+
+## Iteration 14
+**Did**: No source edits. Verified iteration 13's cup-camera pull-back by picture (real-key Space x2 putt on hole 1 from (-2.3,11.95), holed +24).
+**Saw**: holed +24: camera (0.89,7.44,15.94), fov 30.0, pitch 26.8; `pin_flag` 0.44% crisp red (no stipple), `pin_pole`, `cup`, `cupRim`, `golfer_body` 0.5% all on screen; `look.dither.nearFades` = ["tree15_leaves0"] (no pin_flag); `look.ball.y` -0.328. Console: only the toNonIndexed warning. `perf`/`test` not run.
+**Next**: (1) Save look- checks: flyover 25/50/75 on hole 5, real-key Space x3 drive with look.ball.on at 3 moments, night (N) on hole 5. (2) Hole 1 aim framing: look.ball.on/look.golfer.on were false; make look.golfer read walking holder.position. (3) Pink boulder into lanes/look.md; take the meter and scorecard pictures.
+**Open**: Holed +4 picture still not taken; the three checks above are still unsaved; SFX[k] error in sound.js is another lane's.
