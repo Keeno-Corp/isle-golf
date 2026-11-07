@@ -534,6 +534,35 @@
           "value": 5
         }
       ]
+    },
+    {
+      "id": "creatures-footballer-visible",
+      "title": "creatures-footballer-visible",
+      "state": {},
+      "actions": [
+        {
+          "key": "Space",
+          "frames": 2
+        },
+        {
+          "action": "next"
+        },
+        {
+          "wait": 30
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "creatures.footballer.visible",
+          "op": "==",
+          "value": true
+        },
+        {
+          "path": "creatures.shirtColour",
+          "op": "exists"
+        }
+      ]
     }
   ]
 }
