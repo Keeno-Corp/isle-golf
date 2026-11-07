@@ -1,7 +1,7 @@
 import './sheep.js';   // load order: each file runs after the one before it (COORDINATION.md)
 import * as THREE from 'three';
 import { clamp, lerp } from './util.js';
-import { ST, fire, on, addObserve } from './shared.js';
+import { ST, fire, on, addObserve, addUpdate } from './shared.js';
 import { HOLES, POND, YD, heightAt, surfaceAt } from './course.js';
 import { play } from './sound.js';
 import { BR, CLUBS, KITS, WIND, pick } from './rules.js';
@@ -75,3 +75,6 @@ export function nextTurnOrCard() {
 // ---------------------------------------------------------------- hud-round extras
 on('swing', ({ acc }) => { const a = Math.abs(acc); if (a < 0.001) { showBanner('PERFECT!', '', 0.9); play('perfect'); fire('hud-round:call', { call: 'PERFECT' }); } else if (a < 0.2) { showBanner('NICE!', '', 0.9); play('nice'); fire('hud-round:call', { call: 'NICE' }); } });
 addObserve(() => ({ hudRound: { order: G.order.map(i => G.players[i]?.name), turn: curP()?.name, lastCall: G.banner, cardOpen: G.phase === 'card', final: G.phase === 'card' && G.hole >= 8, best: (() => { try { return +localStorage.getItem('isleGolfBest' + G.nPlayers) || null; } catch (e) { return null; } })() } }));
+
+// clear the hole intro banner once the swing meter starts (hud-round lane)
+let _introCleared = false; addUpdate(() => { if (G.phase === 'aim' && G.m.stage === 1) { if (!_introCleared && ST.bannerT > 1) { hud.banner.classList.remove('on'); hud.sub.classList.remove('on'); ST.bannerT = 0; ST.subT = 0; } _introCleared = true; } else _introCleared = false; });

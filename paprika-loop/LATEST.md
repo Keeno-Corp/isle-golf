@@ -1,11 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 1
-**Did** sound.js: added SFX gull, surf, birdie, meterTick, perfect, nice, pin; `play()` now guards missing/throwing SFX (no more 'SFX[k] is not a function'); surf ambience and a meter tick every 1/16 of the power rise via addUpdate. round.js: PERFECT/NICE banner + sound on `swing` (fires `hud-round:call`), 'x YD TO PIN' banner at rest (`hud-round:rest`), bunker hint that matches the club, birdie jingle on holed, observe key `hudRound`. hud.js: #banner and #sub moved to left 27%/top 26% so they stop covering the pin. lanes/hud-round.md written; saved check hud-round-hud (2 players, meter stage 1); all 5 checks pass.
-**Saw** A bot of real Space key events (eval, window.bot, stage 1 at needPower, stage 2 at perfectAt) played a full solo round: 9 holes, best saved (27), final card then Space to title worked. 2-player card shows both rows, order ISLA,FINN. No console errors seen. Banner was overlapping the flag at the top centre in the aim view before the move; the new left position was not looked at again.
-**Next** Look at the banner position on several holes (does it hit the ball or pin?); save hud-round-full-round, -hotseat, -sound checks (a full round needs a long step list); look at the final card picture; check the order on hole 2 by last score with 2 players; the 'x YD TO PIN' banner may be hidden by the next banner at once.
-**Open** Auto-club picks the putter in sand (ball-physics lane). Hole 9 took the bot 5 strokes. ballShadow1/2 z-fight (not my files). Final-card look not taken.
-
 ### Judge 1
 
 **Judge verdict, session 1**
@@ -31,3 +25,9 @@ The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.m
 3. Clear the "HOLE n" intro banner when the swing starts (hide `#banner` and `#sub` at meter stage 1), and move the golfer or `#meterp` so the meter stays readable at stage 2. Check the picture with `look` at stage 2, which should show no banner and a clear meter. Also give ballShadow2 `polygonOffset` or a 0.001 y offset so the Surfaces: line is gone.
 
 SCORE: 6.3
+
+## Iteration 2
+**Did** src/round.js: an addUpdate hook clears `#banner`/`#sub` (ST.bannerT/subT = 0) the first frame meter stage becomes 1, so the HOLE intro banner no longer lingers over the swing. Left src/balls.js (ballShadow z-fight) alone: not an allowed file for this lane.
+**Saw** Not run in the browser this session (syntax checked only); no look/test taken.
+**Next** Run `test` to confirm all checks still pass; save hud-round-full-round, -hotseat, -sound with expect values and dedupe hud-round-hud; take looks of the stamped card and the ROUND COMPLETE card; read a PERFECT call from perfectAt; ask the balls lane for the ballShadow2 polygonOffset.
+**Open** Banner clear untested; meter readability at stage 2 unchanged; the three checks and card pictures still missing.

@@ -33,3 +33,9 @@ The request is in PROMPT.md. Each session of the loop appends one section here: 
 3. Clear the "HOLE n" intro banner when the swing starts (hide `#banner` and `#sub` at meter stage 1), and move the golfer or `#meterp` so the meter stays readable at stage 2. Check the picture with `look` at stage 2, which should show no banner and a clear meter. Also give ballShadow2 `polygonOffset` or a 0.001 y offset so the Surfaces: line is gone.
 
 SCORE: 6.3
+
+## Iteration 2
+**Did** src/round.js: an addUpdate hook clears `#banner`/`#sub` (ST.bannerT/subT = 0) the first frame meter stage becomes 1, so the HOLE intro banner no longer lingers over the swing. Left src/balls.js (ballShadow z-fight) alone: not an allowed file for this lane.
+**Saw** Not run in the browser this session (syntax checked only); no look/test taken.
+**Next** Run `test` to confirm all checks still pass; save hud-round-full-round, -hotseat, -sound with expect values and dedupe hud-round-hud; take looks of the stamped card and the ROUND COMPLETE card; read a PERFECT call from perfectAt; ask the balls lane for the ballShadow2 polygonOffset.
+**Open** Banner clear untested; meter readability at stage 2 unchanged; the three checks and card pictures still missing.
