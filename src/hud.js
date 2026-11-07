@@ -29,7 +29,7 @@ export function buildCard(final) {
   h += `<div class="stamps">${stamps}</div>`;
   if (final) {
     const best = [...G.players].sort((a, b) => a.total - b.total)[0];
-    let rec = ''; try { const k = 'isleGolfBest' + G.nPlayers; const old = +localStorage.getItem(k) || 999; if (best.total < old) { localStorage.setItem(k, best.total); rec = ' · NEW BEST'; } else rec = ' · BEST ' + old; } catch (e) { }
+    let rec = ''; if (!G.dailyOn) { try { const k = 'isleGolfBest' + G.nPlayers; const old = +localStorage.getItem(k) || 999; if (best.total < old) { localStorage.setItem(k, best.total); rec = ' · NEW BEST'; } else rec = ' · BEST ' + old; } catch (e) { } }
     h += `<div class="fin">${G.players.length > 1 ? best.name + ' WINS WITH ' + best.total : 'YOU FINISHED ON ' + best.total}  (${vsPar(best.vs)})${rec}</div>`;
   }
   h += `<div class="go">${final ? 'SPACE · BACK TO THE FIRST TEE' : 'SPACE · NEXT HOLE'}</div>`;

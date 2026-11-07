@@ -7432,6 +7432,72 @@
           "value": "2026-11-07"
         }
       ]
+    },
+    {
+      "id": "daily-best-record-no-write",
+      "title": "daily-best-record-no-write",
+      "state": {},
+      "actions": [
+        {
+          "action": "daily",
+          "date": "2026-01-04"
+        },
+        {
+          "action": "next"
+        },
+        {
+          "until": {
+            "phase": "aim"
+          },
+          "max": 300
+        },
+        {
+          "state": {
+            "ball": {
+              "x": 21.5,
+              "z": -9.6
+            }
+          }
+        },
+        {
+          "action": "club",
+          "name": "putter"
+        },
+        {
+          "action": "aim",
+          "at": "pin"
+        },
+        {
+          "action": "swing",
+          "power": 0.1,
+          "accuracy": 0,
+          "settle": true
+        },
+        {
+          "until": {
+            "phase": "daily-card"
+          },
+          "max": 600
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "phase",
+          "op": "==",
+          "value": "daily-card"
+        },
+        {
+          "path": "daily.holeIndex",
+          "op": "==",
+          "value": 8
+        },
+        {
+          "path": "hudRound.best",
+          "op": "==",
+          "value": null
+        }
+      ]
     }
   ]
 }
