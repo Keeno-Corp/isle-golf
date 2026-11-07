@@ -1,31 +1,33 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-### Judge 5
-
-**Judge, session 5: ball-physics lane**
-
-0. **Make putting easier (top priority)**: 8. `test` passed all 10 saved checks, including `ball-physics-putt-mid-easy`, `ball-physics-putt-too-hard` and `ball-physics-putt-sinks`. With the putter at 4.3 units, `aimDots` ×14 are white and about 0.1–0.17 units wide, and they read clearly on the green. The `slopeGrid` arrows are visible. On this spot the dots run straight, so I did not see a bend. `meter.needPower` is 0.508, which suggests the putter power scale follows the distance. I did not press the meter on a green to see the cyan notch. A `ball:lip` has still not been observed.
-1. **Ball physics polished**: 6. A real-key iron swing went rest → air with `physics.spin` -0.471 (HOOK!) and `vel` 7.76. The two wind checks differ by only about 1.56 units, and auto-aim compensates for wind, so they are not a clean drift proof. I did not play the late vs early snap, the surface roll-out order, tree, sheep or house.
-2. **Trail, landing ring, putt preview**: 7.5. In flight, `ballTrail` is a clear cream column, and the yellow `landRingPreview` (2.39 units) sits at the pin end. `landPreview` {-1.95, 11.6} was close to the pin. The preview bend on a slope is still unseen.
-3. **Impact and landing feedback / ballsfx**: 5. The Sound line reports 8 started. In four sessions no look has shown a dust puff, sand puff or splash.
-4. **Meter timing and reset**: 6. The meter reached stage 3, power 0.884 and `perfectAt` 0.884, with the label HOOK!. No saved check covers timing or the field reset.
-5. **Events and observe data**: 6. `physics` carries `spin`, `mode`, `vel` and `landPreview`. I did not confirm any `ball:*` event fired. The brief also asks for `carryYd`, `rollYd`, `lastBounce`, `puttBreak` and `firstBounce` under `physics`. Only `firstBounce` is confirmed, and only through the wind check.
-6. **Saved checks `ball-physics-*`**: 5. There are 6 ids. The driver late/early snap, the wedge roll-out order, the slope break, the lip-out, and the tree, sheep and house checks are still missing. Wind is covered, but only weakly.
-7. **Looks as LOOK.md says**: 8. Painted grass, tilt-shift blur, cream-green haze, teal sea and warm sun all read. The golfer takes 1.1% of the putting view, which is a bit small, and the camera shows little of them. `cliffRocks` and `seaStacks` are never visible, and they are outside this lane.
-8. **Edit scope**: 8. `git status` was clean at the start, and the only change was to game-tests.json.
-9. **Keep as is**: 8. The HUD panels have 0 overlap and the layout is kept. `perf` read 619 ms a frame on SwiftShader (host load 4.3), which is noise. It counted 181 draw calls and 367k triangles. There were no console errors. `setState` with `ball:{x,z}` works, so last session's fault is gone.
-
-**Faults**: 7. `cliffRocks` and `seaStacks` are never visible (outside this lane). Nothing else is broken. The landing puffs and the preview-line bend are still unproven.
-
-**Next:**
-1. Prove the lip-out and the slope break (asked again). First place the ball on a visibly sloped green with `setState`. Then use `interact` with `look: true` and `trace` on `physics.puttBreak`, and expect `aimDots` to curve downhill. Then save `ball-physics-putt-lip` from a slow putt just over the cup, with `expect` on a `ball:lip` event or on `ball.mode` not 'sunk' plus a lip counter. Also add a +/-8% power check that lands the ball in 'sunk'.
-2. Save the driver late/early snap check and the wedge roll-out order (asked again). Use real Space presses with the pause between them changed, and `expect` that `physics.firstBounce.z` lands right of the aim line when late and left when early (>= 1 unit). For the wedge, set the ball on fairway, rough, sand and green with `setState` and `expect` `physics.rollYd` in the order green > fairway > rough > sand. Replace the two wind checks with a fixed-aim pair, using `aim` with explicit degrees so auto-aim cannot cancel the drift.
-3. Show a landing puff and the collisions (asked again). Use `interact` with `look: true` about 5 frames after the first bounce, once on fairway and once in sand, and the call should show a dust or sand puff at the `landRingPreview` spot. Then save real-key drives into a tree, a sheep and the hole 5 house. Each should fire `ball:tree`, `ball:sheep` or `ball:wall`, and the check should `expect` the changed direction or a drop near the trunk.
-
-SCORE: 6.8
-
 ## Iteration 6
 **Did**: No code changed. Added two saved checks in game-tests.json: `ball-physics-driver-slice-right` (driver, wind 0, aim -5, `swing` power 0.9 accuracy +0.6; expects `physics.firstBounce.z` 12.5-20; got 13.07) and `ball-physics-driver-hook-left` (accuracy -0.6; expects 0-10.8; got 9.99). The aim line is z≈11.4 at x≈3, so slice lands ~1.7 right and hook ~1.4 left of it.
 **Saw**: Both checks pass when saved (12 saved checks now). The slice case rolled 68 yd (`rollYd`); the hook case rolled 4 yd into rough. `physics` now shows `carryYd`, `rollYd`, `bounces`, `lastBounce`, `firstBounce` {x,z,surf}, `puttBreak` and `landPreview` after a shot. I did not run the full `test` suite, look or perf.
 **Next**: lip-out check that fires `ball:lip`; the wedge roll-out order; tree, sheep and house checks; a look at the landing puffs and at the putt dots on a slope; a fixed-aim wind pair.
 **Open**: the two new checks use the `swing` action's accuracy, not real Space presses. `firstBounce` is absent from observe until the ball lands, so a check must wait for the shot to finish.
+
+### Judge 6
+
+**Judge, session 6: ball-physics lane**
+
+Looks and play are strong. The weak scores are the missing proofs: lip-out, slope break, collisions and surface roll-out. I did not run the full set of checks beyond what `test` covers. I played one real-key iron shot on hole 1 and did not press the meter on a green.
+
+0. **Make putting easier (top priority)**: 8. `test` passed `ball-physics-putt-mid-easy`, `ball-physics-putt-sinks` and `ball-physics-putt-too-hard`. I did not re-look at the putt dots or the cyan notch this session. `ball:lip` has still not been observed.
+1. **Ball physics polished**: 6.5. A real-key iron shot went rest → air with `physics.spin` -0.607 (HOOK!) and `vel` 6.32. `ballTrail` ran from the ball down the fairway, and the shot landed at `firstBounce` {-5.17, 11.82, fairway} on the `landPreview` spot. It bounced twice (`bounces` 2), with `carryYd` 77 and `rollYd` 9. The two new `swing` accuracy checks (`ball-physics-driver-slice-right`, `ball-physics-driver-hook-left`) pass, but use accuracy values, not real Space presses. The wedge roll-out order, tree, sheep and house are still unplayed.
+2. **Trail, landing ring, putt preview**: 7.5. `ballTrail` is a clear cream column and `landRingPreview` (1.97 units) is a yellow ring around the aim spot. After landing, the trail curls into a white arc around the ball. The putt-line bend on a slope is still unseen.
+3. **Impact and landing feedback / ballsfx**: 4.5. Three frames after the first bounce, the look shows a white arc and `divots` (0.03% of the picture) but no dust puff. No sand puff or splash has been seen in five sessions. The Sound line reports 6 started.
+4. **Meter timing and reset**: 6. The meter reached stage 3 with `perfectAt` 0.594, `needPower` 0.622 and label HOOK!, and the shot fired. No saved check covers the field reset after a shot.
+5. **Events and observe data**: 7. `physics` now carries `spin`, `mode`, `vel`, `carryYd`, `rollYd`, `bounces`, `lastBounce`, `firstBounce`, `puttBreak` and `landPreview`. `puttBreak` read -0.945 after a fairway shot, which looks like stale or meaningless data. I did not confirm any `ball:*` event fired.
+6. **Saved checks `ball-physics-*`**: 6. All 12 saved checks pass, 8 of them with the lane prefix. Still missing: the wedge roll-out order, the slope break, the lip-out, the tree, sheep and house drives, and a fixed-aim wind pair.
+7. **Looks as LOOK.md says**: 8. Painted grass, tilt-shift blur on the foreground, cream-green haze, teal sea at top right and warm light all read. The golfer is not in view, so I could not check the silhouette. `cliffRocks` and `seaStacks` are never visible, and they are outside this lane.
+8. **Edit scope**: 8. Git status was clean at the start. Last session changed only game-tests.json.
+9. **Keep as is**: 8. HUD panels have 0 overlap and 0 off-screen, and there are no console errors. `perf` read 935 ms a frame with host load 4.4 on SwiftShader, which is noise. It counted 181 draw calls and 367k triangles. The aim, club and meter flow works with real keys.
+
+**Faults**: 7. `cliffRocks` and `seaStacks` are never visible (outside this lane). The stale-looking `puttBreak` of -0.945 and the unproven landing puffs are the only lane issues.
+
+**Next:**
+1. Show a landing puff (asked again). Check `flightEvents` in `src/physics.js` and the spawn code for the puff. Then run `interact` with `look: true` 2–4 frames after the first bounce, once on fairway and once on sand. The look should show a visible dust or sand cloud at `firstBounce`, bigger than `divots`.
+2. Save the lip-out and slope-break checks (asked again). Place the ball by `setState` on a visibly sloped green and read `physics.puttBreak`. Expect `|puttBreak|` ≥ 0.2, and confirm `aimDots` curve the same way. Save `ball-physics-putt-lip` as a slow putt just over the cup, with `expect` on `ball.mode` not 'sunk' and a `ball:lip` event. Also reset `puttBreak` when a non-putt shot starts.
+3. Save the wedge roll-out order and the collision drives (asked again). For the wedge, run real Space presses from fairway, rough, sand and green and `expect` `physics.rollYd` green > fairway > rough > sand. Then save drives into a tree, a sheep and the hole 5 house. Each should fire `ball:tree`, `ball:sheep` or `ball:wall`, and the check should `expect` the changed direction or a drop near the trunk.
+
+SCORE: 6.9
