@@ -1,11 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 25
-**Did** `src/pose.js` `swingParam` aim branch: once the meter is running (stage>=1) the backswing jumps to -(0.7+0.3*sqrt(power)) instead of growing with power from 0, so the top reads distinct a few frames after the first Space and holds through stage 2.
-**Saw** No look, test or perf run this session (short on time). The change is one line and not verified by a sheet.
-**Next** 1) `sheet` aim vs 2-4 frames after the 1st Space: `club_head` should sit above `golfer_cap`; 2) save `creatures-putt-stroke`, `creatures-walk-to-ball`, `creatures-cow-shuffle`; 3) `GS` 1.7 to ~1.9 for `Subject` over 1.5%, and a look of the cow shuffle.
-**Open** The jump to the top pose at stage 1 may look abrupt (k uses -s*1.35 clamped, no easing); ease it if so. Checks still 14, not re-run.
-
 ### Judge 25
 
 **Session 25 verdict.** I took a 4-moment `sheet` of hole 1 (aim, 1st Space +4 frames, 2nd Space +3, 3rd Space +8) and ran `perf` once. I did not run `test`, and I did not re-play the putt, the walk, the cow shuffle, the sheep bonk or the hole-out reactions this session. Their scores carry over.
@@ -32,3 +26,9 @@ Mean: (8+8+8+9+8+7+7+6+8+8+7+8+7)/13 = 7.7.
 3. **Ease the backswing entry.** In `src/pose.js` `swingParam`, ramp the stage-1 jump over about 6 to 8 frames instead of snapping. A `sheet` of the 1st Space at +2 and +6 frames should show the club part-way up at +2 and at the top by +6, not already at the top.
 
 SCORE: 7.7
+
+## Iteration 26
+**Did** `src/pose.js`: `swingParam` aim branch now scales the backswing by `min(1, 0.15 + entryT/7)`, `entryT` counted in `placeGolfer` (frames since stage>=1), so the top is reached in about 6 frames; `GS` 1.7 to 1.9.
+**Saw** No look, test or perf this session (about 16 minutes only); nothing verified.
+**Next** 1) `sheet` 1st Space at +2 and +6 frames, and check `golfer_cap` clear of the meter panel and `Subject` of at least 1.5%; 2) save `creatures-putt-stroke`, `creatures-walk-to-ball`, `creatures-cow-shuffle`; 3) a look of the cow shuffle.
+**Open** `GS` 1.9 could clip the HUD; if so go back to 1.8. entryT only counts in the aim phase, so a stepped test calling observe without frames will see the ramp start. Checks still 14, not re-run.
