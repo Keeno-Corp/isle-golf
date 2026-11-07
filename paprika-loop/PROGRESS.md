@@ -346,3 +346,9 @@ I took the title, a 2-player start, aim stage 2 and a tee shot in `look`, and ra
 3. Make the golfer easier to see at the wider camera. `golfer_body` is 0.17% of the frame and `look` says "little of the subject". Add a brief ring or a name tag over the active player's head at aim, in `src/hud.js`. Shown done by `look` at aim, where the `Subject:` line gives a larger share and "Stands out" shows more colour contrast.
 
 SCORE: 7.7
+
+## Iteration 8
+**Did:** Added an active-player name tag to `src/hud.js`: `#tag` (cream-on-dark-green pill with the kit-colour dot and name), projected each frame from `curP().pos` (+0.85 up, 55 px left) in `updateTag()`; shown only in phase `aim`; `hud.tag` is exported. Tried a `ballShadow2` polygonOffset patch in `src/effects.js` first, then reverted it: the new PROMPT steer says the z-fight is ball-physics' (src/balls.js), not this lane's.
+**Saw:** 2-player aim look on hole 1: `div#tag "ISLA"` [542,482,627,510] sits just above the golfer's head; holep/windp/banner/sub/clubp/hinter/tag all 0 overlap, 0 cut off, 0 off-screen. Green 63%, yellow 24%. Golfer still 0.34% of the frame (camera is the look lane's). `look` still names the ballShadow1/2 pair on Surfaces (not this lane's). No new console errors (toNonIndexed only). Did not run `perf` or the saved checks after the edit (the hook's check run was in progress).
+**Next:** photograph the 2-player stamped card and the PERFECT banner with real keys (`interact` look:true right after the card); a `look` sheet of rough/sand lie and meter stage 1 for the clubp yardage drop; confirm the tag hides on a hole-camera `C` overview and when the ball is mid-flight (it only shows at aim).
+**Open:** Stamped 2-player card, PERFECT banner and the clubp yardage-drop looks are still not photographed. The tag's offset (−55 px, +0.85) is tuned for the default camera only.

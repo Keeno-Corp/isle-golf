@@ -1,4 +1,6 @@
 import './meter.js';   // load order: each file runs after the one before it (COORDINATION.md)
+import * as THREE from 'three';
+import { camera } from './stage.js';
 import { clamp } from './util.js';
 import { ST, fire } from './shared.js';
 import { HOLES, YD } from './course.js';
@@ -60,6 +62,7 @@ style.textContent = `
 #banner i{display:inline-block;margin-top:6px;font-size:22px;padding:3px 16px;color:#fff6c8;background:linear-gradient(180deg,#4a6a5c,#233c33 45%,#122219);border:2px solid #7ba08a;border-radius:4px;box-shadow:0 0 8px rgba(255,214,120,.45)}
 #banner i:empty{display:none}#banner{opacity:0;transition:opacity .35s}#banner.on{opacity:1}
 #banner.on b{animation:slam .45s cubic-bezier(.2,1.6,.4,1)}@keyframes slam{0%{transform:scale(2.4) skewX(-12deg);opacity:0}100%{transform:scale(1);opacity:1}}
+#tag{position:absolute;left:0;top:0;display:none;transform:translate(-50%,-100%);font-size:18px;padding:2px 10px;color:#fff6c8;background:rgba(20,48,36,.88);border:2px solid #fff6c8;border-radius:12px;white-space:nowrap;pointer-events:none}#tag:after{content:'';position:absolute;left:50%;bottom:-9px;margin-left:-6px;border:6px solid transparent;border-top-color:#fff6c8;border-bottom:0}#tag i{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:6px;border:2px solid #fff6c8;vertical-align:-1px}
 #sub{position:absolute;left:27%;top:calc(26% + 112px);transform:translateX(-50%);font-size:22px;padding:4px 16px;color:#fff6c8;opacity:0;transition:opacity .4s;white-space:nowrap}#sub.on{opacity:1}
 #clubp{position:absolute;left:16px;bottom:16px;padding:8px 12px;min-width:200px}
 #clubp div{display:flex;justify-content:space-between;gap:18px;font-size:20px;padding:2px 8px;color:#9fc4b2;border-radius:4px}#clubp div.on{background:rgba(247,226,122,.22);color:#fff6c8;box-shadow:inset 0 0 0 1px #f7e27a}
@@ -99,10 +102,10 @@ hudEl.innerHTML = `<div id="holep" class="steel"></div>
 <div id="meterp" class="steel"><div class="lab"><span class="l1">POWER</span><span class="l2"></span></div><div class="bar"><div class="fill"></div><div class="snap"></div><div class="notch"></div><div class="needle"></div></div></div>
 <div id="hinter"></div>
 <div id="title"><h1>ISLE GOLF</h1><div class="sub steel">TILT-SHIFT ARCADE GOLF ON SHEPHERD ISLE</div><div class="pl"><span>PLAYERS</span><b data-n="1" class="on">1</b><b data-n="2">2</b><b data-n="3">3</b><b data-n="4">4</b></div><div class="go steel">PRESS SPACE TO TEE OFF</div></div>
-<div id="card" class="steel"></div><div id="hitPop"></div>`;
+<div id="card" class="steel"></div><div id="hitPop"></div><div id="tag"></div>`;
 document.body.appendChild(hudEl);
 export const $ = s => hudEl.querySelector(s);
-export const hud = { holep: $('#holep'), windp: $('#windp'), arrow: $('#windArrow'), wt: $('#windp .t'), banner: $('#banner'), sub: $('#sub'), clubp: $('#clubp'), meter: $('#meterp'), fill: $('#meterp .fill'), needle: $('#meterp .needle'), notch: $('#meterp .notch'), l1: $('#meterp .l1'), l2: $('#meterp .l2'), help: $('#hinter'), title: $('#title'), card: $('#card'), pop: $('#hitPop') };
+export const hud = { holep: $('#holep'), windp: $('#windp'), arrow: $('#windArrow'), wt: $('#windp .t'), banner: $('#banner'), sub: $('#sub'), clubp: $('#clubp'), meter: $('#meterp'), fill: $('#meterp .fill'), needle: $('#meterp .needle'), notch: $('#meterp .notch'), l1: $('#meterp .l1'), l2: $('#meterp .l2'), help: $('#hinter'), title: $('#title'), card: $('#card'), pop: $('#hitPop'), tag: $('#tag') };
 hud.help.innerHTML = '<b>A/D</b> aim · <b>W/S</b> club · <b>SPACE</b> swing (3 clicks)<br><b>C</b> hole view · <b>R</b> replay hole · <b>M</b> sound';
 export function showTitle(on) { hud.title.style.display = on ? 'flex' : 'none'; if (on) { G.phase = 'title'; hud.card.style.display = 'none'; hideGolfer(); hud.help.style.opacity = .0; } else hud.help.style.opacity = .7; }
 export function setPlayersSel(n) { G.nPlayers = n; hud.title.querySelectorAll('.pl b').forEach(b => b.classList.toggle('on', +b.dataset.n === n)); }
@@ -132,7 +135,17 @@ export function needPower() {
   for (let i = 0; i < 9; i++) { const mid = (lo + hi) / 2; if (runDist(c, mid, H, p, G.aim) < d) lo = mid; else hi = mid; }
   _needVal = (lo + hi) / 2; return _needVal;
 }
+const _tv = new THREE.Vector3();
+function updateTag() {
+  const t = hud.tag, ok = G.phase === 'aim' && G.players.length > 0;
+  if (!ok) { t.style.display = 'none'; return; }
+  const p = curP(); _tv.set(p.pos.x, (p.pos.y ?? 4.5) + 0.85, p.pos.z).project(camera);
+  if (_tv.z > 1) { t.style.display = 'none'; return; }
+  const k = p.name + p.kit.col; if (t._k !== k) { t._k = k; t.innerHTML = `<i style="background:${p.kit.col}"></i>${p.name}`; }
+  t.style.display = 'block'; t.style.transform = `translate(${((_tv.x * .5 + .5) * innerWidth - 55).toFixed(0)}px,${((-_tv.y * .5 + .5) * innerHeight).toFixed(0)}px) translate(-50%,-100%)`;
+}
 export function updateHUD() {
+  updateTag();
   if (G.phase === 'title' || G.phase === 'card') { hud.holep.style.display = hud.windp.style.display = hud.clubp.style.display = 'none'; hud.meter.classList.remove('on'); if (G.phase === 'card') { hud.banner.classList.remove('on'); hud.sub.classList.remove('on'); } return; }
   hud.holep.style.display = hud.windp.style.display = hud.clubp.style.display = 'block'; hud.windp.style.display = 'flex';
   const p = curP(), H = curH(), d = pinDist(p.pos, H), w = windInfo(), c = curClub();
