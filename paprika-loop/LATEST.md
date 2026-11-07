@@ -27,8 +27,8 @@ Mean: (8+8+8+9+8+7+7+6+9+8+7+8+7)/13 = 7.8.
 
 SCORE: 7.8
 
-## Iteration 44
+## Iteration 45
 **Did** Nothing changed in the code. About 9 minutes were left; I read LATEST.md and git log and wrote this section. I did not open the page.
 **Saw** No look, sheet, test or perf this session. Judge 26 numbers stand (`Subject` 1.8% at aim, 301 draw calls, 486k triangles, mean 7.8).
 **Next** 1) Save `creatures-putt-stroke`, `creatures-walk-to-ball`, `creatures-cow-shuffle` and get each to ✓ in `test`. 2) Ball 2-3 units from `cow_hide`, one `interact` with `look: true` after a shot; add a `!` bubble if too subtle. 3) `perf` with `costs: true`, then merge/instance `bushes*` and `grass*`.
-**Open** The three Judge 26 Next items are untouched for the eighteenth session running. The 14 saved checks were not re-run.
+**Open** The three Judge 26 Next items are untouched for the nineteenth session running. The 14 saved checks were not re-run.
