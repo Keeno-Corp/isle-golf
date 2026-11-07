@@ -230,6 +230,90 @@
           "value": 0
         }
       ]
+    },
+    {
+      "id": "look-c-hole6-pitch",
+      "title": "look-c-hole6-pitch",
+      "state": {
+        "hole": 5,
+        "skipIntro": true
+      },
+      "actions": [
+        {
+          "wait": 1
+        },
+        {
+          "wait": 40
+        },
+        {
+          "key": "KeyC"
+        },
+        {
+          "wait": 60
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "look.camPitchDeg",
+          "op": ">=",
+          "value": 45
+        },
+        {
+          "path": "look.camPitchDeg",
+          "op": "<=",
+          "value": 65
+        },
+        {
+          "path": "look.ball.y",
+          "op": ">=",
+          "value": -1
+        },
+        {
+          "path": "look.ball.y",
+          "op": "<=",
+          "value": 1
+        },
+        {
+          "path": "look.pin.y",
+          "op": ">=",
+          "value": -1
+        },
+        {
+          "path": "look.pin.y",
+          "op": "<=",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "look-aim-hole9-ball-lifted",
+      "title": "look-aim-hole9-ball-lifted",
+      "state": {
+        "hole": 8,
+        "skipIntro": true
+      },
+      "actions": [
+        {
+          "wait": 1
+        },
+        {
+          "wait": 90
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "look.ball.y",
+          "op": ">=",
+          "value": -0.58
+        },
+        {
+          "path": "look.ball.y",
+          "op": "<=",
+          "value": 0.9
+        }
+      ]
     }
   ]
 }

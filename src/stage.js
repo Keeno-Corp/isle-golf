@@ -21,7 +21,7 @@ export const camera = new THREE.PerspectiveCamera(30, innerWidth / innerHeight, 
 
 export const hemi = new THREE.HemisphereLight('#d9ecdf', '#3f6a3a', 1.25); hemi.name = 'skyLight'; scene.add(hemi);
 export const sun = new THREE.DirectionalLight('#fff0d6', 2.9); sun.name = 'sun';
-sun.position.set(-22, 30, 14); sun.castShadow = true;
+sun.position.set(-22, 28, -16); sun.castShadow = true;
 sun.shadow.mapSize.set(4096, 4096);
 Object.assign(sun.shadow.camera, { left: -32, right: 32, top: 32, bottom: -32, near: 5, far: 110 });
 sun.shadow.bias = -0.0004; sun.shadow.normalBias = 0.035;
