@@ -18,3 +18,7 @@
 
 ## Session 4: spread 1.2
 - `SPREAD` raised 1.12 -> 1.2 (about 20% over the original 1.0). Terrain 78 x 54 still covers the isle. **Look lane: pull the aim/overview camera back a further ~7%.**
+
+## Iteration 10 notes
+- Par 3 tees (holes 1-3) pulled toward the green in src/course.js: iron needPower 0.88-0.89 (was 0.96-1.05). Hole 2 no longer needs a hud-lane club fix.
+- C view: the current pin (pole, flag, knob) is drawn 2.6x with a yellow `pin_ring` disc under it (src/pins.js, driven by G.overhead).

@@ -1,11 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 9
-**Did** Saved check `course-h2-carry` in game-tests.json: hole 2, ball placed at the tee-to-pin midpoint (7.97, 15.49) gives lie 'sand' and banner BUNKER. No source change.
-**Saw** Hole 2 observe: tee (1.8,17.04), pin (14.14,13.94), 153 yd, iron picked (needPower 1.05); `ball.surface` stays 'fairway' in the bunker, only `lie` says sand. Not run: perf, cliff-lip zoom, ribbon sample, hole 7 C view, hole 3 carry check.
-**Next** (1) Save `course-cliff-lip` and `course-h1-ribbon`. (2) Make the hole 7 C-view pin read (src/pins.js). (3) Hole 3 carry check; hud lane must fix the hole 2 club pick (a driver is needed).
-**Open** `toNonIndexed` warning; hole 2 club pick (outside lane); other 8 saved checks not rerun this session.
-
 ### Judge 9
 
 **Judge 9.** All 8 saved checks pass: `tee-shot-three-clicks`, `putt-drops-in-cup`, `pond-costs-a-stroke`, `hot-seat-passes-turn`, `course-only-current-pin`, `course-h6-splash`, `course-h9-drive` and `course-h2-carry`. I took one look, the hole 7 C view. I did not run `perf` because the host is SwiftShader, so it is not scored. I did not take the cliff-lip zoom or the #5d8a3a ribbon sample, so those stay unproven. I did not check the scorecard, R replay, flyover or load-order imports.
@@ -59,3 +53,9 @@ The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.m
    - Shown done by `test` listing `course-h3-carry` as ✓.
 
 SCORE: 6.9
+
+## Iteration 10
+**Did** src/pins.js: in the C view the current pin group scales 2.6x and `pin_ring` (yellow ring) shows under it. src/course.js: moved path[0] of holes 1-3 toward the green; yards now 128-129, iron needPower 0.88/0.88/0.89 (hole 2 was 1.05). `course-h2-carry` ball moved to the new midpoint (8.96, 15.25); saved `course-h3-carry` (lie sand). Notes in lanes/course.md.
+**Saw** Hole 7 C view: `pin_ring` 0.32%, `pin_pole` 0.24%, but the pin sits at the top edge so `pin_flag` is 0.005% and cut off; the ring reads. Hole 2 observe: iron, needPower 0.883, waypoint [12.37,14.15]. Full `test` run before the course-h2 edit: 7 of 8 pass, only h2-carry failed (midpoint moved); h2 and h3 carry re-proved by interact. Not rerun: full test after the fix, perf.
+**Next** (1) Save `course-cliff-lip` and `course-h1-ribbon` (look zoom + sample). (2) Pin sits at the top edge in the hole 7 C view: shift overheadCam target in src/camera.js (outside lane, note it) or ask look lane. (3) Rerun the whole `test`.
+**Open** `toNonIndexed` warning; hole 1 and 3 tee moves not looked at (fairway ribbon/path start moved ~1 unit, tee marker/sign follow path[0]).

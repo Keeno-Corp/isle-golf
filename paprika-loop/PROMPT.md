@@ -39,3 +39,5 @@ Web study: yes (asked) · Picture sheets: no, no image key (asked) · Asset styl
 Hole layouts and names, club distances, the meter's timing, the golfer's swing pose, the kit colours and player names.
 
 Steering note (lane lead): the aim-view camera framing and whether the golfer shows in it belong to the look lane (src/camera.js); don't chase those here. If the pin is cut at the frame top, keep the pole thick but not taller than needed. Priorities left, in order: hole 9 real-key drive saved as course-h9-drive; the holes 1-9 C-view pin check saved as course-only-current-pin (already saved, keep it passing); a carry on holes 2 and 3; look zoom on the cliff lip (blossom shrubs) and the #5d8a3a ribbon sample on hole 1, both saved as course- checks.
+
+Steering note 2 (lane lead): par 3s (holes 1-3) must be reachable with the iron at full power (needPower <= 0.95 for the club the game picks) even after SPREAD 1.2; fix it in src/course.js (pull hole 2's pin/tee closer) rather than waiting on another lane. Then the cliff-lip and ribbon checks.

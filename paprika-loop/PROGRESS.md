@@ -568,3 +568,9 @@ SCORE: 7.0
    - Shown done by `test` listing `course-h3-carry` as ✓.
 
 SCORE: 6.9
+
+## Iteration 10
+**Did** src/pins.js: in the C view the current pin group scales 2.6x and `pin_ring` (yellow ring) shows under it. src/course.js: moved path[0] of holes 1-3 toward the green; yards now 128-129, iron needPower 0.88/0.88/0.89 (hole 2 was 1.05). `course-h2-carry` ball moved to the new midpoint (8.96, 15.25); saved `course-h3-carry` (lie sand). Notes in lanes/course.md.
+**Saw** Hole 7 C view: `pin_ring` 0.32%, `pin_pole` 0.24%, but the pin sits at the top edge so `pin_flag` is 0.005% and cut off; the ring reads. Hole 2 observe: iron, needPower 0.883, waypoint [12.37,14.15]. Full `test` run before the course-h2 edit: 7 of 8 pass, only h2-carry failed (midpoint moved); h2 and h3 carry re-proved by interact. Not rerun: full test after the fix, perf.
+**Next** (1) Save `course-cliff-lip` and `course-h1-ribbon` (look zoom + sample). (2) Pin sits at the top edge in the hole 7 C view: shift overheadCam target in src/camera.js (outside lane, note it) or ask look lane. (3) Rerun the whole `test`.
+**Open** `toNonIndexed` warning; hole 1 and 3 tee moves not looked at (fairway ribbon/path start moved ~1 unit, tee marker/sign follow path[0]).

@@ -65,12 +65,18 @@ export const wayMark = new THREE.Group(); wayMark.name = 'waypointMarker'; wayMa
   const ring = named(new THREE.Mesh(new THREE.RingGeometry(0.3, 0.38, 24).rotateX(-Math.PI / 2), new THREE.MeshBasicMaterial({ color: '#f2d43a', transparent: true, opacity: 0.8, depthWrite: false })), 'way_ring'); ring.position.y = 0.04; wayMark.add(ring);
   scene.add(wayMark);
 }
+// C view: the current pin is drawn 2.6x (pole, flag, knob) with a bright disc under it, so it reads from overhead
+const pinRing = named(new THREE.Mesh(new THREE.RingGeometry(1.0, 1.7, 32).rotateX(-Math.PI / 2), new THREE.MeshBasicMaterial({ color: '#ffe04a', transparent: true, opacity: 0.85, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -4, polygonOffsetUnits: -4 })), 'pin_ring'); pinRing.visible = false; scene.add(pinRing);
+let pinBig = 1;
 let curHole = 0, RM = null, wayInfo = null;
-const showPin = h => { curHole = h; HOLES.forEach(H => { H.pinG.visible = H.i === h; }); };
+const showPin = h => { curHole = h; pinBig = 0; HOLES.forEach(H => { H.pinG.visible = H.i === h; }); };
 on('hole:start', ({ hole }) => showPin(hole));
 addUpdate(dt => {
   if (!RM) { import('./round.js').then(m => { RM = m; }); return; }
   const G = RM.G, H = HOLES[G.hole]; if (G.hole !== curHole) showPin(G.hole);
+  const big = G.overhead && (G.phase === 'aim' || G.phase === 'swing') ? 2.6 : 1;
+  if (big !== pinBig) { pinBig = big; H.pinG.scale.set(big, big, big); }
+  pinRing.visible = big > 1; if (big > 1) pinRing.position.set(H.pinX, H.pinY + 0.05, H.pinZ);
   const p = G.players[G.turn];
   if (!p || G.phase === 'title' || G.phase === 'card' || G.phase === 'holed') { wayMark.visible = false; return; }
   const t = aimTarget(H, p.pos, G.club); wayInfo = t;

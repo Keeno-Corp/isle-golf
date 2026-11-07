@@ -446,8 +446,8 @@
         {
           "state": {
             "ball": {
-              "x": 7.97,
-              "z": 15.49
+              "x": 8.96,
+              "z": 15.25
             }
           }
         },
@@ -466,6 +466,47 @@
           "path": "hole",
           "op": "==",
           "value": 2
+        }
+      ]
+    },
+    {
+      "id": "course-h3-carry",
+      "title": "course-h3-carry",
+      "state": {},
+      "actions": [
+        {
+          "action": "newRound",
+          "players": 1
+        },
+        {
+          "state": {
+            "hole": 2,
+            "skipIntro": true
+          }
+        },
+        {
+          "state": {
+            "ball": {
+              "x": 23.62,
+              "z": 4.85
+            }
+          }
+        },
+        {
+          "wait": 3
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "lie",
+          "op": "==",
+          "value": "sand"
+        },
+        {
+          "path": "hole",
+          "op": "==",
+          "value": 3
         }
       ]
     }
