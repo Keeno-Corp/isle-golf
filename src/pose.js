@@ -4,7 +4,10 @@ import { clamp, lerp, smooth } from './util.js';
 import { heightAt } from './course.js';
 import { crisp } from './post.js';
 import { flagMat, flagWhite } from './pins.js';
-import { clubG, clubHeadMat, clubMat, golfer, golferShadow } from './golfer.js';
+import { addObserve, addAction } from './shared.js';
+import { sheepObs, crt } from './sheep.js';
+import { cowObs } from './cow.js';
+import { kitU, clubG, clubHeadMat, clubMat, golfer, golferShadow } from './golfer.js';
 import { balls } from './balls.js';
 import { G, curP } from './round.js';
 [flagMat, flagWhite, clubMat, clubHeadMat, ...balls.map(b => b.m.material)].forEach(crisp);
@@ -55,3 +58,6 @@ export function updateGolfer(dt) {
   _xv.set(1, 0, 0).applyQuaternion(clubG.quaternion); const want = _f.clone().addScaledVector(_dir, -_f.dot(_dir)).normalize();
   const ang = Math.atan2(_xv.clone().cross(want).dot(_dir), _xv.dot(want)); clubG.rotateOnWorldAxis(_dir, ang);
 }
+
+// ---------------------------------------------------------------- the one observe key of this lane (COORDINATION.md): creatures
+addObserve(() => ({ creatures: { golferClip: golfer.cur, shirt: '#' + kitU.uJersey.value.getHexString(), swingT: +(G.swingT || 0).toFixed(2), pose: +swingParam().toFixed(2), clubHead: clubG.userData.head.userData.id || '', cow: cowObs(), ...sheepObs() } }));

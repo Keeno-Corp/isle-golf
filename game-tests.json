@@ -230,6 +230,95 @@
           "value": 0
         }
       ]
+    },
+    {
+      "id": "creatures-ball-bonks-sheep",
+      "title": "creatures-ball-bonks-sheep",
+      "state": {},
+      "actions": [
+        {
+          "action": "newRound",
+          "players": 1
+        },
+        {
+          "action": "next"
+        },
+        {
+          "state": {
+            "skipIntro": true
+          }
+        },
+        {
+          "wait": 5
+        },
+        {
+          "state": {
+            "ball": {
+              "x": -8,
+              "z": 12.5
+            },
+            "creatures": {
+              "sheep": {
+                "i": 3,
+                "x": -6.3,
+                "z": 12.5
+              }
+            }
+          }
+        },
+        {
+          "action": "club",
+          "name": "putter"
+        },
+        {
+          "action": "aim",
+          "degrees": 0
+        },
+        {
+          "wait": 5
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 25
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 28
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "sheepHits": 1
+          },
+          "max": 200
+        },
+        {
+          "wait": 12
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "sheepHits",
+          "op": "==",
+          "value": 1
+        },
+        {
+          "path": "creatures.sheep.3.state",
+          "op": "in",
+          "value": [
+            "hop",
+            "flee",
+            "tumble"
+          ]
+        }
+      ]
     }
   ]
 }
