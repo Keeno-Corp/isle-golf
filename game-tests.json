@@ -554,6 +554,39 @@
           "value": "iron"
         }
       ]
+    },
+    {
+      "id": "course-cliff-lip",
+      "title": "course-cliff-lip",
+      "state": {},
+      "actions": [
+        {
+          "action": "newRound",
+          "players": 1
+        },
+        {
+          "state": {
+            "hole": 2,
+            "skipIntro": true
+          }
+        },
+        {
+          "wait": 40
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "hole",
+          "op": "==",
+          "value": 3
+        },
+        {
+          "path": "phase",
+          "op": "==",
+          "value": "aim"
+        }
+      ]
     }
   ]
 }

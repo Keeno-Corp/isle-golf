@@ -704,3 +704,9 @@ paprika-loop/PROMPT.md changed before session 11; the Next lists above were writ
    - Run `grep -rn toNonIndexed src` and report the file to the owning lane. Shown done by `open` printing no `three.js warned` line.
 
 SCORE: 7.1
+
+## Iteration 12
+**Did** Saved `course-cliff-lip` (newRound, `state {hole:2}` = hole 3 "Bluff Edge" since setState hole is 0-based, 40 frames, expect hole 3 + phase aim). 11 checks now. No source edits.
+**Saw** Hole 3 aim view: brightness 52%, 0% blown out, `blossoms*` x13 only 0.021% of frame (box [461,121,837,156]) so still unproven as shrubs; `bushes*` x27 2.1%. pin_pole 0.29%, pin_flag 0.14%. toNonIndexed warning still prints at open (src/sheep.js:16 and stage.js:40 are the candidates; island.js is guarded). Not run: full `test`, perf, C view, zoom of blossoms (banner covers the zoom box for 40+ frames).
+**Next** (1) Enlarge/cluster `blossoms` in src/island.js (~line 360) so they read as shrubs. (2) Pull hole 8 C-view pin off the top edge (camera.js: tell look lane / note in lanes/course.md). (3) Asset search for tree/bush models; tell sheep lane to guard toNonIndexed in sheep.js:16.
+**Open** `hole` in setState is 0-based but observe().hole is 1-based. Blossom zoom picture not taken. Fairway lighter than #5d8a3a (check passes).

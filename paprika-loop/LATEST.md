@@ -1,11 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 11
-**Did** Par-3 steering note was already met by iter 10 (hole 1 iron needPower 0.705, yards 129; holes 2-3 0.88-0.89). src/island.js line 287: `toNonIndexed` guarded with `if (sg.index)`. Saved `course-h1-ribbon` (hole 1 aim: lie tee, iron, needPower 0.5-0.95; 10 checks now).
-**Saw** Hole 1 aim view: brightness 52%, 0% blown out, pin_flag 0.34%, pin_pole 0.28%, way_ring/diamond/post present, golfer 0.23%. Fairway samples #729e4a, #7da84f, #7da54e: lighter than #5d8a3a by up to 32/255 (edge of the 30 tolerance). `start` then `next` lands on hole 1 correctly. The `toNonIndexed` warning still prints after my guard, so the source is src/sheep.js:16 (sheep lane, not mine) or stage.js. Not run: full `test`, perf, C view.
-**Next** (1) Save `course-cliff-lip` (hole 2 aim, zoom on the cliff lip, blossoms). (2) Pull the hole 8 C-view pin off the top edge (src/camera.js target, note in lanes/course.md). (3) Tell the sheep lane to guard `toNonIndexed` in sheep.js:16.
-**Open** Cliff-lip check not saved (fifth ask). Fairway green is lighter than LOOK's #5d8a3a sample.
-
 ### Judge 11
 
 **Judge 11.** I took one look (hole 1 aim view after `start`, `next` and 40 frames) and ran the whole `test`: 10 of 10 pass, including `course-h1-ribbon`. I did not take the C view, the cliff-lip zoom or a swing, and I ran no `perf`, because SwiftShader's frame times say nothing about a real GPU.
@@ -66,3 +60,9 @@ The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.m
    - Run `grep -rn toNonIndexed src` and report the file to the owning lane. Shown done by `open` printing no `three.js warned` line.
 
 SCORE: 7.1
+
+## Iteration 12
+**Did** Saved `course-cliff-lip` (newRound, `state {hole:2}` = hole 3 "Bluff Edge" since setState hole is 0-based, 40 frames, expect hole 3 + phase aim). 11 checks now. No source edits.
+**Saw** Hole 3 aim view: brightness 52%, 0% blown out, `blossoms*` x13 only 0.021% of frame (box [461,121,837,156]) so still unproven as shrubs; `bushes*` x27 2.1%. pin_pole 0.29%, pin_flag 0.14%. toNonIndexed warning still prints at open (src/sheep.js:16 and stage.js:40 are the candidates; island.js is guarded). Not run: full `test`, perf, C view, zoom of blossoms (banner covers the zoom box for 40+ frames).
+**Next** (1) Enlarge/cluster `blossoms` in src/island.js (~line 360) so they read as shrubs. (2) Pull hole 8 C-view pin off the top edge (camera.js: tell look lane / note in lanes/course.md). (3) Asset search for tree/bush models; tell sheep lane to guard toNonIndexed in sheep.js:16.
+**Open** `hole` in setState is 0-based but observe().hole is 1-based. Blossom zoom picture not taken. Fairway lighter than #5d8a3a (check passes).
