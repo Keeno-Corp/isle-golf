@@ -7498,6 +7498,67 @@
           "value": null
         }
       ]
+    },
+    {
+      "id": "daily-replay-blocked-at-card",
+      "title": "daily-replay-blocked-at-card",
+      "state": {},
+      "actions": [
+        {
+          "action": "daily",
+          "date": "2026-11-07"
+        },
+        {
+          "action": "next"
+        },
+        {
+          "until": {
+            "phase": "aim"
+          },
+          "max": 300
+        },
+        {
+          "action": "swing",
+          "power": 0.72,
+          "accuracy": 0,
+          "settle": true
+        },
+        {
+          "action": "aim",
+          "at": "pin"
+        },
+        {
+          "action": "swing",
+          "power": 0.247,
+          "accuracy": 0,
+          "settle": true
+        },
+        {
+          "until": {
+            "phase": "daily-card"
+          },
+          "max": 600
+        },
+        {
+          "key": "KeyR"
+        },
+        {
+          "wait": 10
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "phase",
+          "op": "==",
+          "value": "daily-card"
+        },
+        {
+          "path": "daily.on",
+          "op": "==",
+          "value": true
+        }
+      ]
     }
   ]
 }
