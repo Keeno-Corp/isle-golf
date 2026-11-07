@@ -277,6 +277,78 @@
           "value": 9
         }
       ]
+    },
+    {
+      "id": "course-h6-splash",
+      "title": "course-h6-splash",
+      "state": {},
+      "actions": [
+        {
+          "action": "newRound",
+          "players": 1
+        },
+        {
+          "state": {
+            "hole": 5,
+            "skipIntro": true
+          }
+        },
+        {
+          "wait": 5
+        },
+        {
+          "key": "KeyD",
+          "down": true
+        },
+        {
+          "until": {
+            "aimDeg": [
+              55,
+              60
+            ]
+          },
+          "max": 200
+        },
+        {
+          "key": "KeyD",
+          "down": false
+        },
+        {
+          "key": "KeyS",
+          "frames": 2
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 50
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 28
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 200
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "banner",
+          "op": "==",
+          "value": "SPLASH!"
+        },
+        {
+          "path": "strokes",
+          "op": "==",
+          "value": 2
+        }
+      ]
     }
   ]
 }

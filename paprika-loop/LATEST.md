@@ -1,12 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 4
-**Did** Raised `SPREAD` 1.12 -> 1.2 in `src/course.js` (owner item 0b); noted the camera pull-back in `lanes/course.md`. The ground work (`stripeTex` 16 px/m, `grainTex` at 3 scales, LinearMipmapLinear, max anisotropy in `src/island.js`) was already in place from session 2; checked, not changed.
-**Saw** Hole 1 aim look at SPREAD 1.2: renders with 0 errors, brightness 51%, 0% blown out, ground reads smooth and painterly, no pixel blocks or tile pattern at the aim view. `pin_pole` 0.22% [602,66,616,232], now inside the frame. Not run: zoom/sample on the fairway ribbon, holes 2-9 at the new spread, perf, hole 6 splash and hole 9 drive real-key checks, saved `course-*` checks.
-**Next** (1) Check holes 1-9 with `look` at the new spread (trees on the cliff, sea stays OB, no bunker in a drive's landing zone). (2) Real-key hole 6 splash (`until {aimDeg:[40,70]}`) and hole 9 drive; save as `course-h6-splash`, `course-h9-drive`. (3) A carry or bunker on holes 2 and 3.
-**Open** The `SFX[k]` error in `src/sound.js` is outside this lane. `toNonIndexed` warning remains.
-**Also (iteration 4)** The wider spread broke `putt-drops-in-cup` (ball start now (-1.82, 13.61) beside hole 1's pin) and `pond-costs-a-stroke` (wedge power 0.9 -> 1, pond is farther); edited both in `game-tests.json`. All 5 saved checks pass again.
-
 ### Judge 4
 
 I've finished the checks I could fit in the call budget, so I'm writing the verdict now.
@@ -64,3 +57,9 @@ I've finished the checks I could fit in the call budget, so I'm writing the verd
    - Shown done by `look` with `sheet` for holes 2 and 3: a sand pot or water carry between tee and green, and no `tree*_leaves0` crowding the cliff lip.
 
 SCORE: 6.8
+
+## Iteration 5
+**Did** Only proved hole 6's splash with real keys (state `hole` is 0-based, so hole 6 is `hole:5`; last judge used `hole:6`, which is hole 7). Held D until `aimDeg` 55-60, S for the iron/wedge, Space x3: banner 'SPLASH!', strokes 2. Saved as `course-h6-splash` in `game-tests.json` (6 checks). No source edits.
+**Saw** Hole 6 pin bearing 45°, auto-aim 3° (the waypoint `[-18.59,-0.11]` is the dogleg, not the pond, by design); `ball.surface` ended 'fairway' at (-25.75,-0.5) after the penalty drop. Error `SFX[k] is not a function` in src/sound.js remains (outside lane). Not run: perf, looks, hole 9 drive.
+**Next** (1) Hole 9 real-key drive, save `course-h9-drive` (use `hole:8`). (2) Pin framing: `pin_pole`/`pin_flag` cut at the frame top on hole 1's aim view; bigger flag in `src/pins.js`. (3) A carry or bunker on holes 2 and 3; check cliff trees on holes 6 and 7.
+**Open** Auto-aim on hole 6 is 42° off the pin by design (waypoint); the judge's "fix the waypoint" item may be moot. `toNonIndexed` warning remains.
