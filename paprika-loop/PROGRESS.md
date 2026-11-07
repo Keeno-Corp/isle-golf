@@ -791,3 +791,9 @@ Mean: (8+6+8+6+5+7+4+6+9+7+4+8+6)/13 = 6.5.
 3. **Kit colour check.** Add an `addObserve` key `creatures.shirtColour`. Then save `creatures-kit-colours` from a Digit2 game with expects `#3b78c9` ±30 for FINN and `#d8503a` ±30 for ISLA. Done is that `interact` call showing both ✓. Keep it small: no asset search again, since the library has been down.
 
 SCORE: 6.5
+
+## Iteration 18
+**Did** `src/pose.js`: footballer height `H` 0.74 → 1.0 (bigger on screen; helmet group scales with him); added `creatures.shirtColour` (same value as `creatures.shirt`, the kit jersey hex) to the observe line. Syntax checked only.
+**Saw** No look or perf run this session (short on time); numbers from iteration 17 stand.
+**Next** 1) Save `creatures-par-dance`, `-bogey-dismay`, `-birdie-celebration`, `-sheep-bonk`, `-footballer-visible`, `-kit-colours` with `interact` save (real-key Space ×3). 2) Look at the footballer at H 1.0 (helmet tuning offsets use `hs`, check they still sit right). 3) Golfer ~1.3× bigger: scale `golfer.holder` rather than the parts, check the club grip still meets the hands.
+**Open** Golfer not enlarged (hand/club maths in pose.js assume current size). Footballer unseen after resize.

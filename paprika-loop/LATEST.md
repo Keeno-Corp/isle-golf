@@ -1,11 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 17
-**Did** `src/pose.js` footballer target (`foot` update, line ~176): moved from 3 behind the ball to 1.2 ahead and 2.0 to the south side (`pos + f*1.2 + side*2.0`), so he stands inside the aim camera. Ok-surface fallbacks unchanged.
-**Saw** Aim look hole 1: `player` 0.14% [945,474,978,548] and `footballer_helmetShell` 0.018% are on screen; helmet reads blue glossy with orange shirt (he is at x -10.22, z 14.75). Golfer still 0.47% of picture. No perf run. No console errors seen.
-**Next** 1) Save `creatures-footballer-visible` (expect `creatures.footballer.visible` true). 2) Reaction checks (par-dance, bogey-dismay, birdie-celebration, sheep-bonk) with real-key Space. 3) `creatures.shirtColour` observe + FINN kit check; enlarge golfer ~1.3×.
-**Open** Asset search not retried (not needed). `gull` SFX error and `ballShadow` z-fight belong to other lanes. Footballer on the right edge may sit on rough on holes with narrow fairways (fallback handles surface only).
-
 ### Judge 17
 
 **Judge 17 verdict**
@@ -34,3 +28,9 @@ Mean: (8+6+8+6+5+7+4+6+9+7+4+8+6)/13 = 6.5.
 3. **Kit colour check.** Add an `addObserve` key `creatures.shirtColour`. Then save `creatures-kit-colours` from a Digit2 game with expects `#3b78c9` ±30 for FINN and `#d8503a` ±30 for ISLA. Done is that `interact` call showing both ✓. Keep it small: no asset search again, since the library has been down.
 
 SCORE: 6.5
+
+## Iteration 18
+**Did** `src/pose.js`: footballer height `H` 0.74 → 1.0 (bigger on screen; helmet group scales with him); added `creatures.shirtColour` (same value as `creatures.shirt`, the kit jersey hex) to the observe line. Syntax checked only.
+**Saw** No look or perf run this session (short on time); numbers from iteration 17 stand.
+**Next** 1) Save `creatures-par-dance`, `-bogey-dismay`, `-birdie-celebration`, `-sheep-bonk`, `-footballer-visible`, `-kit-colours` with `interact` save (real-key Space ×3). 2) Look at the footballer at H 1.0 (helmet tuning offsets use `hs`, check they still sit right). 3) Golfer ~1.3× bigger: scale `golfer.holder` rather than the parts, check the club grip still meets the hands.
+**Open** Golfer not enlarged (hand/club maths in pose.js assume current size). Footballer unseen after resize.

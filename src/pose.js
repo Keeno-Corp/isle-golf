@@ -138,7 +138,7 @@ on('ball:ob', () => golferClip('Dismay', 0.35));
 
 // ---------------------------------------------------------------- the one observe key of this lane (COORDINATION.md): creatures
 const poseNm = () => { const s = swingParam(); return G.phase === 'swing' ? (G.swingT < 0.2 ? 'downswing' : 'follow') : (G.phase === 'meter' || G.phase === 'aim') && G.m.stage >= 1 && G.m.stage < 3 ? 'backswing' : G.phase === 'flight' || G.phase === 'settle' ? 'follow' : 'address'; };
-addObserve(() => ({ creatures: { golferClip: ['Celebration', 'Dance_Loop', 'Dismay', 'Walk'].includes(golfer.cur) ? golfer.cur : ['aim', 'meter', 'swing', 'flight', 'settle'].includes(G.phase) ? poseNm() : golfer.cur, poseName: poseNm(), shirt: '#' + kitU.uJersey.value.getHexString(), swingT: +(G.swingT || 0).toFixed(2), pose: +swingParam().toFixed(2), clubHead: clubG.userData.head.userData.id || '', footballer: { x: +foot.x.toFixed(2), z: +foot.z.toFixed(2), clip: foot.cur, visible: foot.g.visible, ready: foot.ready }, cow: cowObs(), ...sheepObs() } }));
+addObserve(() => ({ creatures: { golferClip: ['Celebration', 'Dance_Loop', 'Dismay', 'Walk'].includes(golfer.cur) ? golfer.cur : ['aim', 'meter', 'swing', 'flight', 'settle'].includes(G.phase) ? poseNm() : golfer.cur, poseName: poseNm(), shirt: '#' + kitU.uJersey.value.getHexString(), shirtColour: '#' + kitU.uJersey.value.getHexString(), swingT: +(G.swingT || 0).toFixed(2), pose: +swingParam().toFixed(2), clubHead: clubG.userData.head.userData.id || '', footballer: { x: +foot.x.toFixed(2), z: +foot.z.toFixed(2), clip: foot.cur, visible: foot.g.visible, ready: foot.ready }, cow: cowObs(), ...sheepObs() } }));
 
 // ---------------------------------------------------------------- the footballer: Isle Blitz's player (assets/player-anim.glb) as the caddie beside the tee or the green, clean: a glossy painted helmet shell over the old one, one stripe, a crisp facemask
 import { gltfL } from './assets.js';
@@ -146,7 +146,7 @@ import { curH, G as G2 } from './round.js';
 export const foot = { g: new THREE.Group(), mixer: null, acts: {}, cur: '', ready: false, cheer: 0, x: 0, z: 0, yaw: 0, spot: 'tee' };
 foot.g.name = 'footballer'; foot.g.visible = false; scene.add(foot.g);
 gltfL.loadAsync('./assets/player-anim.glb').then(glb => {
-  const m = glb.scene, H = 0.74;   // a toy beside the golfer (0.55 tall)
+  const m = glb.scene, H = 1.0;   // a toy beside the golfer (0.55 tall)
   let head = null, skin = null; m.traverse(o => { if (o.isBone && o.name === 'DEF-head') head = o; if (o.isSkinnedMesh) skin = o; });
   m.updateMatrixWorld(true); const b0 = new THREE.Box3().setFromObject(m, true); const sc = H / (b0.max.y - b0.min.y); m.scale.setScalar(sc); m.position.y = -b0.min.y * sc;
   m.traverse(o => { if (!o.isMesh) return; o.castShadow = true; o.receiveShadow = true; o.frustumCulled = false; for (const mt of [].concat(o.material)) { for (const k of Object.keys(mt)) if (k !== 'map' && mt[k] && mt[k].isTexture) { mt[k] = null; } mt.metalness = 0; mt.roughness = 0.8; mt.normalMap = null; crisp(mt); mt.needsUpdate = true; } });
