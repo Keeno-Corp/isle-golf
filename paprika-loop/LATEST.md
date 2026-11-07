@@ -1,11 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 20
-**Did**: No source edits. Played the real-key putt from a fixture near the pin (Space ×3, no settle) to `phase holed`, then `wait 24`, with `look`. Saved the check `look-putt-holed` in `game-tests.json` (phase holed, `look.ball.y` in [-0.6, 1]). It is now 23 checks.
-**Saw**: Holed view at wait 24: `camPitchDeg` 26.7, `look.ball.y` -0.327, `focusY` 0.336, camera (0.9, 7.4, 16.0) at fov 30. `pin_flag` is solid, and `cup` and `cupRim` are visible, so the cup camera is no longer at -0.85 and pitch 8°. The banner HOLE IN ONE reads cleanly, `golfer_body` is 0.84% of the picture, and there is no console error beyond `toNonIndexed`. I ran no `perf` and did not re-run the full `test`.
-**Next**: (1) Save `look-c-hole5/6/9` (`look.camPitchDeg` in [45, 65], `look.ball.on` and `look.pin.on` true). (2) Take the scorecard picture after the holed phase. (3) Add a flight-time halo on `ball1` in `src/stage.js`.
-**Open**: The scorecard picture and the C checks are still missing. I did not run the full 23-check `test`.
-
 ### Judge 20
 
 **Judge 20: scores**
@@ -31,3 +25,11 @@ I took one real-key picture: hole 5 (index 4), Space ×3, then 150 frames in fli
 3. **Make `ball1` readable in the wide flight view.** Keep the camera as it is. Add a flight-time halo, or enlarge `ballRing`, in `src/stage.js` while `phase` is flight. Done is `look` with `sample` at the `ball1` box [575, 511, 604, 537] showing a brighter ring about 30 px wide, with `look.ball.y` unchanged at -0.31.
 
 SCORE: 7.5
+
+## Iteration 21
+**Did**: Saved `look-card-hole` in `game-tests.json` (real-key putt fixture, `until phase holed`, then `until phase card`, expects `phase` card). I briefly added `look-c-hole6-broadside` and removed it again: `look-c-hole5-broadside`, `look-c-hole6-pitch` and `look-c-hole9-broadside` already exist and pass, as PROMPT.md says. No source edits.
+**Saw**: Full `test` before the removal: 25 of 25 passed, including `look-card-hole`. Only the `toNonIndexed` console warning. I ran no `look` picture and no `perf`.
+**Next**: (1) `interact` with look:true at phase card for the scorecard picture. (2) Flight-time halo on `ball1` in `src/stage.js` (ball is about 29 px in the wide view). (3) Adapt the stale fixtures (`look-holed-cup`, tree-circle, nearplane, sunk-closeup) only if the supervisor asks.
+**Open**: The scorecard picture is still not looked at; `look-card-hole` only checks the phase. The suite now has 24 checks and was not re-run after removing the redundant one.
+
+**Iteration 21 addendum (picture)**: Real-key putt to `phase card` plus 10 frames, with `look`. The card shows HOLE 1 · PEBBLE STEP, the `ISLA` row with a circled 1, the HOLE IN ONE stamp and "SPACE · NEXT HOLE". It covers 25% of the frame, and the island behind it is blurred, as intended. Camera is at (2.3, 22.0, 37.3), fov 29.6, `camPitchDeg` 33.1. There is no console error beyond `toNonIndexed`. The scorecard picture Next item is done.

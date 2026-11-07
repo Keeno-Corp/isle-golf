@@ -211,6 +211,17 @@
       "score": 7.4,
       "judgeTurns": 7,
       "judgeTokens": 139536
+    },
+    {
+      "n": 20,
+      "turns": 10,
+      "tokens": 255525,
+      "costUsd": 0.28571939999999996,
+      "minutes": 2.6,
+      "commit": "b2b60da",
+      "score": 7.5,
+      "judgeTurns": 8,
+      "judgeTokens": 181842
     }
   ],
   "best": {

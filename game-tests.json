@@ -1251,6 +1251,77 @@
           "value": 1
         }
       ]
+    },
+    {
+      "id": "look-card-hole",
+      "title": "look-card-hole",
+      "state": {},
+      "actions": [
+        {
+          "action": "newRound",
+          "players": 1
+        },
+        {
+          "action": "next"
+        },
+        {
+          "state": {
+            "ball": {
+              "x": -1.673,
+              "z": 12.655
+            }
+          }
+        },
+        {
+          "action": "aim",
+          "at": "pin"
+        },
+        {
+          "action": "club",
+          "name": "putter"
+        },
+        {
+          "wait": 5
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 20
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 20
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "max": 600,
+          "until": {
+            "phase": "holed"
+          }
+        },
+        {
+          "max": 600,
+          "until": {
+            "phase": "card"
+          }
+        },
+        {
+          "wait": 10
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "op": "==",
+          "path": "phase",
+          "value": "card"
+        }
+      ]
     }
   ]
 }
