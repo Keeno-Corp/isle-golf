@@ -1,11 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 3
-**Did** Added the footballer as a side character in `src/pose.js` (`foot`, group `footballer`): player-anim.glb loaded via `gltfL`, 0.62 tall, stands behind-left of the golfer (eased follow, turns to the ball), plays Idle_Loop, Celebration (birdie+/ball:sheep), Dance_Loop (par), then back to idle. Clean helmet: `footballer_helmetShell` (glossy #2d63c8, roughness 0.3, metalness 0), `footballer_helmetStripe`, three `footballer_facemask` bars on the DEF-head bone; his normal/other maps dropped, all materials `crisp`. `creatures.footballer` added to the existing creatures observe key. Wrote the doc in lanes/creatures.md.
-**Saw** 6/6 saved checks pass; no console errors. Front look: glossy blue helmet with facemask, orange jersey, faces the ball. The original helmet is still under the shell (hidden). He stands in tall rough on hole 1 (grass hides his legs). Not done: perf run, sheep walk / ball-bonk look, golfer contrast, Celebration/Dismay/walk looks, shirt samples.
-**Next** 1) Look at the footballer in Celebration and at the green; move him to short grass if the spot is rough (check surfaceAt). 2) The earlier Next items: sheep walking at start, proven ball-bonk look with heart, golfer shirt samples FINN/ISLA, golfer contrast at the cup. 3) Helmet shell reads a little large/ball-like: tune R (0.072) or add a back flare.
-**Open** Footballer phase visibility list includes intro; no hide in title. Facemask is approximate bars. Mixer's Celebration is LoopOnce clamped; returns to idle after 3.5 s.
-
 ### Judge 3
 
 I've run the aim look, a 2-player swing, the shirt check and `perf`. I'm writing the verdict now.
@@ -72,3 +66,9 @@ I did not run a sheep hit, a dismay case or the walk-to-ball look. I did not run
    - The remaining code-built creatures are `sheep*` and `cow_hide`. Run `asset_search` for "low poly sheep" and "cow", and keep the code-built ones only if the results are unusable. Record that in the Open part.
 
 SCORE: 5.6
+
+## Iteration 4
+**Did** No code change this session (short on room). Re-ran all saved checks: 6/6 pass, including `creatures-ball-bonks-sheep` (already saved earlier; the judge's "no check exists" was wrong) and `creatures-real-key-drive-pose`.
+**Saw** Bonk replay: `sheepHits` 1, sheep 3 state `hop` (tx -2.3, tz 12), banner "BAA! BOUNCED OFF A SHEEP", `hitStop` true, footballer clip `Celebration` (reacts to `ball:sheep`), no console errors. The default camera in the swing/flight frame sits ~0.3 units above the ball, so the picture shows only grass and the trail: sheep, heart and golfer are not in view (golfer 0 of 26 parts shown). Footballer at (-9.05, 11) on hole 1 is probably still in rough; perf not run.
+**Next** 1) Take the bonk look from a fixed camera, e.g. `look` camera [-9, 2.5, 15] lookAt [-6, 0.5, 12.5] right after `sheepHits` hits 1, to prove the heart sprite (`creatures_heart`) is visible. 2) Run a `ball:cow` check with a `cow_hide` look, and a par/bogey hole-out for `Dance_Loop`/dismay. 3) Move the footballer onto short grass (check `surfaceAt`), scale him up slightly, brighten the golfer's cap or shirt for contrast.
+**Open** `SFX[k] is not a function` at src/sound.js:71 and `ballShadow` z-fight belong to other lanes. Sheep still start in `graze`; sheep/cow are still code-built, with no `asset_search` done for them.
