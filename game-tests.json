@@ -463,6 +463,77 @@
           "value": "follow"
         }
       ]
+    },
+    {
+      "id": "creatures-cow-reacts",
+      "title": "creatures-cow-reacts",
+      "state": {},
+      "actions": [
+        {
+          "action": "start",
+          "players": 1
+        },
+        {
+          "action": "next"
+        },
+        {
+          "wait": 5
+        },
+        {
+          "state": {
+            "ball": {
+              "x": -17.5,
+              "z": 10.6
+            }
+          }
+        },
+        {
+          "action": "aim",
+          "degrees": 180
+        },
+        {
+          "key": "Space",
+          "frames": 2
+        },
+        {
+          "wait": 25
+        },
+        {
+          "key": "Space",
+          "frames": 2
+        },
+        {
+          "wait": 3
+        },
+        {
+          "key": "Space",
+          "frames": 2
+        },
+        {
+          "wait": 60
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "creatures.cow.state",
+          "op": "in",
+          "value": [
+            "alert",
+            "head-up"
+          ]
+        },
+        {
+          "path": "creatures.cow.moos",
+          "op": ">=",
+          "value": 1
+        },
+        {
+          "path": "creatures.cow.moos",
+          "op": "<=",
+          "value": 5
+        }
+      ]
     }
   ]
 }
