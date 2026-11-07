@@ -563,6 +563,67 @@
           "op": "exists"
         }
       ]
+    },
+    {
+      "id": "creatures-birdie-celebration",
+      "title": "creatures-birdie-celebration",
+      "state": {},
+      "actions": [
+        {
+          "action": "start",
+          "players": 1
+        },
+        {
+          "state": {
+            "hole": 0,
+            "skipIntro": true
+          }
+        },
+        {
+          "state": {
+            "ball": {
+              "x": -2.4,
+              "z": 11.95
+            }
+          }
+        },
+        {
+          "action": "club",
+          "name": "putter"
+        },
+        {
+          "action": "aim",
+          "at": "pin"
+        },
+        {
+          "action": "swing",
+          "power": 0.2,
+          "accuracy": 0,
+          "club": "putter"
+        },
+        {
+          "until": {
+            "phase": "holed"
+          },
+          "max": 500
+        },
+        {
+          "wait": 20
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "creatures.golferClip",
+          "op": "==",
+          "value": "Celebration"
+        },
+        {
+          "path": "creatures.footballer.clip",
+          "op": "==",
+          "value": "Celebration"
+        }
+      ]
     }
   ]
 }
