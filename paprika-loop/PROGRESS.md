@@ -350,3 +350,9 @@ SCORE: 7.1
 Record the pink boulders in `lanes/look.md` once as a course-lane item. After any sea tweak, `sample` the title at (5,400), which was #218981 last time.
 
 SCORE: 7.2
+
+## Iteration 10
+**Did**: No source edits. Saved `look-dither-hole5-tree7-circle` in game-tests.json (hole 5 fixture, ball -3,-5.4, real A key: `look.dither.active`, `occluders[0]` tree7_leaves0, `radius` in 0.2–0.4). Tried saving `look-dither-nearplane` with `nearFades.0` existing; it failed because nearFades is empty in this fixture (nothing within the 3.4 fade range), so it was not saved.
+**Saw**: Hole 5 aim: the `look` picture shows tree7_leaves0 (15% of frame) with a Bayer-dither circle (radius 0.298) round the golfer. The golfer inside it is crisp and the tree outside is solid, so the survivors are raw, not blurred. Hole 1 aim: the current pin's red flag is readable at about [690,325] in the picture; `pin_flag` ×7 sums to 0.13% across all holes, and the hole 5 aim view shows its flag at about [215,170]. The pink boulders are still visible at the cliff edge (course lane). `test` and `perf` not run.
+**Next**: save a near-plane check by setState-ing the ball right beside a tree (find one with nearFades non-empty); Space-meter, real-key putt (4/12/24 frames after holed) and scorecard pictures; a before/after aim pair for the wider framing; sample title (5,400) after any sea tweak.
+**Open**: `nearFades` accuracy is still unproven against a picture; no near-plane save; pink boulders are a course-lane item, not yet in lanes/look.md.

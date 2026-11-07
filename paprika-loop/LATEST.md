@@ -1,11 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 9
-**Did**: `camera.js`: `nearVisible` now transforms the oriented geometry box (not a world AABB) into view space and clips its edges against the near plane before projecting, so a box that straddles the eye plane no longer counts as "fills the view". `look.dither.nearFades` is computed live at observe time (`liveNear()` over candidates cached by `updateDither`), so it matches the current camera instead of the previous frame's. `radius` is present in `look.dither`.
-**Saw**: `test` 10/10 passed. Hole 5 aim: `nearFades` went from [tree4_leaves0, tree5_leaves0] to [tree4_leaves0]; `radius` 0.301, `active` true, `look.ball.y` -0.365. tree7/tree3 are on screen but deeper than the 3.4 fade range, so they are correctly absent. `perf` not run.
-**Next**: confirm `tree4_leaves0` really overlaps the frame (the `look` ID list marks it "not found by the ID image", so it cannot be checked from the list; try a `look` with a `camera` view); zoom on a dither circle to show the survivors are raw; save `look-dither-nearplane`; real-key putt looks at 4/12/24 frames after holed; Space-meter and scorecard pictures.
-**Open**: the `nearFades` correctness is unproven against a picture; no near-plane save; no zoomed dither picture; the pink boulders at the fence are a course-lane item.
-
 ### Judge 9
 
 **Judge 9: scores**
@@ -47,3 +41,9 @@ The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.m
 Record the pink boulders in `lanes/look.md` once as a course-lane item. After any sea tweak, `sample` the title at (5,400), which was #218981 last time.
 
 SCORE: 7.2
+
+## Iteration 10
+**Did**: No source edits. Saved `look-dither-hole5-tree7-circle` in game-tests.json (hole 5 fixture, ball -3,-5.4, real A key: `look.dither.active`, `occluders[0]` tree7_leaves0, `radius` in 0.2–0.4). Tried saving `look-dither-nearplane` with `nearFades.0` existing; it failed because nearFades is empty in this fixture (nothing within the 3.4 fade range), so it was not saved.
+**Saw**: Hole 5 aim: the `look` picture shows tree7_leaves0 (15% of frame) with a Bayer-dither circle (radius 0.298) round the golfer. The golfer inside it is crisp and the tree outside is solid, so the survivors are raw, not blurred. Hole 1 aim: the current pin's red flag is readable at about [690,325] in the picture; `pin_flag` ×7 sums to 0.13% across all holes, and the hole 5 aim view shows its flag at about [215,170]. The pink boulders are still visible at the cliff edge (course lane). `test` and `perf` not run.
+**Next**: save a near-plane check by setState-ing the ball right beside a tree (find one with nearFades non-empty); Space-meter, real-key putt (4/12/24 frames after holed) and scorecard pictures; a before/after aim pair for the wider framing; sample title (5,400) after any sea tweak.
+**Open**: `nearFades` accuracy is still unproven against a picture; no near-plane save; pink boulders are a course-lane item, not yet in lanes/look.md.

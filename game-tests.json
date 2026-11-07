@@ -561,6 +561,72 @@
           "value": 1
         }
       ]
+    },
+    {
+      "id": "look-dither-hole5-tree7-circle",
+      "title": "look-dither-hole5-tree7-circle",
+      "state": {},
+      "actions": [
+        {
+          "action": "newRound",
+          "players": 1
+        },
+        {
+          "action": "next"
+        },
+        {
+          "state": {
+            "hole": 4,
+            "skipIntro": true
+          }
+        },
+        {
+          "state": {
+            "ball": {
+              "x": -3,
+              "z": -5.4
+            }
+          }
+        },
+        {
+          "wait": 20
+        },
+        {
+          "key": "KeyA",
+          "frames": 12
+        },
+        {
+          "wait": 30
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "phase",
+          "op": "==",
+          "value": "aim"
+        },
+        {
+          "path": "look.dither.active",
+          "op": "==",
+          "value": true
+        },
+        {
+          "path": "look.dither.occluders.0",
+          "op": "==",
+          "value": "tree7_leaves0"
+        },
+        {
+          "path": "look.dither.radius",
+          "op": ">=",
+          "value": 0.2
+        },
+        {
+          "path": "look.dither.radius",
+          "op": "<=",
+          "value": 0.4
+        }
+      ]
     }
   ]
 }
