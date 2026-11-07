@@ -1,26 +1,25 @@
-# Look: Isle Blitz
+# Look: Isle Golf
 Board: refs/sheets/LOOK.png
 ## Palette
-turf #5f6a36 · turf shade #344c2b · chalk #c2b496 · sea #0f6a67 · far sea #94b6a8 · meadow #b89e5b · hill green #5f7e42 · crowd warm #8f5d4e · crowd teal #247876 · home kit white #a3936d on navy #042316 · away kit red #853621 · UI yellow #7c7112 on steel #2f3534   (refs/06-diorama-day.png style match: sampled at (1000, 950), (500, 1000), (200, 800), (1800, 1000); refs/07-diorama-night.png style inspiration: (1000, 950), (300, 1000); refs/05-tiltshift-runner.png style match: (980, 700), (1050, 620); refs/04-island-current.png style match: (100, 700), (640, 40), (520, 330), (780, 500); refs/01-blitz2000-presnap.png mood inspiration: (70, 25), (200, 355))
+fairway #5d8a3a (stripe #6b9743) · green #76a64a · tee #86ae56 · rough straw #b8a64a · sand #dcc78d · sea #0f6a67 · haze #bccabd · flag #d9392b · UI cream #f4e39a on bevelled green steel #122219   (Shepherd Isle's own paint sampled in refs/sheets/LOOK.png, style match; refs/study/links-coast-fairway-dunes-sea.jpg, straw dunes and bright fairway strip, inspiration)
 ## Lighting
-Warm low sun from the top left, long soft shadows, the field in a sharp bright band and everything above and below it blurred into bokeh; the island's teal sea and soft haze stay as they are. A floodlit night variant (warm #feeecf lamps, dark #845635 surround) is the N key, as the railway's evening.   (refs/06-diorama-day.png, style, match; refs/07-diorama-night.png, style, inspiration; refs/04-island-current.png, style, match)
+Warm low sun from the top left, long soft shadows, cream-green haze rising toward the top of the frame; teal sea; a lighthouse lamp that sweeps at night (N key).   (Shepherd Isle, style match; study/STUDY.md: lighting note)
 ## Materials
-Painterly flat colour with soft gradients, no PBR shine: turf a mottled olive green with faint mow stripes, chalk lines slightly rough and warm, kits matte with one bright trim colour, helmets the only glossy thing. The island keeps its painted-stroke post pass.   (refs/05-tiltshift-runner.png, style, match; refs/04-island-current.png, style, match)
+Painterly flat colour, no PBR shine; fairways carry mow stripes, greens are finer and brighter, sand is pale with a darker lip, rough is tall straw-gold fluffy grass cards. The brush (Kuwahara) post pass stays; the golfer, ball, pin and club write alpha 0 so they stay crisp.   (Shepherd Isle, style match; study/clifftop-hole-ocean-green.jpg, inspiration)
 ## Shape language
-Toy figures: squat bodies, big round helmets (head about 1/3 of height, scaled up further in big-head mode), thick limbs, oversized shoulder pads; 14 players on the field, each reading as a bright blob with a number. The field is a flat chalked rectangle with 10-yard stripes, numbers every 10 yards, hash marks, end-zone lettering and two goalposts; the island's rounded hills, soft tree clumps and cliff edge wrap round it.   (refs/06-diorama-day.png, layout, match; study/behind-qb-field-view.jpg, proportions, inspiration; refs/01-blitz2000-presnap.png, layout, inspiration)
+A hole is a ribbon of mown green (tee box, fairway, tilted green) cut out of rough, with the red flag the one vertical accent; round tree clumps, soft bushes, pot bunkers with ragged lips, cliffs and sea close every view. Toy golfer 0.85 units tall, ball oversized so it reads.   (study/STUDY.md: composition; Shepherd Isle, style match)
 ## Camera
-Perspective, narrow FOV (about 22 to 28 degrees) from high behind the offense, tilted 40 to 50 degrees down, following the ball smoothly without cuts; the whole island never fills the frame during play, but the kickoff and score views pull back to the diorama view of refs/06. Tilt-shift focus band on the line of scrimmage, blur growing above and below.   (refs/06-diorama-day.png, layout, match; refs/01-blitz2000-presnap.png, layout, inspiration)
+Perspective, FOV about 30, high behind the ball and tilted about 25 degrees down, following the ball in flight and close in on the green; each hole opens with a flyover from the whole-island diorama view; C gives a 55 degree hole view, never flat top-down. Tilt-shift focus band sits on the ball (a little ahead of it while aiming).   (Shepherd Isle and Isle Blitz, style match)
 ## UI and type
-Heavy condensed italic capitals in yellow on bevelled dark steel panels with a cyan edge glow: a small scoreboard top left (clock, quarter, score), a wide centre banner for calls ("TOUCHDOWN", "2ND AND 30"), a turbo pill bottom left; the play-select screen a 3 by 3 grid of dark green chalkboard tiles with red route lines. Never an NFL or Midway mark, name or logo.   (refs/01-blitz2000-presnap.png, mood, inspiration; study/incomplete-banner-and-hud.jpg; study/playselect-diagram-grid.jpg)
+Heavy condensed italic capitals in cream-yellow on bevelled green steel panels with a warm glow: hole, par, strokes top left; wind arrow and speed top right; the three-click power meter bottom centre (power fill, snap zone at the line, cyan caddy notch for the pin); club list bottom left; stamp-style scorecard.   (Isle Blitz UI type, restyled; builder's call)
 ## Sound mood
-One loud announcer shouting two- or three-word calls over a small crowd roar, thuds on tackles, a whistle at the end of each play, gulls and surf between downs; all lines written fresh.   (study/STUDY.md: sound note; builder's call)
+Soft club thwack, a bright meter tick, thuds and sand hiss, a cup rattle and a short jingle, surf, gulls, sheep baa and cow moo.   (study/STUDY.md: sound note)
 ## Assets
-style: stylized · maxTris 20000 per model · asked (stylized, from refs/05 and 06) · sources: library, web, code
+style: stylized · asked · sources: existing assets/ models, code
 ## Avoid
-Realistic stadium bowls that hide the island; grey or desaturated grass; real team logos, names, fonts or the Blitz lettering; a flat top-down camera; an unblurred frame (the miniature look needs the band).
+Real golf brands, courses or game names on screen; generic bright low-poly look; a flat top-down camera during shots; an unblurred frame.
 ## Checks
-1. Turf sampled at the centre of the field in the opening look within 30/255 of #5f6a36, and sea at a bottom corner within 30/255 of #0f6a67.
-2. The opening look is sharp across the line of scrimmage and visibly blurred in the top fifth and bottom fifth of the frame.
-3. 14 player figures plus two goalposts are on screen at the kickoff view (look's On screen list), each player under 2% of the frame.
-4. The scoreboard sits in the top left and the turbo pill bottom left, yellow text on dark steel, readable at 1280 x 800.
-5. One warm key light with soft shadows; no `Lighting:` fault line.
+1. In the aim view the top fifth of the frame is visibly blurred and the band around the ball is sharp (look at aim phase).
+2. Sea sampled at a corner of the title view within 30/255 of #0f6a67; fairway at a sample on the tee-to-green ribbon within 30/255 of #5d8a3a.
+3. HUD: hole/par/strokes top left, wind top right, club bottom left, meter bottom centre, cream text on dark green.
+4. One warm key light with soft shadows; the only `Lighting:` note is the club's metal (no environment map).

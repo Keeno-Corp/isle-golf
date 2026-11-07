@@ -1,33 +1,29 @@
-# Design doc: Isle Blitz
+# Design doc: Isle Golf
 ## Core loop
-Pick a play from a 3 by 3 chalkboard grid, snap the ball, run or pass against a CPU defense, and keep moving the chains: 30 yards for a first down, four downs, score touchdowns and extra points; when the drive ends the sides swap and you play defense against the CPU offense. Two short halves of a game clock; the higher score wins.   (study/STUDY.md; refs/01-blitz2000-presnap.png)
+Aim, pick a club, swing with the three-click meter, watch the ball fly, bounce and roll, then play on until it drops in the cup; nine holes make a round scored against par.   (builder's call; study/STUDY.md: motion note)
 ## Controls
-Keyboard and gamepad. Move: WASD or arrows or left stick. Turbo: Shift or a trigger (a meter that drains and refills). Offense: Space snaps and passes to the highlighted receiver, A/D or the stick cycles the receiver; with the ball, Space jumps or dives, E spins, Q stiff-arms. Defense: Space switches to the nearest defender, E dives for a tackle, and a tackle after the whistle is a late hit that still lands. Touch: a virtual stick and two buttons. Play select: arrows or tap a tile, Enter confirms, a hidden-cursor toggle with H.   (study/STUDY.md; builder's call)
+Mouse or keyboard. Aim: A/D or arrows (hold Shift for fine), or drag the mouse sideways. Club: W/S or Q/E or the wheel (driver, iron, wedge, putter), auto-picked by distance and lie. Swing: Space or click three times: start the meter, set the power, snap the needle back onto the line (early hooks, late slices, a click on the line is straight). A cyan notch on the bar marks the power that reaches the pin. On the green the putter shows a short aiming line and a slope grid of downhill arrows. C = hole camera, R = replay the hole, M = sound, N = evening light. Title: 1-4 players, Space.   (answers; study/STUDY.md)
 ## Progression
-One match at a time, no season. On-fire streak: three straight completions to the same receiver, or two straight sacks, set the player alight (flames, unlimited turbo, sticky catches) until the other side scores or the half ends. A big-head toggle in the pause menu, on by default.   (study/STUDY.md)
+One 9-hole round with a running total against par; nothing is lost between rounds (the best total per player count is kept in the browser).   (answers)
 ## Win and lose
-The game is two halves of 2 minutes each (clock runs during plays and stops on incompletions, scores and out of bounds). Win by score at the final whistle; a tie goes to a sudden-death overtime drive. Nothing is lost between matches.   (builder's call)
+Stroke play: every hole is scored against its par (hole in one, eagle, birdie, par, bogey, double bogey stamps on the scorecard after each hole); the lowest total wins. Solo, or 2 to 4 players in hot seat: each has a kit colour, the lowest score of the last hole tees off first, then the ball farthest from the cup plays. Water costs a stroke and a drop; out of bounds (the sea beyond the cliffs) costs a stroke and a replay from the same spot; nine strokes ends a hole.   (answers)
 ## Levels
-One field, on the island, in two lights: day (default) and floodlit night (N key). The island is regrown around a full 100-yard field with 10-yard end zones: the meadow flattens and widens to hold the field, the house, pond, lighthouse and trees move to a ring around it, sheep, ducks and the cow stand along the sidelines as the crowd, and a small timber stand sits on each long side.   (refs/06-diorama-day.png; refs/04-island-current.png; person: full field, island regrown)
+Nine holes laid over Shepherd Isle: 1 Pebble Step, 2 Gorse Run, 3 Bluff Edge (par 3), 4 Lantern Road, 5 Chimney Turn (dogleg round the house), 6 Duck Pond Bend (dogleg round the pond), 7 Mid Meadow, 8 Bell Hill Back (par 4), 9 Lighthouse Home (par 5, finishing by the lighthouse). Sand pots near each green, trees, wind per hole shown by the pin flag and the HUD pennant, sheep wandering across fairways, the cow south of the pond. 1 world unit = 12 yards on the HUD.   (answers)
 ## Feel
-Arcade-fast and exaggerated: sprint at 8 to 9 m/s with turbo, hits that throw the tackled player a body length, pile-ups, a little camera shake on every tackle and a grass spray burst at each cut; the ball carrier runs with a slight bob and arm flap. Players never fall off the island: the field edge is the sideline and out of bounds ends the play.   (refs/05-tiltshift-runner.png; study/STUDY.md motion note)
+Arcade: the ball arcs high and floaty, the wind pushes it in flight, a perfect snap is a straight shot, a sheep bounce stops the action for a beat with a baa and a heart, tree hits shake the leaves, the cup pulls a slow ball in. The camera follows the ball and eases to the green.   (answers; study/STUDY.md)
 ## Audio
-One announcer voice (synthesised phrases or short recorded clips written fresh) shouting the call after each play, crowd swell on big plays, a whistle, thuds, surf and gulls under everything.   (study/STUDY.md sound note)
+Synthesised: thwack, meter ticks, thuds, sand hiss, rustle, splash, baa, moo, cup rattle, jingle for a birdie, gulls and surf.   (study/STUDY.md)
 ## UI
-Scoreboard top left; centre banner for the call and down and distance; turbo pill bottom left; the play-select grid between plays with a General Info panel for the first play; a pause menu with big-head and sound toggles. Fonts: a heavy condensed italic sans, yellow on dark steel.   (LOOK.md, UI and type)
+HUD in the Isle Blitz type restyled for golf (LOOK.md, UI and type): hole panel top left, wind top right, power meter bottom centre, clubs bottom left, centre banner for calls, scorecard with stamps.   (answers)
 ## Decisions
 Surfaced (asked, or to ask):
-- Teams: two invented island sides with their own kits, names and a small crest. Asked: two invented island sides (the names are the builder's; the announcer uses them).
-- Match length: two 2-minute halves with a halftime side swap and sudden-death overtime. Asked: two 2-minute halves.
+- Tone: cosy-arcade, small comedy from sheep, ducks and the cow. Asked (answers).
+- Progression: one 9-hole round with a total vs par. Asked (answers).
 Left to the builder:
-- Camera: follow behind the offense, narrow FOV (recommended, LOOK.md Camera).
-- Play book: 9 offense plays (3 runs, 6 passes) and 9 defense plays, drawn as chalkboard tiles.
-- CPU: the defense reads the play tile and reacts with a short delay; the CPU offense picks a random play weighted by down and distance.
-- Big-head mode: on by default, toggle in the pause menu.
+- Meter timing: 1.15 s up, 1.0 s back, a 0.05 s exact snap window (recommended, arcade-forgiving).
+- Pick-up at nine strokes (recommended).
+- Hole-in-one counted as the stamp of the best result.
 ## Decision log
-2026-11-05 · field · full 100-yard field, island regrown · over a short field on the meadow, a tiny pitch · person
-2026-11-05 · scope · full mini-game vs CPU · over offense-only drill, two-player hot seat · person
-2026-11-05 · references · Blitz arcade field views 1 to 3 kept; the person's three tilt-shift pictures added; the Shepherd's Isle look kept as the base · person
-2026-11-05 · teams · two invented island sides · over colour-only kits, a team-select screen · person
-2026-11-05 · match length · two 2-minute halves · over one drive each, first to 21 · person
-2026-11-05 · player model · library ccde5e37 "Happy Cheff", shrunk and animated in code · over the animated low-poly pair, the rugby figure, the big-head toy, code · person
+2026-11-07 · tone · cosy-arcade · over tense, comic · person (the session's answers)
+2026-11-07 · progression · one 9-hole round vs par · over a tour, endless · person
+2026-11-07 · golfer model · the island's skinned figure · over a new library model (the asset library was unreachable, no web asset passed the licence check) · builder, unasked
