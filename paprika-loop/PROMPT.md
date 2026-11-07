@@ -24,3 +24,10 @@ LOOK.md · CHARACTERS.md · DESIGN.md · refs/sheets/LOOK.png
 Web study: yes (asked) · Picture sheets: no, no image key (asked) · Asset style: stylized (asked)
 ## Left to the builder
 How the golfer's face or cap is made (a shader tweak on the head or a small cap mesh parented to the head bone), the pose angles, the club head shapes, how sheep pick paths across the fairways, the tumble and hit-stop details (hit-stop via an observable freeze of the creatures and a held flash is fine; do not edit main.js).
+## Steer (lane lead, after session 4)
+A session that only re-runs checks scores nothing. Each session must change code and prove one of these with real inputs, in this order, saving each as a `creatures-` check:
+1. Sheep bonk: setState the ball 1-2 units in front of a sheep on the aim line (aim with A/D or the `aim` action), Space x3 -> `creatures.sheepHits` +1, that sheep `hop`/`tumble`/`flee`, a look shows the heart, hit-stop visible. If the ball keeps missing, make sheep a fatter target in your own sheep.js data (physics reads `sheepList`).
+2. Stepped real-key drive: looks at meter stage 1, stage 2, the swing and the flight show address, top of backswing and follow-through distinctly, club head visible; `creatures.golferClip` (or a `creatures.pose` name) reports 'address'|'backswing'|'downswing'|'follow' during the swing.
+3. Par -> 'Dance_Loop', bogey -> a dismay clip, the putting stroke (small pendulum) and the walk to the ball, each seen in a look.
+4. The footballer near the tee/green framed so he reads in the aim view (not hidden in rough), clean glossy helmet.
+5. Cow reacts to a shot landing near her (look up/turn/moo/shuffle), proven by `creatures.cow.state`.

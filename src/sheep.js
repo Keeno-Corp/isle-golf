@@ -19,7 +19,7 @@ export const sheep = [];
   const geo = mergeGeometries([col(fleece.translate(0, 0.27, 0), '#efe8da'), col(face, '#2a2420'), ...legs.map(l => col(l, '#2a2420'))].map(g => { for (const k of Object.keys(g.attributes)) if (!['position', 'normal', 'color'].includes(k)) g.deleteAttribute(k); return g; }));
   const homes = [[-16.5, 4.2], [-3.5, -4.6], [6.0, -3.8], [-6.5, 9.8], [14.0, 4.2], [-21.5, -7.0], [5.0, 9.5], [19.8, 9.0], [-9, 2.2], [11.5, -10]];
   const inst = named(new THREE.InstancedMesh(geo, std('#ffffff', { vertexColors: true, roughness: 1 }), homes.length), 'sheep');
-  homes.forEach(([x, z], i) => { const s = { x, z, hx: x, hz: z, ox: x, oz: z, tx: x, tz: z, tumble: 0, state: 'graze', dizzy: 0, yaw: rand(0, 6.28), ph: rand(0, 6), hop: 0, s: rand(0.95, 1.2), wait: rand(0.5, 5), gy: heightAt(x, z), flee: 0 }; sheep.push(s); sheepList.push(s); });
+  homes.forEach(([x, z], i) => { const s = { x, z, hx: x, hz: z, ox: x, oz: z, tx: x, tz: z, tumble: 0, state: 'graze', dizzy: 0, yaw: rand(0, 6.28), ph: rand(0, 6), hop: 0, s: rand(0.95, 1.2), wait: i % 3 === 0 ? 0 : rand(0.5, 5), gy: heightAt(x, z), flee: 0 }; sheep.push(s); sheepList.push(s); });
   scene.add(inst); sheep.inst = inst;
 }
 export const okForSheep = (x, z) => inland(x, z) > 2.4 && Math.hypot(x - POND.x, z - POND.z) > POND.r + 0.5 && !BOXES.some(b => Math.abs(x - b.x) < b.hx + 1 && Math.abs(z - b.z) < b.hz + 1) && Math.hypot(x - LH.x, z - LH.z) > 2 && !BUNKERS.some(b => bunkerQ(b, x, z) < 1.3);

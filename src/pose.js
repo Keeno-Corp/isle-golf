@@ -1,7 +1,7 @@
 import './hud.js';   // load order: each file runs after the one before it (COORDINATION.md)
 import * as THREE from 'three';
 import { clamp, lerp, smooth, angDiff } from './util.js';
-import { heightAt } from './course.js';
+import { heightAt, surfaceAt } from './course.js';
 import { crisp } from './post.js';
 import { flagMat, flagWhite } from './pins.js';
 import { addObserve, addAction, addUpdate, on, ST } from './shared.js';
@@ -145,7 +145,7 @@ import { curH, G as G2 } from './round.js';
 export const foot = { g: new THREE.Group(), mixer: null, acts: {}, cur: '', ready: false, cheer: 0, x: 0, z: 0, yaw: 0, spot: 'tee' };
 foot.g.name = 'footballer'; foot.g.visible = false; scene.add(foot.g);
 gltfL.loadAsync('./assets/player-anim.glb').then(glb => {
-  const m = glb.scene, H = 0.62;   // a toy beside the golfer (0.55 tall)
+  const m = glb.scene, H = 0.74;   // a toy beside the golfer (0.55 tall)
   let head = null, skin = null; m.traverse(o => { if (o.isBone && o.name === 'DEF-head') head = o; if (o.isSkinnedMesh) skin = o; });
   m.updateMatrixWorld(true); const b0 = new THREE.Box3().setFromObject(m, true); const sc = H / (b0.max.y - b0.min.y); m.scale.setScalar(sc); m.position.y = -b0.min.y * sc;
   m.traverse(o => { if (!o.isMesh) return; o.castShadow = true; o.receiveShadow = true; o.frustumCulled = false; for (const mt of [].concat(o.material)) { for (const k of Object.keys(mt)) if (k !== 'map' && mt[k] && mt[k].isTexture) { mt[k] = null; } mt.metalness = 0; mt.roughness = 0.8; mt.normalMap = null; crisp(mt); mt.needsUpdate = true; } });
@@ -172,7 +172,9 @@ addUpdate(dt => {
     // stand beside the tee (or the ball on a short hole) out of the line: behind-left of the golfer
     const p = curP(), H = curH(); if (!p || !H) return;
     const pos = p.pos || { x: H.tee[0], z: H.tee[1] }, ay = G2.aim || 0, fx = Math.cos(ay), fz = Math.sin(ay);
-    const tx = pos.x - fx * 1.0 + fz * 1.5, tz = pos.z - fz * 1.0 - fx * 1.5;
+    let tx = pos.x - fx * 1.0 + fz * 1.5, tz = pos.z - fz * 1.0 - fx * 1.5;
+    { const ok = (x, z) => { const q = surfaceAt(x, z); return q === 'fairway' || q === 'green' || q === 'tee'; };
+      if (!ok(tx, tz)) for (const [a, b] of [[-1.5, 1.0], [1.5, 1.0], [-1.5, -0.2], [1.5, -0.2], [0, 2], [0, -2]]) { const cx = pos.x - fx * 1.0 * (b > 0 ? 1 : 0) + fz * a, cz = pos.z - fz * 1.0 * (b > 0 ? 1 : 0) - fx * a; if (ok(cx, cz)) { tx = cx; tz = cz; break; } } }
     const k = foot.x === 0 && foot.z === 0 ? 1 : 1 - Math.exp(-dt * 2.2); foot.x += (tx - foot.x) * k; foot.z += (tz - foot.z) * k;
     foot.g.position.set(foot.x, heightAt(foot.x, foot.z), foot.z);
     const want = Math.atan2(pos.x - foot.x, pos.z - foot.z); foot.yaw += angDiff(foot.yaw, want) * Math.min(1, dt * 4); foot.g.rotation.y = foot.yaw;
