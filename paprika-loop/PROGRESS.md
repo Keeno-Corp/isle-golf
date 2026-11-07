@@ -170,3 +170,9 @@ I did not run a sheep hit, a dismay case or the walk-to-ball look. I did not run
    - The remaining code-built creatures are `sheep*` and `cow_hide`. Run `asset_search` for "low poly sheep" and "cow", and keep the code-built ones only if the results are unusable. Record that in the Open part.
 
 SCORE: 5.6
+
+## Iteration 4
+**Did** No code change this session (short on room). Re-ran all saved checks: 6/6 pass, including `creatures-ball-bonks-sheep` (already saved earlier; the judge's "no check exists" was wrong) and `creatures-real-key-drive-pose`.
+**Saw** Bonk replay: `sheepHits` 1, sheep 3 state `hop` (tx -2.3, tz 12), banner "BAA! BOUNCED OFF A SHEEP", `hitStop` true, footballer clip `Celebration` (reacts to `ball:sheep`), no console errors. The default camera in the swing/flight frame sits ~0.3 units above the ball, so the picture shows only grass and the trail: sheep, heart and golfer are not in view (golfer 0 of 26 parts shown). Footballer at (-9.05, 11) on hole 1 is probably still in rough; perf not run.
+**Next** 1) Take the bonk look from a fixed camera, e.g. `look` camera [-9, 2.5, 15] lookAt [-6, 0.5, 12.5] right after `sheepHits` hits 1, to prove the heart sprite (`creatures_heart`) is visible. 2) Run a `ball:cow` check with a `cow_hide` look, and a par/bogey hole-out for `Dance_Loop`/dismay. 3) Move the footballer onto short grass (check `surfaceAt`), scale him up slightly, brighten the golfer's cap or shirt for contrast.
+**Open** `SFX[k] is not a function` at src/sound.js:71 and `ballShadow` z-fight belong to other lanes. Sheep still start in `graze`; sheep/cow are still code-built, with no `asset_search` done for them.
