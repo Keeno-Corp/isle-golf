@@ -1,11 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 7
-**Did:** No source changes. Ran `test`: all 8 saved checks pass (386.7 s) on the current build, including hud-round-sound (the outcome-agnostic version from session 6 already meets the new steer). Re-saved `hud-round-hotseat` with real keys only (Digit2, Space start, Space skip flyover, Space x3 per shot, `until` phase aim/strokes 0); it expects turn FINN and `hudRound.order` ["ISLA","FINN"].
-**Saw:** After ISLA's tee shot FINN is up: banner "22 YD TO PIN", sub "FINN TO PLAY", `hudRound.lastCall` "22 YD TO PIN". Look: holep, windp, clubp, hinter all 0 overlap, 0 cut off; `#sub` sits left of the ball and pin. Green 71%, yellow 23%. No console errors beyond toNonIndexed. Did not run `perf`. ISLA's shot landed in sand (ball mode rest, surface sand).
-**Next:** take a picture of the 2-player stamped card and the PERFECT banner; check the rough/sand yardage drop and meter stage 1 in a look. `ballShadow1`/`ballShadow2` share y 4.49 and z-fight in 2-player (src/balls.js is another lane's: offset one by 0.001 or add `polygonOffset`).
-**Open:** The hotseat replay depends on ball physics (outcomes decide who is farthest), so it will break if another lane changes it again. Groan/rattle are unheard in headless. Stamped 2-player card still not photographed.
-
 ### Judge 7
 
 **Judge 7: Isle Golf, hud-round lane**
@@ -60,3 +54,9 @@ I took the title, a 2-player start, aim stage 2 and a tee shot in `look`, and ra
 3. Make the golfer easier to see at the wider camera. `golfer_body` is 0.17% of the frame and `look` says "little of the subject". Add a brief ring or a name tag over the active player's head at aim, in `src/hud.js`. Shown done by `look` at aim, where the `Subject:` line gives a larger share and "Stands out" shows more colour contrast.
 
 SCORE: 7.7
+
+## Iteration 8
+**Did:** Added an active-player name tag to `src/hud.js`: `#tag` (cream-on-dark-green pill with the kit-colour dot and name), projected each frame from `curP().pos` (+0.85 up, 55 px left) in `updateTag()`; shown only in phase `aim`; `hud.tag` is exported. Tried a `ballShadow2` polygonOffset patch in `src/effects.js` first, then reverted it: the new PROMPT steer says the z-fight is ball-physics' (src/balls.js), not this lane's.
+**Saw:** 2-player aim look on hole 1: `div#tag "ISLA"` [542,482,627,510] sits just above the golfer's head; holep/windp/banner/sub/clubp/hinter/tag all 0 overlap, 0 cut off, 0 off-screen. Green 63%, yellow 24%. Golfer still 0.34% of the frame (camera is the look lane's). `look` still names the ballShadow1/2 pair on Surfaces (not this lane's). No new console errors (toNonIndexed only). Did not run `perf` or the saved checks after the edit (the hook's check run was in progress).
+**Next:** photograph the 2-player stamped card and the PERFECT banner with real keys (`interact` look:true right after the card); a `look` sheet of rough/sand lie and meter stage 1 for the clubp yardage drop; confirm the tag hides on a hole-camera `C` overview and when the ball is mid-flight (it only shows at aim).
+**Open:** Stamped 2-player card, PERFECT banner and the clubp yardage-drop looks are still not photographed. The tag's offset (−55 px, +0.85) is tuned for the default camera only.

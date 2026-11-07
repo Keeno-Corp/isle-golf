@@ -19,6 +19,8 @@ A tilt-shift arcade golf game on Shepherd Isle: the football field of Isle Blitz
 
 **Steer (lane lead, trial merge with the other lanes' pushed branches):** 6 of 7 checks pass on the merged build; hud-round-sound fails there (lastCall "10 YD TO PIN", expected "SO CLOSE!") because ball-physics made putting easier and changed the cup capture. Make hud-round checks robust to other lanes' physics: assert the call/sound fired for the outcome that happened (e.g. lastCall is one of SO CLOSE!/IN!/n YD TO PIN matching hudRound state, no console errors), not one exact rest distance. ball-physics already plays the cup rattle and lip sounds (src/ballfx.js); keep this lane's putt sounds to the voice/jingle layer so they don't double up.
 
+**Steer (lane lead):** do not patch the ballShadow1/ballShadow2 z-fight or any other lane's objects from this lane's files; it is requested from ball-physics (src/balls.js) in the run's shared notes. Judges: don't score this lane on it. Spend the remaining sessions on the 2-player stamped card and PERFECT banner pictures, the clubp yardage drop sheet, and an active-player marker at the wider camera.
+
 ## References
 refs/sheets/LOOK.png · style · match (Shepherd Isle, the game's own views) · built from /home/ubuntu/repos/paprika3d-dev/examples/shepherd-isle
 refs/study/ (not published) · mood · inspiration
