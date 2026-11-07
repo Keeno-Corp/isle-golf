@@ -294,7 +294,7 @@ export const BUSHES = [];
   const mat = std(0xffffff, { roughness: 1, vertexColors: true, flatShading: false });
   const cols = ['#2f6b2c', '#3d7a33', '#4a7e36', '#5f8a38', '#2a5a2a', '#507e36'].map(x => new THREE.Color(x));
   const pink = ['#b8687c', '#c98a98', '#a85468'].map(x => new THREE.Color(x));
-  const list = [];
+  const list = [], blossomAt = [];
   // clumps, not a string of beads: a big core with smaller blobs around it, some leaning out over the cliff lip
   for (let i = 0; i < 3000 && list.length < 380; i++) {
     const th = rand(0, Math.PI * 2), lip = Math.random() < 0.35, R = edgeR(th) - (lip ? rand(0.35, 0.9) : rand(1.2, 4.6));
@@ -317,11 +317,17 @@ export const BUSHES = [];
     q.setFromEuler(new THREE.Euler(rand(-0.25, 0.25), rand(0, 6), rand(-0.25, 0.25)));
     inst.setMatrixAt(i, m.compose(p, q, s));
     const near = FLOWERS.some(f => Math.hypot(f.x - x, f.z - z) < f.r + 1.5);
-    const base = Math.random() < (near ? 0.35 : 0.04) ? pink[(Math.random() * 3) | 0] : cols[(Math.random() * cols.length) | 0];
+    const bloom = Math.random() < (near ? 0.4 : 0.1);                            // blossom shrub: green leaf-mass dotted with petals
+    const base = cols[(Math.random() * cols.length) | 0];
     inst.setColorAt(i, base.clone().multiplyScalar(rand(0.85, 1.12)));
+    if (bloom) for (let k = 0; k < 16; k++) { const a = rand(0, 6.28), e = rand(0.15, 1.2), rr = 0.5 * sc * 1.05; blossomAt.push([x + Math.cos(a) * Math.cos(e) * rr * s.x / sc * 0.95, p.y + Math.sin(e) * rr * s.y / sc * 0.9, z + Math.sin(a) * Math.cos(e) * rr * s.z / sc * 0.95, k]); }
     BUSHES.push({ x, z, r: sc * 0.55 });
   });
   scene.add(inst);
+  const bg = new THREE.IcosahedronGeometry(0.075, 0), bi = new THREE.InstancedMesh(bg, std(0xffffff, { roughness: 0.8 }), Math.max(1, blossomAt.length)), bm = new THREE.Matrix4();
+  const petals = ['#f6d3df', '#fff3e4', '#ee8fae', '#f9e0ea'].map(x => new THREE.Color(x));
+  blossomAt.forEach(([x, y, z, k], i) => { bm.makeScale(1, 1, 1).setPosition(x, y, z); bi.setMatrixAt(i, bm); bi.setColorAt(i, petals[(Math.random() * 4) | 0]); });
+  bi.name = 'blossoms'; scene.add(bi);
 }
 {
   const geo = new THREE.SphereGeometry(0.07, 6, 4);
@@ -679,7 +685,7 @@ export const LILIES = [];
 }
 export function makeDuck(i) {
   const g = new THREE.Group(); g.name = 'duck' + i;
-  const b = modelCopy(duckGLB, 0.26, 'duck_body'); b.children[0].rotation.y = DUCK_YAW; b.traverse(o => o.castShadow = false); g.add(b);   // b bobs and dabbles
+  const b = modelCopy(duckGLB, 0.46, 'duck_body'); b.children[0].rotation.y = DUCK_YAW; b.traverse(o => o.castShadow = false); g.add(b);   // b bobs and dabbles
   b.position.y = -0.07;   // sits in the water up to its breast, legs hidden below the surface
   pond.add(g); return { g, b, a: i * 3.1, r: 0.9 + i * 0.35, sp: 0.25 + i * 0.08, dab: 0, nextDab: rand(3, 7), trail: [] };
 }

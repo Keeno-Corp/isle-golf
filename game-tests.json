@@ -230,6 +230,53 @@
           "value": 0
         }
       ]
+    },
+    {
+      "id": "course-only-current-pin",
+      "title": "course-only-current-pin",
+      "state": {},
+      "actions": [
+        {
+          "action": "newRound",
+          "players": 1
+        },
+        {
+          "state": {
+            "hole": 8,
+            "skipIntro": true
+          }
+        },
+        {
+          "key": "KeyC",
+          "frames": 1
+        },
+        {
+          "wait": 40
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "course.pinVisible.8",
+          "op": "==",
+          "value": true
+        },
+        {
+          "path": "course.pinVisible.6",
+          "op": "==",
+          "value": false
+        },
+        {
+          "path": "course.pinVisible.0",
+          "op": "==",
+          "value": false
+        },
+        {
+          "path": "hole",
+          "op": "==",
+          "value": 9
+        }
+      ]
     }
   ]
 }

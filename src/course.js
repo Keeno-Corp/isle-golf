@@ -25,13 +25,24 @@ export const HOLES = [
   { name: 'Gorse Run', par: 3, hw: 1.3, path: [[1.5, 14.2], [7, 12.8], [12.2, 11.2]], green: { r: 2.2, sx: -0.04, sz: 0.02 }, pin: [-0.5, 0.5], bunkers: [[10.0, 12.9, 0.9, 0.6, 0.0], [13.9, 10.0, 0.8, 0.6, 0.5]], wind: [3.5, 200] },
   { name: 'Bluff Edge', par: 3, hw: 1.25, path: [[16.5, 8.6], [19.6, 4.9], [22.6, 0.8]], green: { r: 2.1, sx: 0.05, sz: 0.01 }, pin: [-0.4, -0.5], bunkers: [[24.6, 2.1, 0.8, 0.6, 0.8], [20.6, -0.8, 0.75, 0.55, 0.2]], wind: [6.0, 90] },
   { name: 'Lantern Road', par: 4, hw: 1.5, path: [[21.4, -2.4], [16.0, -4.4], [10.2, -6.4], [4.8, -9.0]], green: { r: 2.3, sx: -0.03, sz: 0.04 }, pin: [0.6, 0.4], bunkers: [[11.6, -8.5, 1.1, 0.7, 0.4], [3.0, -7.3, 0.9, 0.6, 0.2], [6.9, -10.5, 0.8, 0.55, 0.0]], wind: [4.0, 300] },
-  { name: 'Chimney Turn', par: 4, hw: 1.5, path: [[0.8, -9.6], [-4.6, -8.2], [-10.4, -8.0], [-14.6, -9.0], [-18.4, -12.0]], green: { r: 2.3, sx: 0.04, sz: 0.03 }, pin: [-0.5, 0.5], bunkers: [[-12.3, -6.4, 1.1, 0.7, 0.2], [-16.6, -13.6, 0.9, 0.6, 0.5], [-19.9, -10.3, 0.8, 0.55, 0.0]], wind: [5.0, 20] },
+  { name: 'Chimney Turn', par: 4, hw: 1.5, path: [[0.8, -9.6], [-6.0, -8.9], [-12.7, -8.35], [-16.8, -7.8], [-18.2, -8.2], [-17.6, -11.3]], green: { r: 2.3, sx: 0.04, sz: 0.03 }, pin: [-0.5, 0.5], bunkers: [[-12.3, -6.4, 1.1, 0.7, 0.2], [-16.6, -13.6, 0.9, 0.6, 0.5], [-19.9, -10.3, 0.8, 0.55, 0.0]], wind: [5.0, 20] },
   { name: 'Duck Pond Bend', par: 4, hw: 1.5, path: [[-24.2, -3.6], [-18.4, -3.2], [-15.2, 0.5], [-14.6, 5.0], [-14.2, 7.7]], green: { r: 2.2, sx: -0.05, sz: 0.02 }, pin: [0.5, -0.4], bunkers: [[-12.0, 6.2, 0.9, 0.6, 0.0], [-16.6, 9.1, 0.85, 0.55, 0.3]], wind: [3.0, 150] },
   { name: 'Mid Meadow', par: 4, hw: 1.5, path: [[-10.6, 6.4], [-3.5, 6.9], [3.5, 6.2], [8.2, 5.4]], green: { r: 2.2, sx: 0.03, sz: -0.05 }, pin: [0.4, 0.5], bunkers: [[-1.0, 8.7, 1.2, 0.7, 0.2], [4.8, 3.9, 1.0, 0.6, 0.4], [9.9, 7.5, 0.8, 0.6, 0.0]], wind: [4.5, 260] },
   { name: 'Bell Hill Back', par: 4, hw: 1.5, path: [[11.6, -1.2], [4.5, -1.8], [-2.5, -2.4], [-9.4, -3.0]], green: { r: 2.2, sx: -0.04, sz: -0.03 }, pin: [-0.4, 0.5], bunkers: [[2.0, -0.2, 1.0, 0.6, 0.1], [-7.4, -4.9, 0.9, 0.6, 0.4], [-11.4, -1.8, 0.8, 0.55, 0.0]], wind: [6.5, 120] },
-  { name: 'Lighthouse Home', par: 5, hw: 1.6, path: [[-14.0, -0.6], [-5.5, 1.6], [2.5, 2.3], [10.5, 2.4], [14.8, -0.4], [16.4, -4.2], [17.3, -8.6]], green: { r: 2.4, sx: 0.045, sz: 0.035 }, pin: [0.6, -0.5], bunkers: [[3.7, 3.6, 1.1, 0.65, 0.2], [11.9, 4.0, 1.0, 0.6, 0.5], [15.2, -6.5, 0.9, 0.6, 0.3], [19.4, -7.1, 0.8, 0.6, 0.0]], wind: [5.5, 70] },
+  { name: 'Lighthouse Home', par: 5, hw: 1.6, path: [[-14.0, -0.6], [-5.5, 1.5], [3.5, 3.2], [14.3, 5.7], [17.0, 1.8], [17.3, -4.2], [17.3, -8.6]], green: { r: 2.4, sx: 0.045, sz: 0.035 }, pin: [0.6, -0.5], bunkers: [[3.7, 3.6, 1.1, 0.65, 0.2], [11.9, 4.0, 1.0, 0.6, 0.5], [15.2, -6.5, 0.9, 0.6, 0.3], [19.4, -7.1, 0.8, 0.6, 0.0]], wind: [5.5, 70] },
 ];
 export const BUNKERS = [];
+// no sand in a perfect drive's landing zone: the drive aims at the fairway point 13.6 along (the auto-aim rule) and runs out to about 26 along that ray,
+// the approach is the straight tee-to-pin line; any pot within its radius + 1 of those rays is slid sideways, away from the ray
+const rayClear = (H, ax, az) => {
+  const rays = [[H.tee[0], H.tee[1], ax, az, 9, Math.min(27, H.len + 1)], [H.tee[0], H.tee[1], H.pinX - H.tee[0], H.pinZ - H.tee[1], 9, H.len - 1.2]];
+  for (const b of H.bunkers) for (const [ox, oz, dx, dz, a0, a1] of rays) {
+    const L = Math.hypot(dx, dz), ux = dx / L, uz = dz / L; let t = (b[0] - ox) * ux + (b[1] - oz) * uz; if (t < a0 - 1 || t > a1 + 1) continue;
+    let px = (b[0] - ox) - t * ux, pz = (b[1] - oz) - t * uz, d = Math.hypot(px, pz), need = b[2] + 1.15; if (d >= need) continue;
+    const sg = d < 0.05 ? 1 : 1 / d; let nx = -uz * (px * -uz + pz * ux >= 0 ? 1 : -1), nz = ux * (px * -uz + pz * ux >= 0 ? 1 : -1);
+    b[0] = ox + t * ux + nx * need; b[1] = oz + t * uz + nz * need;
+  }
+};
 HOLES.forEach((H, i) => {
   H.i = i; H.tee = H.path[0]; H.green.x = H.path[H.path.length - 1][0]; H.green.z = H.path[H.path.length - 1][1];
   H.pinX = H.green.x + H.pin[0]; H.pinZ = H.green.z + H.pin[1];
@@ -40,7 +51,10 @@ HOLES.forEach((H, i) => {
   H.samp = sp.map((p, k) => [p.x, p.z, k / (sp.length - 1)]);
   H.len = Math.hypot(H.pinX - H.tee[0], H.pinZ - H.tee[1]); H.yards = Math.round(H.len * YD);
   const f = H.path[1]; H.teeYaw = Math.atan2(f[1] - H.tee[1], f[0] - H.tee[0]);
+  // each hole's breeze runs mostly along the line of play (tail on odd holes, head on even) with a light cross-wind, so a perfect drive stays on the fairway
+  H.wind = [[2, 3, 3.5, 3, 3, 2.5, 3, 3.5, 3][i], ((H.teeYaw * 180 / Math.PI) + (i % 2 ? 180 : 0) + (i % 3 === 0 ? 22 : -22) + 360) % 360];
   let x0 = 1e9, z0 = 1e9, x1 = -1e9, z1 = -1e9; for (const [x, z] of H.samp) { x0 = Math.min(x0, x); x1 = Math.max(x1, x); z0 = Math.min(z0, z); z1 = Math.max(z1, z); }
+  { let ax = H.pinX - H.tee[0], az = H.pinZ - H.tee[1]; if (H.len > 13.3) { let run = 0; for (let k = 1; k < H.samp.length; k++) { run += Math.hypot(H.samp[k][0] - H.samp[k - 1][0], H.samp[k][1] - H.samp[k - 1][1]); if (run > 13.6) { ax = H.samp[k][0] - H.tee[0]; az = H.samp[k][1] - H.tee[1]; break; } } } for (let pass = 0; pass < 3; pass++) { rayClear(H, ax, az); for (const b of H.bunkers) { const gx = b[0] - H.green.x, gz = b[1] - H.green.z, gd = Math.hypot(gx, gz), want = H.green.r + b[2] + 0.45; if (gd < want) { b[0] = H.green.x + gx / gd * want; b[1] = H.green.z + gz / gd * want; } } } }
   H.bb = [x0 - H.hw * 1.8 - 1, z0 - H.hw * 1.8 - 1, x1 + H.hw * 1.8 + 1, z1 + H.hw * 1.8 + 1];
   H.bunkers.forEach(b => BUNKERS.push({ x: b[0], z: b[1], rx: b[2], rz: b[3], rot: b[4], hole: i }));
 });
