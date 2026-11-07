@@ -412,3 +412,14 @@ I opened the page, played a 2-player start, a real-key swing, wedge and putter s
 3. Take the `clubp` yardage-drop `sheet` with `state` set to a rough lie and a sand lie (`lie: "rough"`, `lie: "sand"`), and a `C` overhead moment. It should show WEDGE/IRON yardages lower than on the tee (the tee shows 204/132/74), `#tag` hidden on the overhead, and `hinter` showing the bunker hint that matches the club.
 
 SCORE: 7.6
+
+## The request changed
+
+paprika-loop/PROMPT.md changed before session 9; the Next lists above were written before it. Changed lines:
++ **Steer (lane lead):** do not patch the ballShadow1/ballShadow2 z-fight or any other lane's objects from this lane's files; it is requested from ball-physics (src/balls.js) in the run's shared notes. Judges: don't score this lane on it. Spend the remaining sessions on the 2-player stamped card and PERFECT banner pictures, the clubp yardage drop sheet, and an active-player marker at the wider camera.
+
+## Iteration 9
+**Did:** No source change. Played a 2-player hole 1 with `start`, `next`, `aim at:pin`, `swing power 0.592 settle:true` per player (ISLA then FINN) and photographed the stamped card.
+**Saw:** `phase` reached `card`; `look` shows `#card` "HOLE 1 · PEBBLE STEP" with both rows (ISLA 2, FINN 2, circled), TOT 2, +/- -1, and two BIRDIE stamps (ISLA, FINN) with "SPACE · NEXT HOLE" at the bottom; `hudRound.cardOpen` true; 0 overlap/off-screen/cut off. `lastCall` showed BIRDIE! after ISLA's putt. A `sheet` with `state:{lie:"rough"|"sand"}` did not change the lie (clubp still read "LIE · TEE", yardages equal to the tee's), so the yardage-drop picture is still not proven. Did not run `perf`. Note: this was via `swing settle:true`, not real keys.
+**Next:** prove the clubp yardage drop by getting a real rough/sand lie (hit a wild shot, then `look`); SO CLOSE!/IN! trace on a real putt; PERFECT banner with real keys on the third click; `C` overview hiding `#tag`.
+**Open:** The `lie` state key isn't honoured by `setState`. PERFECT banner and SO CLOSE!/IN! still unphotographed.

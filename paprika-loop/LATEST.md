@@ -1,11 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 8
-**Did:** Added an active-player name tag to `src/hud.js`: `#tag` (cream-on-dark-green pill with the kit-colour dot and name), projected each frame from `curP().pos` (+0.85 up, 55 px left) in `updateTag()`; shown only in phase `aim`; `hud.tag` is exported. Tried a `ballShadow2` polygonOffset patch in `src/effects.js` first, then reverted it: the new PROMPT steer says the z-fight is ball-physics' (src/balls.js), not this lane's.
-**Saw:** 2-player aim look on hole 1: `div#tag "ISLA"` [542,482,627,510] sits just above the golfer's head; holep/windp/banner/sub/clubp/hinter/tag all 0 overlap, 0 cut off, 0 off-screen. Green 63%, yellow 24%. Golfer still 0.34% of the frame (camera is the look lane's). `look` still names the ballShadow1/2 pair on Surfaces (not this lane's). No new console errors (toNonIndexed only). Did not run `perf` or the saved checks after the edit (the hook's check run was in progress).
-**Next:** photograph the 2-player stamped card and the PERFECT banner with real keys (`interact` look:true right after the card); a `look` sheet of rough/sand lie and meter stage 1 for the clubp yardage drop; confirm the tag hides on a hole-camera `C` overview and when the ball is mid-flight (it only shows at aim).
-**Open:** Stamped 2-player card, PERFECT banner and the clubp yardage-drop looks are still not photographed. The tag's offset (−55 px, +0.85) is tuned for the default camera only.
-
 ### Judge 8
 
 **Judge 8: Isle Golf, hud-round lane**
@@ -65,3 +59,14 @@ I opened the page, played a 2-player start, a real-key swing, wedge and putter s
 3. Take the `clubp` yardage-drop `sheet` with `state` set to a rough lie and a sand lie (`lie: "rough"`, `lie: "sand"`), and a `C` overhead moment. It should show WEDGE/IRON yardages lower than on the tee (the tee shows 204/132/74), `#tag` hidden on the overhead, and `hinter` showing the bunker hint that matches the club.
 
 SCORE: 7.6
+
+## The request changed
+
+paprika-loop/PROMPT.md changed before session 9; the Next lists above were written before it. Changed lines:
++ **Steer (lane lead):** do not patch the ballShadow1/ballShadow2 z-fight or any other lane's objects from this lane's files; it is requested from ball-physics (src/balls.js) in the run's shared notes. Judges: don't score this lane on it. Spend the remaining sessions on the 2-player stamped card and PERFECT banner pictures, the clubp yardage drop sheet, and an active-player marker at the wider camera.
+
+## Iteration 9
+**Did:** No source change. Played a 2-player hole 1 with `start`, `next`, `aim at:pin`, `swing power 0.592 settle:true` per player (ISLA then FINN) and photographed the stamped card.
+**Saw:** `phase` reached `card`; `look` shows `#card` "HOLE 1 · PEBBLE STEP" with both rows (ISLA 2, FINN 2, circled), TOT 2, +/- -1, and two BIRDIE stamps (ISLA, FINN) with "SPACE · NEXT HOLE" at the bottom; `hudRound.cardOpen` true; 0 overlap/off-screen/cut off. `lastCall` showed BIRDIE! after ISLA's putt. A `sheet` with `state:{lie:"rough"|"sand"}` did not change the lie (clubp still read "LIE · TEE", yardages equal to the tee's), so the yardage-drop picture is still not proven. Did not run `perf`. Note: this was via `swing settle:true`, not real keys.
+**Next:** prove the clubp yardage drop by getting a real rough/sand lie (hit a wild shot, then `look`); SO CLOSE!/IN! trace on a real putt; PERFECT banner with real keys on the third click; `C` overview hiding `#tag`.
+**Open:** The `lie` state key isn't honoured by `setState`. PERFECT banner and SO CLOSE!/IN! still unphotographed.
