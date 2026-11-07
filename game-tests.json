@@ -278,46 +278,6 @@
       ]
     },
     {
-      "id": "hud-round-hotseat",
-      "title": "hud-round-hotseat",
-      "state": {},
-      "actions": [
-        {
-          "action": "start",
-          "players": 2
-        },
-        {
-          "action": "next"
-        },
-        {
-          "action": "swing",
-          "power": 0.7,
-          "accuracy": 0,
-          "settle": true
-        },
-        {
-          "wait": 5
-        }
-      ],
-      "frames": 0,
-      "expect": [
-        {
-          "path": "phase",
-          "op": "==",
-          "value": "aim"
-        },
-        {
-          "path": "hudRound.turn",
-          "op": "==",
-          "value": "FINN"
-        },
-        {
-          "path": "hudRound.order",
-          "op": "exists"
-        }
-      ]
-    },
-    {
       "id": "hud-round-full-round",
       "title": "hud-round-full-round",
       "state": {},
@@ -1372,6 +1332,70 @@
             true,
             false
           ]
+        }
+      ]
+    },
+    {
+      "id": "hud-round-hotseat",
+      "title": "hud-round-hotseat",
+      "state": {},
+      "actions": [
+        {
+          "key": "Digit2"
+        },
+        {
+          "wait": 3
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 5
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 5
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 50
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 28
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": "aim",
+            "strokes": 0
+          },
+          "max": 900
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "phase",
+          "op": "==",
+          "value": "aim"
+        },
+        {
+          "path": "hudRound.turn",
+          "op": "==",
+          "value": "FINN"
+        },
+        {
+          "path": "hudRound.order",
+          "op": "exists"
         }
       ]
     }
