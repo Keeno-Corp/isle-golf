@@ -1,0 +1,4 @@
+- Happy Cheff: "Happy Cheff" by William Pedersen (https://sketchfab.com/3d-models/ccde5e37e2144d1dae496626de0f7467) is licensed under CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/). Optimized for the web by paprika3D.
+- Duck: "Duck" by AIUM2 (https://sketchfab.com/3d-models/1ef90928c6994bb28d8069069dd5adce) is licensed under CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/). Optimized for the web by paprika3D.
+- Vaca 2: "Vaca 2" by rodrigolaorden (https://sketchfab.com/3d-models/77161168dfb342e59a36436cd4953442) is licensed under CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/). Optimized for the web by paprika3D.
+- Player animations: Quaternius Universal Animation Library and KayKit Character Animations 1.1 (Kay Lousberg), both CC0 1.0.
