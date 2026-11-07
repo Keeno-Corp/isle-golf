@@ -63,7 +63,7 @@ export function updateCamera(dt) {
   } else if (G.overhead && G.phase === 'aim') {
     overheadCam(cPos, cLook, H, curP().pos); fov = 32; k = 4;
   } else if (G.phase === 'aim' || G.phase === 'swing') { aimCam(cPos, cLook); k = 5; }
-  else if (G.phase === 'holed') { cPos.set(H.pinX + 1.5, H.pinY + 1.0, H.pinZ + 1.9); cLook.set(H.pinX, H.pinY + 0.35, H.pinZ); fov = 30; k = 3; cPos.set(H.pinX + 1.9, H.pinY + 2.3, H.pinZ + 2.9); cLook.set(H.pinX, H.pinY + 0.5, H.pinZ); }
+  else if (G.phase === 'holed' || G.phase === 'settle' && SIM.mode === 'sunk') { fov = 30; k = 7; cPos.set(H.pinX + 1.9, H.pinY + 2.3, H.pinZ + 2.9); cLook.set(H.pinX, H.pinY + 0.5, H.pinZ); }
   else {   // flight and settle: behind the ball along its way, close in as it rolls
     const v = SIM.vel, hs = Math.hypot(v.x, v.z), dx = hs > 0.5 ? v.x / hs : Math.cos(G.aim), dz = hs > 0.5 ? v.z / hs : Math.sin(G.aim), putt = curClub().putt || SIM.mode === 'roll' && hs < 4;
     if (hs > 0.5) { cam.fdx = dx; cam.fdz = dz; }

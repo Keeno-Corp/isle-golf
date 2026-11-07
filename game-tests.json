@@ -680,6 +680,99 @@
           "value": "aim"
         }
       ]
+    },
+    {
+      "id": "look-sunk-cup-closeup",
+      "title": "look-sunk-cup-closeup",
+      "state": {},
+      "actions": [
+        {
+          "action": "newRound",
+          "players": 1
+        },
+        {
+          "action": "next"
+        },
+        {
+          "until": {
+            "phase": "aim"
+          },
+          "max": 300
+        },
+        {
+          "state": {
+            "ball": {
+              "x": -2.3,
+              "y": 4.5,
+              "z": 11.95
+            }
+          }
+        },
+        {
+          "action": "club",
+          "name": "putter"
+        },
+        {
+          "action": "aim",
+          "at": "pin"
+        },
+        {
+          "wait": 3
+        },
+        {
+          "key": " ",
+          "frames": 3
+        },
+        {
+          "wait": 10
+        },
+        {
+          "key": " ",
+          "frames": 3
+        },
+        {
+          "until": {
+            "phase": "settle"
+          },
+          "max": 200
+        },
+        {
+          "wait": 6
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "phase",
+          "op": "==",
+          "value": "settle"
+        },
+        {
+          "path": "ball.mode",
+          "op": "==",
+          "value": "sunk"
+        },
+        {
+          "path": "look.ball.y",
+          "op": ">=",
+          "value": -0.75
+        },
+        {
+          "path": "look.ball.y",
+          "op": "<=",
+          "value": -0.3
+        },
+        {
+          "path": "camera.fov",
+          "op": ">=",
+          "value": 30
+        },
+        {
+          "path": "camera.fov",
+          "op": "<=",
+          "value": 31.9
+        }
+      ]
     }
   ]
 }
