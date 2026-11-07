@@ -1,11 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 17
-**Did**: `src/camera.js` flight/settle branch: non-putt follow distance D 7.8→6.2, height 3.9→3.3, smoothing k 5→8, so the camera leaves the golfer sooner and the ball is larger in flight. No other file touched.
-**Saw**: No picture, `perf` or `test` this session (short on time); the change is unverified by look.
-**Next**: (1) `look` mid-flight on hole 5: `ball1` should be ≥0.06% of the picture and `look.ball.y` above -0.6; revert D/k if the ball leaves frame at launch. (2) Save the missing `look-` checks (flyover, real-key Space x3 drive, night). (3) C view golfer size, scorecard picture.
-**Open**: Flight camera change untested; flyover/drive/night checks still unsaved; C golfer still a speck.
-
 ### Judge 17
 
 **Judge 17: scores**
@@ -42,3 +36,9 @@ Pictures this session: one hole 5 flight view, taken 25 frames after launch (`lo
 3. **Take the scorecard picture and the real-key holed views, then fix the C golfer size.** Putt in with real keys, `until:{phase:'holed'}` with `wait 4` and `wait 24`, then `look` with `pin_flag` solid and `nearFades` not naming it, then the card. On the hole 5 C view, fit the camera broadside to the tee→pin vector so `golfer_body` is at least 0.1% of the picture at pitch 55°.
 
 SCORE: 7.3
+
+## Iteration 18
+**Did**: Restored the `src/camera.js` non-putt flight camera to D 7.8 / H 3.9, as the changed PROMPT.md asks (the owner wants a wider flight view). I tried D 5.0 / H 2.8 for a moment and reverted it before any picture. The faster k 8 is unchanged. I saved five new `look-` checks in `game-tests.json`: `look-flyover-25`, `look-flyover-50`, `look-flyover-75`, `look-drive-mid` and `look-night-hole5`. The last two first failed a fresh reload with `state_not_realized`, because a top-level `state` of `hole:4, skipIntro:true` doesn't match `observe()`. I changed them to an empty `state` with `newRound` plus a `state` step in `actions`, the way `pond-costs-a-stroke` does it.
+**Saw**: `test` from a fresh reload passes 18 of 18. The drive check, with real Space ×3, reads `look.ball.y` -0.16 and `look.ball.on` true at 25 frames into flight on hole 5. The camera was at fov 33 and pitch 21.6°. The flyover reads `look.flyoverT` 0.254, 0.504 and 0.754 at 57, 114 and 171 frames, and `look.pin.on` is true at 50%. Night on hole 5 reaches phase aim, and `look.dither.nearFades` names `tree4_leaves0`. I took no pictures and ran no `perf` this session.
+**Next**: (1) Save `look-drive-early` and `look-drive-late`, and aim checks for holes 1 and 5. (2) Save the real-key holed and scorecard checks, then take the scorecard picture. (3) Make no more camera refinements until those are saved. The owner wants the wide flight view kept, so don't zoom back in on the ball.
+**Open**: `look-drive-mid` and `look-night-hole5` set their hole with a `state` step, so the fixture is not checked against `observe()`. I have not looked at a picture of the restored flight camera.

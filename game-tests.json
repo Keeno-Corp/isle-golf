@@ -773,6 +773,193 @@
           "value": 31.9
         }
       ]
+    },
+    {
+      "id": "look-flyover-50",
+      "title": "look-flyover-50",
+      "state": {},
+      "actions": [
+        {
+          "action": "newRound",
+          "players": 1
+        },
+        {
+          "wait": 114
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "look.pin.on",
+          "op": "==",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "look-flyover-25",
+      "title": "look-flyover-25",
+      "state": {},
+      "actions": [
+        {
+          "action": "newRound",
+          "players": 1
+        },
+        {
+          "wait": 57
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "look.flyoverT",
+          "op": ">=",
+          "value": 0.2
+        },
+        {
+          "path": "look.flyoverT",
+          "op": "<=",
+          "value": 0.3
+        },
+        {
+          "path": "phase",
+          "op": "==",
+          "value": "intro"
+        }
+      ]
+    },
+    {
+      "id": "look-flyover-75",
+      "title": "look-flyover-75",
+      "state": {},
+      "actions": [
+        {
+          "action": "newRound",
+          "players": 1
+        },
+        {
+          "wait": 171
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "look.flyoverT",
+          "op": ">=",
+          "value": 0.7
+        },
+        {
+          "path": "look.flyoverT",
+          "op": "<=",
+          "value": 0.8
+        },
+        {
+          "path": "phase",
+          "op": "==",
+          "value": "intro"
+        }
+      ]
+    },
+    {
+      "id": "look-drive-mid",
+      "title": "look-drive-mid",
+      "state": {},
+      "actions": [
+        {
+          "action": "newRound",
+          "players": 1
+        },
+        {
+          "state": {
+            "hole": 4,
+            "skipIntro": true
+          }
+        },
+        {
+          "wait": 1
+        },
+        {
+          "wait": 150
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 20
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 20
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": "flight"
+          }
+        },
+        {
+          "wait": 25
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "look.ball.y",
+          "op": ">=",
+          "value": -0.6
+        },
+        {
+          "path": "look.ball.y",
+          "op": "<=",
+          "value": 0.6
+        },
+        {
+          "path": "look.ball.on",
+          "op": "==",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "look-night-hole5",
+      "title": "look-night-hole5",
+      "state": {},
+      "actions": [
+        {
+          "action": "newRound",
+          "players": 1
+        },
+        {
+          "state": {
+            "hole": 4,
+            "skipIntro": true
+          }
+        },
+        {
+          "wait": 1
+        },
+        {
+          "wait": 150
+        },
+        {
+          "key": "KeyN"
+        },
+        {
+          "wait": 120
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "phase",
+          "op": "==",
+          "value": "aim"
+        }
+      ]
     }
   ]
 }
