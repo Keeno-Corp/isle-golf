@@ -6829,6 +6829,375 @@
           "value": true
         }
       ]
+    },
+    {
+      "id": "neck-aim",
+      "title": "neck-aim",
+      "state": {},
+      "actions": [
+        {
+          "action": "newRound",
+          "players": 1
+        },
+        {
+          "action": "next"
+        },
+        {
+          "wait": 20
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "creatures.footballer.maxBoneLengthDeviation",
+          "op": ">=",
+          "value": 0
+        },
+        {
+          "path": "creatures.footballer.maxBoneLengthDeviation",
+          "op": "<=",
+          "value": 1e-9
+        }
+      ]
+    },
+    {
+      "id": "neck-backswing",
+      "title": "neck-backswing",
+      "state": {},
+      "actions": [
+        {
+          "action": "newRound",
+          "players": 1
+        },
+        {
+          "action": "next"
+        },
+        {
+          "wait": 20
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 45
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "creatures.footballer.maxBoneLengthDeviation",
+          "op": ">=",
+          "value": 0
+        },
+        {
+          "path": "creatures.footballer.maxBoneLengthDeviation",
+          "op": "<=",
+          "value": 1e-9
+        }
+      ]
+    },
+    {
+      "id": "neck-impact",
+      "title": "neck-impact",
+      "state": {},
+      "actions": [
+        {
+          "action": "newRound",
+          "players": 1
+        },
+        {
+          "action": "next"
+        },
+        {
+          "wait": 20
+        },
+        {
+          "action": "swing",
+          "power": 1,
+          "accuracy": 0
+        },
+        {
+          "wait": 11
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "creatures.footballer.maxBoneLengthDeviation",
+          "op": ">=",
+          "value": 0
+        },
+        {
+          "path": "creatures.footballer.maxBoneLengthDeviation",
+          "op": "<=",
+          "value": 1e-9
+        }
+      ]
+    },
+    {
+      "id": "neck-follow-through",
+      "title": "neck-follow-through",
+      "state": {},
+      "actions": [
+        {
+          "action": "newRound",
+          "players": 1
+        },
+        {
+          "action": "next"
+        },
+        {
+          "wait": 20
+        },
+        {
+          "action": "swing",
+          "power": 1,
+          "accuracy": 0
+        },
+        {
+          "wait": 25
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "creatures.footballer.maxBoneLengthDeviation",
+          "op": ">=",
+          "value": 0
+        },
+        {
+          "path": "creatures.footballer.maxBoneLengthDeviation",
+          "op": "<=",
+          "value": 1e-9
+        }
+      ]
+    },
+    {
+      "id": "neck-walk",
+      "title": "neck-walk",
+      "state": {},
+      "actions": [
+        {
+          "action": "newRound",
+          "players": 1
+        },
+        {
+          "action": "next"
+        },
+        {
+          "wait": 20
+        },
+        {
+          "state": {
+            "ball": {
+              "x": -8,
+              "z": 15.36
+            }
+          }
+        },
+        {
+          "wait": 5
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "creatures.footballer.maxBoneLengthDeviation",
+          "op": ">=",
+          "value": 0
+        },
+        {
+          "path": "creatures.footballer.maxBoneLengthDeviation",
+          "op": "<=",
+          "value": 1e-9
+        }
+      ]
+    },
+    {
+      "id": "neck-celebrate",
+      "title": "neck-celebrate",
+      "state": {},
+      "actions": [
+        {
+          "action": "start",
+          "players": 1
+        },
+        {
+          "state": {
+            "hole": 0,
+            "skipIntro": true
+          }
+        },
+        {
+          "state": {
+            "ball": {
+              "x": -2.84,
+              "z": 14.43
+            }
+          }
+        },
+        {
+          "action": "club",
+          "name": "putter"
+        },
+        {
+          "action": "aim",
+          "at": "pin"
+        },
+        {
+          "action": "swing",
+          "power": 0.2,
+          "accuracy": 0
+        },
+        {
+          "until": {
+            "phase": "holed"
+          },
+          "max": 500
+        },
+        {
+          "wait": 20
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "creatures.footballer.maxBoneLengthDeviation",
+          "op": ">=",
+          "value": 0
+        },
+        {
+          "path": "creatures.footballer.maxBoneLengthDeviation",
+          "op": "<=",
+          "value": 1e-9
+        },
+        {
+          "path": "creatures.golferClip",
+          "op": "==",
+          "value": "Celebration"
+        }
+      ]
+    },
+    {
+      "id": "neck-dismay",
+      "title": "neck-dismay",
+      "state": {},
+      "actions": [
+        {
+          "action": "start",
+          "players": 1
+        },
+        {
+          "state": {
+            "hole": 0,
+            "skipIntro": true
+          }
+        },
+        {
+          "wait": 20
+        },
+        {
+          "state": {
+            "ball": {
+              "x": -4.94,
+              "z": 14.43
+            }
+          }
+        },
+        {
+          "action": "club",
+          "name": "putter"
+        },
+        {
+          "action": "aim",
+          "at": "pin"
+        },
+        {
+          "action": "swing",
+          "power": 0.03,
+          "accuracy": 0
+        },
+        {
+          "until": {
+            "phase": "aim"
+          },
+          "max": 600
+        },
+        {
+          "action": "aim",
+          "at": "pin"
+        },
+        {
+          "action": "swing",
+          "power": 0.03,
+          "accuracy": 0
+        },
+        {
+          "until": {
+            "phase": "aim"
+          },
+          "max": 600
+        },
+        {
+          "action": "aim",
+          "at": "pin"
+        },
+        {
+          "action": "swing",
+          "power": 0.03,
+          "accuracy": 0
+        },
+        {
+          "until": {
+            "phase": "aim"
+          },
+          "max": 600
+        },
+        {
+          "state": {
+            "ball": {
+              "x": -2.74,
+              "z": 14.43
+            }
+          }
+        },
+        {
+          "action": "aim",
+          "at": "pin"
+        },
+        {
+          "action": "swing",
+          "power": 0.2,
+          "accuracy": 0
+        },
+        {
+          "until": {
+            "phase": "holed"
+          },
+          "max": 500
+        },
+        {
+          "wait": 120
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "creatures.footballer.maxBoneLengthDeviation",
+          "op": ">=",
+          "value": 0
+        },
+        {
+          "path": "creatures.footballer.maxBoneLengthDeviation",
+          "op": "<=",
+          "value": 1e-9
+        },
+        {
+          "path": "creatures.golferClip",
+          "op": "==",
+          "value": "Dismay"
+        }
+      ]
     }
   ]
 }

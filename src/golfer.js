@@ -56,6 +56,13 @@ player.traverse(o => {
   }
 });
 player.updateMatrixWorld(true);
+const bindLengths = new Map();
+player.traverse(bone => { if (bone.isBone) bindLengths.set(bone, bone.position.length()); });
+export function boneLengthDeviation() {
+  let max = 0;
+  for (const [bone, length] of bindLengths) max = Math.max(max, Math.abs(bone.position.length() - length));
+  return max;
+}
 const bindings = [];
 function bind(name, target, down = false) {
   const bone = player.getObjectByName(name), rest = bone.getWorldQuaternion(new THREE.Quaternion());
@@ -73,16 +80,45 @@ for (let i = 0; i < 2; i++) {
   bind('DEF-thigh' + side, l.th, true); bind('DEF-shin' + side, l.kn, true); bind('DEF-foot' + side, l.ft);
 }
 const wp = new THREE.Vector3(), wq = new THREE.Quaternion(), pq = new THREE.Quaternion();
-export function retargetPlayer() {
+const feet = ['DEF-footL', 'DEF-footR'].map(n => player.getObjectByName(n));
+const soleHeight = Math.min(...feet.map(b => b.getWorldPosition(new THREE.Vector3()).y)) - new THREE.Box3().setFromObject(player, true).min.y;
+function worldRotation(bone, q) {
+  bone.parent.getWorldQuaternion(pq).invert(); bone.quaternion.copy(pq.multiply(q));
+  bone.updateMatrixWorld(true);
+}
+function aimBone(bone, child, direction) {
+  const from = child.getWorldPosition(new THREE.Vector3()).sub(bone.getWorldPosition(new THREE.Vector3())).normalize();
+  const q = bone.getWorldQuaternion(new THREE.Quaternion());
+  q.premultiply(new THREE.Quaternion().setFromUnitVectors(from, direction));
+  worldRotation(bone, q);
+}
+function armIK(side, target) {
+  const upper = player.getObjectByName('DEF-upper_arm' + side), elbow = player.getObjectByName('DEF-forearm' + side), hand = player.getObjectByName('DEF-hand' + side);
+  const shoulder = upper.getWorldPosition(new THREE.Vector3()), e = elbow.getWorldPosition(new THREE.Vector3()), h = hand.getWorldPosition(new THREE.Vector3());
+  const a = shoulder.distanceTo(e), b = e.distanceTo(h), dir = target.clone().sub(shoulder);
+  const d = THREE.MathUtils.clamp(dir.length(), Math.abs(a - b) + 0.001, (a + b) * 0.999); dir.normalize();
+  const pole = new THREE.Vector3(side === 'R' ? -1 : 1, -0.5, -0.5).transformDirection(golfer.holder.matrixWorld);
+  pole.addScaledVector(dir, -pole.dot(dir)).normalize();
+  const c = THREE.MathUtils.clamp((a * a + d * d - b * b) / (2 * a * d), -1, 1);
+  const bend = shoulder.clone().addScaledVector(dir, a * c).addScaledVector(pole, a * Math.sqrt(1 - c * c));
+  aimBone(upper, elbow, bend.clone().sub(shoulder).normalize());
+  aimBone(elbow, hand, shoulder.addScaledVector(dir, d).sub(bend).normalize());
+}
+export function retargetPlayer(right, left) {
+  player.position.copy(golfer.body.position);
   golfer.holder.updateMatrixWorld(true);
   for (const { bone, target, rest } of bindings) {
-    target.getWorldPosition(wp); target.getWorldQuaternion(wq);
+    target.getWorldQuaternion(wq);
     wq.multiply(rest);
     bone.parent.updateWorldMatrix(true, false);
-    bone.position.copy(bone.parent.worldToLocal(wp));
-    bone.parent.getWorldQuaternion(pq).invert(); bone.quaternion.copy(pq.multiply(wq));
-    bone.updateMatrixWorld(true);
+    worldRotation(bone, wq);
   }
+  const floor = Math.min(...feet.map(b => b.getWorldPosition(wp).y)) - soleHeight * golfer.holder.scale.y;
+  player.position.y += (golfer.holder.position.y - floor) / golfer.holder.scale.y + Math.max(0, golfer.body.position.y);
+  player.updateMatrixWorld(true);
+  armIK('R', golfer.spine.localToWorld(right.clone()));
+  armIK('L', golfer.spine.localToWorld(left.clone()));
+  return player.getObjectByName('DEF-handR').getWorldPosition(new THREE.Vector3()).add(player.getObjectByName('DEF-handL').getWorldPosition(wp)).multiplyScalar(0.5);
 }
 const headBone = player.getObjectByName('DEF-head');
 const helmet = new THREE.Group(); helmet.name = 'footballer_helmet'; headBone.add(helmet);

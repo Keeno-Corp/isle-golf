@@ -8,7 +8,7 @@ import { addObserve, addAction, addUpdate, on, ST } from './shared.js';
 import { scene, named } from './stage.js';
 import { sheepObs, crt } from './sheep.js';
 import { cowObs } from './cow.js';
-import { kitU, clubG, clubHeadMat, clubMat, golfer, golferShadow, golferClip, retargetPlayer, UA, FA } from './golfer.js';
+import { kitU, clubG, clubHeadMat, clubMat, golfer, golferShadow, golferClip, retargetPlayer, boneLengthDeviation, UA, FA } from './golfer.js';
 import { balls } from './balls.js';
 import { G, curP } from './round.js';
 [flagMat, flagWhite, clubMat, clubHeadMat, ...balls.map(b => b.m.material)].forEach(crisp);
@@ -110,8 +110,7 @@ export function updateGolfer(dt) {
   // arms: hands to the club, elbows out and down
   const R_ = g.arms[0], L_ = g.arms[1]; ik(R_, tR, polR); ik(L_, tL, polL);
   spine.updateMatrixWorld(true);
-  retargetPlayer();
-  _hp.copy(tR).add(tL).multiplyScalar(0.5); spine.localToWorld(_hp);
+  _hp.copy(retargetPlayer(tR, tL));
   // the club: from the hands to the ball at address, back and up, then through
   _f.set(g.fx, 0, g.fz); _r.set(-g.fz, 0, g.fx);
   const L0 = clubG.userData.len * 0.55;
@@ -142,7 +141,7 @@ on('ball:ob', () => golferClip('Dismay', 0.35));
 
 // ---------------------------------------------------------------- the one observe key of this lane (COORDINATION.md): creatures
 const poseNm = () => { const s = swingParam(); return G.phase === 'swing' ? (G.swingT < 0.2 ? 'downswing' : 'follow') : (G.phase === 'meter' || G.phase === 'aim') && G.m.stage >= 1 && G.m.stage < 3 ? 'backswing' : G.phase === 'flight' || G.phase === 'settle' ? 'follow' : 'address'; };
-addObserve(() => ({ creatures: { golferClip: ['Celebration', 'Dance_Loop', 'Dismay', 'Walk'].includes(golfer.cur) ? golfer.cur : ['aim', 'meter', 'swing', 'flight', 'settle'].includes(G.phase) ? poseNm() : golfer.cur, poseName: poseNm(), shirt: '#' + kitU.uJersey.value.getHexString(), shirtColour: '#' + kitU.uJersey.value.getHexString(), swingT: +(G.swingT || 0).toFixed(2), pose: +swingParam().toFixed(2), clubHead: clubG.userData.head.userData.id || '', footballer: { x: +golfer.holder.position.x.toFixed(2), z: +golfer.holder.position.z.toFixed(2), clip: golfer.cur, visible: golfer.holder.visible, ready: true }, cow: cowObs(), ...sheepObs() } }));
+addObserve(() => ({ creatures: { golferClip: ['Celebration', 'Dance_Loop', 'Dismay', 'Walk'].includes(golfer.cur) ? golfer.cur : ['aim', 'meter', 'swing', 'flight', 'settle'].includes(G.phase) ? poseNm() : golfer.cur, poseName: poseNm(), shirt: '#' + kitU.uJersey.value.getHexString(), shirtColour: '#' + kitU.uJersey.value.getHexString(), swingT: +(G.swingT || 0).toFixed(2), pose: +swingParam().toFixed(2), clubHead: clubG.userData.head.userData.id || '', footballer: { x: +golfer.holder.position.x.toFixed(2), z: +golfer.holder.position.z.toFixed(2), clip: golfer.cur, visible: golfer.holder.visible, ready: true, maxBoneLengthDeviation: boneLengthDeviation() }, cow: cowObs(), ...sheepObs() } }));
 
 // The footballer's bones follow the same pose rig as the club's hand IK.
 export const foot = { g: golfer.holder, ready: true };
