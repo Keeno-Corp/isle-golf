@@ -1,38 +1,33 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-### Judge 14
-
-**Judge, session 14: ball-physics lane**
-
-I ran `test`, played one real-key iron shot from the hole 1 tee with one look, and ran `perf`. I did not play a putt, a lip-out, a sand puff or any tree, sheep or house drive. Those checks count only as `test` passes. `ball-physics-lip`, a real-key rollout check and a `minPinD` check still don't exist.
-
-0. **Make putting easier (top priority)**: 8.5. `ball-physics-putt-mid-easy`, `-putt-sinks` and `-putt-too-hard` all pass in `test`. I did not feel a putt myself. The putt preview line on a green is still not seen in any look, and `ball:lip` is still never seen.
-1. **Ball physics polished**: 7.5. The iron flew in an arc with `physics.spin` -0.464, shown as "HOOK!" at `meter.power` 0.899. That is far from `needPower` 0.622, so my presses were not at the notch. The shot was in `air` at 7.8 velocity. Rollout is still unseen. Iteration 14's `SURF.rough.t` change is unconfirmed, and the rough and sand gap is unmeasured.
-2. **Trail, landing ring, putt preview**: 8.5. `ballTrail` (1%) is a clear white streak behind the ball. `landRingPreview` (0.61%) is a yellow ring around the pin. `landPreview` {-1.80, 11.63} sits near the pin at {-1.7, 11.95}. A putt preview line was not seen.
-3. **Impact and landing feedback**: 7. `landPuffs` is behind the camera, and the ball was still in `air`. `divots` has been "Never visible" for 3 sessions (1010 units). No sand puff or splash was seen.
-4. **Meter timing and reset**: 6.5. My three presses gave stage 3 and a HOOK result. No saved check covers the meter fields resetting after a shot, and no new look shows it.
-5. **Events and observe data**: 7.5. `physics` holds `spin`, `mode`, `vel` and `landPreview`. `minPinD` isn't in the keys during flight, so I couldn't confirm it. The `ball:*` event names were not watched.
-6. **Saved checks `ball-physics-*`**: 8. All 20 of 20 pass in 241 s. The four rollout checks still use the `swing` act, not real keys. There are no `ball:lip` or `minPinD` checks.
-7. **Looks as LOOK.md says**: 8.5. The painted grass, tilt-shift blur at the top and bottom, teal sea at top right, cream-green haze and warm sun all hold. The ball is tiny (0.012%) but the trail and ring make it readable. The golfer is not in this view.
-8. **Edit scope**: 9. The last change was one value in `src/rules.js`, which is in scope.
-9. **Keep as is**: 8.5. The HUD has 4 panels with 0 overlap, 0 off-screen and 0 cut off. There are no console errors. 8 sounds started on the shot. The round was played with real keys and no new fault.
-
-**Faults**: 7.5. `cliffRocks` and `seaStacks` are never visible, which is outside this lane. `divots` is never visible. `perf` read 618 ms a frame at host load 5.9 on a software renderer, so it is no budget signal (182 draw calls, 368k triangles). There is a three.js warning about `toNonIndexed` on an already non-indexed geometry. This session was only a replay with no code change.
-
-**Next:**
-1. **Redo the four rollout checks with real keys and read `physics.rollYd` (asked again).** Place the ball with `setState` on fairway, rough, sand and green. Use Space, wait, Space at `needPower`, wait, Space instead of `act swing`. Tune `SURF` so green > fairway > rough > sand, with sand near 0. Re-save `ball-physics-rollout-*` with `expect` on `physics.rollYd`. `interact` shows it done when its reply carries four different `rollYd` values in that order.
-2. **Show the putt preview and a lip-out (asked again).** Stage a putter shot from 2 units with power about 30% too hard. Save `ball-physics-lip` expecting `ball:lip` or `ball.mode` not `sunk`. Then `interact` with `look: true` on a green and check `aimDots` is visible, bent with `puttBreak`, and thick and bright at more than 0.3%.
-3. **Make `divots` and `landPuffs` visible.** Land a wedge in a bunker and `look` right after the first bounce. `landPuffs` should be above 0.5%, with a sand colour at the `sample` pixels. Make a `divots` mark appear after an iron lie shot. Then save `ball-physics-minpind` from a real-key shot, with `physics.minPinD` in [0, 8] after landing.
-
-SCORE: 7.9
-
-## The request changed
-
-paprika-loop/PROMPT.md changed before session 15; the Next lists above were written before it. Changed lines:
-+ - (04:15 UTC) All checks are saved. Remaining time: polish feel, not new checks. Re-run `node ~/repos/paprika3d/src/cli.js check` style replays of every ball-physics-* check after each change so none regress; then make the flight read well in looks (trail, landing ring, first-bounce puff, cup drop/rattle) and play a real-key hole 1-3 to confirm putting feels easy and the round still finishes.
-
 ## Iteration 17
 **Did**: `src/pools.js`: `divots` point size 0.16 → 0.3; `landPuffs` size 1.5 → 1.8 and blending additive → normal (additive puffs wash out on bright grass/sand). No other change.
 **Saw**: No look, `test` or `perf` run this session, so the effect is unconfirmed; the last known numbers are Judge 14's (20/20 `ball-physics-*` pass).
 **Next**: 1) `look` right after a wedge's first bounce in a bunker to confirm `landPuffs` and `divots` are visible. 2) Re-run all `ball-physics-*` checks. 3) Redo the rollout checks with real keys, stage a too-hard putt for `ball-physics-lip`.
 **Open**: Puff fade multiplies colour toward black, which with normal blending may darken puffs to dark smudges; check in a look. `toNonIndexed` warning source unknown.
+
+### Judge 17
+
+**Judge, session 17: ball-physics lane**
+
+I played one real iron shot from the hole 1 tee: `swing` act at power 0.6, which is a perfect press by the act and not a real-key Space press. I took two looks and ran `perf`. I did not run `test` and did not play a putt, bunker shot, lip-out or tree/sheep/house drive. The `ball-physics-*` checks are unconfirmed this session. I did not see Iteration 17's `landPuffs` and `divots` change, because the ball landed on green and no puff was in view.
+
+0. **Make putting easier (top priority)**: 8. I did not putt. The last known state is Judge 14's: `ball-physics-putt-mid-easy`, `-putt-sinks` and `-putt-too-hard` passed in `test`. The ball rolled 30 yd (`rollYd`) from a 132 yd iron, and the green is soft enough to hold (rest at {-1.93, 13.09}). The putt preview line still has not been seen in any look.
+1. **Ball physics polished**: 8. The iron went `air` → `roll` → `rest` with `carryYd` 85, `rollYd` 30, `bounces` 2, `firstBounce` on green and `lastBounce` at {-3.35, 12.79}. The `landPreview` of {-4.445, 12.72} matched `firstBounce` {-4.418, 12.72} within 0.03 units. The bounce and roll look natural. Rollout on fairway, rough and sand is still unmeasured.
+2. **Trail, landing ring, putt preview**: 8.5. `ballTrail` (0.92%) is a clear white streak. `landRingPreview` (0.92%) is a yellow ring that sits on the landing spot. A putt preview line (`aimDots`) is still hidden and unseen.
+3. **Impact and landing feedback**: 6. `divots` has been "Never visible" for 4 sessions, and `landPuffs` is "Never visible" at 0 units. I saw no first-bounce puff on the green and no sand puff or splash. Iteration 17's enlarged size and normal blending is unconfirmed.
+4. **Meter timing and reset**: 7. `meter` showed stage 3, `power` 0.6 and `label` "PERFECT!" against `needPower` 0.622, and the `swing` act gave that result. I did not check the meter fields resetting after the shot, and I did not use real keys.
+5. **Events and observe data**: 8.5. `physics.minPinD` works: it went from 9 to 1.133 during the roll. `physics` also carries `carryYd`, `rollYd`, `bounces`, `firstBounce`, `lastBounce`, `vel` and `landPreview`. I did not watch the `ball:*` event names.
+6. **Saved checks `ball-physics-*`**: 7.5. They were 20 of 20 at Judge 14, and I did not re-run them after the Iteration 17 `pools.js` change. There is still no `ball-physics-lip`, `-minpind` or real-key rollout check.
+7. **Looks as LOOK.md says**: 9. Both looks show the painted grass, tilt-shift blur at top and bottom, teal sea, cream-green haze and warm light. The ball is readable at 0.2% with `ballShadow1` and the trail. The golfer is not in view during flight.
+8. **Edit scope**: 9. The last change was only in `src/pools.js`.
+9. **Keep as is**: 8.5. The HUD shows 4 panels with 0 overlap, 0 off-screen and 0 cut off. There are no console errors. The only warning is `toNonIndexed` on an already non-indexed geometry, source still unknown.
+
+**Faults**: 7.5. `divots` and `landPuffs` are never visible. `cliffRocks` and `seaStacks` are never visible, which is outside this lane. `perf` read 910 ms a frame on a software renderer at host load 4.3, so it is no budget signal (182 draw calls, 368k triangles).
+
+**Next:**
+1. **Show a puff in a look (asked again).** Place the ball with `setState` in a bunker on hole 1 (the sand patch left of the fairway) and hit a real-key wedge with `interact` and `look: true` about 5 frames after the first bounce. `landPuffs` should be listed above 0.3% with a sand colour at the `sample` pixels, and `divots` should be visible. If `landPuffs` stays "Never visible", check that `flightEvents` emits it and that the camera is not behind it. Iteration 17's note says normal blending may darken puffs toward black, so also check the colour.
+2. **Show the putt preview and a lip-out (asked again).** Use `setState` to put the ball 3 units from the pin on a green, then `look` after the aim. `aimDots` should be visible, thick and bright above 0.3%, and bent with `puttBreak`. Then save `ball-physics-lip`: a putter shot from 2 units at about 130% power, expecting `ball:lip` or `ball.mode` not `sunk`.
+3. **Re-run all the checks and add the missing ones.** Run `test` once to confirm 20 of 20 still pass after `pools.js`. Then redo the four rollout checks with real keys (Space, wait, Space at `needPower`, wait, Space) and save `ball-physics-minpind` with `physics.minPinD` in [0, 8]. This session's iron already gave `minPinD` 1.133, so that check is straightforward.
+
+SCORE: 8.0
