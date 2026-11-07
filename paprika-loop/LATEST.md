@@ -1,40 +1,42 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-### Judge 6
-
-**Judge 6: scores**
-
-00. **Odyssey-style dithering**: 7. `look.dither` is live: on hole 5 aim it reports `active`, `subjectNdc` [0.057,-0.243], `depth` 10.16 and `nearFades` [tree4_leaves0, tree5_leaves0]. In flight the `radius` reads 0.306. `src/dither.js` is folded into `camera.js`, and `lighthouse_beam` and `cliffFace` no longer show as false positives. Not yet seen: the dither hole on a putt, a near-plane save, and dither pixels bypassing the Kuwahara and blur passes. `nearFades` still lists `tree4_leaves0` and `tree5_leaves0` while the aim picture shows only `tree7_leaves0` (left) and `tree3_leaves0` (right) near the camera. So the metadata is still not on-screen near fragments. The saved tree-occluder check was not rerun this session.
-0. **Wider framing, smoother ground, ball above the bottom 20%**: 8. Aim `fov` is 32.9 and flight is 33. The `island` and `grass*` ground reads smooth and unpixelated, and `golfer_body` sits at y -0.26 (NDC), well above the bottom 20%. The flight look shows the ball (`look.ball.y` -0.37 → -0.08) with the golfer cut at the bottom, which is fine for flight. There is still no before/after pair. The overlay note also says the putt aim at pitch 17.9° is too low and the flag looms.
-1. **Look lane goal**: 6. The aim and flight views read as a tilt-shift diorama: top blurred, `golfer_body` crisp, shadows to the lower right, `look.focusY` 0.45–0.48. The holed camera is the open problem: the overlay finding is cup y -0.85, pitch 8.2°, a giant cropped golfer and a near-fade band along the bottom. The `HOLE 5` banner still covers the flight view after the shot. The meter bar shows "POWER 35%", and the scorecard was not seen again.
-2. **Look check 1 (aim blur band, ball above the bottom 20%)**: 8. Hole 5 aim: the top is blurred, the golfer is crisp at [589,467,639,565], and `look.ball.y` is -0.375. Holes 1 and 9 were not re-looked this session.
-3. **Look check 2 (C on holes 5, 6, 9)**: 8. The overlay report says C holes 5, 6 and 9 pass at pitch 55° with both endpoints on screen. Not re-run here. The supervisor says do not reopen it.
-4. **Look check 3 (flyover, real-key drive)**: 8. A real three-Space drive on hole 5 gave phase aim → swing → flight, with `look.ball` on screen and `look.camPitchDeg` 21.5 in flight. The overlay report says the three moments pass. The flyover 25/50/75 was not re-run.
-5. **Look check 4 (sea colour, key light, night)**: 6. Title corner samples: bottom-left #005753 and bottom-right #006e68, both within 30/255 of #0f6a67 (the left edge at y=400 is #42978c, still off). The top-right is still haze #b2b9ab, so the check still fails there. The warm key light holds. Night was not re-looked, but the overlay report says it passes. Title framing also needs pullback for SPREAD 1.2, because the island fills the full width with edge props cut.
-6. **Critic views and course-lane findings**: 5. The aim and flight pictures still show pink-red `cliffRocks`-style boulders by the fence (course lane, noted once). `pin_flag` is small but readable on hole 5 (0.12%). The meter picture was seen once. There is no holed picture and no scorecard picture this session.
-7. **LOOK.md Checks**: 7. The brush pass, haze, tilt-shift and warm sun hold. The sea check fails at the top corner.
-8. **Edit scope and load-order imports (lines 8, 9)**: 9. `dither.js` is gone and no new source files exist.
-9. **Observe hook, saved checks, lane notes (lines 11, 12, 14)**: 7. `look.camPitchDeg`, `focusY`, `ball`, `pin`, `golfer` and `dither` are all present, and the saved suite has 9 checks. There is no near-plane check, no holed check and no putt-dither check. The overlay says `look.golfer` and the dither subject read the destination `bx/bz` while the golfer walks, not the actual holder position.
-10. **Faults**: 7. There are no console errors, only the `toNonIndexed` warning. `perf` reads 307 draws and 486k tris, which matches the budget and does not beat it. The 1213 ms frame time is SwiftShader noise at host load 4.1. The `nearFades` metadata inaccuracy is described under item 00.
-
-**Next:**
-1. **Holed camera (Must have 1, new from the overlay finding).** In `camera.js`, pull the holed/cup camera back and higher and aim it lower at the cup. Done when, after a real-key putt that sinks, `observe` gives `look.ball.y` > -0.6, `camPitchDeg` is well above 8°, and the golfer is not cropped giant. Check it with `interact` `look: true` right after the drop frames, then save it as `look-holed-cup`. Also raise the putt aim pitch above 17.9° so the flag does not loom.
-2. **Dither correctness and metadata (Must have 00).** Make `nearFades` list only meshes with fragments inside the near fade range that are on screen, so `tree4_leaves0` and `tree5_leaves0` drop out of the hole 5 aim view. Make `look.golfer` and the dither subject follow the holder's live position. Add a putt-on-green dither look and a saved `look-dither-nearplane` check. Done when the hole 5 aim `look.dither.nearFades` lists only `tree7_leaves0` and `tree3_leaves0`, and `test` passes the new check.
-3. **Title framing and sea corners (Must have 5, asked again).** Pull the title/DIO camera back 5–8% (or use `DIO.fov` 30) so the SPREAD 1.2 island fits with margin. Cap the haze mix on `sea` pixels at the top corners. Done when `look` with `sample` at (1270,10), (5,10) and (5,400) gives each within 30/255 of #0f6a67. Today the top-right is #b2b9ab and the left edge is #42978c.
-
-SCORE: 7.2
-
-## The request changed
-
-paprika-loop/PROMPT.md changed before session 7; the Next lists above were written before it. Changed lines:
-+ - **Read-only integrated overlay findings (Nov7 03:47 UTC)**: current course/creatures/physics/HUD modules render cleanly with our committed look. C5/6/9 pitch55/endpoints pass; new golfer/ball crisp; drive three moments pass; tree8 dither passes; night passes; blossoms/current thicker flag verified. Do not reopen already-passing C composition. **Fix HOLED camera now**: after real-key sunk putt cup/ball y=-0.85, pitch8.2°, golfer cropped giant, near fade becomes bottom band. Pull cup camera back and higher and aim lower at cup so ball/cup y>-0.6; show actual physics drop. Putt aim is pitch17.9°, consider modestly higher/pulled back so flag doesn't loom. Title island SPREAD1.2 fills full width with edge props cut: ~5–8% title pullback or DIO.fov30 requested. Aim hole9 pin under top-left HUD is course waypoint context; not hard acceptance. Near-cup notch concern sent to physics/HUD. `look.golfer` and dither subject should read actual holder position while walking, not destination bx/bz (fixture wait150 gives settled state). Full source/report available at /home/ubuntu/look-integration-report.md; do not edit that overlay.
-+ - New hourly branch inspection: course SPREAD is now 1.2 (20% wider vs baseline), asks aim/overview another ~7% pullback. Treat it as composition context, not an instruction to zoom out indefinitely; modestly wider DIO and existing 33° aim should be checked in integration. Current flag is 2.2 units high with knob at 2.25; C fitting must frame actual flag top, not only old pinY+0.6. Keep the whole current flag readable.
-+ - Dither correctness: all surviving dither pixels should bypass Kuwahara and blur, not merely receive 9% painterly mix; preserve raw scene sampling in the dither circle or use the crisp alpha mask through EACH tilt pass. Chain prior onBeforeCompile and customProgramCacheKey and verify skinned/instanced meshes. Avoid a shared material making subject golfer/ball fade accidentally. Near-plane metadata must mean actual on-screen near fragments, not the huge cliff bounding sphere. Camera overview fitting should cache when hole/from/aspect unchanged rather than 9 yaws × ~80 distances × projection recomputed every aim frame.
-+ - **Ownership cleanup required:** src/dither.js is NOT in the allowed owned file list. Fold its implementation into src/camera.js or src/stage.js (functions can stay named/exported) and remove src/dither.js plus its import. Do not create more source files. This is mandatory before the final handoff; source files allowed are exactly stage/post/camera. Keep dither state inside the one `look` observe namespace.
-+ - After the dither correctness pass, spend one iteration entirely finishing the repeatedly missed views: first Space meter picture, real-key putt capture/drop and scorecard picture, then art critic on aim/meter/flight/card. Do not keep repeating C refinement once C pitch and endpoints pass. Avoid adding a camera setter only for tests: proving occlusion should use ball fixture + real aim keys/action, not force a camera state.
-
 ## Iteration 7
 **Did**: `camera.js`: holed camera pulled back/higher (cPos = pin + (1.9, 2.3, 2.9), look pinY+0.5, fov 30); putt aim camera D 3.6→4.2, Hh 1.8→2.5 (higher pitch, flag looms less); `DIO.fov` 27→29 for title margin (SPREAD 1.2).
 **Saw**: `test` 9/9 pass after the edits. Real-key sunk putt (hole 1): `look.camPitchDeg` 31.8–33.3, `look.ball.y` -0.054..-0.1, `pin.y` -0.03..-0.045 (target > -0.6, pitch well above 8°). The scorecard picture reads cleanly ("HOLE IN ONE" stamp, title island fits with margin, sea teal at bottom). The card appears so quickly that the pure holed phase was not caught in a picture; the post-sunk look showed the card over the hole-1 green with banner.
 **Next**: capture a picture exactly at phase `holed` (step frame by frame); save a `look-holed-cup` check on `look.ball.y` > -0.6; dither pixels bypass Kuwahara/blur; real `nearFades` projection test (on-screen near fragments, not bounding spheres); `look.golfer`/dither subject should follow the holder's live position; cache `overheadCam` fitting; re-sample title bottom corners after the DIO fov change.
 **Open**: dither bypass of painterly passes, nearFades accuracy, live holder subject and overheadCam caching not done this session; no `look-holed-cup` saved check yet.
+
+### Judge 7
+
+**Judge 7: scores**
+
+00. **Odyssey-style dithering**: 7. On hole 5 aim `look.dither` is `active` with `subjectNdc` [0,-0.231], `radius` 0.301 and `depth` 10.1, and `patched` is 103 materials. `occluders` is `[]`. `nearFades` still lists `tree4_leaves0` and `tree5_leaves0`. The `look` on-screen list puts `tree7_leaves0` [0,220,251,461] and `tree3_leaves0` [815,94,1039,272] near the camera, and tree4/tree5 appear only under "Not found by the ID image". Nothing changed on this item in iteration 7. I did not see the dither bypass of the Kuwahara and blur passes, a putt dither picture, or a near-plane save.
+
+0. **Wider framing, smoother ground, ball above the bottom 20%**: 8. Aim `fov` is 33 and `look.ball.y` is -0.366. `golfer_body` is at [551,459,604,556], well above the bottom 20%, and the `grass*` and `island` ground reads smooth. There is still no before/after pair.
+
+1. **Look lane goal**: 6. The aim view reads as a tilt-shift diorama: the top is blurred, `golfer_body` is crisp, shadows fall lower-right, `focusY` is 0.455, and the `pin_flag` is red and visible top-left. C on hole 9 shows a tilted whole-hole view with the pin and tee. The holed camera was not caught at phase `holed`, so it is still unproven. My attempt to drive a real-key putt failed on a key-name error (I sent "space" instead of " "), so the putt picture is missing.
+
+2. **Look check 1 (aim blur band, ball above the bottom 20%)**: 8. Hole 5: the top fifth is blurred, the band around `golfer_body` is sharp, and `look.ball.y` is -0.366. Holes 1 and 9 were not re-looked.
+
+3. **Look check 2 (C on holes 5, 6, 9)**: 8. The hole 9 C look shows a perspective tilt with the tee and pin region on screen. Pitch was not read by `observe`. The earlier overlay report says holes 5, 6 and 9 pass.
+
+4. **Look check 3 (flyover, real-key drive)**: 7. The flyover 25/50/75 and the three-moment drive were not re-run this session. They stand on earlier passes.
+
+5. **Look check 4 (sea colour, key light, night)**: 7. The title look shows the island fully inside the frame with margin after `DIO.fov` 29, and teal sea along the bottom. I did not `sample` the corners, because the sheet mode does not allow it. The top corners are hazy sky, which is correct per the supervisor. Night is readable: dark, with the `golfer_body` and the aim line still visible.
+
+6. **Critic views and course-lane findings**: 5. The aim view still shows pink-red boulders by the fence (course lane, noted once). `pin_flag` is small but readable at 0.092%. This session had no meter, holed or scorecard picture.
+
+7. **LOOK.md Checks**: 7. The brush pass, haze, tilt-shift, warm sun and night all hold.
+
+8. **Edit scope and load-order imports**: 9. No `dither.js` and no new source files.
+
+9. **Observe hook, saved checks, lane notes**: 7. The `look.*` keys are all present. There is still no `look-holed-cup`, near-plane or putt-dither saved check.
+
+10. **Faults**: 7. There are no console errors, only the `toNonIndexed` warning. `perf` reads 307 draws and 485,787 tris, no regression. The 1181 ms frame time is SwiftShader at host load 3.6, so it is noise. The `nearFades` inaccuracy is described under item 00.
+
+**Next:**
+1. **Dither correctness and metadata (Must have 00, asked again).** In `camera.js`, make `nearFades` list only meshes that have visible fragments inside the near fade range. Project each candidate's bounding box or sample points, and skip anything off screen or farther than the fade range. Make the dither `subject` follow the holder's live position. Add a saved `look-dither-nearplane` check and a putt-on-green dither look. One `observe` shows it done: on the hole 5 aim view, `look.dither.nearFades` is only `tree7_leaves0` and `tree3_leaves0`. Then confirm the dither pixels bypass the Kuwahara and blur passes with `look` `zoom` on the dither circle.
+2. **Holed camera proof (asked again).** Run a real-key putt on hole 1 and step frame by frame to `phase: "holed"`. Use `" "` as the space key, not "space". Take `interact` with `look: true` and `expect` `look.ball.y` > -0.6. Save it as `look-holed-cup`. Done when the saved check passes in `test`, and the picture shows the cup and ball with the golfer not cropped.
+3. **Missed critic views and title samples.** Capture the meter picture (the first Space click), the scorecard, and the in-flight ball. Run `look` with `sample` alone at (1270,10), (5,10), (5,400) and (5,790) on the title. Add a before/after aim pair for the wider framing.
+
+SCORE: 7.0
