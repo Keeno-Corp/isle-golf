@@ -1,69 +1,66 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-### Judge 7
-
-**Judge 7.** The host is SwiftShader, so I did not run `perf` and it is not scored. I looked at hole 1 (aim view) and hole 2 (C view), and I reran all saved checks. I did not take a hole 7 look, a cliff-lip zoom or a #5d8a3a sample, so those items are unproven.
-
-**Must have scores**
-
-0. **Ground not pixelated or tiled, spread wider: 8.**
-   - The hole 1 aim view shows a smooth painted fairway ribbon and soft rough. I saw no pixel blocks and no repeated tile.
-   - The `tree18_leaves0` and `bushes*` groups have room around them.
-1. **LANE GOAL: 6.**
-   - Only the current pin is on. `course.pinVisible` is true only for hole 2 on that look, and only for hole 1 on the hole 1 look.
-   - `pin_knob` on hole 1 is now fully in frame, at [571,29,601,58], with `pin_pole` and `pin_flag` whole.
-   - Hole 2's tee-to-pin line is clean grass. The sand pots sit to the side, and the pond is not on the line, so there is no carry. This is asked again.
-   - `course-cliff-lip` and `course-h1-ribbon` are not saved.
-2. **Looks as LOOK.md says: 8.** The painted pass, warm haze and teal sea show. Brightness is 51%, with 0% blown out.
-3. **Edit only the lane files: 8.** Iteration 7 touched only `src/course.js` and `game-tests.json`.
-4. **Tilt-shift focus band: 8.** The top and bottom of both looks are blurred.
-5. **Plays as DESIGN.md says: 6.**
-   - The `course-h9-drive` real-key check passes, using real Space clicks timed on `meter.perfectAt`.
-   - Aim, club and the meter work. R replay and the scorecard are unseen.
-6. **Camera: 6.** The aim view has fov 30 and sits high behind the ball. The C view is a top-down overhead at fov 31.8. The flyover and flight-follow are unseen.
-7. **Ball flight: 6.** The `course-h9-drive` and `course-h6-splash` checks pass. Wind, bounce and OB are unseen this session.
-8. **Full 9 holes, sheep, hazards: 7.**
-   - `sheep*`, `sign_board`, `way_ring` and `way_diamond` are present.
-   - The hole 2 C view shows the sea, cliff and `blossoms*`.
-   - Holes 2 and 3 still have no carry.
-9. **Stroke play and scorecard: 5.** The HUD shows "STROKES 0" and "ROUND EVEN". No card was seen.
-10. **HUD: 8.** All five elements are legible, with 0 overlap and 0 cut off.
-11. **`window.__game`: 8.** The `observe()` state is full, and all 7 saved checks pass.
-12. **Golfer matches CHARACTERS.md: 6.**
-    - On hole 1 the `golfer_body` is clear and readable, with a red kit, at 0.36% of the frame, though cut by the frame bottom.
-    - On the hole 2 C view it is 0.039% and blends in (subject 58% against 57% around it).
-13. **COORDINATION.md and load-order: 7.** I did not check the imports.
-14. **`course:` events and `lanes/course.md`: 7.** I did not re-read them.
-15. **Pictures with interact and look: 6.** Three course- checks are saved. The cliff-lip and ribbon checks are missing.
-
-**Faults: 6.**
-- `toNonIndexed(): already non-indexed` warns at load.
-- `SFX[k]` in `src/sound.js` was not seen this session.
-- On the hole 2 C view, the C-view `pin_flag` is only about 0.075% of the frame, so the pin barely reads from above.
-- On hole 2 the auto-pick is the iron, with `needPower` 1.05 at 153 yd. That is not reachable with the 132 yd iron, so the pick is wrong and a driver is needed.
-- `Never visible`: `cliffRocks` and `seaStacks` are hidden behind `tree17_leaves0` on hole 1, and not drawn on hole 2.
-
-**Next:**
-1. **Hole 2 and 3 carry, then the club pick** (asked again).
-   - Put a gorse patch or a small pond on the tee-to-pin line of hole 2 in `src/course.js`, and the same on hole 3.
-   - Fix the auto-pick so `needPower` is at most 1 (hole 2 at 153 yd picks the iron with `needPower` 1.05).
-   - Shown done by a `look` of `{state:{hole:1,skipIntro:true}}` then `KeyC` for 40 frames. It shows a hazard on the ribbon between `teeMarker` and `pin_pole`, and `meter.needPower` at or below 1.
-2. **Save `course-cliff-lip` and `course-h1-ribbon`** (asked again).
-   - Use a `look` zoom on the cliff lip blossom shrubs. Take a `sample` on hole 1's tee-to-green ribbon, expecting within 30/255 of #5d8a3a.
-   - Shown done by `test` listing both ids as ✓.
-3. **Make the C-view pin and golfer read** (new).
-   - Enlarge `pin_flag` in the C view in `src/pins.js`, since `pin_flag` is 0.075% there.
-   - Check hole 7's green after its move, with `{state:{hole:6}}` and KeyC. The pin should be on screen with no trees on the green.
-
-SCORE: 6.8
-
-## The request changed
-
-paprika-loop/PROMPT.md changed before session 8; the Next lists above were written before it. Changed lines:
-+ Steering note (lane lead): the aim-view camera framing and whether the golfer shows in it belong to the look lane (src/camera.js); don't chase those here. If the pin is cut at the frame top, keep the pole thick but not taller than needed. Priorities left, in order: hole 9 real-key drive saved as course-h9-drive; the holes 1-9 C-view pin check saved as course-only-current-pin (already saved, keep it passing); a carry on holes 2 and 3; look zoom on the cliff lip (blossom shrubs) and the #5d8a3a ribbon sample on hole 1, both saved as course- checks.
-
 ## Iteration 8
 **Did** `src/course.js` HOLES.forEach: holes 2 and 3 (index 1, 2) get a carry bunker pushed after the rayClear passes, at 50% along the tee-to-pin line (rx 1.05, rz 0.75, turned across the line), so it stays on the line. All 7 saved checks pass.
 **Saw** Look sheet (KeyC) holes 2 and 3: a sand pot sits on the ribbon between tee and pin on each; brightness 50-51%, 0% blown out. Hole 2 auto-pick is still the iron with needPower 1.05 at 153 yd (the pick is in src/hud.js / src/aimline.js, outside the lane). Not run: perf, cliff-lip zoom, ribbon sample.
 **Next** (1) Save `course-cliff-lip` (look zoom on the blossom shrubs) and `course-h1-ribbon` (#5d8a3a sample). (2) Ask the look/hud lane to fix the hole 2 club pick (iron needPower 1.05 at 153 yd, a driver is needed). (3) C-view pin and hole 7 green check.
 **Open** `toNonIndexed` warning; `SFX[k]` in src/sound.js (outside lane). Carry bunker is not tested by a saved check.
+
+### Judge 8
+
+Status: all 7 saved checks pass and I've taken the hole 1, 2, 3 and 7 looks. I'm writing the verdict now.
+
+**Judge 8.** The host is SwiftShader, so I did not run `perf` and it is not scored. I did not take a cliff-lip zoom or a #5d8a3a sample, so those two items stay unproven. The load-order imports, `lanes/course.md`, the scorecard, R replay and flyover were not checked.
+
+**Must have scores**
+
+0. **Ground not pixelated or tiled, spread wider: 8.**
+   - The hole 1 aim view shows a smooth painted fairway ribbon with soft rough.
+   - The `grass*` and `bushes*` groups have room around them on holes 2, 3 and 7.
+   - I saw no pixel blocks and no repeated tile on any of the four looks.
+1. **LANE GOAL: 7.**
+   - Holes 2 and 3 now have a sand pot on the tee-to-pin line. It sits about halfway between the tee marker and `pin_pole` on each, so the carry is in. The hazard is not covered by a saved check.
+   - Only the current pin shows: `course-only-current-pin` passes.
+   - On the hole 7 C view I could not find the pin on screen. The green reads as a faint pale patch among trees, with no `pin_flag` accent.
+   - The hole 2 and 3 pins are still tiny from above.
+   - `course-cliff-lip` and `course-h1-ribbon` are still not saved. This is asked again.
+2. **Looks as LOOK.md says: 8.** The painted pass, warm haze and teal sea show, with brightness at 50–52% and 0% blown out.
+3. **Edit only the lane files: 8.** Iteration 8 touched only `src/course.js`. The hole 2 club-pick defect lives in `src/hud.js` or `src/aimline.js`, outside the lane.
+4. **Tilt-shift focus band: 8.** The top and bottom bands are blurred on all four looks.
+5. **Plays as DESIGN.md says: 6.** `tee-shot-three-clicks`, `hot-seat-passes-turn` and `course-h9-drive` pass. The scorecard and R replay are unseen.
+6. **Camera: 6.** The aim view sits high behind the ball. The C view is a clean overhead. The flyover and flight-follow are unseen.
+7. **Ball flight: 6.** `pond-costs-a-stroke`, `course-h6-splash` and `course-h9-drive` pass. Wind, bounce and OB were not observed.
+8. **Full 9 holes, sheep, hazards: 7.**
+   - `sheep[6]` shows on hole 2, along with the sea and `cliffFace`.
+   - The sand pots sit at the greens and the carry pots sit on the line.
+   - Hole 7 has no readable pin from above.
+9. **Stroke play and scorecard: 5.** The HUD shows "STROKES 0" and "ROUND EVEN". No card was seen.
+10. **HUD: 8.** Hole/par/strokes top left, wind top right, club panel bottom left and hints bottom right are all legible. The banner "HOLE n" overlays the middle of the picture.
+11. **`window.__game`: 8.** `observe()` is full, `act()` is documented, and 7 of 7 checks pass.
+12. **Golfer matches CHARACTERS.md: 6.** In the hole 1 aim view the red-kit golfer reads clearly at 0.31% of the frame. In the C views it is 0.014–0.03% and gets lost.
+13. **COORDINATION.md and load-order: 7.** Not re-checked.
+14. **`course:` events and `lanes/course.md`: 7.** Not re-read.
+15. **Pictures with interact and look: 6.** The checks `course-h6-splash`, `course-h9-drive` and `course-only-current-pin` are saved. The cliff-lip and ribbon checks are missing.
+
+**Faults: 6.**
+- `toNonIndexed(): already non-indexed` warns at load.
+- Hole 2 still auto-picks the iron (132 yd) for 153 yd, which can't reach. That is outside the lane and needs the hud/aimline lane.
+- Hole 7 C view: `pin_flag` is not readable.
+- `SFX[k]` in `src/sound.js` was not seen this session.
+
+**Next:**
+1. **Save `course-cliff-lip` and `course-h1-ribbon`** (asked again).
+   - Run `look` with `zoom` on the blossom shrubs at the cliff lip, then `look` with `sample` on hole 1's tee-to-green ribbon, expecting within 30/255 of #5d8a3a.
+   - Save both with `interact` and `save`.
+   - Shown done by `test` listing `course-cliff-lip` and `course-h1-ribbon` as ✓.
+2. **Make the C-view pin read on hole 7, and on holes 2 and 3** (asked again).
+   - Check hole 7's green after its move and clear any trees from it.
+   - In `src/pins.js`, keep the C-view `pin_flag` and `pin_pole` large enough to read.
+   - Shown done by `look` of `{state:{hole:6,skipIntro:true}}` then `KeyC` for 40 frames. It shows a pin accent on the green, and `look` lists `pin_flag` at 0.1% of the frame or more.
+3. **Test the carry bunkers with a saved check** (new).
+   - Add a `course-h2-carry` check using `observe()` on holes 2 and 3.
+   - It should show the bunker centre within about 1 unit of the tee-to-pin line, and a perfect drive along the auto-aim carrying it to lie `green` or `fairway`.
+   - Shown done by `test` listing `course-h2-carry` as ✓.
+   - Note the hole 2 club-pick fix for the hud lane in `lanes/course.md`.
+
+SCORE: 7.0
