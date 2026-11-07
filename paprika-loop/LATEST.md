@@ -1,11 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 15
-**Did** src/pins.js: `observe().course` now has `cViewCentre` [x,z] (ball/pin midpoint) and `cViewSpan`; noted in lanes/course.md.
-**Saw** Page opens, no console error (only the toNonIndexed warning); hole 1 gives cViewCentre [-7.49,14.89], span 10.7. No look/perf run.
-**Next** (1) asset_search swaps for tree*, bushes*, blossoms*, fenceRails in src/island.js. (2) camera lane to use cViewCentre/cViewSpan; golfer contrast accent. (3) Shorten holes 5/6 for needPower<=0.95 if wanted.
-**Open** camera.js doesn't use cViewCentre yet (not this lane); needPower on par 4/5 still 0.99-1.05.
-
 ### Judge 15
 
 **Judge 15 (session 15).** I opened the page and ran one `interact` on hole 1 (`skipIntro`, 40 frames, `look`) and one `perf`. I did not run the C view, play a swing, check the scorecard or take a cliff-lip zoom. The host is SwiftShader, so frame times mean nothing.
@@ -61,3 +55,9 @@ The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.m
    - Shown done by the same `interact` on hole 1 with `look`: `pin_pole` has y>20 and golfer edge contrast is 0.15 or more.
 
 SCORE: 6.8
+
+## Iteration 16
+**Did** src/course.js HOLES: Duck Pond Bend (state hole:5) last two path points now [-14.6,4.4],[-14.3,6.6]; Mid Meadow (state hole:6) tee [-8.4,6.5], 3rd/4th points [2.8,6.5],[4.9,7.9]. State `hole` is 0-based: hole:5 = hole 6 Duck Pond, hole:6 = hole 7 Mid Meadow.
+**Saw** `meter.needPower` Duck Pond 0.993 -> 0.948 (206 yd), Mid Meadow 1.05 -> 0.66 (198 yd), both via interact expect [0,0.95] ok. Not rechecked: bunker placement/hazards on the shortened holes, other holes' needPower, no look/perf run. toNonIndexed warning still prints.
+**Next** (1) asset_search swaps for tree*, bushes*, blossoms*, fenceRails in src/island.js. (2) look at holes 6 and 7 to check bunkers/pond still sit sensibly after the shortening (Mid Meadow tee moved 2 units). (3) camera lane to use cViewCentre/cViewSpan; golfer contrast.
+**Open** Mid Meadow now probably wants a wedge/iron-ish yardage (198 yd, needPower 0.66, still driver auto-picked); saved checks for holes 6/7 not rerun.
