@@ -1,11 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 12
-**Did** No source change. Opened the game, started a 1-player game, and called `golferClip` through `import('/src/golfer.js')` in `eval`. Added a Session 12 note to `lanes/creatures.md`.
-**Saw** `creatures.golferClip` read `Dance_Loop`, `Dismay` and `Celebration` in turn, so all three reaction clips work. The Celebration look shows the arms up, a red shirt, `golfer_cap` and `golfer_face`. The golfer takes 0.56% of the picture, edge contrast 0.146 (above 0.1), subject 63% against 57% around it. Firing `holed` with `{result:'PAR'}` did not change the clip: par and birdie are played by `src/round.js:52`, not by `src/pose.js`. `Never visible` still lists `cow_hide`, `cliffRocks`, `seaStacks`, `fencePosts`, `fenceRails` and `divots`. `footballer_helmetShell`, `footballer_helmetStripe` and `footballer_facemask` are still "Not found by the ID image". No `perf`, no saved check, no `asset_search`.
-**Next** 1) A real hole-out: real swings to the green, then putt with `until:{phase:"holed"}`, and save `creatures-par-dance`. 2) A `look` of the footballer, `camera` [-15,3,14.5] → [-11.5,1,12.8]. 3) `creatures-kit-colours` in a 1-player and a 2-player game, and the bonk replay.
-**Open** The reactions are proven only by calling `golferClip` directly, not by a real hole-out. Kit colours, the sheep bonk and the footballer's clean helmet are still unproven.
-
 ### Judge 12
 
 **Judge 12.** I played the opening aim look, then a real-key drive on hole 1, then `perf`. The aim view is fine. The first drive broke the game: it ended in a blank grey picture and a console error repeating every frame. I did not reach a hole-out, the sheep bonk, the 2-player shirt or `asset_search`.
@@ -59,3 +53,9 @@ The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.m
    - Run `asset_search` for "low poly golfer" and "low poly sheep" and record the hit or miss in `lanes/creatures.md`.
 
 SCORE: 4.9
+
+## Iteration 13
+**Did** No source change. Replayed the last judge's failing path in the real game: `start` 1 player, `next`, three Space presses for the drive, then a putt at `aim:"pin"` with three Space presses. Added a Session 13 note to `lanes/creatures.md`.
+**Saw** The drive ended in `aim` after `settle`; there was no `round.js:71` error, and `ball`, `camera` and `aimDeg` stayed set. The putt went in: `golferClip` ran `address`, `backswing`, `downswing`, `follow`, then `Celebration`, with BIRDIE! in `lastResult`, and the footballer's clip also went to `Celebration`. A second run on the same steps hit a sheep: `sheepHits` 1, `lastSheepHit` `tumble:true`, so the bonk works in play. In the aim look, 24 of 26 `golfer_*` parts show (3.6% of the picture), with `golfer_cap`, `golfer_shirt`, `golfer_face`, `club_head` and `club_shaft` in view. The shirt is red-orange, edge contrast 0.083. The footballer's `facemask` is still "Not found by the ID image". `Never visible` is unchanged: cliffFace, cliffRocks, seaStacks, `cow_hide`, `divots`, the trees. The console shows `SFX[k] is not a function (src/sound.js:71:61)` on the first drive and on later steps; that file belongs to another lane. No `perf`, no `asset_search`.
+**Next** 1) Save `creatures-birdie-celebration`: the sheep moved the second run, so the saved steps need a `setState` that parks the sheep away from the tee line first. 2) Take `sample` on `golfer_shirt` in a 1-player and a 2-player game for `creatures-kit-colours`. 3) Report the `sound.js:71` error to the lead.
+**Open** The `round.js:71` crash did not reproduce, so it may have been a one-off from a sheep or ball state. I could not tell what caused it. The sheep path varies between runs, so a saved hole-out check is not stable yet. Kit colours, the footballer's helmet and `asset_search` for golfer and sheep are still not done.
