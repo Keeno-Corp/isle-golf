@@ -25,3 +25,5 @@ refs/study/ (not published) · mood · inspiration
 Feel: Wii Sports Golf, Mario Golf: Super Rush (inspiration for ball feel only; no names on screen).
 ## Sheets
 LOOK.md · CHARACTERS.md · DESIGN.md · COORDINATION.md · refs/sheets/LOOK.png
+## Steering (lane lead, ~1h40 left)
+Saved so far: putt sinks/mid-easy/too-hard, preview-matches-bounce, wind 8/0, slice/hook. Still unsaved, in this order, one or two per session: ball-physics-slope-break (putt straight at the pin on a sloped green breaks >= 0.2 downhill, preview bends same way), ball-physics-rollout-<surface> (real-key wedge onto fairway/rough/sand/green; tune SURF so green > fairway > rough > sand~0 holds and an iron onto a green does not roll 37 yd), ball-physics-tree / -sheep / -house-wall (real-key drives). Do each with real keys; fix physics where a check fails rather than loosening the check.
