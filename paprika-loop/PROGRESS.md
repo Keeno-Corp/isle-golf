@@ -582,3 +582,9 @@ SCORE: 7.5
 3. **Verify the holed camera and the flag stipple, and write down the course items.** After a real-key putt, take looks at settle +6, holed +4 and +24. `pin_flag` should be solid red, `look.dither.nearFades` should not name it, and ball and cup should be at `y` > -0.6 with the golfer not cropped. Add the pink boulder (hole 1 right cliff) and the pink shrubs (hole 5 by the house) to `lanes/look.md` under the course-lane items.
 
 SCORE: 7.5
+
+## Iteration 16
+**Did**: Docs only: `lanes/look.md` now lists the pink hole 1 cliff boulder and the hole 5 pink shrubs as open course-lane items, and records that the holder-position change was verified by judge 15. No source or game-tests.json change.
+**Saw**: No picture, `perf` or `test` this session (short on time); the last known numbers are judge 15's: 181 draws / 367k tris, no console errors, `look.golfer.on` true on hole 1 aim.
+**Next**: (1) Save the `look-` checks still missing: flyover 25/50/75% on hole 5, real-key Space x3 drive (`look.ball.on` at 3 moments), night on hole 5; then meter and scorecard pictures. (2) Make the golfer larger in C on hole 5 (25x38 px now): fit C broadside to tee to pin so it sits lower and closer, pitch kept at 55. (3) Re-look the holed camera and flag stipple after a real-key putt.
+**Open**: Nothing broken known. The flyover, drive and night checks remain unsaved, and the C golfer is still a speck.

@@ -1,11 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 15
-**Did**: `src/camera.js`: `look.golfer` observe NDC and the dither occluder subject (aim/swing) now read the walking `golfer.holder.position` instead of `golfer.bx/by/bz` (destination). Not played or looked this session (short on time).
-**Saw**: syntax check only; no picture, `perf` or `test` run.
-**Next**: (1) Verify by `observe` on hole 1 aim that `look.golfer.on` is true and the occluder hole follows the golfer; if holder.position is not world-space (parent offset), switch to getWorldPosition. (2) Save look- checks: flyover 25/50/75 hole 5, real-key Space x3 drive, night on hole 5. (3) Pink boulder to lanes/look.md; meter and scorecard pictures.
-**Open**: The holder-position change is unverified by picture; if the golfer shows on-screen false or the dither hole misplaces, revert lines 88 and 170 to `golfer.bx/by/bz`. SFX[k] error in sound.js is another lane's.
-
 ### Judge 15
 
 **Judge 15: scores**
@@ -40,3 +34,9 @@ The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.m
 3. **Verify the holed camera and the flag stipple, and write down the course items.** After a real-key putt, take looks at settle +6, holed +4 and +24. `pin_flag` should be solid red, `look.dither.nearFades` should not name it, and ball and cup should be at `y` > -0.6 with the golfer not cropped. Add the pink boulder (hole 1 right cliff) and the pink shrubs (hole 5 by the house) to `lanes/look.md` under the course-lane items.
 
 SCORE: 7.5
+
+## Iteration 16
+**Did**: Docs only: `lanes/look.md` now lists the pink hole 1 cliff boulder and the hole 5 pink shrubs as open course-lane items, and records that the holder-position change was verified by judge 15. No source or game-tests.json change.
+**Saw**: No picture, `perf` or `test` this session (short on time); the last known numbers are judge 15's: 181 draws / 367k tris, no console errors, `look.golfer.on` true on hole 1 aim.
+**Next**: (1) Save the `look-` checks still missing: flyover 25/50/75% on hole 5, real-key Space x3 drive (`look.ball.on` at 3 moments), night on hole 5; then meter and scorecard pictures. (2) Make the golfer larger in C on hole 5 (25x38 px now): fit C broadside to tee to pin so it sits lower and closer, pitch kept at 55. (3) Re-look the holed camera and flag stipple after a real-key putt.
+**Open**: Nothing broken known. The flyover, drive and night checks remain unsaved, and the C golfer is still a speck.
