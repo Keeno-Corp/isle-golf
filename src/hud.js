@@ -151,10 +151,11 @@ export function updateHUD() {
   hud.holep.style.display = hud.windp.style.display = hud.clubp.style.display = 'block'; hud.windp.style.display = 'flex';
   const p = curP(), H = curH(), d = pinDist(p.pos, H), w = windInfo(), c = curClub();
   const tot = G.players.reduce((a, q) => a, 0); let run = 0, parRun = 0; for (let i = 0; i < G.hole; i++) if (p.scores[i] !== undefined) { run += p.scores[i]; parRun += HOLES[i].par; }
-  const key = [G.hole, p.i, p.strokes, Math.round(d * 12), G.club, w.speed, w.rel, p.surf, run].join('|');
+  const key = [G.hole, p.i, p.strokes, Math.round(d * 12), G.club, w.speed, w.rel, p.surf, run, G.dailyOn || false].join('|');
   if (key !== _hudKey) {
     _hudKey = key;
-    hud.holep.innerHTML = `<div class="h">HOLE ${G.hole + 1}<small>PAR ${H.par}</small></div><div class="r"><span>STROKES ${p.strokes}</span><span>${Math.round(d * YD)} YD</span></div><div class="r"><span>ROUND ${vsPar(run - parRun)}</span><span>${H.name}</span></div>` + (G.players.length > 1 ? `<div class="who"><i style="background:${p.kit.col}"></i>${p.name}</div>` : '');
+    const holeLabel = G.dailyOn ? 'DAILY HOLE' : `HOLE ${G.hole + 1}`;
+    hud.holep.innerHTML = `<div class="h">${holeLabel}<small>PAR ${H.par}</small></div><div class="r"><span>STROKES ${p.strokes}</span><span>${Math.round(d * YD)} YD</span></div><div class="r"><span>ROUND ${vsPar(run - parRun)}</span><span>${H.name}</span></div>` + (G.players.length > 1 ? `<div class="who"><i style="background:${p.kit.col}"></i>${p.name}</div>` : '');
     hud.clubp.innerHTML = CLUBS.map((k, i) => `<div class="${i === G.club ? 'on' : ''}">${k.name}<span>${k.putt ? 'GREEN' : Math.round(k.carry * YD * (i === G.club ? lieMul() : 1)) + ' YD'}</span></div>`).join('') + `<div class="lie">LIE · ${p.surf === 'tee' ? 'TEE' : p.surf.toUpperCase()}</div>`;
     hud.wt.innerHTML = `${Math.round(w.speed)} MPH<small>${w.text}</small>`;
     hud.arrow.setAttribute('transform', `rotate(${Number.isFinite(w.rel) ? w.rel : 0})`);

@@ -91,6 +91,7 @@ export function exitDaily() {
   const card = document.getElementById('daily-card');
   if (card) card.remove();
   DAILY.on = false;
+  G.dailyOn = false;
   DAILY._orig = null;
   DAILY.cardShown = false;
 }
@@ -149,6 +150,7 @@ export function startDaily(dateStr) {
   startRound(1);
 
   DAILY.on = true;    // enable AFTER startRound so round:start handler doesn't fire exitDaily
+  G.dailyOn = true;   // signal to HUD
 
   // Begin the actual daily hole — uses overridden H values
   beginHole(cfg.holeIndex);
@@ -276,7 +278,7 @@ function showDailyCard() {
     user-select:none;z-index:200;pointer-events:auto`;
 
   const html = `<div id="daily-card" class="steel" style="${style}">
-  <div style="text-align:center;font-size:36px;color:#f7e27a;line-height:1">D · DAILY HOLE</div>
+  <div style="text-align:center;font-size:36px;color:#f7e27a;line-height:1">DAILY HOLE</div>
   <div style="text-align:center;font-size:18px;color:#a8f0d8;margin:2px 0 10px">${DAILY.date}</div>
   <canvas id="daily-canvas" width="440" height="260" style="display:block;margin:0 auto 10px;border-radius:4px;border:1px solid #4d6f5e;max-width:100%"></canvas>
   <div class="stamp ${stampClass}" style="display:block;margin:0 auto 8px;width:fit-content;min-width:160px;text-align:center;--rot:0deg">
