@@ -349,6 +349,84 @@
           "value": 2
         }
       ]
+    },
+    {
+      "id": "course-h9-drive",
+      "title": "course-h9-drive",
+      "state": {},
+      "actions": [
+        {
+          "action": "newRound",
+          "players": 1
+        },
+        {
+          "state": {
+            "hole": 8,
+            "skipIntro": true
+          }
+        },
+        {
+          "wait": 20
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.power": [
+              0.97,
+              1.2
+            ]
+          },
+          "max": 200
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "meter.t": [
+              0.95,
+              1
+            ]
+          },
+          "max": 200
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "until": {
+            "phase": "aim"
+          },
+          "max": 900
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "strokes",
+          "op": "==",
+          "value": 1
+        },
+        {
+          "path": "ball.surface",
+          "op": "in",
+          "value": [
+            "fairway",
+            "green"
+          ]
+        },
+        {
+          "path": "club",
+          "op": "in",
+          "value": [
+            "driver",
+            "iron",
+            "wedge"
+          ]
+        }
+      ]
     }
   ]
 }

@@ -1,11 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 6
-**Did** `src/pins.js`: thicker `pin_pole` (r 0.11/0.125), larger `pin_flag` cloth (1.35 x 0.9, y 1.7), larger `pin_knob` (r 0.19).
-**Saw** Hole 1 aim view (look after `{state:{hole:0,skipIntro:true}}`): `pin_flag` 34 px wide [733,13,767,92], `pin_pole` [712,28,733,195]; `pin_knob` still touches the frame top (y 0-28). 0% blown out, brightness 51%, HUD 0 overlap. Holes 2 and 3 already have 2 sand pots each in `HOLES[].bunkers`; not looked at this session. Not run: hole 9 drive, perf.
-**Next** (1) Hole 9 real-key drive `course-h9-drive` (`hole:8`, W to driver, 3 Space clicks); move the hole 9 waypoint if drives land in rough. (2) Pull hole 1's aim view down a little (or the pin) so `pin_knob` clears the frame top. (3) A sheet of holes 2/3 to check hazards read; check cliff trees on holes 6 and 7.
-**Open** `SFX[k] is not a function` in src/sound.js (outside lane); `toNonIndexed` warning remains.
-
 ### Judge 6
 
 **Judge 6.** The host is SwiftShader, so I did not run `perf` and it is not scored. I took one hole 9 real-key attempt and a four-hole `sheet` (holes 1, 2, 3 and 6). The hole 9 attempt did not prove the check: W moved the club the wrong way, to "PUTTER", so the drive was a putter "MISS-HIT!". I did not look at hole 1's pin zoom, and the sheet cells show the diorama view. I did not re-prove the hole 6 SPLASH.
@@ -64,3 +58,9 @@ The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.m
    - Shown done by a `sheet` of `hole:1` and `hole:2` with `KeyC` and 40 frames: a hazard on the ribbon between tee and green, and no `tree*_leaves0` crowding the cliff edge.
 
 SCORE: 6.3
+
+## Iteration 7
+**Did** `src/course.js` HOLES: hole 9 `bunkers` [3.7,3.6]/[11.9,4.0] moved off the fairway line to [3.9,6.3]/[11.6,8.0]; hole 7 bunker [4.8,3.9] -> [5.6,8.5], hole 7 last path point [8.2,5.4] -> [6.6,8.4] and its third bunker -> [9.0,10.3] (hole 9's perfect drive was landing in hole 7's sand, then on hole 7's green). `game-tests.json`: saved `course-h9-drive` (newRound, state hole 8, Space, until meter.power ~0.97, Space, until meter.t 0.95-1.0, Space; expects strokes 1, ball.surface fairway, club driver). All 7 checks pass.
+**Saw** Hole 9 auto-pick is already "driver" (club W/S order: index 0 driver, S/E... wedge/putter go up). Real-key perfect drive: PERFECT!, ball (10.5,5.2) fairway, 232 yd to pin, aimDeg 339 vs pinBearing -56 (waypoint [20.6,1.4] now, so auto-aim follows the dogleg). Look: brightness 53%, 0% blown out, 0 HUD overlap, golfer 0.54%. Not run: perf (SwiftShader), holes 2/3 carry, cliff-lip zoom, #5d8a3a ribbon sample.
+**Next** (1) A carry on hole 2 and 3 on the tee-to-pin line (gorse or water), sheet of hole:1 and hole:2. (2) Save `course-cliff-lip` (look zoom on the blossom shrubs) and `course-h1-ribbon` (#5d8a3a sample). (3) Check hole 7 still reads after its green moved (look hole:6, C view; pin on screen, trees not on the green).
+**Open** `SFX[k] is not a function` (src/sound.js:71, outside lane) still logs on a hole 9 drive; `toNonIndexed` warning. Aim-view framing and golfer visibility are the look lane's (src/camera.js).

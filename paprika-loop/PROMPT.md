@@ -37,3 +37,5 @@ LOOK.md · CHARACTERS.md · DESIGN.md · refs/sheets/LOOK.png
 Web study: yes (asked) · Picture sheets: no, no image key (asked) · Asset style: stylized (asked)
 ## Left to the builder
 Hole layouts and names, club distances, the meter's timing, the golfer's swing pose, the kit colours and player names.
+
+Steering note (lane lead): the aim-view camera framing and whether the golfer shows in it belong to the look lane (src/camera.js); don't chase those here. If the pin is cut at the frame top, keep the pole thick but not taller than needed. Priorities left, in order: hole 9 real-key drive saved as course-h9-drive; the holes 1-9 C-view pin check saved as course-only-current-pin (already saved, keep it passing); a carry on holes 2 and 3; look zoom on the cliff lip (blossom shrubs) and the #5d8a3a ribbon sample on hole 1, both saved as course- checks.
