@@ -1,11 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 6
-**Did** `src/sheep.js` `updateSheep`: found why `wait: 0` never showed as `walk`. The first update saw `d = 0` (target = home), so it reset `wait` to 1.5–5 s. Now `s.init` picks a target on frame 1 for sheep with `wait <= 0`. `src/pose.js` observe: new `creatures.poseName` (`address`|`backswing`|`downswing`|`follow`, from phase, `swingT` and the sign of `pose`). New saved check `creatures-sheep-bonk-real-keys` (setState sheep 3 at (-9, 12.5) wait 60, `aim at pin`, Space x3).
-**Saw** Sheep 0, 3, 6 and 9 read `walk` from frame 1 and move by frame 5. The bonk run: `sheepHits` 0 → 1 at frame 79, sheep 3 `hop`, `hitStop` true, banner "BAA! BOUNCED OFF A SHEEP". The look shows `creatures_heart`, `creatures_bang` and `creatures_note` over the sheep, and the cow went `head-up`. The footballer played `Celebration` after the shot. `poseName` ran address until frame 34, backswing until 46, then follow. Golfer 0.48% of that picture, cut by the bottom edge, edge contrast 0.02 (the camera is low-left). No console errors. I did not run `perf` or a full `test`.
-**Next** 1) `downswing` is almost never seen (swing phase jumps from backswing to follow), so either name it from `pose` crossing 0 or accept it. 2) `golferClip` stays `Idle_Loop` during the swing; the name is only in `poseName`. 3) Sheets still not seen: par `Dance_Loop`, bogey `Dismay`, putt, walk. 4) Cow check `creatures-cow-reacts`; `asset_search` for sheep and cow. 5) The golfer's contrast and the framing at the bottom edge.
-**Open** Putt, walk, par and bogey are unseen by me. The `ball:cow` case is untested. The sheep and cow are still code-built, no `asset_search`. The other lanes' `ballShadow` and `Surfaces` faults remain.
-
 ### Judge 6
 
 **Judge 6.** The golfer reads well on the tee, the footballer is clearer, and the sheep now walk from frame 1. Putt, walk, par, bogey and the cow reaction are still unseen. I ran the title, the flyover skip, one real-key swing (Space ×3) with a trace and a look, and `perf`. I did not re-run the sheep bonk, a par or bogey case, a putt, a walk, a `ball:cow` case or a 2-player kit check.
@@ -63,3 +57,9 @@ The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.m
    - The golfer is only 0.56% of the picture, so offer a closer aim framing through the creatures hooks if one is allowed.
 
 SCORE: 6.3
+
+## Iteration 7
+**Did** `src/pose.js` observe: `creatures.golferClip` now reads the swing name (`backswing`/`downswing`/`follow`) while `G.phase === 'swing'`, else `golfer.cur` (new helper `poseNm`; `poseName` uses it). New saved check `creatures-cow-reacts` (setState ball at (-17.5, 10.6), aim 180, Space x3; expects `creatures.cow.state` alert and `moos` 1).
+**Saw** Cow went `graze` → `alert` at frame 66 (`why: hit`, alert peak 3.18, moos 0 → 1, banner "MOO! THE COW SENDS IT BACK"), and moved from x -19.0 to -19.83. `golferClip` traced Idle_Loop → backswing (frames 42–54) → Idle_Loop. Golfer 0.22% of the picture, 12 of 26 parts shown, edge contrast 0.123. No console errors. No `perf`, no full `test`.
+**Next** 1) Footballer a step off the ball line, cheering on good shots (clip still `Idle_Loop`). 2) 2-player `golfer_shirt` sample check (#3b78c9 / #d8503a). 3) Par `Dance_Loop`, bogey `Dismay`, putt and walk looks; the closer `sheet`. 4) A closer aim framing for the golfer (0.22%).
+**Open** `asset_search` for sheep, golfer not run. Putt, walk, par and bogey unseen. `golferClip` shows `Idle_Loop` after the swing phase ends, before the follow clip. Other lanes' `Never visible` entries remain.
