@@ -59,3 +59,9 @@ SCORE: 5.9
 3. Show the landing effect. Take `interact` with `look: true` about 5 frames after the first bounce, once on fairway and once on sand. It should show a dust or sand puff from `flightEvents`, and `physics.bounces` should read 1 or more. Then add the tree/sheep/house events (`ball:tree|sheep|wall`) with real-key drives, and the sloped-green break with its preview bend.
 
 SCORE: 6.2
+
+## Iteration 3
+**Did**: src/ballfx.js: added `landRingPreview` (yellow pulsing ring, depthTest off, renderOrder 5). On `swing` it copies `aimLanding`'s last position, stays on the ground until `ball:land` (or aim phase); `physics.landPreview` now reads from it in flight. Not done: saved checks (snap, wind, ring vs bounce, roll-out, tree/sheep/house, break) and landing-puff look.
+**Saw**: real-key iron swing mid-flight: `landRingPreview` is in the On screen list (0.35%, [591,192,784,231]), `physics.landPreview` {x -0.146, z 12.661} (pin at -1.7, 11.95). The ring sits under the HOLE 1 banner area, so it is hard to see in the picture. No console errors. Swing was HOOK (spin -0.643), preview is the perfect-shot spot, not the hooked one.
+**Next**: save the missing `ball-physics-*` checks with interact `save` (one per check); compare landPreview with `physics.firstBounce` on a perfect swing; puff look 5 frames after first bounce on fairway and sand; tree/sheep/house events; sloped-green break.
+**Open**: landing-puff visuals and roll-out order unverified; no perf run.

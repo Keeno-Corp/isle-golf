@@ -42,14 +42,18 @@ export function landRing(x, z, r = 0.55, color = '#fff6d0', dur = 0.6) {
 }
 
 // ---------------------------------------------------------------- shot tracking
+// preview ring that stays on the ground from launch until the first bounce
+const flightRing = new THREE.Mesh(new THREE.RingGeometry(0.62, 1, 32).rotateX(-Math.PI / 2), new THREE.MeshBasicMaterial({ color: '#f2d43a', transparent: true, opacity: 0.9, depthWrite: false, depthTest: false, side: THREE.DoubleSide }));
+flightRing.name = 'landRingPreview'; flightRing.renderOrder = 5; flightRing.visible = false; flightRing.frustumCulled = false; scene.add(flightRing);
 export const PHY = { spin: 0, carryYd: 0, rollYd: 0, lastBounce: null, firstBounce: null, puttBreak: 0, origin: null, aim: 0, bounces: 0, lips: 0, club: '' };
-on('swing', e => { PHY.origin = SIM.pos.clone(); PHY.aim = G.aim; PHY.spin = e.acc; PHY.carryYd = PHY.rollYd = PHY.puttBreak = 0; PHY.lastBounce = PHY.firstBounce = null; PHY.bounces = PHY.lips = 0; PHY.club = e.club; });
-on('ball:land', e => { const b = e.ball; PHY.firstBounce = { x: r3(b.pos.x), z: r3(b.pos.z), surf: b.surf }; if (PHY.origin) PHY.carryYd = Math.round(Math.hypot(b.pos.x - PHY.origin.x, b.pos.z - PHY.origin.z) * YD); landRing(b.pos.x, b.pos.z, b.surf === 'sand' ? 0.75 : 0.55, b.surf === 'sand' ? '#f1dca0' : '#fff6d0'); });
+on('swing', e => { if (aimRing.visible || aimRing.position.lengthSq() > 0) { flightRing.position.set(aimRing.position.x, heightAt(aimRing.position.x, aimRing.position.z) + 0.06, aimRing.position.z); flightRing.visible = e.club !== 'putter' && !(G.club >= 3); PHY.landPreview = { x: r3(aimRing.position.x), z: r3(aimRing.position.z) }; } PHY.origin = SIM.pos.clone(); PHY.aim = G.aim; PHY.spin = e.acc; PHY.carryYd = PHY.rollYd = PHY.puttBreak = 0; PHY.lastBounce = PHY.firstBounce = null; PHY.bounces = PHY.lips = 0; PHY.club = e.club; });
+on('ball:land', e => { flightRing.visible = false; const b = e.ball; PHY.firstBounce = { x: r3(b.pos.x), z: r3(b.pos.z), surf: b.surf }; if (PHY.origin) PHY.carryYd = Math.round(Math.hypot(b.pos.x - PHY.origin.x, b.pos.z - PHY.origin.z) * YD); landRing(b.pos.x, b.pos.z, b.surf === 'sand' ? 0.75 : 0.55, b.surf === 'sand' ? '#f1dca0' : '#fff6d0'); });
 on('ball:bounce', e => { PHY.bounces++; PHY.lastBounce = { x: r3(e.ball.pos.x), z: r3(e.ball.pos.z) }; });
 on('ball:lip', () => { PHY.lips++; play('lip'); });
 on('ball:sunk', e => { landRing(e.ball.pos.x, e.ball.pos.z, 0.5, '#ffe27a', 0.8); });
 addUpdate(dt => {
   for (const o of RINGS) { if (!o.m.visible) continue; o.t += dt; const k = o.t / o.dur; if (k >= 1) { o.m.visible = false; continue; } o.m.scale.setScalar(0.1 + o.r * (1 - (1 - k) ** 2)); o.m.material.opacity = 0.85 * (1 - k); }
+  if (flightRing.visible) { flightRing.scale.setScalar(1.1 + 0.12 * Math.sin(performance.now() / 120)); if (G.phase === 'aim') flightRing.visible = false; }
   aimRing.scale.setScalar(1 + 0.08 * Math.sin(performance.now() / 160));
   // meter fields are cleared once the next aim phase begins
   const m = G.m; if (G.phase === 'aim' && m.stage === 0 && (m.power || m.t || m.t2 || m.tp || m.acc || m.label)) { m.power = m.t = m.t2 = m.tp = m.acc = 0; m.label = ''; }
@@ -59,4 +63,4 @@ addUpdate(dt => {
     const fb = PHY.firstBounce; if (fb) PHY.rollYd = Math.round(Math.hypot(SIM.pos.x - fb.x, SIM.pos.z - fb.z) * YD);
   }
 });
-addObserve(() => ({ physics: { spin: r3(PHY.spin), carryYd: PHY.carryYd, rollYd: PHY.rollYd, bounces: PHY.bounces, lastBounce: PHY.lastBounce, firstBounce: PHY.firstBounce, puttBreak: PHY.puttBreak, lips: PHY.lips, mode: SIM.mode, vel: r3(Math.hypot(SIM.vel.x, SIM.vel.z)), landPreview: aimRing.visible ? { x: r3(aimRing.position.x), z: r3(aimRing.position.z) } : null } }));
+addObserve(() => ({ physics: { spin: r3(PHY.spin), carryYd: PHY.carryYd, rollYd: PHY.rollYd, bounces: PHY.bounces, lastBounce: PHY.lastBounce, firstBounce: PHY.firstBounce, puttBreak: PHY.puttBreak, lips: PHY.lips, mode: SIM.mode, vel: r3(Math.hypot(SIM.vel.x, SIM.vel.z)), landPreview: aimRing.visible ? { x: r3(aimRing.position.x), z: r3(aimRing.position.z) } : (flightRing.visible ? PHY.landPreview : null) } }));
