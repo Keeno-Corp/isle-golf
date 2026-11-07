@@ -92,3 +92,14 @@ I opened the page, played a 2-player drive and a putt (`interact` with `look`), 
    - The remaining code shapes are the sheep and cow (`sheep*`, `cow_hide`). Run `asset_search` for "low poly sheep" and "low poly cow", and keep the code-built ones only if the result is not usable.
 
 SCORE: 5.4
+
+## The request changed
+
+paprika-loop/PROMPT.md changed before session 3; the Next lists above were written before it. Changed lines:
++ 0b. **Also from JC:** "make it clean, also lets get a better football player model to be there. His helmet just looks a little rusted or something". The golfer stays the main character; the football player (assets/player-anim.glb) stays in the game as a side character, a caddie or spectator standing near the current tee or green (out of the ball's line, playing his Idle_Loop / cheering on good shots), a nod to Isle Blitz. Make him clean: the helmet reads as rusty, so give it a clean glossy painted shell (metalness 0, low roughness ~0.3, one crisp stripe and a clean facemask), check its textures and normals (drop noisy maps), and keep him crisp through the brush pass (alpha 0). Everything on the creatures (golfer, football player, sheep, cow) should look clean, not grimy or noisy. `observe().creatures.footballer` reports where he stands.
+
+## Iteration 3
+**Did** Added the footballer as a side character in `src/pose.js` (`foot`, group `footballer`): player-anim.glb loaded via `gltfL`, 0.62 tall, stands behind-left of the golfer (eased follow, turns to the ball), plays Idle_Loop, Celebration (birdie+/ball:sheep), Dance_Loop (par), then back to idle. Clean helmet: `footballer_helmetShell` (glossy #2d63c8, roughness 0.3, metalness 0), `footballer_helmetStripe`, three `footballer_facemask` bars on the DEF-head bone; his normal/other maps dropped, all materials `crisp`. `creatures.footballer` added to the existing creatures observe key. Wrote the doc in lanes/creatures.md.
+**Saw** 6/6 saved checks pass; no console errors. Front look: glossy blue helmet with facemask, orange jersey, faces the ball. The original helmet is still under the shell (hidden). He stands in tall rough on hole 1 (grass hides his legs). Not done: perf run, sheep walk / ball-bonk look, golfer contrast, Celebration/Dismay/walk looks, shirt samples.
+**Next** 1) Look at the footballer in Celebration and at the green; move him to short grass if the spot is rough (check surfaceAt). 2) The earlier Next items: sheep walking at start, proven ball-bonk look with heart, golfer shirt samples FINN/ISLA, golfer contrast at the cup. 3) Helmet shell reads a little large/ball-like: tune R (0.072) or add a back flare.
+**Open** Footballer phase visibility list includes intro; no hide in title. Facemask is approximate bars. Mixer's Celebration is LoopOnce clamped; returns to idle after 3.5 s.

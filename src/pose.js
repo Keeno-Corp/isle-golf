@@ -4,7 +4,8 @@ import { clamp, lerp, smooth, angDiff } from './util.js';
 import { heightAt } from './course.js';
 import { crisp } from './post.js';
 import { flagMat, flagWhite } from './pins.js';
-import { addObserve, addAction, on, ST } from './shared.js';
+import { addObserve, addAction, addUpdate, on, ST } from './shared.js';
+import { scene, named } from './stage.js';
 import { sheepObs, crt } from './sheep.js';
 import { cowObs } from './cow.js';
 import { kitU, clubG, clubHeadMat, clubMat, golfer, golferShadow, golferClip, UA, FA } from './golfer.js';
@@ -136,4 +137,47 @@ on('ball:water', () => golferClip('Dismay', 0.35));
 on('ball:ob', () => golferClip('Dismay', 0.35));
 
 // ---------------------------------------------------------------- the one observe key of this lane (COORDINATION.md): creatures
-addObserve(() => ({ creatures: { golferClip: golfer.cur, shirt: '#' + kitU.uJersey.value.getHexString(), swingT: +(G.swingT || 0).toFixed(2), pose: +swingParam().toFixed(2), clubHead: clubG.userData.head.userData.id || '', cow: cowObs(), ...sheepObs() } }));
+addObserve(() => ({ creatures: { golferClip: golfer.cur, shirt: '#' + kitU.uJersey.value.getHexString(), swingT: +(G.swingT || 0).toFixed(2), pose: +swingParam().toFixed(2), clubHead: clubG.userData.head.userData.id || '', footballer: { x: +foot.x.toFixed(2), z: +foot.z.toFixed(2), clip: foot.cur, visible: foot.g.visible, ready: foot.ready }, cow: cowObs(), ...sheepObs() } }));
+
+// ---------------------------------------------------------------- the footballer: Isle Blitz's player (assets/player-anim.glb) as the caddie beside the tee or the green, clean: a glossy painted helmet shell over the old one, one stripe, a crisp facemask
+import { gltfL } from './assets.js';
+import { curH, G as G2 } from './round.js';
+export const foot = { g: new THREE.Group(), mixer: null, acts: {}, cur: '', ready: false, cheer: 0, x: 0, z: 0, yaw: 0, spot: 'tee' };
+foot.g.name = 'footballer'; foot.g.visible = false; scene.add(foot.g);
+gltfL.loadAsync('./assets/player-anim.glb').then(glb => {
+  const m = glb.scene, H = 0.62;   // a toy beside the golfer (0.55 tall)
+  let head = null, skin = null; m.traverse(o => { if (o.isBone && o.name === 'DEF-head') head = o; if (o.isSkinnedMesh) skin = o; });
+  m.updateMatrixWorld(true); const b0 = new THREE.Box3().setFromObject(m, true); const sc = H / (b0.max.y - b0.min.y); m.scale.setScalar(sc); m.position.y = -b0.min.y * sc;
+  m.traverse(o => { if (!o.isMesh) return; o.castShadow = true; o.receiveShadow = true; o.frustumCulled = false; for (const mt of [].concat(o.material)) { for (const k of Object.keys(mt)) if (k !== 'map' && mt[k] && mt[k].isTexture) { mt[k] = null; } mt.metalness = 0; mt.roughness = 0.8; mt.normalMap = null; crisp(mt); mt.needsUpdate = true; } });
+  foot.g.add(m);
+  if (head) {   // helmet: shell, stripe, facemask on the head bone (bone units are the model's own: undo the scale)
+    m.updateMatrixWorld(true); const ws = new THREE.Vector3(); head.getWorldScale(ws); const hs = 1 / ws.x, shell = new THREE.MeshStandardMaterial({ color: '#2d63c8', roughness: 0.3, metalness: 0 }), white = new THREE.MeshStandardMaterial({ color: '#f6f2e8', roughness: 0.35, metalness: 0 }), bar = new THREE.MeshStandardMaterial({ color: '#e9e6dc', roughness: 0.4, metalness: 0 });
+    [shell, white, bar].forEach(crisp);
+    const hb = new THREE.Group(); hb.name = 'footballer_helmet'; head.add(hb); hb.scale.setScalar(hs); foot.helmet = hb;
+    const R = 0.072; hb.position.set(0, 0.032 * hs, 0.012 * hs);   // metres in the scaled world; tuned from a look
+    const sh = named(new THREE.Mesh(new THREE.SphereGeometry(R, 20, 14, 0, Math.PI * 2, 0, Math.PI * 0.68), shell), 'footballer_helmetShell'); hb.add(sh);
+    const st = named(new THREE.Mesh(new THREE.BoxGeometry(0.018, R * 0.2, R * 2.05), white), 'footballer_helmetStripe'); st.position.y = R * 0.9; hb.add(st);
+    for (const y of [-0.03, -0.012, 0.008]) { const t = named(new THREE.Mesh(new THREE.TorusGeometry(R * 0.6, 0.0065, 6, 16, Math.PI), bar), 'footballer_facemask'); t.position.set(0, y, R * 0.7); t.rotation.set(0, 0, Math.PI); t.scale.set(1, 1, 1); hb.add(t); }
+    foot.shellMat = shell; foot.hb = hb;
+  }
+  foot.mixer = new THREE.AnimationMixer(m);
+  for (const c of glb.animations) if (['Idle_Loop', 'Celebration', 'Dance_Loop', 'Hit_Chest'].includes(c.name)) foot.acts[c.name] = foot.mixer.clipAction(c);
+  foot.ready = true; footClip('Idle_Loop');
+});
+function footClip(n) { if (foot.cur === n || !foot.acts[n]) return; const a = foot.acts[n], p = foot.acts[foot.cur]; a.reset().play(); a.setLoop(n === 'Celebration' ? THREE.LoopOnce : THREE.LoopRepeat); a.clampWhenFinished = true; if (p) p.crossFadeTo(a, 0.25, false); foot.cur = n; }
+let footT = 0;
+addUpdate(dt => {
+    if (!foot.ready) return;
+    const vis = ['aim', 'swing', 'flight', 'settle', 'holed', 'meter'].includes(G2.phase) || G2.phase === 'intro' ? true : false; foot.g.visible = vis;
+    // stand beside the tee (or the ball on a short hole) out of the line: behind-left of the golfer
+    const p = curP(), H = curH(); if (!p || !H) return;
+    const pos = p.pos || { x: H.tee[0], z: H.tee[1] }, ay = G2.aim || 0, fx = Math.cos(ay), fz = Math.sin(ay);
+    const tx = pos.x - fx * 1.0 + fz * 1.5, tz = pos.z - fz * 1.0 - fx * 1.5;
+    const k = foot.x === 0 && foot.z === 0 ? 1 : 1 - Math.exp(-dt * 2.2); foot.x += (tx - foot.x) * k; foot.z += (tz - foot.z) * k;
+    foot.g.position.set(foot.x, heightAt(foot.x, foot.z), foot.z);
+    const want = Math.atan2(pos.x - foot.x, pos.z - foot.z); foot.yaw += angDiff(foot.yaw, want) * Math.min(1, dt * 4); foot.g.rotation.y = foot.yaw;
+    if (foot.cheer > 0) { foot.cheer -= dt; if (foot.cheer <= 0) footClip('Idle_Loop'); }
+    foot.mixer.update(dt);
+});
+on('holed', e => { if (!foot.ready) return; if (/BIRDIE|EAGLE|ALBATROSS|HOLE IN ONE|PAR/.test(e.result || '')) { footClip(/PAR/.test(e.result) && !/BIRDIE/.test(e.result) ? 'Dance_Loop' : 'Celebration'); foot.cheer = 3.5; } });
+on('ball:sheep', () => { if (foot.ready) { footClip('Celebration'); foot.cheer = 2; } });
