@@ -232,53 +232,6 @@
       ]
     },
     {
-      "id": "course-only-current-pin",
-      "title": "course-only-current-pin",
-      "state": {},
-      "actions": [
-        {
-          "action": "newRound",
-          "players": 1
-        },
-        {
-          "state": {
-            "hole": 8,
-            "skipIntro": true
-          }
-        },
-        {
-          "key": "KeyC",
-          "frames": 1
-        },
-        {
-          "wait": 40
-        }
-      ],
-      "frames": 0,
-      "expect": [
-        {
-          "path": "course.pinVisible.8",
-          "op": "==",
-          "value": true
-        },
-        {
-          "path": "course.pinVisible.6",
-          "op": "==",
-          "value": false
-        },
-        {
-          "path": "course.pinVisible.0",
-          "op": "==",
-          "value": false
-        },
-        {
-          "path": "hole",
-          "op": "==",
-          "value": 9
-        }
-      ]
-    },
-    {
       "id": "course-h6-splash",
       "title": "course-h6-splash",
       "state": {},
@@ -585,6 +538,228 @@
           "path": "phase",
           "op": "==",
           "value": "aim"
+        }
+      ]
+    },
+    {
+      "id": "course-only-current-pin",
+      "title": "course-only-current-pin",
+      "state": {},
+      "actions": [
+        {
+          "action": "newRound",
+          "players": 1
+        },
+        {
+          "state": {
+            "hole": 0,
+            "skipIntro": true
+          }
+        },
+        {
+          "wait": 10
+        },
+        {
+          "key": "KeyC",
+          "frames": 1
+        },
+        {
+          "wait": 40
+        },
+        {
+          "state": {
+            "hole": 1,
+            "skipIntro": true
+          }
+        },
+        {
+          "wait": 10
+        },
+        {
+          "key": "KeyC",
+          "frames": 1
+        },
+        {
+          "wait": 40
+        },
+        {
+          "state": {
+            "hole": 2,
+            "skipIntro": true
+          }
+        },
+        {
+          "wait": 10
+        },
+        {
+          "key": "KeyC",
+          "frames": 1
+        },
+        {
+          "wait": 40
+        },
+        {
+          "state": {
+            "hole": 3,
+            "skipIntro": true
+          }
+        },
+        {
+          "wait": 10
+        },
+        {
+          "key": "KeyC",
+          "frames": 1
+        },
+        {
+          "wait": 40
+        },
+        {
+          "state": {
+            "hole": 4,
+            "skipIntro": true
+          }
+        },
+        {
+          "wait": 10
+        },
+        {
+          "key": "KeyC",
+          "frames": 1
+        },
+        {
+          "wait": 40
+        },
+        {
+          "state": {
+            "hole": 5,
+            "skipIntro": true
+          }
+        },
+        {
+          "wait": 10
+        },
+        {
+          "key": "KeyC",
+          "frames": 1
+        },
+        {
+          "wait": 40
+        },
+        {
+          "state": {
+            "hole": 6,
+            "skipIntro": true
+          }
+        },
+        {
+          "wait": 10
+        },
+        {
+          "key": "KeyC",
+          "frames": 1
+        },
+        {
+          "wait": 40
+        },
+        {
+          "state": {
+            "hole": 7,
+            "skipIntro": true
+          }
+        },
+        {
+          "wait": 10
+        },
+        {
+          "key": "KeyC",
+          "frames": 1
+        },
+        {
+          "wait": 40
+        },
+        {
+          "state": {
+            "hole": 8,
+            "skipIntro": true
+          }
+        },
+        {
+          "wait": 10
+        },
+        {
+          "key": "KeyC",
+          "frames": 1
+        },
+        {
+          "wait": 40
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "overhead",
+          "op": "==",
+          "value": true
+        },
+        {
+          "path": "hole",
+          "op": "==",
+          "value": 9
+        },
+        {
+          "path": "course.cViewPinOk",
+          "op": "==",
+          "value": 9
+        },
+        {
+          "path": "course.pinVisible.8",
+          "op": "==",
+          "value": true
+        },
+        {
+          "path": "course.pinVisible.0",
+          "op": "==",
+          "value": false
+        },
+        {
+          "path": "course.pinVisible.1",
+          "op": "==",
+          "value": false
+        },
+        {
+          "path": "course.pinVisible.2",
+          "op": "==",
+          "value": false
+        },
+        {
+          "path": "course.pinVisible.3",
+          "op": "==",
+          "value": false
+        },
+        {
+          "path": "course.pinVisible.4",
+          "op": "==",
+          "value": false
+        },
+        {
+          "path": "course.pinVisible.5",
+          "op": "==",
+          "value": false
+        },
+        {
+          "path": "course.pinVisible.6",
+          "op": "==",
+          "value": false
+        },
+        {
+          "path": "course.pinVisible.7",
+          "op": "==",
+          "value": false
+        },
+        {
+          "path": "course.pinScreen",
+          "op": "exists"
         }
       ]
     }

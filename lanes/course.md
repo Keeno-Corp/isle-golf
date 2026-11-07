@@ -1,5 +1,12 @@
 # course lane
 
+## Owner feedback and final flag contract
+- Critic finding 4: "the flag is a vertical accent, not a billboard".
+- `FLAG` in pins.js: pole height 1.28 (about 1.5x the 0.85 golfer), radius 0.012, tapered bright pennant 0.30 x 0.17; no C-view enlargement. Cup ring radii 0.26/0.40.
+- `aimTarget(H, pos, clubIdx)` exports the auto-aim target; `wayMark` displays it. Observe `course.waypoint` is its [x,z] or null when aiming at the pin.
+- Observe `course` includes `pinVisible`, `pinScreen`, `cViewPinOk`, `flag`, `waypointSurface`, `waypoint`, `cViewCentre` and `cViewSpan`. Camera lane can use the last two for framing.
+- `SPREAD = 1.2` remains the course scale. The historical C-view 2.6x note below is superseded by the true-size flag.
+
 ## Provides
 - `pins.js` `aimTarget(H, pos, clubIdx)` -> `{x, z, pin}`: the point autoAim() aims at (same rule: the fairway point 0.8 x carry along `H.samp`, or the pin when near / putting).
 - `pins.js` `wayMark` (Group `waypointMarker`: post, spinning diamond, ring): stands at `aimTarget` when it is not the pin and more than 2.5 away, during intro/aim/swing.
