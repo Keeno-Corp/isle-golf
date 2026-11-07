@@ -1,11 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 5
-**Did** Only proved hole 6's splash with real keys (state `hole` is 0-based, so hole 6 is `hole:5`; last judge used `hole:6`, which is hole 7). Held D until `aimDeg` 55-60, S for the iron/wedge, Space x3: banner 'SPLASH!', strokes 2. Saved as `course-h6-splash` in `game-tests.json` (6 checks). No source edits.
-**Saw** Hole 6 pin bearing 45°, auto-aim 3° (the waypoint `[-18.59,-0.11]` is the dogleg, not the pond, by design); `ball.surface` ended 'fairway' at (-25.75,-0.5) after the penalty drop. Error `SFX[k] is not a function` in src/sound.js remains (outside lane). Not run: perf, looks, hole 9 drive.
-**Next** (1) Hole 9 real-key drive, save `course-h9-drive` (use `hole:8`). (2) Pin framing: `pin_pole`/`pin_flag` cut at the frame top on hole 1's aim view; bigger flag in `src/pins.js`. (3) A carry or bunker on holes 2 and 3; check cliff trees on holes 6 and 7.
-**Open** Auto-aim on hole 6 is 42° off the pin by design (waypoint); the judge's "fix the waypoint" item may be moot. `toNonIndexed` warning remains.
-
 ### Judge 5
 
 **Judge 5.** The host is SwiftShader, so I did not run `perf` and it is not scored. I took one 3-click hole 9 drive and a four-hole `sheet` (holes 1, 2, 3 and 9). The hole 9 drive does not prove the check. I did not re-prove the hole 6 SPLASH, which iteration 5 recorded as saved in `game-tests.json` (6 checks).
@@ -61,3 +55,9 @@ The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.m
    - Shown done by `look` with `sheet` of `hole:1` and `hole:2`: a hazard visible between tee and green and no `tree*_leaves0` crowding the cliff edge.
 
 SCORE: 6.4
+
+## Iteration 6
+**Did** `src/pins.js`: thicker `pin_pole` (r 0.11/0.125), larger `pin_flag` cloth (1.35 x 0.9, y 1.7), larger `pin_knob` (r 0.19).
+**Saw** Hole 1 aim view (look after `{state:{hole:0,skipIntro:true}}`): `pin_flag` 34 px wide [733,13,767,92], `pin_pole` [712,28,733,195]; `pin_knob` still touches the frame top (y 0-28). 0% blown out, brightness 51%, HUD 0 overlap. Holes 2 and 3 already have 2 sand pots each in `HOLES[].bunkers`; not looked at this session. Not run: hole 9 drive, perf.
+**Next** (1) Hole 9 real-key drive `course-h9-drive` (`hole:8`, W to driver, 3 Space clicks); move the hole 9 waypoint if drives land in rough. (2) Pull hole 1's aim view down a little (or the pin) so `pin_knob` clears the frame top. (3) A sheet of holes 2/3 to check hazards read; check cliff trees on holes 6 and 7.
+**Open** `SFX[k] is not a function` in src/sound.js (outside lane); `toNonIndexed` warning remains.

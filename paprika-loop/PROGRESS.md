@@ -310,3 +310,9 @@ SCORE: 6.8
    - Shown done by `look` with `sheet` of `hole:1` and `hole:2`: a hazard visible between tee and green and no `tree*_leaves0` crowding the cliff edge.
 
 SCORE: 6.4
+
+## Iteration 6
+**Did** `src/pins.js`: thicker `pin_pole` (r 0.11/0.125), larger `pin_flag` cloth (1.35 x 0.9, y 1.7), larger `pin_knob` (r 0.19).
+**Saw** Hole 1 aim view (look after `{state:{hole:0,skipIntro:true}}`): `pin_flag` 34 px wide [733,13,767,92], `pin_pole` [712,28,733,195]; `pin_knob` still touches the frame top (y 0-28). 0% blown out, brightness 51%, HUD 0 overlap. Holes 2 and 3 already have 2 sand pots each in `HOLES[].bunkers`; not looked at this session. Not run: hole 9 drive, perf.
+**Next** (1) Hole 9 real-key drive `course-h9-drive` (`hole:8`, W to driver, 3 Space clicks); move the hole 9 waypoint if drives land in rough. (2) Pull hole 1's aim view down a little (or the pin) so `pin_knob` clears the frame top. (3) A sheet of holes 2/3 to check hazards read; check cliff trees on holes 6 and 7.
+**Open** `SFX[k] is not a function` in src/sound.js (outside lane); `toNonIndexed` warning remains.
