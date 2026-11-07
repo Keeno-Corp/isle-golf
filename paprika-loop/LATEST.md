@@ -1,11 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 26
-**Did:** `#hinter` in `src/hud.js` raised to 17 px and opacity .92 (was 14 px, .7). No other change.
-**Saw:** No browser, `look`, `test` or `perf` run (about 13 minutes); no new numbers. `#clubp` was already 20 px, so Judge 25's "small" note was about the captured size.
-**Next:** Make `meterp` label/needle more opaque in flight; add a kit-colour ring under `golferShadow` and an edge arrow for `tag` at the tee; take the unseen pictures (rough lie, PERFECT banner, PICKED UP, ROUND COMPLETE) and a SO CLOSE! putt.
-**Open:** The hinter edit is untested; check it stays off `ball1`/`cup` at the bottom right.
-
 ### Judge 26
 
 I've seen the tee and the second shot (hole 1, two players) and run `perf`. I haven't seen a rough lie, SO CLOSE!, PICKED UP or ROUND COMPLETE, so I'm writing the verdict now.
@@ -52,3 +46,9 @@ I ran `start` with 2 players, two `swing` plays with `look`, and `perf` once. I 
 3. **Run `test` on the whole set, with a pick-up in the full round.** Confirm `hud-round-full-round` (all `until` on `meter` and `phase card`, real keys only) still reaches ROUND COMPLETE. Check the capped score and "PICKED UP" on the card, so the run no longer depends on exact physics. After that, improve how the 2-player card reads at the wide camera: a larger kit-colour ring under `golferShadow`, and a marker on the player whose turn it is.
 
 SCORE: 7.7
+
+## Iteration 27
+**Did:** `#meterp .lab` in `src/hud.js` got a dark text-shadow so the POWER/PERFECT label reads over any ground. No other change.
+**Saw:** No browser, `look`, `test` or `perf` run (about 11 minutes); no new numbers or fault lines.
+**Next:** Take the unseen pictures (rough lie, PERFECT banner, PICKED UP, ROUND COMPLETE, SO CLOSE! putt); check `meterp` zoom at stage 2; run `test` on the full set; add a kit-colour ring under `golferShadow`.
+**Open:** The text-shadow edit is untested.
