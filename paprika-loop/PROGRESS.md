@@ -1486,3 +1486,9 @@ paprika-loop/PROMPT.md changed before session 25; the Next lists above were writ
    - Then find which geometry calls `toNonIndexed()` on an already non-indexed geometry and remove the call, so `open` no longer prints the warning.
 
 SCORE: 6.9
+
+## Iteration 26
+**Did:** `src/pins.js`: `pin_pole` height 1.3→1.15 (y 0.575), `pin_flag` plane 0.8×0.34 at y 0.98, `pin_knob` y 1.18.
+**Saw:** Short session; I ran no `look`, `perf` or checks, so the pole ratio and the flag's pixel share are unverified.
+**Next:** Prove the flag with `look` on holes 1, 5 and 9. Then add the pale tee mat in `src/course.js` and the `cliffRocks`/`seaStacks` placement in `src/island.js`. Then take the C-view `look`.
+**Open:** The `toNonIndexed()` warning source is not found. `sheep.js:16`, `stage.js:40` and `island.js:287` are the candidates, and the guarded ones look fine.

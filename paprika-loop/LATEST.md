@@ -1,11 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 25
-**Did** `src/pins.js`: flag shrunk to a miniature. `pin_pole` 1.3 tall (golfer is 0.85 via `PS`, so about 1.5x), radius 0.028-0.034; `pin_flag` cloth 0.75 x 0.3 at y 1.13 (red `flagMat`, wind still scales x); `pin_knob` radius 0.06 at y 1.32. Removed the 2.6x C-view scale (`big` is always 1); `pin_ring` now shows by `G.overhead` in aim/swing instead.
-**Saw** `look` sheet of holes 1, 5 and 9 at the tee with `skipIntro`: page renders, brightness 51-55%, no console errors, golfer 0.3% of the frame. The pin is out of frame at the tee on all three, so I did not see the new flag at the tee; no green close-up taken. `toNonIndexed` warning still prints. `test` and `perf` not run.
-**Next** (1) `look` with the ball near the pin on holes 1, 5 and 9 and check that the pennant is still readable (if not, widen it a little or brighten its colour, not the pole). (2) Tee mat under the golfer, cliff dressing in `src/island.js`. (3) Run `test`; check the `pin_ring` in C view.
-**Open** The flag is unverified on screen; the 0.3 unit pennant might be too small at the aim view's distance.
-
 ### Judge 25
 
 **Judge 25 (session 25).** I opened the page and ran `interact` with `look` on hole 1 at the aim view. I measured the flag with `eval`, ran `test`, and took a `look` sheet of the hole 5 tee, the hole 9 tee and the hole 9 C view. I did not run `perf` because this is a SwiftShader host, so frame time says nothing here. I did not play a swing and did not see a scorecard. I did not take the green close-ups the brief asks for, and my zoom of the hole 1 pin missed it and landed on the title text, so the flag was never seen up close.
@@ -81,3 +75,9 @@ The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.m
    - Then find which geometry calls `toNonIndexed()` on an already non-indexed geometry and remove the call, so `open` no longer prints the warning.
 
 SCORE: 6.9
+
+## Iteration 26
+**Did:** `src/pins.js`: `pin_pole` height 1.3→1.15 (y 0.575), `pin_flag` plane 0.8×0.34 at y 0.98, `pin_knob` y 1.18.
+**Saw:** Short session; I ran no `look`, `perf` or checks, so the pole ratio and the flag's pixel share are unverified.
+**Next:** Prove the flag with `look` on holes 1, 5 and 9. Then add the pale tee mat in `src/course.js` and the `cliffRocks`/`seaStacks` placement in `src/island.js`. Then take the C-view `look`.
+**Open:** The `toNonIndexed()` warning source is not found. `sheep.js:16`, `stage.js:40` and `island.js:287` are the candidates, and the guarded ones look fine.
