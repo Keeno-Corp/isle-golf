@@ -26,7 +26,7 @@ export function startRound(n) {
   beginHole(0);
 }
 export function beginHole(h) {
-  G.hole = h; const H = HOLES[h]; G.cardHole = -1; hud.card.style.display = 'none';
+  G.hole = h; G.lastCall = ''; G.lastLip = false; const H = HOLES[h]; G.cardHole = -1; hud.card.style.display = 'none';
   if (h > 0) G.order = [...G.players].sort((a, b) => ((a.scores[h - 1] - HOLES[h - 1].par) - (b.scores[h - 1] - HOLES[h - 1].par)) || (G.order.indexOf(a.i) - G.order.indexOf(b.i))).map(p => p.i);
   for (const p of G.players) { p.strokes = 0; p.holed = false; p.pos.copy(teeVec(H)); p.prev.copy(p.pos); p.surf = 'tee'; p.pickedUp = false; }
   WIND.set(H.wv.x, H.wv.y).normalize(); ST.gust = clamp(H.wind[0] / 8, 0.1, 1);

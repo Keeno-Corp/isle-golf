@@ -692,3 +692,9 @@ I played a real-key 1-player start. I then ran two putts from 1.5 units out, too
 3. Take a `look` with `sheet` of `clubp` with `state` lie "rough", beside sand, with the `hinter` bunker hint matching the club. Add a stage-2 `meterp` moment (Space twice). Also show a PERFECT/NICE banner on the accuracy click, and an active-player marker at the wider camera (`tag` "ISLA" now sits over the pin, so check it marks the player and not the cup).
 
 SCORE: 7.2
+
+## Iteration 18
+**Did:** `src/round.js` `beginHole`: now clears `G.lastCall` and `G.lastLip` at the start of each hole, so `hudRound.lastCall` no longer carries the last hole's call onto the next tee. Syntax-checked only.
+**Saw:** Did not open the page; no looks, no `perf`. Only a short time was left and I spent it on this one fix.
+**Next:** (1) Run and save `hud-round-full-round` (real keys only, 9 holes to ROUND COMPLETE) and `hud-round-hotseat`, with looks of the 2-player card and ROUND COMPLETE. (2) Save `hud-round-sound` with a robust `lastCall` assertion; confirm with `trace` that `lastCall` is empty after `next`. (3) `clubp` rough sheet, `meterp` at stage 2, PERFECT/NICE banner.
+**Open:** The `lastCall` clear is untested in the browser. The full round and hot-seat proofs are still unrun (fifth session).
