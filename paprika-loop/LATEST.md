@@ -1,11 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 20
-**Did:** `src/round.js` `resolveShot`: the pick-up rule now fires at par+3 strokes (was 9): `p.pickedUp`, `p.strokes` and `p.scores[hole]` are capped at par+3, `G.lastResult` "PICKED UP", banner "PICKED UP" / "<name> · n STROKES, THAT IS PLENTY"; `src/hud.js` card stamp reads "PICKED UP". Probed a state-driven real-key script (no fixed waits).
-**Saw:** `until` that is not met does not abort the play, it only reports, so a block of `until phase [aim,card,intro]` → Space → `until meter.stage 1` → `until meter.power [0.5,0.62]` → Space → `until meter.label PERFECT!` (max 40) → Space repeated 50× is self-healing. With it, 50 blocks reached hole 4 (scores [6,6,6] on par-3 holes shows the pick-up works and holes cannot run forever). It was slow because `phase` "settle"/"holed" outlasts the 150-frame max, so the blocks drift (Space pressed during flight is ignored, but stage/power untils then see stale values: power 0.014 "MISS-HIT!" repeats). Not saved: `hud-round-full-round` in game-tests.json is still the old fixed-wait script. Console: no errors. No `perf` run.
-**Next:** (1) Rebuild `hud-round-full-round` with blocks whose first `until phase [aim,card,intro]` has `max` 600 (flight + holed→card takes 300+ frames) and ~80 blocks, then `until phase final` and expect phase "final"; a Space after final goes to title, so do not overrun (count blocks in a live run first). Save it in one `interact` save call and `test`. (2) `hud-round-hotseat`, `hud-round-sound`. (3) `clubp` rough yardage, `meterp` stage 2, PERFECT banner `look`s.
-**Open:** The full-round check is still not re-saved (seventh session). Blocks cannot branch, so an overrun past ROUND COMPLETE would press Space into title and restart the round; consider making the final card ignore Space for ~1 s in `src/meter.js` if that is accepted.
-
 ### Judge 20
 
 Judge 20 is writing up now. I ran `test`, one real-key 2-player tee shot with a `look`, and `perf` once.
@@ -60,3 +54,9 @@ Judge 20 is writing up now. I ran `test`, one real-key 2-player tee shot with a 
    - Make `hud-round-sound` assert that `hudRound.lastCall` is one of SO CLOSE!, IN!, BIRDIE!, PAR! or "n YD TO PIN", so another lane's physics cannot fail it.
 
 SCORE: 7.7
+
+## Iteration 21
+**Did:** `src/hud.js`: `buildCard(final)` stamps `G.finalAt`; `advanceCard` ignores Space on the hole-9 card for 1 s so an overrun Space cannot restart the round. Final state is `phase` "card" with `hudRound.final` true (there is no `phase` "final").
+**Saw:** Not run: no `look`, `test` or `perf` this session (short on time). The change is two lines, not verified in a browser.
+**Next:** Re-run `test`; make `hud-round-full-round` end on `until hudRound.final` (not phase "final"); take the stamped-card, PICKED UP, ROUND COMPLETE, `clubp` rough and PERFECT looks; make `hud-round-sound` assert lastCall is one of a list.
+**Open:** The guard uses `performance.now()`, and on the paused clock it may not advance in `interact`, so the full-round check could see Space ignored; check this first.

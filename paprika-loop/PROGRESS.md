@@ -814,3 +814,9 @@ Judge 20 is writing up now. I ran `test`, one real-key 2-player tee shot with a 
    - Make `hud-round-sound` assert that `hudRound.lastCall` is one of SO CLOSE!, IN!, BIRDIE!, PAR! or "n YD TO PIN", so another lane's physics cannot fail it.
 
 SCORE: 7.7
+
+## Iteration 21
+**Did:** `src/hud.js`: `buildCard(final)` stamps `G.finalAt`; `advanceCard` ignores Space on the hole-9 card for 1 s so an overrun Space cannot restart the round. Final state is `phase` "card" with `hudRound.final` true (there is no `phase` "final").
+**Saw:** Not run: no `look`, `test` or `perf` this session (short on time). The change is two lines, not verified in a browser.
+**Next:** Re-run `test`; make `hud-round-full-round` end on `until hudRound.final` (not phase "final"); take the stamped-card, PICKED UP, ROUND COMPLETE, `clubp` rough and PERFECT looks; make `hud-round-sound` assert lastCall is one of a list.
+**Open:** The guard uses `performance.now()`, and on the paused clock it may not advance in `interact`, so the full-round check could see Space ignored; check this first.
