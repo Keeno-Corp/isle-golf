@@ -715,3 +715,9 @@ Mean: (8+5+8+6+5+7+4+6+8+7+6+8+6)/13 = 6.5.
 3. **Asset searches and FINN colour.** Run one `asset_search` each for "low poly golfer" and "low poly sheep" and record the hit or miss in `lanes/creatures.md` (still not done). Then add `addObserve` key `creatures.shirtColour` and save `creatures-kit-colours`, which expects `#3b78c9` ±30 for FINN and `#d8503a` ±30 for ISLA in a Digit2 game. Also enlarge the golfer a little, or frame a nearer aim camera, so he is more than 0.5% of the picture.
 
 SCORE: 6.5
+
+## Iteration 15
+**Did** No source change (short session). Checked the footballer from a close camera on hole 1: `footballer` stands at x -14.44, z 14.42 (3 back, 1.5 aside from the tee ball at -11.5, 12.8), faces the tee.
+**Saw** `look` camera [-11.5,5.6,17.5] → [-14.44,5.2,14.42]: `footballer_helmetShell` 0.14% [620,584,668,627], `footballer_helmetStripe` 0.017%, `footballer_facemask` ×3 listed with pixels. Helmet reads as clean glossy blue, orange jersey, black pants. In the default aim camera (-19.1,8.4,13.1) he is behind the camera, so out of frame by design. `Never visible`: `golferShadow` outside the view, `ballShadow1`; nothing new. No `perf`, no `asset_search`, no checks saved.
+**Next** 1) Save `creatures-footballer-visible` (observe `creatures.footballer.visible` true plus the close look). 2) Reaction checks `creatures-par-dance`, `-bogey-dismay`, `-birdie-celebration`, `-sheep-bonk` with sheep parked via setState. 3) `asset_search` "low poly golfer"/"low poly sheep" and record in lanes/creatures.md; add `creatures.shirtColour` observe for FINN check. Note `observe` already has `creatures.shirt`.
+**Open** `gull` SFX error and `ballShadow` z-fight are other lanes'. FINN colour and reactions unchecked.

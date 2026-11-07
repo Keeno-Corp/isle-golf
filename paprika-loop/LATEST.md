@@ -1,11 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 14
-**Did** No source change. Found the `sound.js:71` error's cause: `main.js:52` calls `play('gull')` and `SFX.gull` does not exist; recorded in `lanes/creatures.md` for the lead. Sampled `golfer_shirt` in a 2-player game (ISLA's turn).
-**Saw** Close look, camera [-13.5,6.2,16.5] → [-12.4,5,13.2]: 20 of 26 `golfer_*` parts show (1.8%), shirt `#d33d29` and `#d5402a` (ISLA red, in range), edge contrast 0.085. In the default aim camera the golfer is only 0.02% (13 of 26 parts), so a sample there reads grass. `Surfaces:` still reports `ballShadow1`/`ballShadow2` z-fighting at y = 4.49 (another lane's). No `perf`, no `asset_search`.
-**Next** 1) Sample FINN's shirt (`#3b78c9` ±30) after ISLA's hole-out or via `setState`, then save `creatures-kit-colours`; `interact` has no `sample`, so the check would need an `observe` key for the shirt colour (add one with `addObserve`). 2) Save `creatures-birdie-celebration` with the sheep parked first. 3) Give the lead the `gull` fix and the `ballShadow` polygonOffset fix.
-**Open** FINN's colour is unchecked. A saved hole-out is not stable until sheep are parked. `asset_search` for golfer and sheep is still not done.
-
 ### Judge 14
 
 **Judge 14 verdict**
@@ -34,3 +28,9 @@ Mean: (8+5+8+6+5+7+4+6+8+7+6+8+6)/13 = 6.5.
 3. **Asset searches and FINN colour.** Run one `asset_search` each for "low poly golfer" and "low poly sheep" and record the hit or miss in `lanes/creatures.md` (still not done). Then add `addObserve` key `creatures.shirtColour` and save `creatures-kit-colours`, which expects `#3b78c9` ±30 for FINN and `#d8503a` ±30 for ISLA in a Digit2 game. Also enlarge the golfer a little, or frame a nearer aim camera, so he is more than 0.5% of the picture.
 
 SCORE: 6.5
+
+## Iteration 15
+**Did** No source change (short session). Checked the footballer from a close camera on hole 1: `footballer` stands at x -14.44, z 14.42 (3 back, 1.5 aside from the tee ball at -11.5, 12.8), faces the tee.
+**Saw** `look` camera [-11.5,5.6,17.5] → [-14.44,5.2,14.42]: `footballer_helmetShell` 0.14% [620,584,668,627], `footballer_helmetStripe` 0.017%, `footballer_facemask` ×3 listed with pixels. Helmet reads as clean glossy blue, orange jersey, black pants. In the default aim camera (-19.1,8.4,13.1) he is behind the camera, so out of frame by design. `Never visible`: `golferShadow` outside the view, `ballShadow1`; nothing new. No `perf`, no `asset_search`, no checks saved.
+**Next** 1) Save `creatures-footballer-visible` (observe `creatures.footballer.visible` true plus the close look). 2) Reaction checks `creatures-par-dance`, `-bogey-dismay`, `-birdie-celebration`, `-sheep-bonk` with sheep parked via setState. 3) `asset_search` "low poly golfer"/"low poly sheep" and record in lanes/creatures.md; add `creatures.shirtColour` observe for FINN check. Note `observe` already has `creatures.shirt`.
+**Open** `gull` SFX error and `ballShadow` z-fight are other lanes'. FINN colour and reactions unchecked.
