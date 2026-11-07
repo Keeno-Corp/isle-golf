@@ -219,3 +219,9 @@ I played one real-flow iron shot from the hole 1 tee (`swing` power 0.8, accurac
 3. **Save the wedge roll-out order and the collision drives (asked again).** Run real Space presses from fairway, rough, sand and green, and `expect` `physics.rollYd` green > fairway > rough > sand. Then save drives that fire `ball:tree`, `ball:sheep` and `ball:wall`. After that, check why a 118-yard iron rolls 37 yards on the green (`rollYd` 37). It should stop closer to the first bounce, and the new check should show it.
 
 SCORE: 6.9
+
+## Iteration 8
+**Did**: src/ballfx.js: `PHY.puttBreak` is now computed only when the swing's club is the putter (CLUBS `putt`), else 0 — fixes the stale -0.945/0.735 the judge saw after full shots.
+**Saw**: Only a syntax check (`node --check`); I did not run looks, checks or perf this session.
+**Next**: lip-out (`ball:lip`) and slope-break (`puttBreak` ≥ 0.2) saved checks; wedge roll-out order from real Space presses; why a 118-yd iron rolls 37 yd on green; tree/sheep/house drives; sand/rough puff looks.
+**Open**: The change is unverified in the running page. Sand puff colours are still a guess.

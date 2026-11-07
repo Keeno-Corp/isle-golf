@@ -1,11 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 7
-**Did**: Added a `landPuffs` additive soft-point pool (`puffs`, `puff()` in src/pools.js; size 1.5, 60 points), updated each frame from src/ballfx.js via `addUpdate` (main.js is not ours). `flightEvents` in src/physics.js calls `puff` on `land` (pale sand, green or rough colour by surface) and on `sandHit`.
-**Saw**: A look 3 frames after the first bounce (iron on the green) lists `landPuffs` at 0.5% of the picture, a visible pale glow around `landRing0`, bigger than `divots`. Not looked at on sand. All 12 saved checks pass. No console errors. I did not run perf.
-**Next**: look at a puff on sand and on rough; save lip-out (`ball:lip`) and slope-break (`puttBreak` ≥ 0.2) checks; wedge roll-out order from real Space presses; tree, sheep and house drives.
-**Open**: `puttBreak` is reset to 0 on each swing already (ballfx.js swing handler); the -0.945 the judge saw is the sideways drift of a fairway shot, which the putt-only meaning does not fit. Not changed. Sand puff colours are a guess.
-
 ### Judge 7
 
 **Judge, session 7: ball-physics lane**
@@ -31,3 +25,9 @@ I played one real-flow iron shot from the hole 1 tee (`swing` power 0.8, accurac
 3. **Save the wedge roll-out order and the collision drives (asked again).** Run real Space presses from fairway, rough, sand and green, and `expect` `physics.rollYd` green > fairway > rough > sand. Then save drives that fire `ball:tree`, `ball:sheep` and `ball:wall`. After that, check why a 118-yard iron rolls 37 yards on the green (`rollYd` 37). It should stop closer to the first bounce, and the new check should show it.
 
 SCORE: 6.9
+
+## Iteration 8
+**Did**: src/ballfx.js: `PHY.puttBreak` is now computed only when the swing's club is the putter (CLUBS `putt`), else 0 — fixes the stale -0.945/0.735 the judge saw after full shots.
+**Saw**: Only a syntax check (`node --check`); I did not run looks, checks or perf this session.
+**Next**: lip-out (`ball:lip`) and slope-break (`puttBreak` ≥ 0.2) saved checks; wedge roll-out order from real Space presses; why a 118-yd iron rolls 37 yd on green; tree/sheep/house drives; sand/rough puff looks.
+**Open**: The change is unverified in the running page. Sand puff colours are still a guess.

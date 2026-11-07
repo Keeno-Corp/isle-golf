@@ -61,7 +61,7 @@ addUpdate(dt => {
   const m = G.m; if (G.phase === 'aim' && m.stage === 0 && (m.power || m.t || m.t2 || m.tp || m.acc || m.label)) { m.power = m.t = m.t2 = m.tp = m.acc = 0; m.label = ''; }
   if (PHY.origin && (SIM.mode === 'roll' || SIM.mode === 'rest' || SIM.mode === 'sunk') && G.phase !== 'aim') {
     const dx = SIM.pos.x - PHY.origin.x, dz = SIM.pos.z - PHY.origin.z, ca = Math.cos(PHY.aim), sa = Math.sin(PHY.aim);
-    PHY.puttBreak = r3(-dx * sa + dz * ca);   // signed sideways distance from the aim line (+ = right of the aim)
+    const pc = CLUBS.find(k => k.id === PHY.club); PHY.puttBreak = pc && pc.putt ? r3(-dx * sa + dz * ca) : 0;   // signed sideways distance from the aim line (+ = right of the aim)
     const fb = PHY.firstBounce; if (fb) PHY.rollYd = Math.round(Math.hypot(SIM.pos.x - fb.x, SIM.pos.z - fb.z) * YD);
   }
 });
