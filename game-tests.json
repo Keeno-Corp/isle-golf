@@ -927,6 +927,164 @@
           "value": 1
         }
       ]
+    },
+    {
+      "id": "creatures-sheep-bonk-heart",
+      "title": "creatures-sheep-bonk-heart",
+      "state": {},
+      "actions": [
+        {
+          "action": "start",
+          "players": 1
+        },
+        {
+          "action": "next"
+        },
+        {
+          "wait": 5
+        },
+        {
+          "state": {
+            "ball": {
+              "x": -8,
+              "z": 12.5
+            },
+            "creatures": {
+              "sheep": {
+                "i": 3,
+                "x": -6.3,
+                "z": 12.5,
+                "wait": 60
+              }
+            }
+          }
+        },
+        {
+          "wait": 3
+        },
+        {
+          "key": "KeyS",
+          "frames": 3
+        },
+        {
+          "wait": 3
+        },
+        {
+          "key": "Space",
+          "frames": 2
+        },
+        {
+          "wait": 25
+        },
+        {
+          "key": "Space",
+          "frames": 2
+        },
+        {
+          "wait": 3
+        },
+        {
+          "key": "Space",
+          "frames": 2
+        },
+        {
+          "until": {
+            "sheepHits": 1
+          },
+          "max": 200
+        },
+        {
+          "wait": 6
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "club",
+          "op": "==",
+          "value": "putter"
+        },
+        {
+          "path": "creatures.sheepHits",
+          "op": "==",
+          "value": 1
+        },
+        {
+          "path": "creatures.sheep.3.state",
+          "op": "in",
+          "value": [
+            "hop",
+            "flee",
+            "tumble"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "creatures-drive-poses",
+      "title": "creatures-drive-poses",
+      "state": {},
+      "actions": [
+        {
+          "key": "Space",
+          "frames": 2
+        },
+        {
+          "wait": 5
+        },
+        {
+          "state": {
+            "skipIntro": true
+          }
+        },
+        {
+          "wait": 5
+        },
+        {
+          "key": "Space",
+          "frames": 2
+        },
+        {
+          "wait": 55
+        },
+        {
+          "key": "Space",
+          "frames": 2
+        },
+        {
+          "wait": 28
+        },
+        {
+          "key": "Space",
+          "frames": 2
+        },
+        {
+          "wait": 14
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "creatures.golferClip",
+          "op": "==",
+          "value": "follow"
+        },
+        {
+          "path": "creatures.clubHead",
+          "op": "==",
+          "value": "iron"
+        },
+        {
+          "path": "phase",
+          "op": "==",
+          "value": "flight"
+        },
+        {
+          "path": "strokes",
+          "op": "==",
+          "value": 1
+        }
+      ]
     }
   ]
 }
