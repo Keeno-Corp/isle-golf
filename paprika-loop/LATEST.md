@@ -1,66 +1,65 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-### Judge 13
-
-**Judge 13: Isle Golf, hud-round lane**
-
-I opened the page, played a real-key 2-player start through ISLA's first shot, then ran a scripted putter shot on a fresh 1-player round and ran `perf` once. I never saw a stamped card, a final card, SO CLOSE!, a bunker hint, a rough or sand `clubp` drop, or the NaN fix running. Those lines rest on earlier sessions' notes, not on my own play.
-
-1. **Wider view and putt feedback (top priority): 7.**
-   - At the 2-player tee, `holep` [16,14,336,148], `windp`, `clubp`, `hinter` and `tag` show 0 overlap and 0 cut off.
-   - `banner` "70 YD TO PIN" [184,208,481,253] and `sub` "FINN TO PLAY" sit left of the pin flag, clear of the ball and pin.
-   - On the green, a 0.2-power putt dropped, and `hudRound.lastCall` went "PERFECT!" then "HOLE IN ONE!". `banner` [173,208,492,295] stayed left of the cup and pole.
-   - The drop is verified for a hole-in-one. SO CLOSE! and a lip-out are still unseen, for the fifth judge session running.
-2. **HUD in the Isle Blitz type: 9.**
-   - `holep` carries hole, par, strokes and yards, `windp` is top right, and `clubp` shows "LIE · TEE" then "LIE · GREEN" with PUTTER highlighted.
-   - The yardage drop on rough or sand is unseen.
-   - `meterp` was not on screen in either look.
-3. **Banners never cover the target: 8.**
-   - In both looks, `banner` and `sub` are left of the ball and pin.
-   - Not checked: whether they clear on time.
-4. **Stamped scorecard and final card: 4.**
-   - I did not see the card. After the hole-in-one, `until {phase:"card"}` ran 400 frames and ended with `phase` "title".
-   - The title page was showing and no card appeared. I had called `newRound` earlier, so this may be my own state, but it needs a clean real-key check.
-5. **Title and hot-seat: 8.**
-   - `hudRound.order` was ["ISLA","FINN"] and the turn passed to FINN after ISLA's shot, with `scores` rows for both.
-   - The `tag` pill "FINN" in kit colour sits above the golfer, which covers the active-player marker.
-   - The title picture is clean: Isle Blitz type and 1–4 player buttons.
-6. **Sound: 8.**
-   - Interact reported 28 and 16 sounds started, with no `SFX[k]` error.
-   - I can't hear the surf, gulls, jingle or tick in headless.
-7. **Juice: 7.**
-   - `meter.label` and `banner` showed "PERFECT!" for the whole settle phase (frames 22–96).
-   - "n YD TO PIN" shows at rest, but "70 YD TO PIN" was left over from ISLA while FINN's `yardsToPin` read 118. The bunker hint is unseen.
-8. **R replay and full round: 6.**
-   - I did not rerun `hud-round-full-round`, and no real-key round has been photographed to ROUND COMPLETE.
-9. **No console errors: 9.**
-   - Only the `toNonIndexed` warning appeared.
-   - The NaN wind fix is unconfirmed: `windp` "2 MPH TAILWIND" rendered with no error.
-10. **Saved checks hud-round-*: 8.**
-    - They exist per earlier sessions, but the saved-check hook timed out last session and I did not rerun them.
-11. **Looks as LOOK.md says: 8.**
-    - Tee look: green 63%, yellow 24%, tilt-shift blur, cream-on-dark-green panels.
-    - The golfer is 0.35% of the frame, which is the look lane's camera.
-    - The holed look puts the camera very close on the cup, so the `grass` and pole fill the frame and the HUD still reads.
-12. **Edit only the allowed files: 9.**
-    - Iteration 13 touched `src/hud.js` only.
-13. **Keep as they are: 8.**
-    - `aimDots`, `aimLanding`, sheep, cup, flyover and `window.__game` are all present.
-14. **Faults: 7.**
-    - Every look lists `ball2` and `ball1` as hidden or not found by the ID image.
-    - `perf` read 1059 ms a frame on SwiftShader with host load 4.2, which is no signal (175 draw calls, 367k triangles in the main scene).
-    - The `ballShadow` z-fight is ball-physics' and not scored.
-    - The card-to-title jump after a hole-in-one is possible but unconfirmed.
-
-**Next:**
-1. **(asked again)** Photograph the stamped card with real keys only. From a fresh open: `Digit2`, `Space`, then Space ×3 per shot with `wait`s, putts on the green, until both players hole out on hole 1. Use `until {phase:"card"}` with `look:true`. The expected result is both rows with BIRDIE/PAR/BOGEY stamps. If `phase` skips straight to "title" or the next hole, as it did after my `newRound` hole-in-one, that is the bug to fix in `src/round.js`.
-2. **(asked again)** Prove SO CLOSE! and a lip-out. Set `state` with the ball about 0.4 units from the cup. Use a putter `swing` with `power` set so the ball misses by under a cup width, tracing `hudRound.lastCall` and `hudRound.minPinD`. `look` right after should show "SO CLOSE!" in `banner` clear of the ball and pin. Also check that the PERFECT/NICE banner clears when the ball comes to rest. This session it stayed up through the whole settle phase.
-3. **(asked again)** Take the `clubp` yardage-drop `sheet` with `state` lie "rough" and "sand", plus a `C` overhead moment. `clubp` yardages should read lower than the tee's 204/132/74, `#tag` should be hidden on the overhead, and `hinter` should show the bunker hint that matches the club. Then fix the stale rest banner: "70 YD TO PIN" was still on screen at FINN's tee while his `yardsToPin` was 118.
-
-SCORE: 7.3
-
 ## Iteration 15
 **Did:** One change in `src/round.js` (line 82, `_introCleared` update): the banner and `sub` now clear whenever a new shot reaches meter stage 1 with any banner still up (was only banners with more than 1 s left), so "n YD TO PIN" from the last player's rest no longer sits over the next player's tee. Not run in the browser.
 **Saw:** Nothing looked this session; no numbers, no `perf`.
 **Next:** (1) 2-player stamped card and ROUND COMPLETE with real keys only. (2) Prove SO CLOSE! with a near-miss. (3) `sheet` of `clubp` on rough and sand. (4) Check the stale-banner change at FINN's tee after ISLA's rest.
 **Open:** The stale-banner fix is untested; the 2-player card, final card, SO CLOSE! and clubp yardage drop are still unphotographed.
+
+### Judge 15
+
+**Judge 15: Isle Golf, hud-round lane**
+
+I played a real-key 2-player start through ISLA's first shot, FINN's turn change, a scripted putt-out for both players, and the stamped card. I ran `perf` once. I did not play a full 9-hole round, or see SO CLOSE!, the final card, or a rough or sand `clubp` drop.
+
+1. **Wider view and putt feedback (top priority): 7.**
+   - At every look `holep` [16,14,336,148], `windp`, `clubp`, `hinter` and `tag` show 0 overlap and 0 cut off. The `sub` "FINN TO PLAY" sits left of the pin, clear of the ball.
+   - `hudRound.lastCall` went "PERFECT!" then "BIRDIE!" for a 0.12-power putt, and `minPinD` read 0.12. The drop call is proven.
+   - SO CLOSE! and the lip-out are still unseen, for the sixth session running.
+2. **HUD in the Isle Blitz type: 8.**
+   - `holep` carries hole, par, strokes and yards. `windp` is top right. `clubp` shows "LIE · TEE" and "LIE · FAIRWAY", with IRON then WEDGE highlighted.
+   - `meterp` was not on screen in my looks.
+   - The yardage drop on rough or sand is unseen.
+3. **Banners never cover the target: 8.**
+   - `banner` and `sub` stayed off the ball and pin in all three gameplay looks.
+   - They do clear: "PERFECT!" was replaced by "65 YD TO PIN" when FINN reached aim (frame 42), so the stale-banner fix from iteration 15 works at that tee.
+   - One fault: after ISLA's second turn, "65 YD TO PIN" shows at her aim with FINN's number, because the last rest banner is only cleared at meter stage 1.
+4. **Stamped scorecard and final card: 7.**
+   - The 2-player `card` is seen at last. "HOLE 1 · PEBBLE STEP" has a 9-hole grid with PAR, TOT and +/- columns. It has rows for ISLA and FINN in kit-colour dots, a circled "2" score each, and two stamps "ISLA BIRDIE" and "FINN BIRDIE". The footer reads "SPACE · NEXT HOLE" and the island shows blurred behind it.
+   - The card appears one frame after the sink, with no pause to see the ball drop.
+   - The ROUND COMPLETE final card is still unseen.
+5. **Title and hot-seat: 8.**
+   - `hudRound.order` was ["ISLA","FINN"]. The turn passed to FINN with `scores` rows for both, and the `tag` pill shows each player's colour.
+   - Whether the lowest score tees off first on hole 2 is unseen.
+6. **Sound: 8.**
+   - Interact reported 14–26 sounds started per step, with no `SFX[k]` error.
+   - I can't hear the surf, gulls, jingle or tick in headless.
+7. **Juice: 7.**
+   - `meter.label` and `banner` showed "PERFECT!" through the whole flight and settle phase, then "n YD TO PIN" at rest.
+   - `observe().yardsToPin` stayed 118 during the settle, so it lags the banner's value.
+   - The bunker hint is unseen.
+8. **R replay and full round: 5.**
+   - No real-key round has been photographed to ROUND COMPLETE, and I did not rerun `hud-round-full-round`. R is untested by me.
+9. **No console errors: 9.**
+   - Only the `toNonIndexed` warning appeared across the whole play.
+10. **Saved checks hud-round-*: 7.**
+    - They exist per earlier sessions, but I did not rerun them. The lead's steer asks for outcome-robust assertions on `lastCall`, and I did not see these.
+11. **Looks as LOOK.md says: 8.**
+    - The tilt-shift blur holds. Panels are cream on dark green and the type is Isle Blitz.
+    - The look shows 28–29% grass and green 54–67%.
+    - The golfer is 0.34–0.5% of the frame, which is the look lane's camera and not this lane's.
+12. **Edit only the allowed files: 9.**
+    - Iteration 15 touched `src/round.js` only.
+13. **Keep as they are: 8.**
+    - `aimDots`, `aimLanding`, sheep, `cup`, flyover and `window.__game` are all present.
+14. **Faults: 7.**
+    - The `card` div takes the clicks on only 6% of the canvas. It is a keyboard card, which is fine.
+    - `perf` read 598 ms a frame on SwiftShader at host load 5.2, which is no signal (181 draw calls, 367k triangles). It is not scored.
+    - The `ball2` and `ballShadow` objects are hidden or z-fight. They are ball-physics' and not scored.
+
+**Next:**
+1. **(asked again)** Prove SO CLOSE! and a lip-out. Use `state` to put the ball about 0.5 units from the cup, then `swing` with the putter, `power` ~0.1 and `accuracy` ±0.4. This misses by under a cup width. `look` right after, with `hudRound.lastCall` and `minPinD` traced. It should show "SO CLOSE!" in `banner` and the lip sound once, with `banner` clear of the ball and pin. Make the check assert any of SO CLOSE!, IN!, BIRDIE! or "n YD TO PIN" that matches `minPinD`.
+2. **(asked again)** Take the `look` with `sheet` of `clubp` on `state` lie "rough" and "sand". `clubp` DRIVER, IRON and WEDGE yardages should read lower than the tee's 204/132/74. `hinter` should show the bunker hint matching the club. Add a `C` overhead moment, where `#tag` should hide. Also sync `observe().yardsToPin` with the banner during settle, and clear the settle banner "PERFECT!" when the ball lands rather than holding it through flight.
+3. **Prove the full round and the final card.** From a fresh open with real keys only (Digit1 or Digit2, Space, Space to skip each flyover, Space ×3 per shot with `wait`s, Space on each card), run all 9 holes to `phase` "final". Take a `look` of ROUND COMPLETE with the winner and best round. Press Space to confirm the return to the title. Save it as `hud-round-full-round`, with `observe().scores` having 9 entries. Add a one-second hold on the sink moment before the card opens, so the ball drop and the jingle can be seen.
+
+SCORE: 7.5
