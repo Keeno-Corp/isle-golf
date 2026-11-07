@@ -2,7 +2,7 @@
 import './api.js';
 import * as THREE from 'three';
 import { clamp } from './util.js';
-import { ST, addAction, addObserve, addUpdate, addKey, on, fire } from './shared.js';
+import { ST, addAction, addObserve, addUpdate, addKey, addSetState, on, fire } from './shared.js';
 import { HOLES, heightAt, surfaceAt, bunkerQ, BUNKERS, YD } from './course.js';
 import { G, beginHole, curH, curP, scoreName, startRound } from './round.js';
 import { BR, WIND } from './rules.js';
@@ -506,6 +506,15 @@ addObserve(() => ({
     todaysFirst: DAILY.todaysFirst,
   }
 }));
+
+// ---------------------------------------------------------------- setState hook — allows check steps to seed localStorage for test isolation
+addSetState(s => {
+  if (s.localStorage) {
+    for (const [k, v] of Object.entries(s.localStorage)) {
+      try { if (v === null) localStorage.removeItem(k); else localStorage.setItem(k, String(v)); } catch (e) {}
+    }
+  }
+});
 
 // ---------------------------------------------------------------- URL ?daily / ?daily=YYYY-MM-DD auto-start
 {

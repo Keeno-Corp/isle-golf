@@ -7439,6 +7439,13 @@
       "state": {},
       "actions": [
         {
+          "state": {
+            "localStorage": {
+              "isleGolfBest1": "999"
+            }
+          }
+        },
+        {
           "action": "daily",
           "date": "2026-01-04"
         },
@@ -7495,7 +7502,7 @@
         {
           "path": "hudRound.best",
           "op": "==",
-          "value": null
+          "value": 999
         }
       ]
     },
