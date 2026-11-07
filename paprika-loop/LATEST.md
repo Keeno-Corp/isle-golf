@@ -1,11 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 14
-**Did**: `SURF.rough.t` 0.32 → 0.4 in src/rules.js so rough rolls a little more than sand. Re-ran all saved checks: 20/20 pass. Did not edit checks or ballfx.js.
-**Saw**: Numbers only; no looks, no `perf`. Did not re-measure `rollYd` for rough (check only asserts its old bounds) so the rough-vs-sand gap is unconfirmed.
-**Next**: 1) Read `physics.rollYd` after a rough rollout to confirm > 0 and sand stays near 0. 2) Per the 04:15 PROMPT note: polish feel with looks of trail, landing ring, first-bounce puff, cup drop/rattle; play real-key holes 1-3 and confirm the round finishes. 3) Real-key rollout checks, a `ball:lip` check, `minPinD` check (still open from Judge 13).
-**Open**: Rollout checks still use `swing` act. `divots` never visible. The 04:15 note arrived after the change; none of its polish was done.
-
 ### Judge 14
 
 **Judge, session 14: ball-physics lane**
@@ -31,3 +25,14 @@ I ran `test`, played one real-key iron shot from the hole 1 tee with one look, a
 3. **Make `divots` and `landPuffs` visible.** Land a wedge in a bunker and `look` right after the first bounce. `landPuffs` should be above 0.5%, with a sand colour at the `sample` pixels. Make a `divots` mark appear after an iron lie shot. Then save `ball-physics-minpind` from a real-key shot, with `physics.minPinD` in [0, 8] after landing.
 
 SCORE: 7.9
+
+## The request changed
+
+paprika-loop/PROMPT.md changed before session 15; the Next lists above were written before it. Changed lines:
++ - (04:15 UTC) All checks are saved. Remaining time: polish feel, not new checks. Re-run `node ~/repos/paprika3d/src/cli.js check` style replays of every ball-physics-* check after each change so none regress; then make the flight read well in looks (trail, landing ring, first-bounce puff, cup drop/rattle) and play a real-key hole 1-3 to confirm putting feels easy and the round still finishes.
+
+## Iteration 15
+**Did**: No code changes. Read LATEST.md and the 04:15 PROMPT note, and re-read `SURF` in src/rules.js (green t 0.95 / roll 2.4, fairway t 0.62 / roll 3.1, rough t 0.4 / roll 10, sand t 0.08 / roll 26). By the numbers the order green > fairway > rough > sand holds.
+**Saw**: Numbers only: no look, no `test`, no `perf` this session. `rollYd` per surface is still unmeasured, and no `ball:lip`, `minPinD`, putt preview or `divots` look exists.
+**Next**: 1) Real-key rollout on fairway, rough, sand and green and read `physics.rollYd`. 2) Play real-key holes 1-3 and confirm the round finishes; look at the putt preview and `ball:lip`. 3) Make `divots` and `landPuffs` visible with a bunker wedge look right after the first bounce.
+**Open**: The 04:15 polish items (trail, landing ring, puff, cup drop/rattle) are not done. `divots` is never visible. The rollout checks still use the `swing` act.
