@@ -84,5 +84,9 @@ addUpdate(dt => {
   wayMark.visible = !t.pin && far && (G.phase === 'aim' || G.phase === 'intro' || G.phase === 'swing');
   if (wayMark.visible) { wayMark.position.set(t.x, heightAt(t.x, t.z), t.z); wayMark.getObjectByName('way_diamond').rotation.y += dt * 1.6; }
 });
-addObserve(() => ({ course: { pinVisible: HOLES.map(H => H.pinG.visible), waypoint: wayInfo && !wayInfo.pin ? [+wayInfo.x.toFixed(2), +wayInfo.z.toFixed(2)] : null } }));
+addObserve(() => {
+  const G = RM && RM.G; const H = HOLES[G ? G.hole : 0]; const pl = G && G.players && G.players[G.turn]; const bp = pl && pl.pos;
+  const tx = bp && isFinite(bp.x) ? bp.x : H.tee[0], tz = bp && isFinite(bp.z) ? bp.z : H.tee[1];
+  return { course: { cViewCentre: [+((tx + H.pinX) / 2).toFixed(2), +((tz + H.pinZ) / 2).toFixed(2)], cViewSpan: +Math.hypot(H.pinX - tx, H.pinZ - tz).toFixed(1), pinVisible: HOLES.map(h => h.pinG.visible), waypoint: wayInfo && !wayInfo.pin ? [+wayInfo.x.toFixed(2), +wayInfo.z.toFixed(2)] : null } };
+});
 window.__course = { HOLES, BUNKERS, inland, surfaceAt, heightAt };   // debug handle for the tools

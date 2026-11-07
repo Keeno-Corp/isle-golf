@@ -845,3 +845,9 @@ SCORE: 6.7
 **Saw** Auto-picked club and `meter.needPower`: h1 iron 0.883, h2 iron 0.643, h3 driver 0.895, h4 driver 0.745, h5 driver 0.993, h6-h9 driver 1.05 (pin beyond one drive; par 4/5, so expected). All par 3s are under 0.95. Console still warns `toNonIndexed(): already non-indexed` at open.
 **Next** (1) `asset_search` swaps for `tree*`, `bushes*`, `blossoms*`, `fenceRails` in src/island.js. (2) Hole 5 (0.993) and 6 could be shortened in src/course.js if the judge's 0.95 target should hold for par 4s; the auto-club lives in src/aimline.js (not this lane). (3) Export `course.cViewCentre` for src/camera.js so the C view frames pin and golfer.
 **Open** Nothing was looked at or played this session; blossom size from iteration 13 is judged OK by the judge (0.23% of frame).
+
+## Iteration 15
+**Did** src/pins.js: `observe().course` now has `cViewCentre` [x,z] (ball/pin midpoint) and `cViewSpan`; noted in lanes/course.md.
+**Saw** Page opens, no console error (only the toNonIndexed warning); hole 1 gives cViewCentre [-7.49,14.89], span 10.7. No look/perf run.
+**Next** (1) asset_search swaps for tree*, bushes*, blossoms*, fenceRails in src/island.js. (2) camera lane to use cViewCentre/cViewSpan; golfer contrast accent. (3) Shorten holes 5/6 for needPower<=0.95 if wanted.
+**Open** camera.js doesn't use cViewCentre yet (not this lane); needPower on par 4/5 still 0.99-1.05.

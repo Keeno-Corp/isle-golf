@@ -22,3 +22,6 @@
 ## Iteration 10 notes
 - Par 3 tees (holes 1-3) pulled toward the green in src/course.js: iron needPower 0.88-0.89 (was 0.96-1.05). Hole 2 no longer needs a hud-lane club fix.
 - C view: the current pin (pole, flag, knob) is drawn 2.6x with a yellow `pin_ring` disc under it (src/pins.js, driven by G.overhead).
+
+## Iteration 15
+- `__game.observe().course` also has `cViewCentre: [x,z]` (midpoint of ball and pin) and `cViewSpan` (ball-to-pin distance) so src/camera.js can frame pin and golfer in the C view.
