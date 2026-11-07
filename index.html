@@ -1349,15 +1349,15 @@ const flagMat = std('#d9392b', { roughness: 0.8, side: THREE.DoubleSide });
 flagMat.onBeforeCompile = sh => {
   Object.assign(sh.uniforms, flagU);
   sh.vertexShader = sh.vertexShader.replace('#include <common>', '#include <common>\nuniform float uTime;')
-    .replace('#include <begin_vertex>', '#include <begin_vertex>\n float fx = position.x / 0.4; transformed.z += sin(uTime * 9.0 - fx * 7.0) * 0.045 * fx; transformed.y += sin(uTime * 7.0 - fx * 5.0 + 1.0) * 0.018 * fx;');
+    .replace('#include <begin_vertex>', '#include <begin_vertex>\n float fx = position.x / 0.6; transformed.z += sin(uTime * 9.0 - fx * 7.0) * 0.045 * fx; transformed.y += sin(uTime * 7.0 - fx * 5.0 + 1.0) * 0.018 * fx;');
 };
 const flagWhite = std('#f6f0de', { roughness: 0.8, side: THREE.DoubleSide });
 const pins = HOLES.map((H) => {
   const g = new THREE.Group(); g.name = 'pin' + (H.i + 1);
   const gy = heightAt(H.pinX, H.pinZ);
   g.position.set(H.pinX, gy, H.pinZ);
-  const pole = named(new THREE.Mesh(new THREE.CylinderGeometry(0.013, 0.013, 1.25, 6), flagWhite), 'pin_pole'); pole.position.y = 0.62; g.add(pole);
-  const cloth = new THREE.PlaneGeometry(0.42, 0.26, 10, 2).translate(0.21, 0, 0);
+  const pole = named(new THREE.Mesh(new THREE.CylinderGeometry(0.022, 0.022, 1.25, 6), flagWhite), 'pin_pole'); pole.position.y = 0.62; g.add(pole);
+  const cloth = new THREE.PlaneGeometry(0.62, 0.38, 10, 2).translate(0.31, 0, 0);
   const flag = named(new THREE.Mesh(cloth, flagMat), 'pin_flag'); flag.position.y = 1.1; flag.castShadow = true; g.add(flag);
   const w = H.wind, ang = w[1] * Math.PI / 180; H.wv = new THREE.Vector2(Math.cos(ang) * w[0], Math.sin(ang) * w[0]);
   flag.rotation.y = -Math.atan2(H.wv.y, H.wv.x); flag.scale.x = 0.55 + 0.1 * w[0];
@@ -1621,7 +1621,7 @@ const curP = () => G.players[G.turn], curH = () => HOLES[G.hole], curClub = () =
 const teeVec = H => new THREE.Vector3(H.tee[0], heightAt(H.tee[0], H.tee[1]) + BR * 0.8, H.tee[1]);
 const pinDist = (p, H) => Math.hypot(H.pinX - p.x, H.pinZ - p.z);
 const scoreName = (s, par) => s === 1 ? 'HOLE IN ONE!' : s - par <= -3 ? 'ALBATROSS!' : s - par === -2 ? 'EAGLE!' : s - par === -1 ? 'BIRDIE!' : s - par === 0 ? 'PAR' : s - par === 1 ? 'BOGEY' : s - par === 2 ? 'DOUBLE BOGEY' : '+' + (s - par);
-const vsPar = n => n === 0 ? 'E' : n > 0 ? '+' + n : String(n);
+const vsPar = n => n === 0 ? 'EVEN' : n > 0 ? '+' + n : String(n);
 function startRound(n) {
   G.nPlayers = clamp(n | 0 || 1, 1, 4); G.round++;
   G.players = KITS.slice(0, G.nPlayers).map((k, i) => ({ i, kit: k, name: k.name, scores: [], strokes: 0, holed: false, pos: new THREE.Vector3(), prev: new THREE.Vector3(), surf: 'tee', pickedUp: false }));
@@ -1858,7 +1858,7 @@ style.textContent = `
 #meterp .snap{position:absolute;left:0;top:0;bottom:0;width:4.5%;background:rgba(255,246,200,.28);border-right:3px solid #fff6c8}
 #meterp .needle{position:absolute;top:-2px;bottom:-2px;width:5px;margin-left:-2px;background:#fff;box-shadow:0 0 8px #fff;display:none}
 #meterp .notch{position:absolute;top:0;bottom:0;width:3px;background:#4ad8e8;box-shadow:0 0 6px #4ad8e8}
-#hinter{position:absolute;right:16px;bottom:14px;font-size:14px;line-height:1.5;text-align:right;color:#f4e39a;opacity:.7;text-shadow:1px 1px 0 #000}#hinter b{color:#fff6c8}
+#hinter{position:absolute;right:16px;bottom:14px;padding:4px 10px;background:rgba(18,34,25,.72);border-radius:5px;font-size:14px;line-height:1.5;text-align:right;color:#f4e39a;opacity:.7;text-shadow:1px 1px 0 #000}#hinter b{color:#fff6c8}
 #title{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:9%;pointer-events:none}
 #title h1{margin:0;font-size:120px;line-height:.95;color:#f7e27a;text-shadow:5px 5px 0 #000,-3px -3px 0 #000,0 0 30px rgba(255,214,120,.8);-webkit-text-stroke:2px #3a3408;letter-spacing:2px}
 #title .sub{font-size:26px;color:#fff6c8;margin:10px 0 26px;padding:4px 20px}
