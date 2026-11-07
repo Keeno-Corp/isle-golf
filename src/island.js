@@ -4,8 +4,8 @@ import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { duckGLB, modelCopy } from './assets.js';
 import { clamp, fbm, hash, lerp, rand, smooth, vnoise } from './util.js';
 import { ST } from './shared.js';
-import { BELL, FLOWERS, HOUSE, H_COT, H_HOUSE, H_LH, H_POND, LH, LH_COT, POND, TREES, courseColour, edgeR, heightAt, inland, outFlat } from './course.js';
-import { camera, mergeChildren, named, scene, std } from './stage.js';
+import { SPREAD, BELL, FLOWERS, HOUSE, H_COT, H_HOUSE, H_LH, H_POND, LH, LH_COT, POND, TREES, courseColour, stripeAt, edgeR, heightAt, inland, outFlat } from './course.js';
+import { camera, mergeChildren, named, renderer, scene, std } from './stage.js';
 import { FF, _gv, canvasTex, clouds, ffGeo, ffMat, ffSeed, flies, gulls, smokes, spawnSmoke } from './effects.js';
 
 // ---------------------------------------------------------------- sea
@@ -97,9 +97,9 @@ sea.name = 'sea'; sea.receiveShadow = false; scene.add(sea);
 
 // ---------------------------------------------------------------- the path (dirt, drawn into the terrain colours)
 export const pathCurves = [
-  [[-9.5, -11.9], [-8.4, -10.9], [-6.4, -10.4], [-3.2, -10.6]],                             // from the house door out to the lane
-  [[-3.2, -10.6], [-0.4, -11.8], [1.4, -12.8], [2.6, -14.2]],                               // up the hill to the bell
-  [[19.2, -8.9], [20.2, -9.3], [LH.x - 0.9, LH.z + 0.7]],                                    // the last green to the lighthouse door
+  [[-9.5, -11.9], [-8.4, -10.9], [-6.4, -10.4], [-3.2, -10.6]].map(q => q.map(v => v * SPREAD)),                             // from the house door out to the lane
+  [[-3.2, -10.6], [-0.4, -11.8], [1.4, -12.8], [2.6, -14.2]].map(q => q.map(v => v * SPREAD)),                               // up the hill to the bell
+  [[19.2 * SPREAD, -8.9 * SPREAD], [20.2 * SPREAD, -9.3 * SPREAD], [LH.x - 0.9, LH.z + 0.7]],                                    // the last green to the lighthouse door
   [[LH_COT.x - 0.4, LH_COT.z + 1.0], [LH_COT.x - 2.6, LH_COT.z + 2.2], [LH_COT.x - 4.0, LH_COT.z + 3.6]],   // from the cottage
 ];
 export const pathPts = [];
@@ -110,7 +110,7 @@ for (const c of pathCurves) {
 export function pathDist(x, z) { let m = 1e9; for (const [px, pz] of pathPts) { const d = (px - x) ** 2 + (pz - z) ** 2; if (d < m) m = d; } return Math.sqrt(m); }
 
 // ---------------------------------------------------------------- terrain
-export const TW = 68, TD = 48, TSX = 340, TSZ = 240;
+export const TW = 78, TD = 54, TSX = 390, TSZ = 270;
 export const terrainGeo = new THREE.PlaneGeometry(TW, TD, TSX, TSZ).rotateX(-Math.PI / 2);
 {
   const pos = terrainGeo.attributes.position;
@@ -160,7 +160,47 @@ export const terrainGeo = new THREE.PlaneGeometry(TW, TD, TSX, TSZ).rotateX(-Mat
   for (let i = 0; i < idx.length; i += 3) if (Math.max(pos.getY(idx[i]), pos.getY(idx[i + 1]), pos.getY(idx[i + 2])) > -1.6) keep.push(idx[i], idx[i + 1], idx[i + 2]);
   terrainGeo.setIndex(keep);
 }
-export const terrain = named(new THREE.Mesh(terrainGeo, std(0xffffff, { vertexColors: true, roughness: 1 })), 'island', false);
+// smooth ground detail: mowing stripes baked at 16 px/m (bilinear + mipmaps + anisotropy, so no stair-steps), plus tiling noise read at three
+// scales and rotations so no tile repeats visibly
+const STR_PPM = 16, STR_W = TW * STR_PPM, STR_H = TD * STR_PPM;
+const stripeTex = (() => {
+  const d = new Uint8Array(STR_W * STR_H * 4);
+  for (let j = 0; j < STR_H; j++) for (let i = 0; i < STR_W; i++) {
+    const [s, w, g] = stripeAt((i + 0.5) / STR_PPM - TW / 2, (j + 0.5) / STR_PPM - TD / 2), k = (j * STR_W + i) * 4;
+    d[k] = s * 255; d[k + 1] = w * 255; d[k + 2] = g * 255; d[k + 3] = 255;
+  }
+  const t = new THREE.DataTexture(d, STR_W, STR_H, THREE.RGBAFormat); t.colorSpace = THREE.NoColorSpace; t.generateMipmaps = true;
+  t.minFilter = THREE.LinearMipmapLinearFilter; t.magFilter = THREE.LinearFilter; t.anisotropy = renderer.capabilities.getMaxAnisotropy(); t.needsUpdate = true; return t;
+})();
+const grainTex = (() => {
+  const N = 256, P = 16, d = new Uint8Array(N * N * 4);
+  for (let j = 0; j < N; j++) for (let i = 0; i < N; i++) {
+    let v = 0, a = 0.6, tot = 0;
+    for (let o = 0, f = 1; o < 3; o++, f *= 2, a *= 0.5) {
+      const px = i / N * P * f, py = j / N * P * f, x0 = Math.floor(px), y0 = Math.floor(py), fx = px - x0, fy = py - y0, sx = fx * fx * (3 - 2 * fx), sy = fy * fy * (3 - 2 * fy), Pf = P * f;
+      const Lf = (x, y) => hash(((x % Pf) + Pf) % Pf + 7, (((y % Pf) + Pf) % Pf) + o * 131);
+      v += a * lerp(lerp(Lf(x0, y0), Lf(x0 + 1, y0), sx), lerp(Lf(x0, y0 + 1), Lf(x0 + 1, y0 + 1), sx), sy); tot += a;
+    }
+    const k = (j * N + i) * 4, q = Math.round(v / tot * 255); d[k] = d[k + 1] = d[k + 2] = q; d[k + 3] = 255;
+  }
+  const t = new THREE.DataTexture(d, N, N, THREE.RGBAFormat); t.colorSpace = THREE.NoColorSpace; t.wrapS = t.wrapT = THREE.RepeatWrapping; t.generateMipmaps = true;
+  t.minFilter = THREE.LinearMipmapLinearFilter; t.magFilter = THREE.LinearFilter; t.anisotropy = renderer.capabilities.getMaxAnisotropy(); t.needsUpdate = true; return t;
+})();
+const terrainMat = std(0xffffff, { vertexColors: true, roughness: 1 });
+terrainMat.onBeforeCompile = sh => {
+  sh.uniforms.uStripe = { value: stripeTex }; sh.uniforms.uGrain = { value: grainTex }; sh.uniforms.uTer = { value: new THREE.Vector2(TW, TD) };
+  sh.vertexShader = sh.vertexShader.replace('#include <common>', '#include <common>\nvarying vec2 vWxz;').replace('#include <begin_vertex>', '#include <begin_vertex>\nvWxz = position.xz;');
+  sh.fragmentShader = sh.fragmentShader.replace('#include <common>', '#include <common>\nvarying vec2 vWxz; uniform sampler2D uStripe, uGrain; uniform vec2 uTer;')
+    .replace('#include <color_fragment>', `#include <color_fragment>
+      {
+        vec3 st = texture2D(uStripe, vWxz / uTer + 0.5).rgb;
+        diffuseColor.rgb *= 1.0 + (st.r - 0.5) * 2.0 * mix(0.075, 0.055, st.b) * st.g;
+        float g1 = texture2D(uGrain, vWxz * 0.31).r, g2 = texture2D(uGrain, mat2(0.8, 0.6, -0.6, 0.8) * vWxz * 0.047 + 0.37).r, g3 = texture2D(uGrain, mat2(0.6, -0.8, 0.8, 0.6) * vWxz * 1.7 + 0.11).r;
+        diffuseColor.rgb *= 1.0 + (g1 - 0.5) * 0.13 + (g2 - 0.5) * 0.24 + (g3 - 0.5) * 0.06;
+      }`);
+};
+terrainMat.customProgramCacheKey = () => 'terrainDetail';
+export const terrain = named(new THREE.Mesh(terrainGeo, terrainMat), 'island', false);
 scene.add(terrain);
 
 // ---------------------------------------------------------------- the cliff face: one ring of layered rock, vertical clefts, warm sunlit faces, moss in the shadows
@@ -485,8 +525,8 @@ export function fenceLine(pts, collide = true) {
     for (let j = 0; j < n; j++) rails.push([lerp(x1, x2, j / n), lerp(z1, z2, j / n), lerp(x1, x2, (j + 1) / n), lerp(z1, z2, (j + 1) / n)]);
   }
 }
-fenceLine([[-8.0, -10.6], [-6.4, -11.6], [-4.4, -11.9]]);                                        // the farmyard fence by the house
-fenceLine([[-1.4, -13.0], [1.8, -12.6], [5.6, -13.0], [8.4, -12.4]]);                          // along the foot of the bell hill
+fenceLine([[-8.0, -10.6], [-6.4, -11.6], [-4.4, -11.9]].map(q => q.map(v => v * SPREAD)));                                        // the farmyard fence by the house
+fenceLine([[-1.4, -13.0], [1.8, -12.6], [5.6, -13.0], [8.4, -12.4]].map(q => q.map(v => v * SPREAD)));                          // along the foot of the bell hill
 {
   const pi = new THREE.InstancedMesh(postGeo, wood, posts.length), ri = new THREE.InstancedMesh(railGeo, wood, rails.length * 2);
   pi.name = 'fencePosts'; ri.name = 'fenceRails'; for (const o of [pi, ri]) { o.castShadow = true; o.receiveShadow = true; }

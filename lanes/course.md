@@ -11,3 +11,7 @@
 ## Notes
 - A perfect drive runs out about 1.5 x the aim point's distance; holes 5 and 9 have their first-leg landing on the fairway, the corner lies there.
 - island.js: blossom shrubs = `blossoms` instanced petals on green bushes; ducks scaled 0.46.
+
+## Session 2: smooth ground, wider spread
+- Ground: mowing stripes are now a 16 px/m baked texture (`stripeTex` in island.js, from `stripeAt` in course.js) read in the terrain shader with mipmaps + max anisotropy; no vertex-colour stripes. `grainTex` (tileable noise) is read at three scales/rotations for macro and micro variation.
+- Spread: `SPREAD = 1.12` in course.js scales every hand-placed x/z (island, holes, bunkers, trees, house, pond, bell, cottage, path curves, fences). Terrain mesh grew to 78 x 54. **Look lane: the island now overflows the aim/overview frame left and right; pull the camera back / widen FOV ~12%.**

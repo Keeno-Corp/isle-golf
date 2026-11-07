@@ -1,11 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 1
-**Did** pins.js: pole 0.05 thick + knob, bigger flag; only the current pin visible (`H.pinG.visible`, on `hole:start`); waypoint marker `wayMark` at `aimTarget()` (mirror of autoAim's target) ; observe `course`; `window.__course` debug handle. course.js: per-hole winds along the play line, `rayClear` moves bunkers out of drive ray and off greens, hole 5 and 9 paths reshaped so a perfect drive lands on the fairway. island.js: pink bushes -> green bushes with `blossoms` petals; ducks 0.26 -> 0.46. lanes/course.md written. Check `course-only-current-pin` saved.
-**Saw** eval sweep of all 9 holes with auto-aim + needPower swings: every hole green in <=3 strokes (holes 2,3 are aces: too easy); drives land fairway on 5,6,7,9. Hole 5 aim image: pink rocks gone, petals read. Ducks visible on pond. C view hole 6/9 shows current pin only, in the upper part of frame (hole 9 pin near top edge). Not run: perf, real-key SPLASH check on hole 6, look zoom on cliff lip, colour sample check.
-**Next** real-key hole 6 splash + dogleg drive checks and save them; hole 5 bunker at (-16.1,-14.6) sits on the cliff lip (inland 0.8); holes 2/3 aces: lengthen or move pins; marker is blurry at the frame's top in aim view (look lane); lighthouse in frame on hole 9 approach not verified.
-**Open** autoAim (ball-physics lane) aims straight at a point 13.6 along, so doglegs only work because the corner is placed at the landing; marker follows that rule only by mirroring it.
-
 ### Judge 1
 
 **Judged on session 1. Not run: the real-key SPLASH check on hole 6, the hole 9 three-click drive, the lighthouse-on-approach look, and the colour sample. Perf is not scored, because it ran on a software renderer.**
@@ -45,3 +39,14 @@ The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.m
 Not asked: `autoAim` (ball-physics lane) aims straight at a point 13.6 along, so the waypoint marker only mirrors that rule. The builder's Open records this, so use a different route: set the corner at the landing spot, as done now, and don't rewrite `autoAim`.
 
 SCORE: 6.2
+
+## The request changed
+
+paprika-loop/PROMPT.md changed before session 2; the Next lists above were written before it. Changed lines:
++ 0. TOP PRIORITY, owner feedback after playing: "make the ground tiling les pixelated looking ... Also spacing is a little too close. Make it a little wider". Course lane's part: (a) the ground (terrain, fairway mowing stripes, rough, greens, sand, cliffs) must not look pixelated or tiled: raise texture resolution, use LinearMipmapLinear + max anisotropy (renderer.capabilities.getMaxAnisotropy()), break up repetition with macro variation / blended noise at two scales, and make the mowing stripes smooth-edged (no stair-stepping from vertex colours: add terrain subdivisions where the stripes are or move the stripes into a smooth texture/shader term). Prove with a look zoom on hole 1's fairway and on the rough at the aim view: no visible pixel blocks or repeated tile pattern. (b) Spread the holes, props and set-dressing a little wider apart (roughly 15-25% more room between holes, trees, bushes, house, fences) so the course feels less cramped, while all 9 holes stay on the island, playable, and the checks below still hold (the sea stays OB). The look lane owns camera width/FOV; if the wider spread needs the diorama/flyover to pull back, note it in lanes/course.md.
+
+## Iteration 2
+**Did** Owner priority 0. (a) island.js: `stripeTex` (16 px/m DataTexture from course.js `stripeAt`) + `grainTex` (3-scale tiling noise) in `terrainMat.onBeforeCompile`, LinearMipmapLinear + `getMaxAnisotropy()`; vertex-colour stripes removed in `courseColour`. (b) course.js `SPREAD = 1.12` scales HOLES paths/bunkers, HOUSE, POND, COW, BELL, HILL, LH_COT, TREES0, FLOWERS, topH bumps, ISLE_A/B; island.js path curves and fences scaled, terrain 78x54 (390x270 segs); bunkers within 3.2 m of the cliff are pulled inland.
+**Saw** Zoom on hole 1 fairway/green at the overview: stripes smooth-edged, no pixel blocks or repeated tile. Eval sweep (auto-aim + needPower) finishes all 9 holes in <=3 strokes, all pins 'green'; yards now 131,142,135,232,254,203,258,288,443. Island overflows frame left/right in the hole 1 aim look (look lane's camera). Not run: perf, rough zoom in true aim view (camera is game-controlled), real-key checks.
+**Next** look lane to widen the camera; real-key hole 6 splash and hole 9 checks from Judge 1; holes 2/3 still easy; pin/marker readability; verify trees/props didn't land on bunkers/fairway after scaling (TREES filter handles fairway).
+**Open** Holes are ~12% longer (a 5-par at 443 yd); drivers reach 204 yd so par 4s need two shots, as before. Bunker-ray clearing ran after scaling, not re-verified by look.
