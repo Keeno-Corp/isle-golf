@@ -13,10 +13,10 @@ import { PR } from './stage.js';
 
 // ---------------------------------------------------------------- camera: high behind the ball, narrow FOV; follows the ball in flight; pulls back to the diorama for each flyover
 export const cam = { pos: new THREE.Vector3(1, 44, 68), look: new THREE.Vector3(0, 2.2, 1), fov: 26, dio: 1, focus: new THREE.Vector3(), fy: 0.5 };
-export const DIO = { pos: new THREE.Vector3(1, 47, 74), look: new THREE.Vector3(0, 2.2, 1), fov: 27 };
+export const DIO = { pos: new THREE.Vector3(1, 47, 74), look: new THREE.Vector3(0, 2.2, 1), fov: 29 };
 export const cPos = new THREE.Vector3(), cLook = new THREE.Vector3();
 export function aimCam(pos, look) {
-  const p = curP(), putt = curClub().putt, fx = Math.cos(G.aim), fz = Math.sin(G.aim), D = putt ? 3.6 : 9.2, Hh = putt ? 1.8 : 4.7, ah = putt ? 0.9 : 2.2, src = G.phase === 'flight' || G.phase === 'settle' ? G.shotOrigin : p.pos;
+  const p = curP(), putt = curClub().putt, fx = Math.cos(G.aim), fz = Math.sin(G.aim), D = putt ? 4.2 : 9.2, Hh = putt ? 2.5 : 4.7, ah = putt ? 0.9 : 2.2, src = G.phase === 'flight' || G.phase === 'settle' ? G.shotOrigin : p.pos;
   pos.set(src.x - fx * D, src.y + Hh, src.z - fz * D); pos.y = Math.max(pos.y, heightAt(pos.x, pos.z) + 1.0); look.set(src.x + fx * ah, src.y + 0.35, src.z + fz * ah);
 }
 const _fc = new THREE.PerspectiveCamera(32, 16 / 10, 0.1, 400), _fp = new THREE.Vector3();
@@ -59,7 +59,7 @@ export function updateCamera(dt) {
   } else if (G.overhead && G.phase === 'aim') {
     overheadCam(cPos, cLook, H, curP().pos); fov = 32; k = 4;
   } else if (G.phase === 'aim' || G.phase === 'swing') { aimCam(cPos, cLook); k = 5; }
-  else if (G.phase === 'holed') { cPos.set(H.pinX + 1.5, H.pinY + 1.0, H.pinZ + 1.9); cLook.set(H.pinX, H.pinY + 0.35, H.pinZ); fov = 24; k = 3; cPos.set(H.pinX + 0.9, H.pinY + 0.55, H.pinZ + 1.3); }
+  else if (G.phase === 'holed') { cPos.set(H.pinX + 1.5, H.pinY + 1.0, H.pinZ + 1.9); cLook.set(H.pinX, H.pinY + 0.35, H.pinZ); fov = 30; k = 3; cPos.set(H.pinX + 1.9, H.pinY + 2.3, H.pinZ + 2.9); cLook.set(H.pinX, H.pinY + 0.5, H.pinZ); }
   else {   // flight and settle: behind the ball along its way, close in as it rolls
     const v = SIM.vel, hs = Math.hypot(v.x, v.z), dx = hs > 0.5 ? v.x / hs : Math.cos(G.aim), dz = hs > 0.5 ? v.z / hs : Math.sin(G.aim), putt = curClub().putt || SIM.mode === 'roll' && hs < 4;
     if (hs > 0.5) { cam.fdx = dx; cam.fdz = dz; }
