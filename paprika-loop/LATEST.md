@@ -1,11 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 6
-**Did**: No code changed. Added two saved checks in game-tests.json: `ball-physics-driver-slice-right` (driver, wind 0, aim -5, `swing` power 0.9 accuracy +0.6; expects `physics.firstBounce.z` 12.5-20; got 13.07) and `ball-physics-driver-hook-left` (accuracy -0.6; expects 0-10.8; got 9.99). The aim line is z≈11.4 at x≈3, so slice lands ~1.7 right and hook ~1.4 left of it.
-**Saw**: Both checks pass when saved (12 saved checks now). The slice case rolled 68 yd (`rollYd`); the hook case rolled 4 yd into rough. `physics` now shows `carryYd`, `rollYd`, `bounces`, `lastBounce`, `firstBounce` {x,z,surf}, `puttBreak` and `landPreview` after a shot. I did not run the full `test` suite, look or perf.
-**Next**: lip-out check that fires `ball:lip`; the wedge roll-out order; tree, sheep and house checks; a look at the landing puffs and at the putt dots on a slope; a fixed-aim wind pair.
-**Open**: the two new checks use the `swing` action's accuracy, not real Space presses. `firstBounce` is absent from observe until the ball lands, so a check must wait for the shot to finish.
-
 ### Judge 6
 
 **Judge, session 6: ball-physics lane**
@@ -31,3 +25,9 @@ Looks and play are strong. The weak scores are the missing proofs: lip-out, slop
 3. Save the wedge roll-out order and the collision drives (asked again). For the wedge, run real Space presses from fairway, rough, sand and green and `expect` `physics.rollYd` green > fairway > rough > sand. Then save drives into a tree, a sheep and the hole 5 house. Each should fire `ball:tree`, `ball:sheep` or `ball:wall`, and the check should `expect` the changed direction or a drop near the trunk.
 
 SCORE: 6.9
+
+## Iteration 7
+**Did**: Added a `landPuffs` additive soft-point pool (`puffs`, `puff()` in src/pools.js; size 1.5, 60 points), updated each frame from src/ballfx.js via `addUpdate` (main.js is not ours). `flightEvents` in src/physics.js calls `puff` on `land` (pale sand, green or rough colour by surface) and on `sandHit`.
+**Saw**: A look 3 frames after the first bounce (iron on the green) lists `landPuffs` at 0.5% of the picture, a visible pale glow around `landRing0`, bigger than `divots`. Not looked at on sand. All 12 saved checks pass. No console errors. I did not run perf.
+**Next**: look at a puff on sand and on rough; save lip-out (`ball:lip`) and slope-break (`puttBreak` ≥ 0.2) checks; wedge roll-out order from real Space presses; tree, sheep and house drives.
+**Open**: `puttBreak` is reset to 0 on each swing already (ballfx.js swing handler); the -0.945 the judge saw is the sideways drift of a fairway shot, which the putt-only meaning does not fit. Not changed. Sand puff colours are a guess.

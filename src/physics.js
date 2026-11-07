@@ -7,7 +7,7 @@ import { treeObjs } from './island.js';
 import { spawnParticles, spawnRipple } from './effects.js';
 import { play } from './sound.js';
 import { BR, GR, SURF, pick, tmpV } from './rules.js';
-import { burst, dust, emit, trail } from './pools.js';
+import { burst, dust, emit, trail, puff } from './pools.js';
 import { sheepBonked } from './sheep.js';
 import { G, curP } from './round.js';
 import { setSub, showBanner } from './hud.js';
@@ -143,11 +143,12 @@ export function flightEvents() {
     fire('ball:' + e, { ball: b, player: p });
     if (e === 'land') {
       const sf = b.surf, sp = Math.hypot(b.vel.x, b.vel.z);
+      puff(b.pos.x, b.pos.z, sf === 'sand' ? 7 : 5, sf === 'sand' ? '#c9b988' : sf === 'green' ? '#9ec27a' : '#a9c27a', sf === 'sand' ? 0.9 : 0.6);
       if (sf === 'sand') burst(b.pos.x, b.pos.z, 26, '#e3cf94', 1.6, 2.8); else if (sf === 'green') burst(b.pos.x, b.pos.z, 7, '#b9e08a', 0.9, 1.6); else if (sf === 'rough') burst(b.pos.x, b.pos.z, 12, '#5f8a3d', 1.0, 2.0); else burst(b.pos.x, b.pos.z, 10, '#8fb860', 1.2, 2.2);
       play('land', sf, clamp(0.6 + sp * 0.05, 0.6, 1.3));
     }
     else if (e === 'bounce') { burst(b.pos.x, b.pos.z, 3, b.surf === 'green' ? '#b9e08a' : '#8fb860', 0.6, 1.2); play('land', b.surf, 0.45); }
-    else if (e === 'sandHit') { burst(b.pos.x, b.pos.z, 22, '#e3cf94', 1.6, 2.6); play('sand'); setSub('PLUGGED IN THE SAND'); }
+    else if (e === 'sandHit') { puff(b.pos.x, b.pos.z, 8, '#c9b988', 1.0); burst(b.pos.x, b.pos.z, 22, '#e3cf94', 1.6, 2.6); play('sand'); setSub('PLUGGED IN THE SAND'); }
     else if (e === 'tree') { play('rustle'); if (b.treeHit) { const t = b.treeHit.t; for (let i = 0; i < 8; i++) emit(dust, b.pos.x, b.pos.y, b.pos.z, { life: 0.9, sp: 1, up: 1.4, g: 4, color: pick(['#3a7a2f', '#4a8a35', '#7aa845']) }); } setSub(pick(['INTO THE BRANCHES!', 'LEAVES EVERYWHERE!', 'A TREE GETS IN THE WAY'])); }
     else if (e === 'wall') { play('clank'); burst(b.pos.x, b.pos.z, 6, '#e8dcc0', 0.8, 1.4); setSub('OFF THE WALL'); }
     else if (e === 'sheep') {

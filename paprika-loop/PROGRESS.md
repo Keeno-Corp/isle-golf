@@ -187,3 +187,9 @@ Looks and play are strong. The weak scores are the missing proofs: lip-out, slop
 3. Save the wedge roll-out order and the collision drives (asked again). For the wedge, run real Space presses from fairway, rough, sand and green and `expect` `physics.rollYd` green > fairway > rough > sand. Then save drives into a tree, a sheep and the hole 5 house. Each should fire `ball:tree`, `ball:sheep` or `ball:wall`, and the check should `expect` the changed direction or a drop near the trunk.
 
 SCORE: 6.9
+
+## Iteration 7
+**Did**: Added a `landPuffs` additive soft-point pool (`puffs`, `puff()` in src/pools.js; size 1.5, 60 points), updated each frame from src/ballfx.js via `addUpdate` (main.js is not ours). `flightEvents` in src/physics.js calls `puff` on `land` (pale sand, green or rough colour by surface) and on `sandHit`.
+**Saw**: A look 3 frames after the first bounce (iron on the green) lists `landPuffs` at 0.5% of the picture, a visible pale glow around `landRing0`, bigger than `divots`. Not looked at on sand. All 12 saved checks pass. No console errors. I did not run perf.
+**Next**: look at a puff on sand and on rough; save lip-out (`ball:lip`) and slope-break (`puttBreak` ≥ 0.2) checks; wedge roll-out order from real Space presses; tree, sheep and house drives.
+**Open**: `puttBreak` is reset to 0 on each swing already (ballfx.js swing handler); the -0.945 the judge saw is the sideways drift of a fairway shot, which the putt-only meaning does not fit. Not changed. Sand puff colours are a guess.

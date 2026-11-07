@@ -13,6 +13,8 @@ export function pointPool(n, size, name, additive) {
   return { pts, pos, col, n, k: 0, p: Array.from({ length: n }, () => ({ life: 0, t: 1, vx: 0, vy: 0, vz: 0, g: 0, c: new THREE.Color() })) };
 }
 export const dust = pointPool(160, 0.16, 'divots', false), trail = pointPool(140, 0.4, 'ballTrail', true);
+export const puffs = pointPool(60, 1.5, 'landPuffs', true);
+export const puff = (x, z, n, color, r = 0.5) => { const y = heightAt(x, z) + 0.12; for (let i = 0; i < n; i++) emit(puffs, x, y, z, { life: rand(0.5, 0.9), sp: r, up: 0.5, g: -0.3, color }); };
 export function emit(pool, x, y, z, o) {
   const p = pool.p[pool.k++ % pool.n]; p.t = 0; p.life = o.life; p.g = o.g ?? 9; p.c.set(o.color);
   const a = rand(0, 6.28), s = (o.sp ?? 1) * rand(0.3, 1); p.vx = Math.cos(a) * s + (o.vx || 0); p.vz = Math.sin(a) * s + (o.vz || 0); p.vy = (o.up ?? 2) * rand(0.5, 1);

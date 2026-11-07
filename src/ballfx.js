@@ -9,6 +9,8 @@ import { r3, CLUBS, LIE } from './rules.js';
 import { SIM, previewShot } from './physics.js';
 import { aimRing } from './aimline.js';
 import { G, curH, curP } from './round.js';
+import { puffs, updatePool } from './pools.js';
+addUpdate(dt => updatePool(puffs, dt));
 
 // ---------------------------------------------------------------- sounds (replace the ball ones; built on tone/noise)
 Object.assign(SFX, {
