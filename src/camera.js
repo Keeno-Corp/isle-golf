@@ -18,9 +18,18 @@ export function aimCam(pos, look) {
   const p = curP(), putt = curClub().putt, fx = Math.cos(G.aim), fz = Math.sin(G.aim), D = putt ? 3.6 : 9.2, Hh = putt ? 1.8 : 4.7, ah = putt ? 0.9 : 2.2, src = G.phase === 'flight' || G.phase === 'settle' ? G.shotOrigin : p.pos;
   pos.set(src.x - fx * D, src.y + Hh, src.z - fz * D); pos.y = Math.max(pos.y, heightAt(pos.x, pos.z) + 1.0); look.set(src.x + fx * ah, src.y + 0.35, src.z + fz * ah);
 }
+const _fc = new THREE.PerspectiveCamera(32, 16 / 10, 0.1, 400), _fp = new THREE.Vector3();
 export function overheadCam(pos, look, H, from) {
-  const mx = (from.x + H.pinX) / 2, mz = (from.z + H.pinZ) / 2, d = Math.hypot(H.pinX - from.x, H.pinZ - from.z), dx = (H.pinX - from.x) / (d || 1), dz = (H.pinZ - from.z) / (d || 1), dist = Math.max(16, (d * 1.55 + 9) * 1.4);
-  pos.set(mx - dx * dist * 0.574, heightAt(mx, mz) + dist * 0.819, mz - dz * dist * 0.574); look.set(mx, heightAt(mx, mz), mz);
+  const mx = (from.x + H.pinX) / 2, mz = (from.z + H.pinZ) / 2, d = Math.hypot(H.pinX - from.x, H.pinZ - from.z), dx = (H.pinX - from.x) / (d || 1), dz = (H.pinZ - from.z) / (d || 1), my = heightAt(mx, mz);
+  _fc.aspect = camera.aspect || 1.6; _fc.fov = 32; _fc.updateProjectionMatrix();
+  let dist = 9;   // tightest distance that keeps tee and pin inside NDC x ±0.7, y -0.55..0.75
+  for (; dist < 90; dist += 1) {
+    _fc.position.set(mx - dx * dist * 0.574, my + dist * 0.819, mz - dz * dist * 0.574); _fc.lookAt(mx, my, mz); _fc.updateMatrixWorld(true);
+    let ok = true;
+    for (const [x, y, z] of [[from.x, from.y ?? heightAt(from.x, from.z), from.z], [H.pinX, (H.pinY ?? heightAt(H.pinX, H.pinZ)) + 0.6, H.pinZ]]) { _fp.set(x, y, z).project(_fc); if (Math.abs(_fp.x) > 0.8 || _fp.y < -0.6 || _fp.y > 0.8) ok = false; }
+    if (ok) break;
+  }
+  pos.set(mx - dx * dist * 0.574, my + dist * 0.819, mz - dz * dist * 0.574); look.set(mx, my, mz);
 }
 const _m1 = new THREE.Vector3(), _m2 = new THREE.Vector3(), _m3 = new THREE.Vector3();
 export const look = { flyoverT: 0 };

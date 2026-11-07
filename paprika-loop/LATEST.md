@@ -1,11 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 3
-**Did** (camera.js): `overheadCam` distance is now `max(16, (d*1.55+9)*1.4)` (was `max(14, d*1.55+9)`), so C fits tee and pin with margin.
-**Saw**: The judge's "pin projection is wrong" is not a bug. `ndc()` of (pinX, pinY+0.6, pinZ) matches `find('pinN')` world positions on all 9 holes. The pin reads x≈0 because auto-aim points at it, and the earlier odd numbers came from reading `observe` right after `setState` before the camera snapped. In the C shot on hole 5 the flag at the far left was another hole's pin. C after the 1.3 fit, holes 5, 6, 9: pitch 55, `look.ball.y` -0.54, -0.59, -0.68 (0.8 before), pin y ≈0.53–0.56; I raised it to 1.4 afterwards and only hole 9 was rechecked (ball -0.63). Flyover on hole 9: pin on screen at 25% (y 0.60) and 50% (y 0.64, pitch 47). At 75% pitch is 14° and the ball is off-screen (y -1.56) mid-transition to aim. Not run: `perf`, flight and holed looks, night, the critic views and `test` saves.
-**Next**: (1) re-record the `look-` saves with 0-based `hole`; (2) real-key drive, looking at 3 moments of flight; (3) flag contrast in post.js and the pink `cliffRocks` (still red-pink on hole 5 C), recorded for the course lane; (4) smooth the 75% flyover leg so the ball is on screen before the aim cam lands.
-**Open**: The flyover ball leaves the frame between 50% and 75% (ball y -0.99 to -1.56). The golfer in C is tiny (about 0.015% of the picture) because the camera frames the whole hole.
-
 ### Judge 3
 
 **Judge 3: scores**
@@ -26,3 +20,10 @@ The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.m
 3. **Smooth the flyover's last leg and re-record the `look-` saves (Must have 4 and 12).** The ball leaves the frame between 50% and 75%. Ease the pitch and position so the ball is on screen with y above -0.6 before the aim camera lands. Show it with `interact` stepped frames on hole 9 with `look` at 25, 50 and 75%. Re-record the `look-` saves with 0-based `hole`, and add `look-` saves for night, the flyover and C on holes 5 and 9. Rerun them with `test`.
 
 SCORE: 5.9
+
+## Iteration 4
+**Did** (camera.js): `overheadCam` now fits instead of using a fixed multiple of the distance: it steps `dist` from 9 up and projects tee and pin through a scratch camera (`_fc`) until both sit inside NDC x ±0.8, y -0.6..0.8; look-at stays at their midpoint.
+**Saw**: Hole 5 C (before the final 0.8/-0.6/0.8 loosening, which was 0.7/-0.55/0.75): pitch 55, camera y 49, ball y -0.548, pin y 0.50, golfer 0.007% of the picture, `sea` 47%. The shot is limited by the tee-to-pin span on a 55° view (hole 5 is 20 units), not by the old multiplier, so the judge's "golfer over 0.1%, sea under 15%" cannot hold on long holes with the tee and pin both in frame. Not run: holes 6 and 9, `perf`, critic views, flag post pass, flyover leg, `look-` saves.
+**Next**: (1) check C on holes 6 and 9 after the loosening; (2) flag crispness in post.js and the pink `cliffRocks` note in lanes/look.md; (3) ease the 75% flyover leg, re-record `look-` saves; (4) consider a follow C that centres on the ball while the pin stays on screen, for shorter shots.
+**Open**: C golfer is still tiny on long holes; the judge's target likely needs a different rule (frame ball and pin only once the ball has moved).
+**Checked after the final edit (0.8 / -0.6 / 0.8)**: hole 9 C: no console errors, pitch 55, camera y 76, ball y -0.598, pin y 0.508, golfer 0.0025%, `sea` 65%. The fit does what it is told. Both points sit at the limits and the long par 5 stays an island view. Holes 5 and 6 with the final limits were not rechecked.
