@@ -120,7 +120,7 @@ export function launchOn(s, club, power, acc, aimYaw, H, lie) {
 // one step of a ball in flight: the sim at 240 Hz, its events, the trail, then settle when it stops
 export function stepFlight(dt) {
   G.flightT += dt; ST.cowWatch = 0.3; const n = Math.max(1, Math.ceil(dt * 240)), h = dt / n;
-  for (let i = 0; i < n; i++) { stepSim(SIM, h); if (SIM.pin && SIM.mode === 'roll') { const dd = Math.hypot(SIM.pin.x - SIM.pos.x, SIM.pin.z - SIM.pos.z); if (!(G.minPinD < dd)) G.minPinD = dd; } if (SIM.ev.length) flightEvents(); if (SIM.mode === 'rest' || SIM.mode === 'sunk' || SIM.mode === 'water' || SIM.mode === 'ob') break; }
+  for (let i = 0; i < n; i++) { stepSim(SIM, h); if (SIM.ev.length) flightEvents(); if (SIM.mode === 'rest' || SIM.mode === 'sunk' || SIM.mode === 'water' || SIM.mode === 'ob') break; }
   if (SIM.mode === 'air' || (SIM.mode === 'roll' && Math.hypot(SIM.vel.x, SIM.vel.z) > 1.2)) emit(trail, SIM.pos.x, SIM.pos.y, SIM.pos.z, { life: 0.45, sp: 0.05, up: 0.05, g: 0, color: '#fff3c0' });
   if (G.flightT > 22 && SIM.mode !== 'rest') { SIM.mode = 'rest'; SIM.vel.set(0, 0, 0); }
   if (SIM.mode === 'rest' || SIM.mode === 'sunk' || SIM.mode === 'water' || SIM.mode === 'ob') { G.phase = 'settle'; G.resolveT = SIM.mode === 'rest' ? 0.7 : SIM.mode === 'sunk' ? 0.5 : 1.7; }
