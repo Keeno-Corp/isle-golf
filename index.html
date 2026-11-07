@@ -1424,7 +1424,7 @@ function golferClip(n, fade = 0.2) {
 golferClip('Idle_Loop', 0);
 // the club: a shaft and a head, hung from the right hand; its look follows the club picked
 const clubG = new THREE.Group(); clubG.name = 'club';
-const clubMat = std('#c9c3b0', { roughness: 0.4, metalness: 0.5 }), clubHeadMat = std('#3a3430', { roughness: 0.5 });
+const clubMat = std('#c9c3b0', { roughness: 0.5, metalness: 0 }), clubHeadMat = std('#3a3430', { roughness: 0.5 });
 {
   const shaft = named(new THREE.Mesh(new THREE.CylinderGeometry(0.016, 0.012, 1, 6).translate(0, -0.5, 0), clubMat), 'club_shaft'); shaft.castShadow = true; clubG.add(shaft); clubG.userData.shaft = shaft;
   const head = named(new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.09, 0.07), clubHeadMat), 'club_head'); clubG.add(head); clubG.userData.head = head;
