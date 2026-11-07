@@ -1,11 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 26
-**Did:** `src/pins.js`: `pin_pole` height 1.3→1.15 (y 0.575), `pin_flag` plane 0.8×0.34 at y 0.98, `pin_knob` y 1.18.
-**Saw:** Short session; I ran no `look`, `perf` or checks, so the pole ratio and the flag's pixel share are unverified.
-**Next:** Prove the flag with `look` on holes 1, 5 and 9. Then add the pale tee mat in `src/course.js` and the `cliffRocks`/`seaStacks` placement in `src/island.js`. Then take the C-view `look`.
-**Open:** The `toNonIndexed()` warning source is not found. `sheep.js:16`, `stage.js:40` and `island.js:287` are the candidates, and the guarded ones look fine.
-
 ### Judge 26
 
 **Judge 26.** I opened the page, ran `interact` with `look` on hole 2 at the aim view, took a `look` sheet of hole 6 and hole 9 at their tees plus the hole 9 and hole 2 C views, and ran `perf` once. I did not play a swing, and I took no close-up of a ball beside the pin. `{state:{hole:n}}` is zero-based: `hole:1` gave HOLE 2, `hole:5` gave HOLE 6 and `hole:9` gave HOLE 9. The "holes 1, 5 and 9" proof therefore covered holes 2, 6 and 9, and hole 1 was never looked at.
@@ -79,3 +73,9 @@ The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.m
    - Move the ducks and `pond_lily` to the pond centre on hole 6, in the aim view's sharp band. `look` on hole 6 should list `pond_lily` or the duck with pixels.
 
 SCORE: 6.9
+
+## Iteration 27
+**Did:** `src/course.js` `COURSE_C.tee` #86ae56→#b4cf7e (paler tee mat so the golfer stands out). `toNonIndexed` at `island.js:287` is already guarded; the remaining callers are `sheep.js:16` and `stage.js:40` (outside the lane).
+**Saw:** No `look`/`perf` run (short session); the tee colour and the golfer's edge contrast (0.122 before) are unverified.
+**Next:** `look` on hole 2 to check the tee mat and edge contrast >0.15. Then lift `cliffRocks`/`seaStacks` above the grass in `src/island.js`. Then prove the flag with the ball near the pin, and move the ducks to the hole 6 pond centre.
+**Open:** The `toNonIndexed()` warning source is probably `sheep.js:16`, which is not in this lane.

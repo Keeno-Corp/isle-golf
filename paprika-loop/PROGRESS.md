@@ -1566,3 +1566,9 @@ SCORE: 6.9
    - Move the ducks and `pond_lily` to the pond centre on hole 6, in the aim view's sharp band. `look` on hole 6 should list `pond_lily` or the duck with pixels.
 
 SCORE: 6.9
+
+## Iteration 27
+**Did:** `src/course.js` `COURSE_C.tee` #86ae56→#b4cf7e (paler tee mat so the golfer stands out). `toNonIndexed` at `island.js:287` is already guarded; the remaining callers are `sheep.js:16` and `stage.js:40` (outside the lane).
+**Saw:** No `look`/`perf` run (short session); the tee colour and the golfer's edge contrast (0.122 before) are unverified.
+**Next:** `look` on hole 2 to check the tee mat and edge contrast >0.15. Then lift `cliffRocks`/`seaStacks` above the grass in `src/island.js`. Then prove the flag with the ball near the pin, and move the ducks to the hole 6 pond centre.
+**Open:** The `toNonIndexed()` warning source is probably `sheep.js:16`, which is not in this lane.

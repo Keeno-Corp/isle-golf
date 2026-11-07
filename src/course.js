@@ -138,7 +138,7 @@ export function heightAt(x, z) {
   return lerp(-2.4, h - lip, k) + rough;
 }
 // the course painted into the island's vertex colours: mown stripes on the fairways, fine greens, pale sand with a darker lip
-export const COURSE_C = { fair: new THREE.Color('#5d8a3a'), fairB: new THREE.Color('#6b9743'), fringe: new THREE.Color('#5c8838'), green: new THREE.Color('#76a64a'), greenB: new THREE.Color('#82b052'), tee: new THREE.Color('#86ae56'), sand: new THREE.Color('#dcc78d'), sandD: new THREE.Color('#c4aa6e'), lip: new THREE.Color('#4f6f31') };
+export const COURSE_C = { fair: new THREE.Color('#5d8a3a'), fairB: new THREE.Color('#6b9743'), fringe: new THREE.Color('#5c8838'), green: new THREE.Color('#76a64a'), greenB: new THREE.Color('#82b052'), tee: new THREE.Color('#b4cf7e'), sand: new THREE.Color('#dcc78d'), sandD: new THREE.Color('#c4aa6e'), lip: new THREE.Color('#4f6f31') };
 // smooth mowing term for the ground shader: [stripe 0..1, mown weight, 1 on a green]
 export function stripeAt(x, z) {
   const m = mownSigned(x, z); if (m >= 0.5) return [0.5, 0, 0];
