@@ -45,3 +45,10 @@ LOOK.md · CHARACTERS.md · DESIGN.md · refs/sheets/LOOK.png
 Web study: yes (asked) · Picture sheets: no, no image key (asked) · Asset style: stylized (asked)
 ## Left to the builder
 Camera easing curves and flyover timing, the exact key-light direction and shadow softness, the focus band's width and falloff, what `look.*` observe keys beyond the required ones to expose.
+
+## Supervisor steering (after iteration 4)
+- The ONLY C acceptance is actual pitch 45–65° (target 55°), both tee/current ball and current pin on screen, perspective never flat top-down. On a long par 5, fitting both necessarily makes the golfer small and can show sea/island. Do not waste iterations chasing the judge's invented >0.1% golfer-area or <15% sea-share targets; those conflict with the owner's whole-hole framing requirement. A tightly fitted tee/pin frame at 55° with useful margin is correct. Ship that and move on to the unrun checks.
+- Prioritize owner feedback wider aim/flight framing and less blocky ground, then prove all holes 1/5/9 aim, C 5/6/9, flyover 25/50/75, real-key drive three moments, a real-key putt/drop, N readability, sea sample and four-view critic. The saved checks must be rerun, not just written.
+- State hole fixtures are zero-based (0=hole1,4=hole5,5=hole6,8=hole9). Verify observe().hole before every proof. Never set phase, intro timer or ball outcome to satisfy a check.
+- At flyover percentages verify look.flyoverT in observe; do not accidentally skip it by a second Space or leave a holding key pressed. Match real stepped frames to G.introDur. A ball being offscreen during the wide flyover is acceptable until final behind-ball leg; pin MUST be in frame at 50%.
+- Other lanes have not been merged into this checkout: baseline thin/all flags, pink boulder shrubs, football-player model and SFX.gull error are owned by the other lanes and will be integrated later. Record them once, do not let these reduce owned-work scores or edit outside the ownership list.
