@@ -17,3 +17,6 @@ Owns src/physics.js, balls.js, rules.js, aimline.js, meter.js, pools.js (see COO
 - Easier putting: `puttRange(d)` in physics.js (full meter a bit past the pin), forgiving power near the notch, larger cup capture, green roll 2.4, thicker `aimDots`.
 - `landRingPreview` is recomputed at `swing` from the real power/spin/wind; `previewShot(..., acc)`.
 - Saved checks: ball-physics-putt-sinks, -putt-mid-easy, -putt-too-hard, -preview-matches-bounce.
+
+## Added session 13
+- observe `physics.hits` = { wall, tree, sheep, cow } counts since the last swing (ballfx.js).
