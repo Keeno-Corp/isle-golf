@@ -6,3 +6,6 @@ setState {creatures:{sheep:{i,x,z,wait}}} places a sheep.
 
 ## Footballer (session 3)
 `foot` in src/pose.js: assets/player-anim.glb (Idle_Loop, Celebration, Dance_Loop) stands beside the golfer (behind-left, eased follow, faces the ball), cheers on `holed` birdie/par/better and on `ball:sheep`. Clean helmet: glossy blue shell (roughness 0.3, metalness 0), white stripe, facemask bars, all crisp; his own textures keep only the colour map. Observe: `creatures.footballer` {x, z, clip, visible, ready}.
+
+## Session 8
+asset_search for "low poly sheep" and "low poly golfer" (rigged): library unreachable (HTTP 530), no hits, so sheep and golfer stay code-built. Footballer now stands 2.2 behind / 2.4 beside the golfer and plays Celebration when a ball lands on fairway or green.

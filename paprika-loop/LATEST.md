@@ -1,11 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 7
-**Did** `src/pose.js` observe: `creatures.golferClip` now reads the swing name (`backswing`/`downswing`/`follow`) while `G.phase === 'swing'`, else `golfer.cur` (new helper `poseNm`; `poseName` uses it). New saved check `creatures-cow-reacts` (setState ball at (-17.5, 10.6), aim 180, Space x3; expects `creatures.cow.state` alert and `moos` 1).
-**Saw** Cow went `graze` → `alert` at frame 66 (`why: hit`, alert peak 3.18, moos 0 → 1, banner "MOO! THE COW SENDS IT BACK"), and moved from x -19.0 to -19.83. `golferClip` traced Idle_Loop → backswing (frames 42–54) → Idle_Loop. Golfer 0.22% of the picture, 12 of 26 parts shown, edge contrast 0.123. No console errors. No `perf`, no full `test`.
-**Next** 1) Footballer a step off the ball line, cheering on good shots (clip still `Idle_Loop`). 2) 2-player `golfer_shirt` sample check (#3b78c9 / #d8503a). 3) Par `Dance_Loop`, bogey `Dismay`, putt and walk looks; the closer `sheet`. 4) A closer aim framing for the golfer (0.22%).
-**Open** `asset_search` for sheep, golfer not run. Putt, walk, par and bogey unseen. `golferClip` shows `Idle_Loop` after the swing phase ends, before the follow clip. Other lanes' `Never visible` entries remain.
-
 ### Judge 7
 
 **Judge 7.** The golfer reads well on the tee: a toy golfer with a white cap and an orange shirt, and the footballer beside him. Reactions, putt, walk and cow are still unseen. I ran the 2-player start (ISLA's turn, shirt orange-red), one real-key swing with a trace, a look and `perf`. I did not replay the bonk or cow checks, and I ran no par, bogey, putt or walk case.
@@ -55,3 +49,9 @@ The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.m
    - Offer a closer aim framing, since the golfer is 0.54% of the picture.
 
 SCORE: 6.1
+
+## Iteration 8
+**Did** `src/pose.js`: footballer target moved to 2.2 behind and 2.4 beside the golfer (was 1.0/1.5); new `on('ball:land')` makes him play `Celebration` (foot.cheer 2.2) when the ball lands on fairway or green. `lanes/creatures.md` records the asset-search miss.
+**Saw** `asset_search` ("low poly sheep", "low poly golfer") both failed with HTTP 530 (library unreachable), so no hits and no miss reason beyond that. I did not run `look`, `interact` or `perf` this session; the footballer change is unverified.
+**Next** 1) Verify with an `interact` trace that `footballer.clip` leaves `Idle_Loop` after a fairway landing and that he is off the ball line. 2) Keep `golferClip` on the swing name through follow; show par/bogey/putt/walk in a closer `sheet`. 3) Save `creatures-kit-colours` (FINN #3b78c9, ISLA #d8503a). 4) Retry `asset_search` when the library is back.
+**Open** Footballer position may fall off the playable surface or be hidden by terrain (fallback candidates are still the old offsets). `golferClip` still drops to `Idle_Loop` between swing end and follow. Other lanes' `Never visible` entries remain.

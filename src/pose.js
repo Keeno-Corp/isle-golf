@@ -173,7 +173,7 @@ addUpdate(dt => {
     // stand beside the tee (or the ball on a short hole) out of the line: behind-left of the golfer
     const p = curP(), H = curH(); if (!p || !H) return;
     const pos = p.pos || { x: H.tee[0], z: H.tee[1] }, ay = G2.aim || 0, fx = Math.cos(ay), fz = Math.sin(ay);
-    let tx = pos.x - fx * 1.0 + fz * 1.5, tz = pos.z - fz * 1.0 - fx * 1.5;
+    let tx = pos.x - fx * 2.2 + fz * 2.4, tz = pos.z - fz * 2.2 - fx * 2.4;
     { const ok = (x, z) => { const q = surfaceAt(x, z); return q === 'fairway' || q === 'green' || q === 'tee'; };
       if (!ok(tx, tz)) for (const [a, b] of [[-1.5, 1.0], [1.5, 1.0], [-1.5, -0.2], [1.5, -0.2], [0, 2], [0, -2]]) { const cx = pos.x - fx * 1.0 * (b > 0 ? 1 : 0) + fz * a, cz = pos.z - fz * 1.0 * (b > 0 ? 1 : 0) - fx * a; if (ok(cx, cz)) { tx = cx; tz = cz; break; } } }
     const k = foot.x === 0 && foot.z === 0 ? 1 : 1 - Math.exp(-dt * 2.2); foot.x += (tx - foot.x) * k; foot.z += (tz - foot.z) * k;
@@ -183,4 +183,5 @@ addUpdate(dt => {
     foot.mixer.update(dt);
 });
 on('holed', e => { if (!foot.ready) return; if (/BIRDIE|EAGLE|ALBATROSS|HOLE IN ONE|PAR/.test(e.result || '')) { footClip(/PAR/.test(e.result) && !/BIRDIE/.test(e.result) ? 'Dance_Loop' : 'Celebration'); foot.cheer = 3.5; } });
+on('ball:land', ({ ball }) => { if (!foot.ready || foot.cheer > 0) return; const q = surfaceAt(ball.pos.x, ball.pos.z); if (q === 'fairway' || q === 'green') { footClip('Celebration'); foot.cheer = 2.2; } });
 on('ball:sheep', () => { if (foot.ready) { footClip('Celebration'); foot.cheer = 2; } });
