@@ -627,6 +627,59 @@
           "value": 0.4
         }
       ]
+    },
+    {
+      "id": "look-dither-nearplane",
+      "title": "look-dither-nearplane",
+      "state": {},
+      "actions": [
+        {
+          "action": "newRound",
+          "players": 1
+        },
+        {
+          "action": "next"
+        },
+        {
+          "state": {
+            "hole": 4,
+            "skipIntro": true
+          }
+        },
+        {
+          "wait": 40
+        },
+        {
+          "key": "KeyA",
+          "frames": 10
+        },
+        {
+          "wait": 10
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "look.dither.nearFades.0",
+          "op": "==",
+          "value": "tree4_leaves0"
+        },
+        {
+          "path": "look.dither.radius",
+          "op": ">=",
+          "value": 0.2
+        },
+        {
+          "path": "look.dither.radius",
+          "op": "<=",
+          "value": 0.4
+        },
+        {
+          "path": "phase",
+          "op": "==",
+          "value": "aim"
+        }
+      ]
     }
   ]
 }

@@ -1,11 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 10
-**Did**: No source edits. Saved `look-dither-hole5-tree7-circle` in game-tests.json (hole 5 fixture, ball -3,-5.4, real A key: `look.dither.active`, `occluders[0]` tree7_leaves0, `radius` in 0.2–0.4). Tried saving `look-dither-nearplane` with `nearFades.0` existing; it failed because nearFades is empty in this fixture (nothing within the 3.4 fade range), so it was not saved.
-**Saw**: Hole 5 aim: the `look` picture shows tree7_leaves0 (15% of frame) with a Bayer-dither circle (radius 0.298) round the golfer. The golfer inside it is crisp and the tree outside is solid, so the survivors are raw, not blurred. Hole 1 aim: the current pin's red flag is readable at about [690,325] in the picture; `pin_flag` ×7 sums to 0.13% across all holes, and the hole 5 aim view shows its flag at about [215,170]. The pink boulders are still visible at the cliff edge (course lane). `test` and `perf` not run.
-**Next**: save a near-plane check by setState-ing the ball right beside a tree (find one with nearFades non-empty); Space-meter, real-key putt (4/12/24 frames after holed) and scorecard pictures; a before/after aim pair for the wider framing; sample title (5,400) after any sea tweak.
-**Open**: `nearFades` accuracy is still unproven against a picture; no near-plane save; pink boulders are a course-lane item, not yet in lanes/look.md.
-
 ### Judge 10
 
 **Judge 10: scores**
@@ -43,3 +37,14 @@ The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.m
 3. **Fix the over-small golfer on hole 1 aim.** `golfer_body` is 0.061% of the frame. Tighten the aim pullback on short par 3s, or fit it to the tee→pin distance, so the golfer is at least about 0.15%. Hole 5 is 0.18%. Check with one `look` on hole 1 aim. Also record the pink boulders in `lanes/look.md` once as a course-lane item, and add a before/after aim pair for the wider framing.
 
 SCORE: 7.2
+
+## Iteration 11
+**Did**: No source edits. Saved `look-dither-nearplane` in game-tests.json (hole 5 fixture: `newRound`, `next`, `setState {hole:4, skipIntro:true}`, wait 40, real A key 10 frames, wait 10). It expects `phase` aim, `look.dither.nearFades.0` == `tree4_leaves0`, and `look.dither.radius` in 0.2–0.4. It passes. It is a metadata check only, not a picture check.
+**Saw**: In that fixture `look.dither` has `active` true, `radius` 0.302, and `occluders` is empty. `nearFades` is ["tree4_leaves0"], but tree4_trunk and tree4_leaves0 are in "not found by the ID image", so no pixel of tree4 is on screen. The near fade is therefore still unproven against a picture. A try with the ball at (0.4, 1.6) on hole 5 (aim, wait 150) gave `nearFades` [], with tree8 far at the top of the frame. `look.camPitchDeg` is 22.2, `camera.fov` 33, `golfer_body` is 0.19%, and `pin_flag` is 0.13%. Pink boulders are still visible at the right of the hole 5 aim view. `test` and `perf` not run.
+**Next**: PROMPT.md changed mid-session; its remaining-work list comes first:
+- (1) Find a real near-plane fixture. Put the ball so a canopy sits 1.3–3.4 units from the eye, using eval to read each tree's distance to `camera`. Aim with the real key, wait 150, and `look` with zoom on the tree. Save it only if Bayer holes show.
+- (2) Meter, holed (4/12/24 frames) and scorecard pictures.
+- (3) Start the cup close-up during `SIM.mode==='sunk'` in settle, and raise the easing speed.
+- (4) Make `look.golfer` and the dither subject read the holder position while walking.
+- Do not zoom the aim framing back in; the golfer's 0.15% area is not a requirement.
+**Open**: Near-plane fade is unconfirmed in a picture; `nearFades` may list trees that are behind the camera. Cause of the Space-after-setState jump to hole 1 is not found. Pink boulders are a course-lane item and are not yet in lanes/look.md.
