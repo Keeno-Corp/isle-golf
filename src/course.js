@@ -58,6 +58,8 @@ HOLES.forEach((H, i) => {
   H.wind = [[2, 3, 3.5, 3, 3, 2.5, 3, 3.5, 3][i], ((H.teeYaw * 180 / Math.PI) + (i % 2 ? 180 : 0) + (i % 3 === 0 ? 22 : -22) + 360) % 360];
   let x0 = 1e9, z0 = 1e9, x1 = -1e9, z1 = -1e9; for (const [x, z] of H.samp) { x0 = Math.min(x0, x); x1 = Math.max(x1, x); z0 = Math.min(z0, z); z1 = Math.max(z1, z); }
   { let ax = H.pinX - H.tee[0], az = H.pinZ - H.tee[1]; if (H.len > 13.3) { let run = 0; for (let k = 1; k < H.samp.length; k++) { run += Math.hypot(H.samp[k][0] - H.samp[k - 1][0], H.samp[k][1] - H.samp[k - 1][1]); if (run > 13.6) { ax = H.samp[k][0] - H.tee[0]; az = H.samp[k][1] - H.tee[1]; break; } } } for (let pass = 0; pass < 3; pass++) { rayClear(H, ax, az); for (const b of H.bunkers) { const gx = b[0] - H.green.x, gz = b[1] - H.green.z, gd = Math.hypot(gx, gz), want = H.green.r + b[2] + 0.45; if (gd < want) { b[0] = H.green.x + gx / gd * want; b[1] = H.green.z + gz / gd * want; } } } }
+  // holes 2 and 3 (Gorse Run, Bluff Edge): a sand carry on the tee-to-pin line, added after the clearing above so it stays on the line (a flown ball clears it, a short one is in it)
+  if (i === 1 || i === 2) { const L = H.len, ux = (H.pinX - H.tee[0]) / L, uz = (H.pinZ - H.tee[1]) / L; H.bunkers.push([H.tee[0] + ux * L * 0.5, H.tee[1] + uz * L * 0.5, 1.05, 0.75, Math.atan2(uz, ux) + 1.57]); }
   H.bb = [x0 - H.hw * 1.8 - 1, z0 - H.hw * 1.8 - 1, x1 + H.hw * 1.8 + 1, z1 + H.hw * 1.8 + 1];
   H.bunkers.forEach(b => { for (let k = 0; k < 20 && inland(b[0], b[1]) < 3.2; k++) { b[0] *= 0.985; b[1] *= 0.985; } });   // keep sand off the cliff lip
   H.bunkers.forEach(b => BUNKERS.push({ x: b[0], z: b[1], rx: b[2], rz: b[3], rot: b[4], hole: i }));

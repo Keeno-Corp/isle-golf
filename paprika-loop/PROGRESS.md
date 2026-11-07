@@ -438,3 +438,14 @@ SCORE: 6.3
    - Check hole 7's green after its move, with `{state:{hole:6}}` and KeyC. The pin should be on screen with no trees on the green.
 
 SCORE: 6.8
+
+## The request changed
+
+paprika-loop/PROMPT.md changed before session 8; the Next lists above were written before it. Changed lines:
++ Steering note (lane lead): the aim-view camera framing and whether the golfer shows in it belong to the look lane (src/camera.js); don't chase those here. If the pin is cut at the frame top, keep the pole thick but not taller than needed. Priorities left, in order: hole 9 real-key drive saved as course-h9-drive; the holes 1-9 C-view pin check saved as course-only-current-pin (already saved, keep it passing); a carry on holes 2 and 3; look zoom on the cliff lip (blossom shrubs) and the #5d8a3a ribbon sample on hole 1, both saved as course- checks.
+
+## Iteration 8
+**Did** `src/course.js` HOLES.forEach: holes 2 and 3 (index 1, 2) get a carry bunker pushed after the rayClear passes, at 50% along the tee-to-pin line (rx 1.05, rz 0.75, turned across the line), so it stays on the line. All 7 saved checks pass.
+**Saw** Look sheet (KeyC) holes 2 and 3: a sand pot sits on the ribbon between tee and pin on each; brightness 50-51%, 0% blown out. Hole 2 auto-pick is still the iron with needPower 1.05 at 153 yd (the pick is in src/hud.js / src/aimline.js, outside the lane). Not run: perf, cliff-lip zoom, ribbon sample.
+**Next** (1) Save `course-cliff-lip` (look zoom on the blossom shrubs) and `course-h1-ribbon` (#5d8a3a sample). (2) Ask the look/hud lane to fix the hole 2 club pick (iron needPower 1.05 at 153 yd, a driver is needed). (3) C-view pin and hole 7 green check.
+**Open** `toNonIndexed` warning; `SFX[k]` in src/sound.js (outside lane). Carry bunker is not tested by a saved check.

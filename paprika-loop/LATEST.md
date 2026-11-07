@@ -1,11 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 7
-**Did** `src/course.js` HOLES: hole 9 `bunkers` [3.7,3.6]/[11.9,4.0] moved off the fairway line to [3.9,6.3]/[11.6,8.0]; hole 7 bunker [4.8,3.9] -> [5.6,8.5], hole 7 last path point [8.2,5.4] -> [6.6,8.4] and its third bunker -> [9.0,10.3] (hole 9's perfect drive was landing in hole 7's sand, then on hole 7's green). `game-tests.json`: saved `course-h9-drive` (newRound, state hole 8, Space, until meter.power ~0.97, Space, until meter.t 0.95-1.0, Space; expects strokes 1, ball.surface fairway, club driver). All 7 checks pass.
-**Saw** Hole 9 auto-pick is already "driver" (club W/S order: index 0 driver, S/E... wedge/putter go up). Real-key perfect drive: PERFECT!, ball (10.5,5.2) fairway, 232 yd to pin, aimDeg 339 vs pinBearing -56 (waypoint [20.6,1.4] now, so auto-aim follows the dogleg). Look: brightness 53%, 0% blown out, 0 HUD overlap, golfer 0.54%. Not run: perf (SwiftShader), holes 2/3 carry, cliff-lip zoom, #5d8a3a ribbon sample.
-**Next** (1) A carry on hole 2 and 3 on the tee-to-pin line (gorse or water), sheet of hole:1 and hole:2. (2) Save `course-cliff-lip` (look zoom on the blossom shrubs) and `course-h1-ribbon` (#5d8a3a sample). (3) Check hole 7 still reads after its green moved (look hole:6, C view; pin on screen, trees not on the green).
-**Open** `SFX[k] is not a function` (src/sound.js:71, outside lane) still logs on a hole 9 drive; `toNonIndexed` warning. Aim-view framing and golfer visibility are the look lane's (src/camera.js).
-
 ### Judge 7
 
 **Judge 7.** The host is SwiftShader, so I did not run `perf` and it is not scored. I looked at hole 1 (aim view) and hole 2 (C view), and I reran all saved checks. I did not take a hole 7 look, a cliff-lip zoom or a #5d8a3a sample, so those items are unproven.
@@ -62,3 +56,14 @@ The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.m
    - Check hole 7's green after its move, with `{state:{hole:6}}` and KeyC. The pin should be on screen with no trees on the green.
 
 SCORE: 6.8
+
+## The request changed
+
+paprika-loop/PROMPT.md changed before session 8; the Next lists above were written before it. Changed lines:
++ Steering note (lane lead): the aim-view camera framing and whether the golfer shows in it belong to the look lane (src/camera.js); don't chase those here. If the pin is cut at the frame top, keep the pole thick but not taller than needed. Priorities left, in order: hole 9 real-key drive saved as course-h9-drive; the holes 1-9 C-view pin check saved as course-only-current-pin (already saved, keep it passing); a carry on holes 2 and 3; look zoom on the cliff lip (blossom shrubs) and the #5d8a3a ribbon sample on hole 1, both saved as course- checks.
+
+## Iteration 8
+**Did** `src/course.js` HOLES.forEach: holes 2 and 3 (index 1, 2) get a carry bunker pushed after the rayClear passes, at 50% along the tee-to-pin line (rx 1.05, rz 0.75, turned across the line), so it stays on the line. All 7 saved checks pass.
+**Saw** Look sheet (KeyC) holes 2 and 3: a sand pot sits on the ribbon between tee and pin on each; brightness 50-51%, 0% blown out. Hole 2 auto-pick is still the iron with needPower 1.05 at 153 yd (the pick is in src/hud.js / src/aimline.js, outside the lane). Not run: perf, cliff-lip zoom, ribbon sample.
+**Next** (1) Save `course-cliff-lip` (look zoom on the blossom shrubs) and `course-h1-ribbon` (#5d8a3a sample). (2) Ask the look/hud lane to fix the hole 2 club pick (iron needPower 1.05 at 153 yd, a driver is needed). (3) C-view pin and hole 7 green check.
+**Open** `toNonIndexed` warning; `SFX[k]` in src/sound.js (outside lane). Carry bunker is not tested by a saved check.
