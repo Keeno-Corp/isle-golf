@@ -17,3 +17,8 @@ asset_search for "low poly sheep" and "low poly golfer" (rigged): library unreac
 
 ## Session 12
 Reactions proven by calling `golferClip` (dynamic `import('/src/golfer.js')` in eval): Dance_Loop, Dismay and Celebration each read back in `creatures.golferClip`. Celebration look: arms up, shirt red, edge contrast 0.146. Firing `holed` alone does not play par/birdie: those are round.js's (round.js:52); pose.js only handles bogey+ Dismay.
+
+## Session 13
+- A real drive then putt on hole 1 reached `holed` with `Celebration` (golfer and footballer); no `round.js:71` error reproduced.
+- Console: `SFX[k] is not a function (src/sound.js:71:61)` during play. Not the creatures lane's file; for the lead.
+- Sheep bonk seen in play (`sheepHits` 1, tumble). A saved hole-out check needs the sheep parked by `setState`.
