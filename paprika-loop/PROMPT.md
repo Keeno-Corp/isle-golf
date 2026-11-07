@@ -1,0 +1,24 @@
+# Isle Golf · creatures lane (team run golf1)
+## What it is
+A tilt-shift arcade golf game on Shepherd Isle: the football field of Isle Blitz is regrown into a nine-hole links course with sheep, a pond, the lighthouse and the sea along the cliffs. This loop is the **creatures** lane of a five-lane team: the golfer, the club, the sheep and the cow. Read COORDINATION.md (hooks, events, ST, observe-key rules) before changing anything.
+## Must have
+1. The golfer reads as the CHARACTERS.md toy golfer: a face or a cap on the head, not a spotted helmet. The address, backswing, through and follow-through poses each read clearly, and the club looks like a club (thin shaft, small head at the end: wood, iron, wedge or putter blade), never a hammer.
+2. Kit colours per player (from `KITS` in rules.js): the golfer's shirt is the current player's kit colour. In a 2-player game (Digit2 on the title, then Space) the shirt samples FINN blue (#3b78c9 ±30) on FINN's turn and ISLA red (#d8503a ±30) on ISLA's.
+3. After a hole-out (listen to the `holed` event): birdie or better plays 'Celebration', par plays 'Dance_Loop'. `__game.observe().creatures.golferClip` reports the clip playing.
+4. Sheep wander across fairways and into play (not only round their homes off the fairway). `observe().creatures.sheep` lists each sheep's x, z, state ('graze'|'walk'|'hop'|'flee'|'tumble') so a check can find one in the ball's path.
+5. The ball-bonks-a-sheep clip moment, built by listening to `ball:sheep`: the sheep hops or tumbles, a baa, a heart, a beat of hit-stop, a moment worth a 5-second clip. `observe().creatures.sheepHits` counts the hits. Check: ball placed by setState in front of a sheep in its path (found via creatures.sheep), then a real-key swing (Space x3) -> sheepHits +1, that sheep's state shows hop or flee (or tumble), and a look shows the heart.
+6. The cow reacts to `ball:cow` and to shots landing near her (looks up, turns, moos, shuffles away a step).
+7. Stepped frames through a real-key drive (meter stage 1, stage 2, the swing, the flight): looks show the backswing and the follow-through poses distinctly, and the club head is visible.
+8. Looks as LOOK.md says: its Checks hold. Crisp alpha-0 materials on the golfer, club, sheep and cow (post.js `crisp`), the Shepherd Isle style kept.
+9. Edit only src/assets.js, src/cow.js, src/golfer.js, src/pose.js, src/sheep.js, assets/, lanes/creatures.md and game-tests.json. Never edit other src files, index.html or the .md sheets; use the hooks in src/shared.js (addUpdate, addObserve, addSetState, addAction 'creatures.*', on/fire) instead. Keep each src file's first-line `import './<previous>.js'` as it is. Save each proving check with `interact`'s `save`, ids prefixed `creatures-`, and keep the existing checks in game-tests.json. Document what this lane provides (observe keys, events `creatures:*`) in lanes/creatures.md.
+10. Keep as they are (other lanes own them): DESIGN.md's Core loop and Controls (aim, club, three-click meter, mouse or keyboard, C hole camera, R replay); camera high behind the ball following the flight and the flyover intros; ball flight with arc, wind, bounce and roll by surface; all 9 holes playable; stroke play, scorecard, hot seat; the HUD; window.__game; 60 fps.
+## References
+refs/sheets/LOOK.png · style · match (Shepherd Isle, the game's own views) · built from /home/ubuntu/repos/paprika3d-dev/examples/shepherd-isle
+refs/study/ (not published) · mood · inspiration
+## Inspirations and notes
+Mario Golf: Super Rush and Wii Sports Golf for the feel of the golfer's swing and the reactions; Golf Story charm for the sheep gag. Open the game with `open` {cwd: this folder, url: "index.html"}. It has a full-screen post pass: take pictures with `interact` + `look: true` after stepped frames. The title screen waits for Space (Digit1-4 picks players).
+## Sheets
+LOOK.md · CHARACTERS.md · DESIGN.md · refs/sheets/LOOK.png
+Web study: yes (asked) · Picture sheets: no, no image key (asked) · Asset style: stylized (asked)
+## Left to the builder
+How the golfer's face or cap is made (a shader tweak on the head or a small cap mesh parented to the head bone), the pose angles, the club head shapes, how sheep pick paths across the fairways, the tumble and hit-stop details (hit-stop via an observable freeze of the creatures and a held flash is fine; do not edit main.js).
