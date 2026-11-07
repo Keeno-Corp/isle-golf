@@ -117,6 +117,11 @@ export const grade = new ShaderPass({
       c += vec3(0.75, 0.82, 1.0) * uBolt * 0.35 * (0.4 + l);
       c = mix(c, c0 * mix(vec3(1.0), vec3(0.75, 0.8, 1.1), uDusk), boyK * 0.5);
       c += vec3(0.010, 0.018, 0.017);
+      { // the sea: water pixels (blue-green, not grass or cliff) are drawn toward the lighthouse's teal #0f6a67 so the open water reads as the brief's colour
+        float wk = smoothstep(0.0, 0.06, c.b - c.r) * smoothstep(-0.02, 0.04, c.g - c.r) * (1.0 - smoothstep(0.30, 0.55, l)) * (1.0 - uDusk) * (1.0 - uStorm);
+        vec3 teal = vec3(0.0045, 0.144, 0.136) * (1.3 + 0.3 * l);
+        c = mix(c, teal, wk * 0.8);
+      }
       float lf = dot(c, vec3(0.2126, 0.7152, 0.0722));
       c = max(mix(vec3(lf), c, 1.0 + uFlash * 0.7), 0.0) * (1.0 + uFlash * 0.3) + vec3(0.07, 0.035, 0.0) * uFlash;   // a big hit's flash: an additive warm pop that brightens and keeps (even boosts) the colour
       c *= 1.0 + ((n(px / 3.0) - 0.5) * 0.08 + (h(px + fract(uTime) * 91.0) - 0.5) * 0.06);
