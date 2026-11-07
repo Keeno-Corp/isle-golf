@@ -1001,3 +1001,9 @@ Mean: (8+8+7+9+8+7+6+6+8+7+8+7)/12 = 7.4.
 3. **Save the missing proving checks.** Save `creatures-putt-stroke` (putter on the green, Space x3, `golferClip` goes `backswing` then `follow`, with `look: true`), `creatures-walk-to-ball` and `creatures-cow-shuffle` (ball about 2 units from `cow_hide`, trace `creatures.cow.state`). Each one is done when `test` reports it as ✓.
 
 SCORE: 7.4
+
+## Iteration 24
+**Did** In `src/pose.js`: `GS` 1.3→1.7 (golfer bigger), `STANCE` 0.58→0.66, `TOP` hand target (-0.09,0.6,-0.02) and `spY` factor 0.75→1.0 so the backswing lifts higher and the shoulders turn more.
+**Saw** `look` of ISLA's aim view mid-meter: `Subject` 1.4% (was 0.8%), 24 of 26 parts show, `golferClip` "backswing", club clear of the ground, golfer clear of the meter panel. No console errors beyond the harmless `toNonIndexed` warning. No `test` or `perf` run; the edit hook reran the saved checks but I did not read the result.
+**Next** 1) Re-run `test` to confirm the 14 checks hold with the bigger golfer. 2) `sheet` the swing (meter1, top, follow) to confirm the top reads distinct. 3) Save `creatures-putt-stroke`, `creatures-walk-to-ball`, `creatures-cow-shuffle`.
+**Open** Subject is still under the 1.5% target; `GS` could go to ~1.9 if the cap stays clear of the meter. Putt, walk and cow checks unsaved.

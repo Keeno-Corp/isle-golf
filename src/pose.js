@@ -24,8 +24,8 @@ export function swingParam() {
   if (G.phase === 'aim') return -golfer.pose.back * (0.45 + 0.55 * G.m.power) * 0.9;
   return 0;
 }
-const GS = 1.3;   // the golfer's size on screen (holder scale; the club follows)
-const STANCE = 0.58;   // how far the golfer stands from the ball (a touch wider than before)
+const GS = 1.7;   // the golfer's size on screen (holder scale; the club follows)
+const STANCE = 0.66;   // how far the golfer stands from the ball (a touch wider than before)
 const WALK_SPEED = 3.2;
 export function placeGolfer() {
   if (G.phase === 'title' || G.phase === 'card') return;
@@ -56,7 +56,7 @@ function ik(arm, tgt, pole) {
   _qa.copy(A.quaternion).invert(); _fd.applyQuaternion(_qa); E.quaternion.setFromUnitVectors(_ny, _fd);
 }
 const lerpV = (a, b, k) => a.clone().lerp(b, k);
-const ADDR = V(0, -0.03, 0.2), TOP = V(-0.07, 0.43, 0.02), FOLLOW = V(0.1, 0.4, 0.05);
+const ADDR = V(0, -0.03, 0.2), TOP = V(-0.09, 0.6, -0.02), FOLLOW = V(0.1, 0.4, 0.05);
 const POLE_R = V(-0.6, -0.5, -0.5), POLE_L = V(0.6, -0.5, -0.5);
 const hold = new Set();
 export function updateGolfer(dt) {
@@ -67,7 +67,7 @@ export function updateGolfer(dt) {
   let s = swingParam() * (putt ? 0.28 : 1);
   // the swing pose (also the address and the waggle)
   const wag = (G.phase === 'aim' && (!G.m || G.m.stage === 0) ? Math.sin(tt * 2.2) * 0.012 : 0);
-  let P = { lean: (putt ? POSE.lean + 0.2 : POSE.lean) + 0.05 * Math.abs(s), hipY: s * 0.5, spY: s * 0.75, headY: -s * 0.6, headX: 0.38, drop: putt ? 0.01 : 0.03, bend: putt ? 0.28 : 0.4, bodyY: 0, bodyZ: 0, sway: s * 0.02 };
+  let P = { lean: (putt ? POSE.lean + 0.2 : POSE.lean) + 0.05 * Math.abs(s), hipY: s * 0.5, spY: s * 1.0, headY: -s * 0.6, headX: 0.38, drop: putt ? 0.01 : 0.03, bend: putt ? 0.28 : 0.4, bodyY: 0, bodyZ: 0, sway: s * 0.02 };
   const k = s < 0 ? clamp(-s * 1.35, 0, 1) : clamp(s / 0.9, 0, 1), tgt = s < 0 ? TOP : FOLLOW, sc = putt ? 0.3 : 1;
   const hand = ADDR.clone().lerp(tgt, k * (putt ? 0.3 : 1)); hand.z += wag;
   let hR = hand.clone().add(V(-0.025, 0, 0)), hL = hand.clone().add(V(0.03, 0.01, 0)), mode = 'swing', polR = POLE_R, polL = POLE_L, hang = 0, hipSway = 0;

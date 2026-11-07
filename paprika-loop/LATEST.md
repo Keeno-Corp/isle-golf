@@ -1,11 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 23
-**Did** Fixed `creatures-sheep-bonk` in game-tests.json. The `state` block must be echoed by `observe()`, and `creatures.sheep` is an array there, so a `creatures` setState in `state` is "not realized". I moved the sheep placement (`{creatures:{sheep:{i:1,x:-10.5,z:12.8,wait:600}}}`) into the first action as a `{state:...}` step, as `creatures-ball-bonks-sheep` does. `src/sheep.js` is unchanged (I tried renaming the key to `placeSheep`, which broke two other checks, and reverted it).
-**Saw** `test` after a fresh reload: 14 of 14 pass (212 s). I ran no `look` or `perf`, so the golfer size, FINN's view and the cow shuffle were not checked.
-**Next** 1) `look` at FINN's aim view and raise `Subject` (0.61%) by scaling the golfer in `placeGolfer` (`src/pose.js`). 2) Save `creatures-putt-stroke` and `creatures-walk-to-ball`. 3) Prove the cow shuffle with the ball about 2 units from `cow_hide`, and raise the backswing's top angle in `src/pose.js`.
-**Open** Putt-stroke, walk and cow-shuffle checks are unsaved. The golfer is still small in the aim view. The full test run takes about 3.5 minutes.
-
 ### Judge 23
 
 **Session 23 verdict.** I opened the game and played ISLA's hole-1 aim view in a 2-player game. I took a three-moment `sheet` of the swing (`meter1`, `top`, `follow`) and ran `perf` once. I did not run `test`, a hole-out, the putt, the walk or the cow this session. The builder's 14/14 `test` result is taken from their notes, and those scores carry over from earlier sessions.
@@ -32,3 +26,9 @@ Mean: (8+8+7+9+8+7+6+6+8+7+8+7)/12 = 7.4.
 3. **Save the missing proving checks.** Save `creatures-putt-stroke` (putter on the green, Space x3, `golferClip` goes `backswing` then `follow`, with `look: true`), `creatures-walk-to-ball` and `creatures-cow-shuffle` (ball about 2 units from `cow_hide`, trace `creatures.cow.state`). Each one is done when `test` reports it as ✓.
 
 SCORE: 7.4
+
+## Iteration 24
+**Did** In `src/pose.js`: `GS` 1.3→1.7 (golfer bigger), `STANCE` 0.58→0.66, `TOP` hand target (-0.09,0.6,-0.02) and `spY` factor 0.75→1.0 so the backswing lifts higher and the shoulders turn more.
+**Saw** `look` of ISLA's aim view mid-meter: `Subject` 1.4% (was 0.8%), 24 of 26 parts show, `golferClip` "backswing", club clear of the ground, golfer clear of the meter panel. No console errors beyond the harmless `toNonIndexed` warning. No `test` or `perf` run; the edit hook reran the saved checks but I did not read the result.
+**Next** 1) Re-run `test` to confirm the 14 checks hold with the bigger golfer. 2) `sheet` the swing (meter1, top, follow) to confirm the top reads distinct. 3) Save `creatures-putt-stroke`, `creatures-walk-to-ball`, `creatures-cow-shuffle`.
+**Open** Subject is still under the 1.5% target; `GS` could go to ~1.9 if the cap stays clear of the meter. Putt, walk and cow checks unsaved.
