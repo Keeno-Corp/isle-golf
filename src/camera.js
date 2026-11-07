@@ -85,7 +85,7 @@ const _p = new THREE.Vector3();
 function ndc(x, y, z) { camera.updateMatrixWorld(); _p.set(x, y, z).project(camera); return { x: +_p.x.toFixed(3), y: +_p.y.toFixed(3), on: _p.z < 1 && Math.abs(_p.x) <= 1 && Math.abs(_p.y) <= 1 }; }
 addObserve(() => {
   const H = G.hole < 9 ? curH() : HOLES[0], d = new THREE.Vector3(); camera.getWorldDirection(d);
-  return { look: { camPitchDeg: +(Math.asin(clamp(-d.y, -1, 1)) * 180 / Math.PI).toFixed(1), flyoverT: +(G.phase === 'intro' ? look.flyoverT : 0).toFixed(3), focusY: +cam.fy.toFixed(3), ball: ndc(SIM.pos.x, SIM.pos.y, SIM.pos.z), pin: ndc(H.pinX, H.pinY + 0.6, H.pinZ), golfer: ndc(golfer.bx ?? 0, (golfer.by ?? 0) + 0.4, golfer.bz ?? 0), dither: ditherState() } };
+  return { look: { camPitchDeg: +(Math.asin(clamp(-d.y, -1, 1)) * 180 / Math.PI).toFixed(1), flyoverT: +(G.phase === 'intro' ? look.flyoverT : 0).toFixed(3), focusY: +cam.fy.toFixed(3), ball: ndc(SIM.pos.x, SIM.pos.y, SIM.pos.z), pin: ndc(H.pinX, H.pinY + 0.6, H.pinZ), golfer: ndc(golfer.holder.position.x, golfer.holder.position.y + 0.4, golfer.holder.position.z), dither: ditherState() } };
 });
 
 // ---------------------------------------------------------------- Odyssey-style screen-door dithering (was src/dither.js)
@@ -167,7 +167,7 @@ export function updateDither(sceneW, sceneH) {
   const live = (G.phase === 'aim' || G.phase === 'swing' || G.phase === 'flight' || G.phase === 'settle' || G.phase === 'holed') && !G.overhead;
   info.occluders.length = 0; info.nearFades.length = 0; nearCand = []; info.active = live;
   if (!live) { U.uDS.value.z = -9; return; }
-  if (G.phase === 'aim' || G.phase === 'swing') _s.set(golfer.bx ?? 0, (golfer.by ?? 0) + 0.45, golfer.bz ?? 0); else _s.copy(SIM.pos);
+  if (G.phase === 'aim' || G.phase === 'swing') _s.set(golfer.holder.position.x, golfer.holder.position.y + 0.45, golfer.holder.position.z); else _s.copy(SIM.pos);
   _v.copy(_s).applyMatrix4(camera.matrixWorldInverse);
   const depth = -_v.z; _v.copy(_s).project(camera);
   U.uDR.value.z = _s.y - 0.2;

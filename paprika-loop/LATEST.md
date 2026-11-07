@@ -35,8 +35,8 @@ The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.m
 
 SCORE: 7.5
 
-## Iteration 14
-**Did**: No source edits. Verified iteration 13's cup-camera pull-back by picture (real-key Space x2 putt on hole 1 from (-2.3,11.95), holed +24).
-**Saw**: holed +24: camera (0.89,7.44,15.94), fov 30.0, pitch 26.8; `pin_flag` 0.44% crisp red (no stipple), `pin_pole`, `cup`, `cupRim`, `golfer_body` 0.5% all on screen; `look.dither.nearFades` = ["tree15_leaves0"] (no pin_flag); `look.ball.y` -0.328. Console: only the toNonIndexed warning. `perf`/`test` not run.
-**Next**: (1) Save look- checks: flyover 25/50/75 on hole 5, real-key Space x3 drive with look.ball.on at 3 moments, night (N) on hole 5. (2) Hole 1 aim framing: look.ball.on/look.golfer.on were false; make look.golfer read walking holder.position. (3) Pink boulder into lanes/look.md; take the meter and scorecard pictures.
-**Open**: Holed +4 picture still not taken; the three checks above are still unsaved; SFX[k] error in sound.js is another lane's.
+## Iteration 15
+**Did**: `src/camera.js`: `look.golfer` observe NDC and the dither occluder subject (aim/swing) now read the walking `golfer.holder.position` instead of `golfer.bx/by/bz` (destination). Not played or looked this session (short on time).
+**Saw**: syntax check only; no picture, `perf` or `test` run.
+**Next**: (1) Verify by `observe` on hole 1 aim that `look.golfer.on` is true and the occluder hole follows the golfer; if holder.position is not world-space (parent offset), switch to getWorldPosition. (2) Save look- checks: flyover 25/50/75 hole 5, real-key Space x3 drive, night on hole 5. (3) Pink boulder to lanes/look.md; meter and scorecard pictures.
+**Open**: The holder-position change is unverified by picture; if the golfer shows on-screen false or the dither hole misplaces, revert lines 88 and 170 to `golfer.bx/by/bz`. SFX[k] error in sound.js is another lane's.
