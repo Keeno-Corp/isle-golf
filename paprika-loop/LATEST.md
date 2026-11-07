@@ -1,34 +1,34 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-### Judge 24
-
-**Session 24 verdict.** I ran `test` (14/14 pass), took a 3-moment `sheet` of ISLA's hole 1 (aim, top, follow), and ran `perf` once. I did not re-run the putt, the walk, the cow shuffle or the hole-out reactions this session. Their scores carry over.
-
-0. **Golfer is not the football player, proper golfer, wider spacing: 8.** `golfer_cap`, `golfer_shirt` and the red polo read as a toy golfer with a clear gap to the ball. `Subject` is 1.4% in the aim and top moments and 2.4% in the follow moment, up from 0.8%. The 1.5% target is still not met in the aim view.
-0b. **Footballer as side character, clean helmet: 8.** `player` stands behind and to the side of the tee, out of the line. He is small, but the dark helmet is clean and he reads as a figure.
-1. **Toy golfer, swing poses, club looks like a club: 7.** `club_grip` and `club_head` read as a club. In the follow moment the golfer fills the frame and the club is raised over the shoulder, which reads clearly.
-2. **Kit colours per player: 9.** `golfer_shirt` is red on ISLA's turn, and `creatures-kit-colours` passes.
-3. **Hole-out reactions: 8.** `creatures-birdie-celebration`, `creatures-par-dance` and `creatures-bogey-dismay` all pass. I did not look at them this session.
-4. **Sheep wander into play: 7.** A sheep stands at the left of the tee box in the aim view. I did not trace the other sheep this session.
-5. **Sheep bonk clip moment: 7.** `creatures-sheep-bonk` and `creatures-sheep-bonk-real-keys` pass. I did not look at the heart this session.
-6. **Cow reacts: 6.** `creatures-cow-reacts` passes, but `cow_hide` is out of the aim view and the shuffle is not shown in a look.
-7. **Stepped real-key drive: 6.** The `top` moment (the 3rd Space plus 8 frames) still looks like address: the club is low and the meter is still showing. The raised backswing is not visible in that frame, so it is either too brief or I timed it wrong. The follow moment reads well.
-8. **Looks as LOOK.md says, crisp materials: 8.** The picture is soft and clean in the Shepherd Isle style. The golfer, footballer and sheep are crisp, and there are no `Lighting:` or `Surfaces:` fault lines.
-9. **Edit scope, checks saved, lanes/creatures.md: 7.** 14 checks are saved and pass. `creatures-putt-stroke`, `creatures-walk-to-ball` and `creatures-cow-shuffle` are still missing.
-10. **Keep the core loop: 8.** The HUD, wind, club panel, aim dots and three-click meter are all intact.
-- **Faults: 7.** There are no console errors, only the harmless `toNonIndexed` warning. `perf` gave 1200 ms a frame at host load 4.3 on SwiftShader, which is noise. It also gave 181 draw calls and 368k triangles, with the main scene taking 906 ms of it.
-
-Mean: (8+8+7+9+8+7+7+6+6+8+7+7)/12 = 7.3.
-
-**Next:**
-1. **(asked again) Make the backswing top read distinctly.** In `src/pose.js`, hold the `backswing` pose longer, or lengthen the frames between the 3rd Space and the downswing, so the club goes past horizontal above the shoulder. It is done when a `sheet` moment taken 2 to 4 frames after the 2nd Space shows `golferClip` as `backswing` and `club_head` above `golfer_cap` height, clearly unlike the `aim` moment.
-2. **(asked again) Save the missing proving checks.** Save `creatures-putt-stroke` (putter on the green, Space x3, `golferClip` goes `backswing` then `follow`, with `look: true`), `creatures-walk-to-ball` and `creatures-cow-shuffle` (ball about 2 units from `cow_hide`, trace `creatures.cow.state`). Each one is done when `test` reports it as ✓.
-3. **Raise `Subject` above 1.5% in the aim view, and show the cow.** Raise `GS` from 1.7 to about 1.9 if `golfer_cap` stays clear of the meter panel. It is done when `look` of the aim view reports `Subject` of at least 1.5%. Then frame one `look` with the cow reacting to a nearby landing, so the shuffle is seen.
-
-SCORE: 7.3
-
 ## Iteration 25
 **Did** `src/pose.js` `swingParam` aim branch: once the meter is running (stage>=1) the backswing jumps to -(0.7+0.3*sqrt(power)) instead of growing with power from 0, so the top reads distinct a few frames after the first Space and holds through stage 2.
 **Saw** No look, test or perf run this session (short on time). The change is one line and not verified by a sheet.
 **Next** 1) `sheet` aim vs 2-4 frames after the 1st Space: `club_head` should sit above `golfer_cap`; 2) save `creatures-putt-stroke`, `creatures-walk-to-ball`, `creatures-cow-shuffle`; 3) `GS` 1.7 to ~1.9 for `Subject` over 1.5%, and a look of the cow shuffle.
 **Open** The jump to the top pose at stage 1 may look abrupt (k uses -s*1.35 clamped, no easing); ease it if so. Checks still 14, not re-run.
+
+### Judge 25
+
+**Session 25 verdict.** I took a 4-moment `sheet` of hole 1 (aim, 1st Space +4 frames, 2nd Space +3, 3rd Space +8) and ran `perf` once. I did not run `test`, and I did not re-play the putt, the walk, the cow shuffle, the sheep bonk or the hole-out reactions this session. Their scores carry over.
+
+0. **Golfer is not the football player, proper golfer, wider spacing: 8.** `golfer_cap`, `golfer_shirt` and the orange-red polo read as a toy golfer, with a clear gap to the ball. `Subject` is 1.3% in the aim view, so the 1.5% target is still missed.
+0b. **Footballer as side character, clean helmet: 8.** `player` stands behind the tee, off to the side. He is small, but he is out of the line and reads as a figure.
+1. **Toy golfer, swing poses, club looks like a club: 8.** The `club_grip` and `club_head` read as a thin shaft with a small head. At 1st Space +4 the club is raised high behind the head, and in the aim moment it is low by the ball, so the poses are clearly different.
+2. **Kit colours per player: 9.** The shirt is orange-red for player 1 in this 1-player game. The per-player check carries over from the last session.
+3. **Hole-out reactions: 8.** The saved checks passed last session. I did not look at them this session.
+4. **Sheep wander into play: 7.** A `sheep` stands at the upper left of the fairway in the aim view. I did not trace the other sheep.
+5. **Sheep bonk clip moment: 7.** This carries over. I did not look at the heart.
+6. **Cow reacts: 6.** `cow_hide` is not in the aim view, and the shuffle is not shown in a look.
+7. **Stepped real-key drive: 8.** This is up from 6, and the iteration 25 change works. The backswing top shows at 1st Space +4 and holds through 2nd Space +3, with the club head above `golfer_cap`. At 3rd Space +8 the club is down at the ball, so the downswing reads. The jump from address to top is abrupt: the pose is already at the top 4 frames after the 1st Space.
+8. **Looks as LOOK.md says, crisp materials: 8.** The picture is soft and clean in the Shepherd Isle style. The golfer, footballer and sheep are crisp. The look reported no `Lighting:` or `Surfaces:` fault lines.
+9. **Edit scope, checks saved, lanes/creatures.md: 7.** There are 14 saved checks. `creatures-putt-stroke`, `creatures-walk-to-ball` and `creatures-cow-shuffle` are still missing, and I did not re-run the existing checks.
+10. **Keep the core loop: 8.** The HUD, wind, club panel, aim dots and three-click meter are intact.
+- **Faults: 7.** There are no console errors, only the harmless `toNonIndexed` warning. `perf` gave 1011 ms a frame on SwiftShader, which is noise because it is a software renderer. It also gave 307 draw calls and 486k triangles, with the main scene taking 900 ms of it.
+
+Mean: (8+8+8+9+8+7+7+6+8+8+7+8+7)/13 = 7.7.
+
+**Next:**
+1. **(asked again) Save the missing proving checks.** Save `creatures-putt-stroke` (putter on the green, Space x3, `golferClip` goes `backswing` then `follow`, with `look: true`), `creatures-walk-to-ball` and `creatures-cow-shuffle`. For the shuffle, put the ball about 2 units from `cow_hide` and trace `creatures.cow.state`. Each one is done when `test` reports it as ✓.
+2. **(asked again) Raise `Subject` above 1.5% in the aim view.** Raise `GS` from 1.7 to about 1.9 if `golfer_cap` stays clear of the meter panel. `look` of the aim moment should report `subject golfer` of at least 1.5%. Then take one `look` with the cow reacting to a nearby landing, so the shuffle is seen.
+3. **Ease the backswing entry.** In `src/pose.js` `swingParam`, ramp the stage-1 jump over about 6 to 8 frames instead of snapping. A `sheet` of the 1st Space at +2 and +6 frames should show the club part-way up at +2 and at the top by +6, not already at the top.
+
+SCORE: 7.7
