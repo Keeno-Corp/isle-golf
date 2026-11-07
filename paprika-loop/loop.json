@@ -79,6 +79,17 @@
       "score": 6.1,
       "judgeTurns": 7,
       "judgeTokens": 131713
+    },
+    {
+      "n": 8,
+      "turns": 9,
+      "tokens": 209322,
+      "costUsd": 0.2966699,
+      "minutes": 4.4,
+      "commit": "afbcba8",
+      "score": 5.4,
+      "judgeTurns": 10,
+      "judgeTokens": 201852
     }
   ],
   "best": {

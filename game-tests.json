@@ -379,7 +379,7 @@
         {
           "path": "creatures.golferClip",
           "op": "==",
-          "value": "Idle_Loop"
+          "value": "follow"
         },
         {
           "path": "creatures.clubHead",

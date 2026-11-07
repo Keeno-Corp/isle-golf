@@ -138,7 +138,7 @@ on('ball:ob', () => golferClip('Dismay', 0.35));
 
 // ---------------------------------------------------------------- the one observe key of this lane (COORDINATION.md): creatures
 const poseNm = () => { const s = swingParam(); return G.phase === 'swing' ? (G.swingT < 0.2 ? 'backswing' : s < 0 ? 'downswing' : 'follow') : G.phase === 'flight' || G.phase === 'settle' ? 'follow' : 'address'; };
-addObserve(() => ({ creatures: { golferClip: G.phase === 'swing' ? poseNm() : golfer.cur, poseName: poseNm(), shirt: '#' + kitU.uJersey.value.getHexString(), swingT: +(G.swingT || 0).toFixed(2), pose: +swingParam().toFixed(2), clubHead: clubG.userData.head.userData.id || '', footballer: { x: +foot.x.toFixed(2), z: +foot.z.toFixed(2), clip: foot.cur, visible: foot.g.visible, ready: foot.ready }, cow: cowObs(), ...sheepObs() } }));
+addObserve(() => ({ creatures: { golferClip: ['Celebration', 'Dance_Loop', 'Dismay', 'Walk'].includes(golfer.cur) ? golfer.cur : ['aim', 'meter', 'swing', 'flight', 'settle'].includes(G.phase) ? poseNm() : golfer.cur, poseName: poseNm(), shirt: '#' + kitU.uJersey.value.getHexString(), swingT: +(G.swingT || 0).toFixed(2), pose: +swingParam().toFixed(2), clubHead: clubG.userData.head.userData.id || '', footballer: { x: +foot.x.toFixed(2), z: +foot.z.toFixed(2), clip: foot.cur, visible: foot.g.visible, ready: foot.ready }, cow: cowObs(), ...sheepObs() } }));
 
 // ---------------------------------------------------------------- the footballer: Isle Blitz's player (assets/player-anim.glb) as the caddie beside the tee or the green, clean: a glossy painted helmet shell over the old one, one stripe, a crisp facemask
 import { gltfL } from './assets.js';
@@ -173,9 +173,9 @@ addUpdate(dt => {
     // stand beside the tee (or the ball on a short hole) out of the line: behind-left of the golfer
     const p = curP(), H = curH(); if (!p || !H) return;
     const pos = p.pos || { x: H.tee[0], z: H.tee[1] }, ay = G2.aim || 0, fx = Math.cos(ay), fz = Math.sin(ay);
-    let tx = pos.x - fx * 2.2 + fz * 2.4, tz = pos.z - fz * 2.2 - fx * 2.4;
+    let tx = pos.x - fx * 3.0 - fz * 1.5, tz = pos.z - fz * 3.0 + fx * 1.5;   // 3 back from the ball, 1.5 to the side away from the golfer
     { const ok = (x, z) => { const q = surfaceAt(x, z); return q === 'fairway' || q === 'green' || q === 'tee'; };
-      if (!ok(tx, tz)) for (const [a, b] of [[-1.5, 1.0], [1.5, 1.0], [-1.5, -0.2], [1.5, -0.2], [0, 2], [0, -2]]) { const cx = pos.x - fx * 1.0 * (b > 0 ? 1 : 0) + fz * a, cz = pos.z - fz * 1.0 * (b > 0 ? 1 : 0) - fx * a; if (ok(cx, cz)) { tx = cx; tz = cz; break; } } }
+      if (!ok(tx, tz)) for (const [a, b] of [[-1.5, 1.0], [1.5, 1.0], [-1.5, -0.2], [1.5, -0.2], [0, 2], [0, -2]]) { const cx = pos.x - fx * (b > 0 ? 3.0 : 1.5) - fz * Math.abs(a), cz = pos.z - fz * (b > 0 ? 3.0 : 1.5) + fx * Math.abs(a); if (ok(cx, cz)) { tx = cx; tz = cz; break; } } }
     const k = foot.x === 0 && foot.z === 0 ? 1 : 1 - Math.exp(-dt * 2.2); foot.x += (tx - foot.x) * k; foot.z += (tz - foot.z) * k;
     foot.g.position.set(foot.x, heightAt(foot.x, foot.z), foot.z);
     const want = Math.atan2(pos.x - foot.x, pos.z - foot.z); foot.yaw += angDiff(foot.yaw, want) * Math.min(1, dt * 4); foot.g.rotation.y = foot.yaw;

@@ -1,11 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 8
-**Did** `src/pose.js`: footballer target moved to 2.2 behind and 2.4 beside the golfer (was 1.0/1.5); new `on('ball:land')` makes him play `Celebration` (foot.cheer 2.2) when the ball lands on fairway or green. `lanes/creatures.md` records the asset-search miss.
-**Saw** `asset_search` ("low poly sheep", "low poly golfer") both failed with HTTP 530 (library unreachable), so no hits and no miss reason beyond that. I did not run `look`, `interact` or `perf` this session; the footballer change is unverified.
-**Next** 1) Verify with an `interact` trace that `footballer.clip` leaves `Idle_Loop` after a fairway landing and that he is off the ball line. 2) Keep `golferClip` on the swing name through follow; show par/bogey/putt/walk in a closer `sheet`. 3) Save `creatures-kit-colours` (FINN #3b78c9, ISLA #d8503a). 4) Retry `asset_search` when the library is back.
-**Open** Footballer position may fall off the playable surface or be hidden by terrain (fallback candidates are still the old offsets). `golferClip` still drops to `Idle_Loop` between swing end and follow. Other lanes' `Never visible` entries remain.
-
 ### Judge 8
 
 Wasted sheet; I'll write the verdict.
@@ -53,3 +47,18 @@ Wasted sheet; I'll write the verdict.
    - Retry `asset_search` "low poly golfer" and "low poly sheep" when the library is back, and record the hit or miss in `lanes/creatures.md`.
 
 SCORE: 5.4
+
+## The request changed
+
+paprika-loop/PROMPT.md changed before session 9; the Next lists above were written before it. Changed lines:
++ ## Steer (lane lead, after session 7)
++ - Footballer placement is wrong: he stands in front of the golfer under the ball's line. Put him BEHIND the tee (2.5-3.5 units back from the ball against the aim direction, ~1.5 to the side away from the golfer), facing the golfer, so he never blocks the shot or the aim view. He cheers (Celebration) on a good landing, a sheep bonk and a birdie.
++ - `creatures.golferClip` names every swing phase: 'address', 'backswing', 'downswing', 'follow', then the reaction clip. Keep 'Celebration' (birdie or better), 'Dance_Loop' (par), 'Dismay' (bogey+).
++ - Prove and save, with looks: a par hole-out -> Dance_Loop, a bogey -> Dismay, a birdie -> Celebration (ball set near the cup, real-key putt); the putting stroke; the walk to the ball.
++ - One `asset_search` for "low poly golfer" and "low poly sheep"; record hit or miss in lanes/creatures.md. Keep the code-built golfer unless a hit is clearly better in the Shepherd Isle style.
+
+## Iteration 9
+**Did** `src/pose.js`: footballer target is now 3.0 behind the ball against the aim and 1.5 to the side away from the golfer (the golfer stands at -r·STANCE, so the old +fz offset put him on the golfer's side); fallback candidates follow the same geometry. `creatures.golferClip` reports address/backswing/downswing/follow during aim, meter, swing, flight and settle, with Celebration/Dance_Loop/Dismay/Walk overriding. `game-tests.json` creatures-real-key-drive-pose now expects `follow` (was `Idle_Loop`). `lanes/creatures.md` notes.
+**Saw** Only syntax check and the hook's check list; I ran no `look`, `interact` or `perf`. Footballer position, the reaction clips and kit colours are still unseen.
+**Next** 1) `interact` trace of `creatures.golferClip` over a real-key swing, and a `look` camera [-15,3,14.5]→[-11.5,1,12.8] to see the footballer off the ball line. 2) Ball near the cup, real-key putts: save `creatures-par-dance`, `creatures-bogey-dismay`, `creatures-birdie-celebrate`. 3) `creatures-kit-colours` sample on `golfer_shirt`; retry `asset_search` for golfer and sheep.
+**Open** Cheer on birdie works via the existing `holed` handler, not verified. 'address' shows during aim and meter, so `Walk` between shots is only visible when it overrides. Asset search not retried.

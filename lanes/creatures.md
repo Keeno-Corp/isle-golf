@@ -9,3 +9,8 @@ setState {creatures:{sheep:{i,x,z,wait}}} places a sheep.
 
 ## Session 8
 asset_search for "low poly sheep" and "low poly golfer" (rigged): library unreachable (HTTP 530), no hits, so sheep and golfer stay code-built. Footballer now stands 2.2 behind / 2.4 beside the golfer and plays Celebration when a ball lands on fairway or green.
+
+## Session 9
+- `creatures.golferClip` now reads address/backswing/downswing/follow through aim..settle; reactions (Celebration, Dance_Loop, Dismay, Walk) override.
+- Footballer stands 3.0 back from the ball against the aim, 1.5 to the side away from the golfer.
+- `asset_search` retry not done this session (not run).
