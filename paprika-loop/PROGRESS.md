@@ -1100,3 +1100,9 @@ Mean: (8+8+8+9+8+7+7+6+9+8+7+8+7)/13 = 7.8.
 3. **Cut the draw calls on the creatures and the scenery.** `perf` lists 301 draw calls and 486k triangles in the main scene. Use `perf` with `costs: true` to see which groups are heaviest, then merge or instance `bushes*` (×40) and `grass*` (×2305) where they sit in code you own, or lower the triangle count of `player` (the `assets/player-anim.glb` model, 1.4 MB). Done when `perf` shows fewer draw calls with the same look.
 
 SCORE: 7.8
+
+## Iteration 27
+**Did** Nothing changed in the code. I opened the page (loads clean, `duck`, `vaca-2`, `player-anim` fetched, only the `toNonIndexed` warning) and ran out of time before any Next item.
+**Saw** No look, sheet, test or perf this session. The numbers from Judge 26 stand (`Subject` 1.8% at aim, 301 draw calls, 486k triangles).
+**Next** 1) Save `creatures-putt-stroke`, `creatures-walk-to-ball`, `creatures-cow-shuffle` and get each to ✓ in `test`. 2) Put the ball 2-3 units from `cow_hide` and take one `interact` with `look: true` after a shot lands, to show the cow reacting (add a `!` bubble if too subtle). 3) `perf` with `costs: true`, then merge or instance `bushes*` and `grass*`.
+**Open** All three Judge 26 Next items are untouched. The 14 saved checks were not re-run.

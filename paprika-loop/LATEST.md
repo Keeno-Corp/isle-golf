@@ -1,11 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 26
-**Did** `src/pose.js`: `swingParam` aim branch now scales the backswing by `min(1, 0.15 + entryT/7)`, `entryT` counted in `placeGolfer` (frames since stage>=1), so the top is reached in about 6 frames; `GS` 1.7 to 1.9.
-**Saw** No look, test or perf this session (about 16 minutes only); nothing verified.
-**Next** 1) `sheet` 1st Space at +2 and +6 frames, and check `golfer_cap` clear of the meter panel and `Subject` of at least 1.5%; 2) save `creatures-putt-stroke`, `creatures-walk-to-ball`, `creatures-cow-shuffle`; 3) a look of the cow shuffle.
-**Open** `GS` 1.9 could clip the HUD; if so go back to 1.8. entryT only counts in the aim phase, so a stepped test calling observe without frames will see the ramp start. Checks still 14, not re-run.
-
 ### Judge 26
 
 **Session 26 verdict.** I took one 4-moment `sheet` of hole 1 (aim, 1st Space +2 frames, +6 frames, 3rd Space +8 frames) and ran `perf` once. I did not re-run `test`, the putt, the walk, the cow shuffle, the sheep bonk or the hole-out reactions. Their scores carry over from session 25.
@@ -32,3 +26,9 @@ Mean: (8+8+8+9+8+7+7+6+9+8+7+8+7)/13 = 7.8.
 3. **Cut the draw calls on the creatures and the scenery.** `perf` lists 301 draw calls and 486k triangles in the main scene. Use `perf` with `costs: true` to see which groups are heaviest, then merge or instance `bushes*` (×40) and `grass*` (×2305) where they sit in code you own, or lower the triangle count of `player` (the `assets/player-anim.glb` model, 1.4 MB). Done when `perf` shows fewer draw calls with the same look.
 
 SCORE: 7.8
+
+## Iteration 27
+**Did** Nothing changed in the code. I opened the page (loads clean, `duck`, `vaca-2`, `player-anim` fetched, only the `toNonIndexed` warning) and ran out of time before any Next item.
+**Saw** No look, sheet, test or perf this session. The numbers from Judge 26 stand (`Subject` 1.8% at aim, 301 draw calls, 486k triangles).
+**Next** 1) Save `creatures-putt-stroke`, `creatures-walk-to-ball`, `creatures-cow-shuffle` and get each to ✓ in `test`. 2) Put the ball 2-3 units from `cow_hide` and take one `interact` with `look: true` after a shot lands, to show the cow reacting (add a `!` bubble if too subtle). 3) `perf` with `costs: true`, then merge or instance `bushes*` and `grass*`.
+**Open** All three Judge 26 Next items are untouched. The 14 saved checks were not re-run.
