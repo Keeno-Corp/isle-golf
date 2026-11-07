@@ -1,11 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 1
-**Did** (camera.js, stage.js only; post.js untouched): `sun.position` → (-22,28,-16), shadows now fall lower right. `aimCam` look-ahead 4.2→2.2 (putt 0.9) and look y +0.35 so the ball sits lower-middle. `overheadCam` offsets set to exactly 55° pitch. Flyover in `updateCamera` is now three legs: DIO → overhead `o1` (u 0–.35) → low point `mp` behind the tee looking 55% down the hole (.35–.68) → aimCam (.68–1). Flight cam k 3.2→5 and its look target eases toward the pin within 9 units. Holed cam closer (fov 24, pin+0.9,+0.55,+1.3). New exported `look` {flyoverT} and `addObserve` → `look{camPitchDeg,flyoverT,focusY,ball,pin,golfer}` (NDC x,y,on). Saved `look-c-hole6-pitch`, `look-aim-hole9-ball-lifted`; wrote lanes/look.md.
-**Saw**: aim hole 9 ball NDC y -0.48 (about 74% down, above the bottom 20%), hole 1 earlier ball at 90% before the edit. C holes 5, 6: pitch 54.8–54.9°, ball y -0.73..-0.80, pin y 0.69, both inside the frame. Flyover at 25%: pitch 53°, pin on screen. A real-key drive on hole 1 kept the ball on (y -0.7..-0.06). Aim pitch is about 20° (LOOK says about 25). Console error `SFX[k] is not a function` is hud-round's. Other holes' flags show in the aim view. Not run: perf, night mode, critic on the meter and scorecard, `test` rerun of all checks, sea/fairway colour samples.
-**Next**: (1) post.js: confirm the aim-view top fifth is blurred and the band is crisp (look zoom); check the flag stays out of the heavy blur; (2) flyover looks at 50% and 75%, then the holed camera with a real putt; (3) night mode N, the scorecard and the meter pictures, `test` and `perf` (307 draws / 486k tris budget); maybe raise the aim pitch to about 25°.
-**Open**: the C view puts the tee at NDC y -0.73..-0.8, close to the bottom edge. The `on` boolean only prints when true. The `test` tool was not rerun after the last edit.
-
 ### Judge 1
 
 Status: I've seen the aim view, C view, flyover, night and perf, and I'm writing the verdict now.
@@ -31,3 +25,9 @@ Status: I've seen the aim view, C view, flyover, night and perf, and I'm writing
    - Save `look-` tests for flyover, night and C on holes 5 and 9.
 
 SCORE: 5.7
+
+## Iteration 2
+**Did** (stage.js, camera.js): Night: `updateWorld` night sun 0.22→2.5 (colour #a9b8f0), `hemi` night 0.32→1.75 (#8fa0d8), so N reads. New `filterTextures()` in stage.js (runs once on frame 2): every map on scene materials gets LinearFilter mag, mipmapped min, anisotropy up to 8, against the pixelated ground tiling. Owner's wider-framing request: `aimCam` D 7.6→9.2, Hh 3.9→4.7 (putt 2.9/1.5→3.6/1.8); default fov 30→33 (flyover end 33, mid 30); flight cam D 6.4→7.8, Hh 3.2→3.9 (putt 3.6/1.8).
+**Saw**: night on hole 1 (N, 40 frames): brightness 27% (was 9%, 24% near black → 2%), golfer, ball, fairway and flag readable. Aim hole 5 after widening: fov 32.8, pitch 27.1°, `look.ball.y` -0.365, pin y 0.95 (top edge, still on), golfer y -0.256; wider island reads, ground looks smooth. Not run: perf, `test` rerun (the two look- saves fail only because setState `hole` is 0-based vs the saved values — re-record them), C view, flyover, flight and holed looks after the widening, close-up ground check.
+**Next**: (1) re-record `look-c-hole6-pitch` and `look-aim-hole9-ball-lifted`, add look- saves for night, flyover and C holes 5/9; (2) check the wider flight and putt cameras (ball stays above bottom 20%), C fit-to-tee/pin box, and the flyover overhead leg; (3) `perf` against 307 draws / 486k tris, the critic on the meter, scorecard and a flight.
+**Open**: pin NDC y 0.95 on hole 5 aim (close to the top edge). A big tree can block the aim view on hole 2 at night (course lane). The anisotropy pass only covers textures set at load time on `map`/bump/normal/roughness; shader-made grass is not touched.

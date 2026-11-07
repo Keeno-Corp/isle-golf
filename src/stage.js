@@ -26,7 +26,7 @@ sun.shadow.mapSize.set(4096, 4096);
 Object.assign(sun.shadow.camera, { left: -32, right: 32, top: 32, bottom: -32, near: 5, far: 110 });
 sun.shadow.bias = -0.0004; sun.shadow.normalBias = 0.035;
 scene.add(sun, sun.target);
-export const SUN_DAY = new THREE.Color('#fff0d6'), SUN_NIGHT = new THREE.Color('#6d7ab0');
+export const SUN_DAY = new THREE.Color('#fff0d6'), SUN_NIGHT = new THREE.Color('#a9b8f0');
 
 export const std = (color, o = {}) => new THREE.MeshStandardMaterial({ color, roughness: 0.9, metalness: 0, ...o });
 export function named(mesh, name, shadow = true) { mesh.name = name; mesh.castShadow = shadow; mesh.receiveShadow = true; return mesh; }
@@ -57,11 +57,17 @@ export const skyMat = new THREE.ShaderMaterial({
 });
 export const sky = new THREE.Mesh(new THREE.SphereGeometry(500, 24, 12), skyMat); sky.name = 'sky'; scene.add(sky);
 
+let _aniso = 0;   // once, a few frames in: every map in the scene gets mipmaps and anisotropic sampling so the ground tiling stops shimmering into blocky texels
+function filterTextures() {
+  const mx = renderer.capabilities.getMaxAnisotropy(), seen = new Set();
+  scene.traverse(o => { const m = o.material; for (const mat of Array.isArray(m) ? m : m ? [m] : []) for (const k of ['map', 'bumpMap', 'normalMap', 'roughnessMap']) { const t = mat[k]; if (!t || seen.has(t) || !t.isTexture || t.isCompressedTexture) continue; seen.add(t); t.anisotropy = Math.min(8, mx); t.magFilter = THREE.LinearFilter; if (t.generateMipmaps !== false) { t.minFilter = THREE.LinearMipmapLinearFilter; } t.needsUpdate = true; } });
+}
 export function updateWorld(dt) {
+  if (_aniso < 2 && ++_aniso === 2) filterTextures();
   ST.dusk += clamp(ST.duskTarget - ST.dusk, -dt / 0.15, dt / 0.15);   // the floodlights snap up in a few frames, so N reads at once
   const dk = smooth(0, 1, ST.dusk);
-  sun.intensity = lerp(2.9, 0.22, dk); sun.color.copy(SUN_DAY).lerp(SUN_NIGHT, dk);
-  hemi.intensity = lerp(1.25, 0.32, dk); hemi.color.set('#d9ecdf').lerp(new THREE.Color('#845635'), dk);
+  sun.intensity = lerp(2.9, 2.5, dk); sun.color.copy(SUN_DAY).lerp(SUN_NIGHT, dk);
+  hemi.intensity = lerp(1.25, 1.75, dk); hemi.color.set('#d9ecdf').lerp(new THREE.Color('#8fa0d8'), dk);
   scene.fog.color.copy(FOG_DAY).lerp(FOG_NIGHT, dk); scene.background.copy(scene.fog.color);
   seaMat.uniforms.uFog.value.copy(scene.fog.color); seaMat.uniforms.uDusk.value = dk; seaMat.uniforms.uTime.value = ST.gameTime;
   skyMat.uniforms.uDusk.value = dk;
