@@ -21,14 +21,14 @@ export const pins = HOLES.map((H) => {
   const g = new THREE.Group(); g.name = 'pin' + (H.i + 1);
   const gy = heightAt(H.pinX, H.pinZ);
   g.position.set(H.pinX, gy, H.pinZ);
-  const pole = named(new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.125, 1.6, 8), flagWhite), 'pin_pole'); pole.position.y = 0.8; g.add(pole);
-  const cloth = new THREE.PlaneGeometry(1.35, 0.9, 10, 2).translate(0.67, 0, 0);
-  const flag = named(new THREE.Mesh(cloth, flagMat), 'pin_flag'); flag.position.y = 1.15; flag.castShadow = true; g.add(flag);
+  const pole = named(new THREE.Mesh(new THREE.CylinderGeometry(0.028, 0.034, 1.3, 8), flagWhite), 'pin_pole'); pole.position.y = 0.65; g.add(pole);
+  const cloth = new THREE.PlaneGeometry(0.75, 0.3, 10, 2).translate(0.37, 0, 0);
+  const flag = named(new THREE.Mesh(cloth, flagMat), 'pin_flag'); flag.position.y = 1.13; flag.castShadow = true; g.add(flag);
   const w = H.wind, ang = w[1] * Math.PI / 180; H.wv = new THREE.Vector2(Math.cos(ang) * w[0], Math.sin(ang) * w[0]);
   flag.rotation.y = -Math.atan2(H.wv.y, H.wv.x); flag.scale.x = 0.55 + 0.1 * w[0];
   const cup = new THREE.Mesh(new THREE.CircleGeometry(0.115, 20).rotateX(-Math.PI / 2), new THREE.MeshBasicMaterial({ color: '#16120e', polygonOffset: true, polygonOffsetFactor: -3, polygonOffsetUnits: -3 })); cup.name = 'cup'; cup.position.y = 0.012; g.add(cup);
   const rim = new THREE.Mesh(new THREE.RingGeometry(0.115, 0.15, 20).rotateX(-Math.PI / 2), new THREE.MeshBasicMaterial({ color: '#f1ecdc', polygonOffset: true, polygonOffsetFactor: -3, polygonOffsetUnits: -3 })); rim.name = 'cupRim'; rim.position.y = 0.011; g.add(rim);
-  const knob = named(new THREE.Mesh(new THREE.SphereGeometry(0.19, 10, 8), new THREE.MeshBasicMaterial({ color: '#ffd23a' })), 'pin_knob'); knob.position.y = 1.65; g.add(knob);
+  const knob = named(new THREE.Mesh(new THREE.SphereGeometry(0.06, 10, 8), new THREE.MeshBasicMaterial({ color: '#ffd23a' })), 'pin_knob'); knob.position.y = 1.32; g.add(knob);
   g.visible = H.i === 0;
   scene.add(g); H.pinG = g; H.flag = flag; H.pinY = gy;
   return g;
@@ -74,9 +74,9 @@ on('hole:start', ({ hole }) => showPin(hole));
 addUpdate(dt => {
   if (!RM) { import('./round.js').then(m => { RM = m; }); return; }
   const G = RM.G, H = HOLES[G.hole]; if (G.hole !== curHole) showPin(G.hole);
-  const big = G.overhead && (G.phase === 'aim' || G.phase === 'swing') ? 2.6 : 1;
+  const big = G.overhead && (G.phase === 'aim' || G.phase === 'swing') ? 1 : 1;
   if (big !== pinBig) { pinBig = big; H.pinG.scale.set(big, big, big); }
-  pinRing.visible = big > 1; if (big > 1) pinRing.position.set(H.pinX, H.pinY + 0.05, H.pinZ);
+  pinRing.visible = !!(G.overhead && (G.phase === 'aim' || G.phase === 'swing')); if (pinRing.visible) pinRing.position.set(H.pinX, H.pinY + 0.05, H.pinZ);
   const p = G.players[G.turn];
   if (!p || G.phase === 'title' || G.phase === 'card' || G.phase === 'holed') { wayMark.visible = false; return; }
   const t = aimTarget(H, p.pos, G.club); wayInfo = t;
