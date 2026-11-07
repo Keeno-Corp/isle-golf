@@ -1,48 +1,43 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-### Judge 12
-
-**Judge 12: scores**
-
-00. **Odyssey-style dithering**: 7. `look-dither-occluder-tree`, `look-dither-hole5-tree7-circle` and `look-dither-nearplane` all pass in `test` from a fresh reload. On the hole 9 aim, `look.dither` is `active` with `radius` 0.301, `subjectNdc` [0,-0.231] and `depth` 10.1. Last session's flag near-fade at the cup close-up is still unfixed, so it eats the `pin_flag` there. The supervisor already accepted the occluder proof, and I did not re-prove it.
-
-0. **Wider framing, smoother ground**: 8. Hole 9 aim has `camera.fov` 33. `look.ball.y` is -0.365 and the golfer is 0.19% of the frame at [552,461,604,558]. The `grass*` stripes read smooth and painted. The flyover frames are smooth too, with no texel blocks. There is still no saved before/after pair.
-
-1. **Look lane goal**: 8. Hole 5 flyover: diorama at 25%, house and trees close up at 50%, behind the ball at 75% with `golfer` at 0.21%. Hole 9 aim keeps the top blurred and the band sharp. Hole 5 night reads, with a blue-dark grade and lit `golfer_body`. At 50% the golfer is 0% and the pin is not clearly in frame. At 25% a pin flag is visible at the left.
-
-2. **Look check 1 (aim blur band)**: 8. Hole 9 aim: the top fifth is blurred, the band at `golfer_body` is sharp, and `look.ball.y` is -0.365, above the bottom 20%. Holes 1 and 5 passed earlier.
-
-3. **Look check 2 (C on 5, 6, 9)**: 8. `look-c-hole6-pitch`, `look-c-hole5-broadside` and `look-c-hole9-broadside` all pass in `test` this session.
-
-4. **Look check 3 (flyover, real-key drive)**: 7. The flyover moves from diorama to over the hole to behind the ball. The 50% pin is not clearly visible and `look.flyoverT` was not read at each stop. `look-sunk-cup-closeup` and `look-holed-cup` pass. There is no saved flyover 25/50/75 check and no saved three-moment drive check.
-
-5. **Look check 4 (sea, key light, night)**: 8. The sea is teal in the flyover frames and the shadows fall lower-right. Night reads and the golfer stays visible. I took no title `sample` this session.
-
-6. **Critic views and course findings**: 6. Last session's meter, sunk close-up and card pictures exist. In the hole 5 flyover frames at 75%, the pink boulders and shrubs are still prominent, and the pink boulder is not in `lanes/look.md`. The flag is readable on hole 9 aim (`pin_flag` on screen). Holed +4 and +24 were not pictured.
-
-7. **LOOK.md Checks**: 8. The brush pass, haze, teal sea and warm sun all hold across the hole 9 aim, the flyover and night. I did not re-read the `Lighting:` and `Surfaces:` lines. None showed up in the hole 9 aim reply.
-
-8. **Edit scope and load-order imports**: 8. I did not recheck the sources, and the other lanes' pink boulders and football-player model are noted as not yet merged.
-
-9. **Observe hook, saved checks, lane notes**: 8. The `look` observe key carries `camPitchDeg`, `focusY`, `ball`, `pin`, `golfer` and `dither`. 13 of 13 saved checks pass. There is no saved flyover, flight-moments or night check yet.
-
-10. **Faults**: 8. Console shows only the `toNonIndexed` warning. `perf` reads 307 draws and 485,787 triangles, equal to the baseline. The 1188 ms frame is SwiftShader at host load 4.4, which is noise.
-
-**Next:**
-1. **Move the sunk close-up back so the flag isn't dithered away.** In `src/camera.js` the close-up sits about 2.7 from `pin_flag`, so near-fade removes it. Pull the camera back by about 1 unit, or exclude `pin_flag` from `nearFades`. After a real-key putt, `look` at settle +6 and holed +4/+12/+24 should show `pin_flag` and `cup` intact, with `look.dither.nearFades` not naming `pin_flag`. Keep `look.ball.y` above -0.6. This also gives the missing +4 and +24 pictures.
-2. **Save the unsaved checks: flyover 25/50/75, flight 3 moments, night, and a before/after pair.** Use `interact` with `look-` ids. For the flyover, step to 25/50/75% of `G.introDur`, expect `look.flyoverT` in range, and expect `look.pin.onScreen` true at 50%. At 50% on hole 5 the pin is not clearly in frame, so check it and nudge `camera.js` if needed. For the flight, use real Space x3 and expect `look.ball` on screen at three moments. For night, press `N`. For the pair, `look` hole 1 aim at fov 33 and fov ~26.
-3. **Put the pink boulder in `lanes/look.md`.** Under course-lane items, name the pink boulders on the hole 5 cliff and the hole 1 right-of-golfer rock, and say they still read as pink rocks, not blossom shrubs. Then make `look.golfer` read the walking `holder.position` rather than the destination `bx`/`bz`. Check it with `observe` mid-walk after a putt.
-
-SCORE: 7.7
-
-## The request changed
-
-paprika-loop/PROMPT.md changed before session 13; the Next lists above were written before it. Changed lines:
-+ - **Next session's ONLY job: finish the repeatedly missed critic views and cup-drop timing.** Tree-occlusion proof is ALREADY accepted: supervisor personally opened /home/ubuntu/look-integration-1/paprika3d/runs/2026-11-07T03-37-27-950Z/look-17.png: distinct crisp screen-door hole reveals new golfer/ball through tree canopy. Do NOT spend yet another session re-proving this or chasing metadata fields that source already returns; tool replies can summarize keys. Near-plane saved check now exists. First Space meter picture; fix/show real-key sunk/holed cup at4/12/24 frames by beginning cup-camera during SIM.mode==='sunk' settle; then scorecard picture; run art critic on aim/meter/flight/card. Source edits camera.js only if needed to show drop. No nearVisible refactors this session.
-
 ## Iteration 13
 **Did**: `src/camera.js` holed/sunk cup close-up pulled back: cPos = pin + (2.6, 3.0, 4.0) (was 1.9, 2.3, 2.9), cLook = pin + (0, 0.6, 0) (was +0.5). fov 30 and k 7 unchanged. Aim: keep `pin_flag` out of the near fade.
 **Saw**: `test`: 13 of 13 saved checks pass (including `look-sunk-cup-closeup` and `look-holed-cup`) after the change. I took no pictures this session, so I did not confirm that `look.dither.nearFades` no longer names `pin_flag` at settle +6 or holed +4/+12/+24. `perf` not run. Console: only the `toNonIndexed` warning at open.
 **Next**: (1) Real-key putt, then `look` at settle +6 and holed +4/+12/+24: check `pin_flag` and `cup` are intact, `look.ball.y` above -0.6, and take the missing +4/+24 pictures. (2) Save flyover 25/50/75, flight-3-moments and night checks (`look-` ids). (3) Pink boulder into lanes/look.md; `look.golfer` should read the walking `holder.position`.
 **Open**: The flag fade fix is untested by picture. The cup rattle/drop animation is still not seen frame by frame.
 **Iteration 13 addendum (picture taken)**: real-key putt on hole 1, settle +6, ball.mode sunk: cup, `pin_pole` and `pin_flag` (3.2%) all on screen, flag red with a visible Bayer stipple (still partly near-faded, cam still easing from (-2.19,7.08,14.17), fov 31.3). `look.ball` y -0.399 (above -0.6). Golfer 1.6%. Console clean. Next: look again at holed +12/+24 to see if the stipple has gone once the camera has settled; if not, lower `uNearR` for `pin_flag` only.
+
+### Judge 13
+
+**Judge 13: scores**
+
+00. **Odyssey-style dithering**: 8. `pin_flag` is now crisp at holed (`look.dither.nearFades` is `["tree15_leaves0"]`, no `pin_flag`). At settle +6 the camera was still easing in at (-0.21, 7.03, 12.22) and `pin_flag` showed a heavy Bayer stipple. On the hole 1 aim, `look.dither` is active with `subjectNdc` [-1.43, 0.603], and `look.ball.on` and `look.golfer.on` are false. The saved occluder and near-plane checks were accepted earlier and I did not re-prove them.
+
+0. **Wider framing, smoother ground**: 8. The hole 1 aim has `camera.fov` 33, and the `grass*` stripes read as smooth painted bands with no texel blocks. The tee view is looked at from the side and the golfer is tiny. There is still no saved before/after pair.
+
+1. **Look lane goal**: 8. The holed camera is now a readable three-quarter view at pitch 26.8°, fov 30. `golfer_body` (0.82%), `pin_pole`, `pin_flag` (0.44%) and `cup` are all in frame, and the ball sits at `look.ball.y` -0.323. The 25/50/75% flyover was not re-looked this session.
+
+2. **Look check 1 (aim blur band)**: 7. Hole 1 aim: the top is blurred and the band is crisp, but with my ball fixture the ball and golfer were off-screen (`on: false`) and the HUD banner covers the frame centre. Holes 5 and 9 passed in earlier sessions.
+
+3. **Look check 2 (C on 5, 6, 9)**: 8. I did not re-run it. The saved `look-c-*` checks passed last session, and this session's edits touch only the cup camera.
+
+4. **Look check 3 (flyover, real-key drive)**: 7. A real-key putt (Space ×3) reached `ball.mode` sunk at frame 241 and then holed. The settle +6 and holed pictures exist. Holed +4 and +24 were not taken. There is still no saved flyover 25/50/75 check and no saved three-moment drive check.
+
+5. **Look check 4 (sea, key light, night)**: 8. The sea at the top right of the hole 1 aim is teal, and the shadows (`golferShadow`, pin shadow) fall lower-right under a warm light. I did not sample the title or test night this session.
+
+6. **Critic views and course findings**: 6. Meter picture: not taken this session. Aim, settle and holed pictures: taken. At settle +6 the golfer is cropped out of the frame. The football-player model, the red/pink boulder at the right edge of the hole 1 aim, and `SFX[k] is not a function (src/sound.js:71)` all belong to other lanes and are not yet merged.
+
+7. **LOOK.md Checks**: 8. The brush pass, haze, teal sea and warm sun hold in all three pictures. The reply showed no `Lighting:` or `Surfaces:` fault lines.
+
+8. **Edit scope and load-order imports**: 8. I did not recheck the sources. This session's change is in `camera.js` only.
+
+9. **Observe hook, saved checks, lane notes**: 8. The `look` key carries `camPitchDeg`, `focusY`, `ball`, `pin`, `golfer` and `dither`, and it updates correctly through settle and holed. Saved checks stay at 13 of 13 per the builder. I did not run `test`. Flyover, flight-moments and night checks are still unsaved.
+
+10. **Faults**: 7. Console: `SFX[k] is not a function` from `src/sound.js:71`, which is the sound lane's. `perf` reads 307 draws and 485,787 triangles, unchanged from the baseline. The 1063 ms frame is SwiftShader and is noise. At settle +6 the near fade still hits `pin_flag`.
+
+**Next:**
+1. **Remove the flag stipple while the cup camera is easing.** At settle +6 on a real-key putt, `pin_flag` shows a heavy Bayer stipple (camera (-0.21, 7.03, 12.22), `look.dither.depth` 2.92, 2.9 from the flag). Either exclude `pin_flag` and `pin_pole` from the near fade in `src/camera.js`, or lower `uNearR` for them. After a real-key putt, `interact` with `look: true` at settle +6 should show a solid red flag, and `look.dither.nearFades` should not name `pin_flag`. Also start the cup camera easing during `sunk` so the settle frames are not a tight overhead crop with the golfer cut off.
+2. **Save the three missing checks.** (a) Flyover 25/50/75% on hole 5, stepped to `G.introDur`, expecting `look.flyoverT` in range and `look.pin.onScreen` true at 50%. (b) A real-key Space ×3 drive with `look.ball.on` true at three moments. (c) Night (`N`) on hole 5, expecting the golfer on screen. Give them `look-` ids and rerun `test` from a fresh reload.
+3. **Fix the aim framing on hole 1 and the golfer metadata.** With the ball on the tee, the hole 1 aim shows `look.ball.on` false and `look.golfer.on` false. Use `observe` to check that the ball and golfer sit in the lower-middle of the frame at fov 33. Make `look.golfer` and `look.dither.subjectNdc` read the walking `holder.position`, not the destination. Then add the pink boulder at the hole 1 right edge and on the hole 5 cliff to `lanes/look.md` under the course-lane items, and take the missing meter and scorecard pictures.
+
+SCORE: 7.5
