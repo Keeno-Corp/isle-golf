@@ -319,6 +319,74 @@
           ]
         }
       ]
+    },
+    {
+      "id": "creatures-real-key-drive-pose",
+      "title": "creatures-real-key-drive-pose",
+      "state": {},
+      "actions": [
+        {
+          "action": "newRound",
+          "players": 2
+        },
+        {
+          "action": "next"
+        },
+        {
+          "wait": 5
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 55
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 28
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 16
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "phase",
+          "op": "==",
+          "value": "flight"
+        },
+        {
+          "path": "strokes",
+          "op": "==",
+          "value": 1
+        },
+        {
+          "path": "creatures.pose",
+          "op": ">=",
+          "value": 0.3
+        },
+        {
+          "path": "creatures.pose",
+          "op": "<=",
+          "value": 1
+        },
+        {
+          "path": "creatures.golferClip",
+          "op": "==",
+          "value": "Idle_Loop"
+        },
+        {
+          "path": "creatures.clubHead",
+          "op": "==",
+          "value": "iron"
+        }
+      ]
     }
   ]
 }
