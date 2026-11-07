@@ -67,8 +67,8 @@ export function updateCamera(dt) {
   else {   // flight and settle: behind the ball along its way, close in as it rolls
     const v = SIM.vel, hs = Math.hypot(v.x, v.z), dx = hs > 0.5 ? v.x / hs : Math.cos(G.aim), dz = hs > 0.5 ? v.z / hs : Math.sin(G.aim), putt = curClub().putt || SIM.mode === 'roll' && hs < 4;
     if (hs > 0.5) { cam.fdx = dx; cam.fdz = dz; }
-    const fdx = cam.fdx ?? dx, fdz = cam.fdz ?? dz, D = putt ? 3.6 : 7.8, Hh = putt ? 1.8 : 3.9;
-    cPos.set(SIM.pos.x - fdx * D, Math.max(SIM.pos.y + Hh, heightAt(SIM.pos.x - fdx * D, SIM.pos.z - fdz * D) + 1.0), SIM.pos.z - fdz * D); cLook.set(SIM.pos.x + fdx * 1.8, SIM.pos.y + 0.1, SIM.pos.z + fdz * 1.8); k = putt ? 4 : 5; const dp = Math.hypot(H.pinX - SIM.pos.x, H.pinZ - SIM.pos.z); if (!putt && dp < 9) { const w = 1 - dp / 9; cLook.x = lerp(cLook.x, H.pinX, w * 0.6); cLook.z = lerp(cLook.z, H.pinZ, w * 0.6); }
+    const fdx = cam.fdx ?? dx, fdz = cam.fdz ?? dz, D = putt ? 3.6 : 6.2, Hh = putt ? 1.8 : 3.3;
+    cPos.set(SIM.pos.x - fdx * D, Math.max(SIM.pos.y + Hh, heightAt(SIM.pos.x - fdx * D, SIM.pos.z - fdz * D) + 1.0), SIM.pos.z - fdz * D); cLook.set(SIM.pos.x + fdx * 1.8, SIM.pos.y + 0.1, SIM.pos.z + fdz * 1.8); k = putt ? 4 : 8; const dp = Math.hypot(H.pinX - SIM.pos.x, H.pinZ - SIM.pos.z); if (!putt && dp < 9) { const w = 1 - dp / 9; cLook.x = lerp(cLook.x, H.pinX, w * 0.6); cLook.z = lerp(cLook.z, H.pinZ, w * 0.6); }
   }
   if (snap) { cam.pos.copy(cPos); cam.look.copy(cLook); cam.fov = fov; } else {
     const t = 1 - Math.exp(-dt * k); cam.pos.lerp(cPos, t); cam.look.lerp(cLook, t); cam.fov += (fov - cam.fov) * t;

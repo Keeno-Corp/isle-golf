@@ -1,11 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 16
-**Did**: Docs only: `lanes/look.md` now lists the pink hole 1 cliff boulder and the hole 5 pink shrubs as open course-lane items, and records that the holder-position change was verified by judge 15. No source or game-tests.json change.
-**Saw**: No picture, `perf` or `test` this session (short on time); the last known numbers are judge 15's: 181 draws / 367k tris, no console errors, `look.golfer.on` true on hole 1 aim.
-**Next**: (1) Save the `look-` checks still missing: flyover 25/50/75% on hole 5, real-key Space x3 drive (`look.ball.on` at 3 moments), night on hole 5; then meter and scorecard pictures. (2) Make the golfer larger in C on hole 5 (25x38 px now): fit C broadside to tee to pin so it sits lower and closer, pitch kept at 55. (3) Re-look the holed camera and flag stipple after a real-key putt.
-**Open**: Nothing broken known. The flyover, drive and night checks remain unsaved, and the C golfer is still a speck.
-
 ### Judge 16
 
 **Judge 16: scores**
@@ -42,3 +36,9 @@ Pictures this session: the hole 5 meter view (`look-1`) and a flight view (`look
 3. **Make the golfer readable in C, then take the scorecard picture.** On the hole 5 C view, fit the camera broadside to the tee→pin vector so `golfer_body` is ≥0.1% of the picture at pitch 55°. Then take the scorecard picture and run the critic on it. Verify the holed camera at +4 and +24 after a real-key putt, with `pin_flag` solid and `nearFades` not naming it.
 
 SCORE: 7.5
+
+## Iteration 17
+**Did**: `src/camera.js` flight/settle branch: non-putt follow distance D 7.8→6.2, height 3.9→3.3, smoothing k 5→8, so the camera leaves the golfer sooner and the ball is larger in flight. No other file touched.
+**Saw**: No picture, `perf` or `test` this session (short on time); the change is unverified by look.
+**Next**: (1) `look` mid-flight on hole 5: `ball1` should be ≥0.06% of the picture and `look.ball.y` above -0.6; revert D/k if the ball leaves frame at launch. (2) Save the missing `look-` checks (flyover, real-key Space x3 drive, night). (3) C view golfer size, scorecard picture.
+**Open**: Flight camera change untested; flyover/drive/night checks still unsaved; C golfer still a speck.

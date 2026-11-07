@@ -625,3 +625,9 @@ Pictures this session: the hole 5 meter view (`look-1`) and a flight view (`look
 3. **Make the golfer readable in C, then take the scorecard picture.** On the hole 5 C view, fit the camera broadside to the tee→pin vector so `golfer_body` is ≥0.1% of the picture at pitch 55°. Then take the scorecard picture and run the critic on it. Verify the holed camera at +4 and +24 after a real-key putt, with `pin_flag` solid and `nearFades` not naming it.
 
 SCORE: 7.5
+
+## Iteration 17
+**Did**: `src/camera.js` flight/settle branch: non-putt follow distance D 7.8→6.2, height 3.9→3.3, smoothing k 5→8, so the camera leaves the golfer sooner and the ball is larger in flight. No other file touched.
+**Saw**: No picture, `perf` or `test` this session (short on time); the change is unverified by look.
+**Next**: (1) `look` mid-flight on hole 5: `ball1` should be ≥0.06% of the picture and `look.ball.y` above -0.6; revert D/k if the ball leaves frame at launch. (2) Save the missing `look-` checks (flyover, real-key Space x3 drive, night). (3) C view golfer size, scorecard picture.
+**Open**: Flight camera change untested; flyover/drive/night checks still unsaved; C golfer still a speck.
