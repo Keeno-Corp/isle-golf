@@ -1,33 +1,33 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-### Judge 1
-
-**Judge verdict, session 1**
-
-1. **HUD in the Isle Blitz type: 8.** `#holep` (top left) shows hole, par, strokes, yards and the player dot, and `#windp` (top right) shows "2 MPH TAILWIND". `#clubp` (bottom left) lists DRIVER 204, IRON 132, WEDGE 74 and PUTTER GREEN. `#meterp` shows "POWER 33%" at stage 1 and "MISS-HIT! 65%" at stage 2. The HUD is cream on dark green and no panel overlaps another. The yardage dropping in rough or sand was not looked at. The meter fades out in the stage-2 look and is hard to read there.
-2. **Banners never cover the target: 7.** `#banner` and `#sub` sit at left 27% / top 26% and clear the pin in both the aim view and the swing view. The "HOLE 1 / PAR 3 · 118 YD · PEBBLE STEP" banner was still up at stage 1, stage 2 and the start of flight, so it clears late. The "67 YD TO PIN" banner did appear at rest, but FINN's "TO PLAY" showed beside it.
-3. **Stamped scorecard and final card: 4.** Not looked at this session. The builder's notes say the final card and the Space return to title work, but no card picture has been taken.
-4. **Title and hot-seat: 6.** `start` with 2 players gave `hudRound.order` ISLA, FINN, and the player dot changes colour (red ISLA, blue FINN). Order on hole 2 by last score was not checked. The title picture was not taken.
-5. **Sound: 7.** `interact` reported "Sound: 10 started" for the swing, and there were no console errors. The new `SFX` entries (gull, surf, birdie, meterTick, perfect, nice, pin) are in `sound.js`. A saved check named hud-round-sound would prove it, and none exists.
-6. **Juice: 7.** The "67 YD TO PIN" banner and `hudRound.lastCall` both updated when the ball came to rest. PERFECT/NICE was not seen, because my click gave MISS-HIT. The bunker hint was not seen.
-7. **R replay and full 9-hole round: 5.** The builder's bot reached ROUND COMPLETE with 9 scores, but no saved check exists (hud-round-full-round is missing). I did not replay it.
-8. **No console errors: 8.** None came up in about 6 calls from title to rest. The ballShadow1/ballShadow2 z-fight at y = 4.49 is still flagged by `look`'s Surfaces: line.
-9. **Saved checks: 3.** `game-tests.json` holds only hud-round-hud, and its name appears twice. The full-round, hotseat and sound checks are not there. Whether the 4 original checks are intact was not verified.
-10. **Looks as LOOK.md says: 7.** The tilt-shift diorama, the cream-on-green HUD and the sea, cliffs, pond and lighthouse all read well. Hue split is green 64% and yellow 21%. The golfer is only 0.015% of the aim view, which `look` flagged, and ballShadow1 is hidden behind ball2.
-11. **Edit only the allowed files, COORDINATION.md rules: 7.** `lanes/hud-round.md` and the `hudRound` observe key exist. The files-touched list and the hook use were not audited.
-12. **Keep what other lanes own: 8.** Camera, flyover, aim dots, the sheep (sheep* ×9) and the `signs` all look intact.
-
-**Faults: 6.** `perf` gives 1169 ms a frame, 307 draw calls and 485,787 triangles, but it ran on SwiftShader with no GPU, so it is no signal. The z-fight is the one real fault.
-
-**Next:**
-1. Save the three missing checks, each with `expect` values, then re-run `test`. Use hud-round-full-round (`until` steps through 9 holes, expect the final-card phase, `scores` length 9 and the total), hud-round-hotseat (2 players, expect `hudRound.order` after a hole) and hud-round-sound. Dedupe the doubled hud-round-hud entry. The `test` call shows all checks passing, with the 4 original ones kept.
-2. Take the pictures that were never taken: the stamped scorecard after hole 1 with 2 players and the "ROUND COMPLETE" final card. Use `interact` with `look: true` at the card phase and read the stamps and rows. Also get a PERFECT or NICE call on screen, with `perfectAt` read from `meter` and Space pressed at that frame, to confirm the banner shows and clears.
-3. Clear the "HOLE n" intro banner when the swing starts (hide `#banner` and `#sub` at meter stage 1), and move the golfer or `#meterp` so the meter stays readable at stage 2. Check the picture with `look` at stage 2, which should show no banner and a clear meter. Also give ballShadow2 `polygonOffset` or a 0.001 y offset so the Surfaces: line is gone.
-
-SCORE: 6.3
-
 ## Iteration 2
 **Did** src/round.js: an addUpdate hook clears `#banner`/`#sub` (ST.bannerT/subT = 0) the first frame meter stage becomes 1, so the HOLE intro banner no longer lingers over the swing. Left src/balls.js (ballShadow z-fight) alone: not an allowed file for this lane.
 **Saw** Not run in the browser this session (syntax checked only); no look/test taken.
 **Next** Run `test` to confirm all checks still pass; save hud-round-full-round, -hotseat, -sound with expect values and dedupe hud-round-hud; take looks of the stamped card and the ROUND COMPLETE card; read a PERFECT call from perfectAt; ask the balls lane for the ballShadow2 polygonOffset.
 **Open** Banner clear untested; meter readability at stage 2 unchanged; the three checks and card pictures still missing.
+
+### Judge 2
+
+**Judge verdict, session 2**
+
+1. **HUD in the Isle Blitz type: 8.** The aim look shows `#holep` (HOLE 1, PAR 3, STROKES 0, 118 YD, ROUND EVEN, player dot), `#windp` ("2 MPH TAILWIND"), `#clubp` (DRIVER 204, IRON 132, WEDGE 74, PUTTER GREEN, "LIE · TEE") and `#meterp` ("SNAP 17%"), with no overlaps. The yardage dropping for rough or sand was not looked at again. The meter was not seen at stage 1 in this session.
+2. **Banners never cover the target: 7.** "104 YD TO PIN" (`#banner`) and "FINN TO PLAY" (`#sub`) sit left of the pin_flag and clear the ball and aim line. The banner is very large and close to the flag. The session-2 clear hook is only partly shown: `banner` read "HOLE 1" with `meter.stage` 2 in the aim phase, so the intro banner can still be up at stage 2. Whether it clears on time was not proven.
+3. **Stamped scorecard and final card: 6.** `#card` ("HOLE 1 · PEBBLE STEP", columns 1–9 and TOT, PAR row, ISLA row, a "HOLE 1 PAR" stamp, "SPACE · NEXT HOLE") looks good over the island. Only a par stamp was seen, and there was no birdie or bogey stamp and no 2-player rows. The ROUND COMPLETE card was never looked at.
+4. **Title and hot-seat: 6.** `hudRound.order` is ["ISLA","FINN"], and after ISLA's shot `hudRound.turn` and `player` switched to FINN (blue dot, "FINN TO PLAY"). The 2-player hole-2 order by last score and the title picture are still unchecked. The later run showed `players` 1, so the 2-player card rows were not seen.
+5. **Sound: 7.** "Sound: 10 started" on a swing and no console errors. There is no saved hud-round-sound check.
+6. **Juice: 7.** "104 YD TO PIN" appeared at rest and `meter.label` read "PERFECT!" at the putt. The PERFECT banner was not seen on screen, and the bunker hint was not seen.
+7. **R replay and full 9-hole round: 5.** Hole 1 reached `phase` "card" with `scores[0].scores` [3], but the full 9-hole run was not replayed and no hud-round-full-round check is saved.
+8. **No console errors: 8.** None from title through card, in 3 `interact` calls.
+9. **Saved checks: 3.** `game-tests.json` still has only `hud-round-hud`, and it appears twice at lines 235–236. The full-round, hotseat and sound checks are missing, which is the same as last session. Two of the original checks, "putter" and "wedge", are visible, and the other two were not confirmed.
+10. **Looks as LOOK.md says: 7.** The tilt-shift diorama, cream-on-green HUD and sea all read well, with hues green 62% and yellow 24%. The golfer is 0.34% of the aim view, which `look` flags. The `Surfaces:` line still flags the ballShadow1/ballShadow2 z-fight at y = 4.49.
+11. **Edit only the allowed files and COORDINATION.md rules: 7.** The `hudRound` key, the `lanes/hud-round.md` file and the hud-round:* events were not audited again.
+12. **Keep what other lanes own: 8.** The camera, aim dots, sheep, signs and golfer are intact.
+
+**Faults: 6.** There are no console errors. `perf` gave 1256 ms a frame, 307 draw calls and 485,787 triangles, but that was SwiftShader on a loaded host, so it says nothing. The ballShadow z-fight remains.
+
+**Next:**
+1. **(asked again)** Save the three missing checks, each with `expect`: hud-round-full-round (loop `until phase card` → `next`, for 9 holes, then expect the final-card phase, `scores` length 9 and the total), hud-round-hotseat (`start` players 2, expect `hudRound.order`, and after one shot `hudRound.turn` "FINN") and hud-round-sound. Dedupe the doubled hud-round-hud entry. The one `test` call that shows it done lists all checks passing, with `game-tests.json` holding the hud-round-* names once each plus the 4 originals.
+2. **(asked again)** Take the pictures that were never taken: the ROUND COMPLETE final card (winner, best round, new best) and a 2-player stamped card. Do one real 2-player hole and use `interact` with `look: true` at `phase` card. Also catch a PERFECT or NICE banner on screen: press Space with `meter.perfectAt` read at that frame, then `look` straight after. Press Space on the final card to see the title come back.
+3. Prove the banner clear. Run `interact` with `look: true` at `meter.stage` 1, and again at stage 2, with `trace` on `banner`, and make the hook clear the "HOLE n" and `sub` at stage 1. The look should show no banner at stage 2. Shrink the "n YD TO PIN" banner and keep it clear of the pin_flag. Also give ballShadow2 `polygonOffset` (or ask the balls lane to) so the `Surfaces:` fault line goes.
+
+SCORE: 6.5
