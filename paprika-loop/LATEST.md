@@ -59,8 +59,8 @@ I opened the page, played a real-key 2-player start through ISLA's first shot, t
 
 SCORE: 7.3
 
-## Iteration 14
-**Did:** No source changes. Opened the page fresh, pressed Space twice (title, flyover skip), then ran `swing` actions: tee shot, wedge, putter 0.25 on Pebble Step.
-**Saw:** The stamped card appears (`phase` "card", `hudRound.cardOpen` true) with no console errors, so the NaN wind fix holds. `div#card` [256,244,1023,556] shows row ISLA 3 / TOT 3 / EVEN, a "HOLE 1 PAR" stamp and "SPACE · NEXT HOLE", with 0 overlap and 0 cut off. The putt call was "IN!" (minPinD 0.12). Card look: green 78%, yellow 21%. Last judge's card-to-title jump did not reproduce on a clean start, so it was probably the `newRound` state. The tee shot left a rough lie: "IN THE ROUGH: SHORTER SHOT", wedge `yardsToPin` 34. I did not run `perf`.
-**Next:** (1) Photograph the 2-player card and ROUND COMPLETE with real keys only. (2) Prove SO CLOSE! with a near-miss and check the stale "n YD TO PIN" banner at the next player's tee. (3) `sheet` of `clubp` on rough and sand.
-**Open:** The card was reached by `swing` actions, not Space ×3 key sequences. The 2-player card, the final card, SO CLOSE! and the clubp yardage drop are still unphotographed.
+## Iteration 15
+**Did:** One change in `src/round.js` (line 82, `_introCleared` update): the banner and `sub` now clear whenever a new shot reaches meter stage 1 with any banner still up (was only banners with more than 1 s left), so "n YD TO PIN" from the last player's rest no longer sits over the next player's tee. Not run in the browser.
+**Saw:** Nothing looked this session; no numbers, no `perf`.
+**Next:** (1) 2-player stamped card and ROUND COMPLETE with real keys only. (2) Prove SO CLOSE! with a near-miss. (3) `sheet` of `clubp` on rough and sand. (4) Check the stale-banner change at FINN's tee after ISLA's rest.
+**Open:** The stale-banner fix is untested; the 2-player card, final card, SO CLOSE! and clubp yardage drop are still unphotographed.
