@@ -1,11 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 12
-**Did**: `src/camera.js` line 66: the cup close-up now also starts while `G.phase==='settle' && SIM.mode==='sunk'` (same pos/look as holed), with fov 30 and easing `k` raised 3→7. Saved check `look-sunk-cup-closeup` (real Space x2 putt from (-2.3,11.95), until settle; expects ball.mode sunk, look.ball.y -0.75..-0.3, fov 30..31.9). Followed the PROMPT change: no more dither re-proving.
-**Saw**: Hole 1 Space meter picture: POWER 42% bar visible, golfer 0.19%, ball y -0.384. Real-key putt: settle+6 frames shows the cup close-up (cam y 6.66, fov 31.3, `look.ball` y -0.57, pitch 42.9), cup 0.73%, flag crisp-ish with Bayer dither on it (the flag fills the frame at depth 2.7, so near fade eats it). Holed+12 frames: `look.ball.y` -0.36, fov 30.0, golfer 0.95%, "HOLE IN ONE!" banner, cup and flag in frame. Scorecard picture: card over a blurred island, "HOLE IN ONE" stamp, 1/-2 row; no overlap. Console only the `toNonIndexed` warning. `test`/`perf` not run; holed 4/24-frame pictures not taken.
-**Next**: (1) Run `test` and report; take holed +4 and +24 pictures. (2) At the sunk close-up the camera is 2.7 from the flag, so near fade dithers the flag; move the close-up back ~1 unit or exclude pin_flag. (3) Flyover 25/50/75, flight3moments, night checks still unsaved/unrerun. (4) Pink boulder into lanes/look.md; golfer holder.position for `look.golfer` while walking.
-**Open**: Near-plane fade picture not re-attempted (supervisor accepted occluder proof). Cup rattle/drop animation itself not seen frame by frame (ball hidden once sunkT>0.35).
-
 ### Judge 12
 
 **Judge 12: scores**
@@ -40,3 +34,15 @@ The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.m
 3. **Put the pink boulder in `lanes/look.md`.** Under course-lane items, name the pink boulders on the hole 5 cliff and the hole 1 right-of-golfer rock, and say they still read as pink rocks, not blossom shrubs. Then make `look.golfer` read the walking `holder.position` rather than the destination `bx`/`bz`. Check it with `observe` mid-walk after a putt.
 
 SCORE: 7.7
+
+## The request changed
+
+paprika-loop/PROMPT.md changed before session 13; the Next lists above were written before it. Changed lines:
++ - **Next session's ONLY job: finish the repeatedly missed critic views and cup-drop timing.** Tree-occlusion proof is ALREADY accepted: supervisor personally opened /home/ubuntu/look-integration-1/paprika3d/runs/2026-11-07T03-37-27-950Z/look-17.png: distinct crisp screen-door hole reveals new golfer/ball through tree canopy. Do NOT spend yet another session re-proving this or chasing metadata fields that source already returns; tool replies can summarize keys. Near-plane saved check now exists. First Space meter picture; fix/show real-key sunk/holed cup at4/12/24 frames by beginning cup-camera during SIM.mode==='sunk' settle; then scorecard picture; run art critic on aim/meter/flight/card. Source edits camera.js only if needed to show drop. No nearVisible refactors this session.
+
+## Iteration 13
+**Did**: `src/camera.js` holed/sunk cup close-up pulled back: cPos = pin + (2.6, 3.0, 4.0) (was 1.9, 2.3, 2.9), cLook = pin + (0, 0.6, 0) (was +0.5). fov 30 and k 7 unchanged. Aim: keep `pin_flag` out of the near fade.
+**Saw**: `test`: 13 of 13 saved checks pass (including `look-sunk-cup-closeup` and `look-holed-cup`) after the change. I took no pictures this session, so I did not confirm that `look.dither.nearFades` no longer names `pin_flag` at settle +6 or holed +4/+12/+24. `perf` not run. Console: only the `toNonIndexed` warning at open.
+**Next**: (1) Real-key putt, then `look` at settle +6 and holed +4/+12/+24: check `pin_flag` and `cup` are intact, `look.ball.y` above -0.6, and take the missing +4/+24 pictures. (2) Save flyover 25/50/75, flight-3-moments and night checks (`look-` ids). (3) Pink boulder into lanes/look.md; `look.golfer` should read the walking `holder.position`.
+**Open**: The flag fade fix is untested by picture. The cup rattle/drop animation is still not seen frame by frame.
+**Iteration 13 addendum (picture taken)**: real-key putt on hole 1, settle +6, ball.mode sunk: cup, `pin_pole` and `pin_flag` (3.2%) all on screen, flag red with a visible Bayer stipple (still partly near-faded, cam still easing from (-2.19,7.08,14.17), fov 31.3). `look.ball` y -0.399 (above -0.6). Golfer 1.6%. Console clean. Next: look again at holed +12/+24 to see if the stipple has gone once the camera has settled; if not, lower `uNearR` for `pin_flag` only.
