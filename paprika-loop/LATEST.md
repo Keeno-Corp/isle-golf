@@ -1,11 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 13
-**Did** No source change. Replayed the last judge's failing path in the real game: `start` 1 player, `next`, three Space presses for the drive, then a putt at `aim:"pin"` with three Space presses. Added a Session 13 note to `lanes/creatures.md`.
-**Saw** The drive ended in `aim` after `settle`; there was no `round.js:71` error, and `ball`, `camera` and `aimDeg` stayed set. The putt went in: `golferClip` ran `address`, `backswing`, `downswing`, `follow`, then `Celebration`, with BIRDIE! in `lastResult`, and the footballer's clip also went to `Celebration`. A second run on the same steps hit a sheep: `sheepHits` 1, `lastSheepHit` `tumble:true`, so the bonk works in play. In the aim look, 24 of 26 `golfer_*` parts show (3.6% of the picture), with `golfer_cap`, `golfer_shirt`, `golfer_face`, `club_head` and `club_shaft` in view. The shirt is red-orange, edge contrast 0.083. The footballer's `facemask` is still "Not found by the ID image". `Never visible` is unchanged: cliffFace, cliffRocks, seaStacks, `cow_hide`, `divots`, the trees. The console shows `SFX[k] is not a function (src/sound.js:71:61)` on the first drive and on later steps; that file belongs to another lane. No `perf`, no `asset_search`.
-**Next** 1) Save `creatures-birdie-celebration`: the sheep moved the second run, so the saved steps need a `setState` that parks the sheep away from the tee line first. 2) Take `sample` on `golfer_shirt` in a 1-player and a 2-player game for `creatures-kit-colours`. 3) Report the `sound.js:71` error to the lead.
-**Open** The `round.js:71` crash did not reproduce, so it may have been a one-off from a sheep or ball state. I could not tell what caused it. The sheep path varies between runs, so a saved hole-out check is not stable yet. Kit colours, the footballer's helmet and `asset_search` for golfer and sheep are still not done.
-
 ### Judge 13
 
 I already recorded the `ballShadow1` and `ballShadow2` z-fight in the Faults and Looks lines of my verdict. It is another lane's object, and I change nothing as the judge. The fix for the next builder is to give the top shadow `material.polygonOffset = true` with `polygonOffsetFactor -1`, or to lift one of them off y = 4.49.
@@ -13,3 +7,9 @@ I already recorded the `ballShadow1` and `ballShadow2` z-fight in the Faults and
 The verdict stands as written above.
 
 SCORE: 5.9
+
+## Iteration 14
+**Did** No source change. Found the `sound.js:71` error's cause: `main.js:52` calls `play('gull')` and `SFX.gull` does not exist; recorded in `lanes/creatures.md` for the lead. Sampled `golfer_shirt` in a 2-player game (ISLA's turn).
+**Saw** Close look, camera [-13.5,6.2,16.5] → [-12.4,5,13.2]: 20 of 26 `golfer_*` parts show (1.8%), shirt `#d33d29` and `#d5402a` (ISLA red, in range), edge contrast 0.085. In the default aim camera the golfer is only 0.02% (13 of 26 parts), so a sample there reads grass. `Surfaces:` still reports `ballShadow1`/`ballShadow2` z-fighting at y = 4.49 (another lane's). No `perf`, no `asset_search`.
+**Next** 1) Sample FINN's shirt (`#3b78c9` ±30) after ISLA's hole-out or via `setState`, then save `creatures-kit-colours`; `interact` has no `sample`, so the check would need an `observe` key for the shirt colour (add one with `addObserve`). 2) Save `creatures-birdie-celebration` with the sheep parked first. 3) Give the lead the `gull` fix and the `ballShadow` polygonOffset fix.
+**Open** FINN's colour is unchecked. A saved hole-out is not stable until sheep are parked. `asset_search` for golfer and sheep is still not done.

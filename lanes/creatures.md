@@ -22,3 +22,7 @@ Reactions proven by calling `golferClip` (dynamic `import('/src/golfer.js')` in 
 - A real drive then putt on hole 1 reached `holed` with `Celebration` (golfer and footballer); no `round.js:71` error reproduced.
 - Console: `SFX[k] is not a function (src/sound.js:71:61)` during play. Not the creatures lane's file; for the lead.
 - Sheep bonk seen in play (`sheepHits` 1, tumble). A saved hole-out check needs the sheep parked by `setState`.
+
+## Session 14
+- The `sound.js:71` error is `play('gull')` in main.js:52: `SFX.gull` is not defined in sound.js. Not this lane; for the lead (add a `gull` entry or guard `SFX[k]?.()`).
+- Kit colour, 2-player game, ISLA's turn: `golfer_shirt` samples #d33d29 / #d5402a (target #d8503a ±30). FINN's turn not sampled.
