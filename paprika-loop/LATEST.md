@@ -1,56 +1,54 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-### Judge 25
-
-**Judge 25: Isle Golf, hud-round lane**
-
-I ran `test` (all 8 saved checks), two `interact` plays with `look`, and `perf` once. I did not reach a rough lie, the SO CLOSE! call, the PICKED UP stamp or the ROUND COMPLETE card. The second play started with `players` 1 in the state although the first play set 2, so I could not tell whether the second play was a reload or a state bug.
-
-1. **Wider view and putt feedback (top priority): 7.**
-   - `banner` was "" at FINN's tee with `sub` "FINN TO PLAY", so Iteration 25's stale-banner fix works. After the wedge swing, `banner` "74 YD TO PIN" and `hudRound.lastCall` matched.
-   - Both banners stayed clear of `ball1`, `cup` and `pin_flag`.
-   - I saw no SO CLOSE! call and no IN! call this session. The `hud-round-sound` check passes with its outcome-based assertion.
-2. **HUD in the Isle Blitz type: 7.**
-   - `holep` reads "HOLE 1 PAR 3, STROKES 2, 74 YD, ROUND EVEN, PEBBLE STEP". `windp` reads "2 MPH CROSS →". `clubp` highlights WEDGE 74 with "LIE · FAIRWAY".
-   - `meterp` is faint at the bottom centre during flight, with "HOOK!" barely readable.
-   - `clubp` and `hinter` text is still small (about 11–13 px at 1280×800).
-   - The yardage drop on a rough lie is still unseen.
-3. **Banners never cover the target: 8.** `banner`, `sub` and `hinter` stayed off `ball1`, `cup` and `pin_flag` in both looks. The `tag`/`windp` clamp is not confirmed because no golfer was near the top edge.
-4. **Stamped scorecard and final card: 7.** I did not see the card this session. Last session's 2-player stamped card looked finished, and `hud-round-full-round` passes, so the final card is reached.
-5. **Title and hot-seat: 8.** `hudRound.order` ["ISLA","FINN"] and `hudRound.turn` "FINN" held after ISLA's shot. `hud-round-hotseat` passes. I did not see the lowest-score-first rule on hole 2.
-6. **Sound: 7.** `interact` reported "18 started" sounds on the swing, and there was no console error. I cannot name which sounds they were.
-7. **Juice: 6.**
-   - "74 YD TO PIN" appears as a call.
-   - The PERFECT!/NICE banner is not captured. I clicked at `meter.power` 0.507 but got stage 3 with label "HOOK!", so my timing was off.
-   - The bunker hint is not photographed.
-8. **R replay and full round: 8.** `hud-round-full-round` passes under `test` (288 s total for the 8 checks). I did not check its `until` actions or that it uses real inputs only. I did not test R replay.
-9. **No console errors: 9.** None in the plays. The only warning is the harmless `toNonIndexed` one at open.
-10. **Saved checks hud-round-*: 9.** All four hud-round checks and the four original checks pass.
-11. **Looks as LOOK.md says: 8.**
-    - Tilt-shift blur, cream on dark green panels, a yellow-green course and a teal sea.
-    - `golfer_body` is readable in the swing look (0.45%, orange kit, `club_head` and `divots` visible).
-    - At the tee `golfer_body` is hidden behind the camera and `golferShadow` is outside the view. The camera lane owns that.
-12. **Edit only the allowed files: 9.** The git tree was clean at start, with only paprika-loop commits.
-13. **Keep as they are: 8.** `cup`, `pin_flag`, `sheep`, `aimDots`, `ballTrail` and `divots` are all present. The iron was auto-picked at 118 yd and the wedge at 74 yd.
-14. **Faults: 8.** `perf` read 700 ms a frame on SwiftShader at host load 5.7, with 181 draw calls, 367k triangles and 1.86 MB assets. That is a software renderer, so it is no signal. There was no console error.
-
-**Next:**
-1. **Take the unseen pictures with real inputs, and fix the `meter.power` timing.**
-   - Rough lie: play `swing` power 0.3, accuracy 0.8 from the tee, `until phase aim`, then `look`. `clubp` should show WEDGE or IRON below 132 YD with "LIE · ROUGH".
-   - PERFECT banner: aim `until meter.power` just under the target (try [0.49, 0.5]) for the first Space and `until meter.stage 2` before the next one. `look` right after should show the PERFECT!/NICE `banner` off `ball1`.
-   - PICKED UP: four swings at power 0.05 with `until phase card` and `look`. Also capture ROUND COMPLETE with `until hudRound.final`.
-2. **Make `clubp`, `hinter` and `meterp` read at 1280×800.**
-   - Raise `clubp` and `hinter` to about 15 px, and make `meterp`'s label and needle more opaque during flight.
-   - Check with `look` `zoom` on [16, 627, 243, 783]. The lie and yardage rows should read clearly. Keep `holep` clear of `ball1` and `pin_flag`.
-3. **Make the active golfer easy to find at the wide camera.**
-   - Add a larger kit-colour ring under `golferShadow`.
-   - At the tee the golfer is outside the view, so the `tag` needs a screen-edge arrow or a "FINN" label near `ball1`.
-   - `look` at the tee should show it. Also run a SO CLOSE! putt (`swing` power just short on the green) and confirm `lastCall` "SO CLOSE!" with no doubled sound.
-
-SCORE: 7.7
-
 ## Iteration 26
 **Did:** `#hinter` in `src/hud.js` raised to 17 px and opacity .92 (was 14 px, .7). No other change.
 **Saw:** No browser, `look`, `test` or `perf` run (about 13 minutes); no new numbers. `#clubp` was already 20 px, so Judge 25's "small" note was about the captured size.
 **Next:** Make `meterp` label/needle more opaque in flight; add a kit-colour ring under `golferShadow` and an edge arrow for `tag` at the tee; take the unseen pictures (rough lie, PERFECT banner, PICKED UP, ROUND COMPLETE) and a SO CLOSE! putt.
 **Open:** The hinter edit is untested; check it stays off `ball1`/`cup` at the bottom right.
+
+### Judge 26
+
+I've seen the tee and the second shot (hole 1, two players) and run `perf`. I haven't seen a rough lie, SO CLOSE!, PICKED UP or ROUND COMPLETE, so I'm writing the verdict now.
+
+**Judge 26: Isle Golf, hud-round lane**
+
+I ran `start` with 2 players, two `swing` plays with `look`, and `perf` once. I did not reach a rough lie, SO CLOSE!, IN!, PERFECT!, PICKED UP or ROUND COMPLETE, and I did not run `test`. The swing power 0.3, accuracy 0.8 from the tee landed on "LIE · FAIRWAY", so it did not show the rough yardage drop.
+
+1. **Wider view and putt feedback (top priority): 7.**
+   - At both tees `banner` was "" and `sub` read "FINN TO PLAY" / "ISLA TO PLAY". They sat at [250, 320, 440, 357] and [253, 320, 438, 357], well off `ball1`, `cup` and `pin_flag`.
+   - The `tag` now sits beside the golfer at the tee ("FINN" at [531, 492, 619, 520]). This answers the "find the golfer" worry.
+   - I still saw no SO CLOSE! or IN! call this session.
+2. **HUD in the Isle Blitz type: 8.**
+   - `holep` reads "HOLE 1 PAR 3, STROKES 0, 118 YD, ROUND EVEN, PEBBLE STEP", with a kit-colour dot for the player. `windp` reads "2 MPH TAILWIND".
+   - `clubp` lists DRIVER 204 / IRON 132 / WEDGE 74 / PUTTER with "LIE · FAIRWAY", and it highlights the auto-picked club. It reads clearly at 1280×800.
+   - `hinter` at 17 px reads cleanly at the bottom right, [837, 727, 1263, 785], clear of the ball and cup. Iteration 26's open question is answered.
+   - `meterp` was not visible at aim, and I did not capture it in swing stages 1–2. The rough-lie yardage drop is still unseen.
+3. **Banners never cover the target: 8.** `holep`, `windp`, `sub`, `clubp` and `hinter` have 0 overlap and 0 off-screen. None touch `ball1`, `cup` or `pin_flag`.
+4. **Stamped scorecard and final card: 7.** I did not see either this session. `hud-round-full-round` passed last session.
+5. **Title and hot-seat: 8.** After the first tee shot `hudRound.order` was ["ISLA","FINN"] and `turn` was "FINN". After FINN's shot the farthest ball played next, and `turn` was "ISLA" with `sub` "ISLA TO PLAY". The kit colour showed in the `tag` and in `holep`'s player dot (blue for FINN, red for ISLA).
+6. **Sound: 7.** `interact` reported "14 started" on each swing and flight, with no console error. I cannot name which sounds they were.
+7. **Juice: 6.** The PERFECT!/NICE banner, the bunker hint and the "n YD TO PIN" call were not captured this session.
+8. **R replay and full round: 7.** I did not run `test`, so I have no new evidence. The check passed last session, and the pick-up rule is not yet seen. R replay is untested.
+9. **No console errors: 9.** None in either play.
+10. **Saved checks hud-round-*: 8.** The four hud-round checks and the four original ones were not rerun this session.
+11. **Looks as LOOK.md says: 8.**
+    - Tilt-shift blur, cream on dark green panels, and a teal sea with surf.
+    - `golfer_body` is readable at 0.4% with an orange kit, and `club_head` and `divots` are present.
+    - The golfer is only about 0.4% of the picture, so the subject is small at the wide camera. The `tag` carries it.
+12. **Edit only the allowed files: 9.** The git tree was clean at start.
+13. **Keep as they are: 8.** `cup`, `pin_flag`, `sheep`, `aimDots` and `teeMarker` are present. The iron was auto-picked at 118 yd and the wedge at 74 yd.
+14. **Faults: 8.**
+    - No console error.
+    - `ballShadow1` and `ballShadow2` z-fight at y = 4.46. The brief says not to score this lane on it.
+    - `perf` read 1052 ms a frame on SwiftShader at host load 3.1, with 307 draw calls, 486k triangles and 1.86 MB assets. A software renderer gives no frame-time signal.
+    - The draw calls and triangles are on the high side. `grass*` is about 2000 instances, and the main scene is about 175 draw calls and 367k triangles.
+
+**Next:**
+1. **Take the unseen pictures, with real inputs.** This is still the main gap and has been asked three sessions running.
+   - Rough lie: use a lower-power drive with a slice (`swing` power 0.25, accuracy 1.0, and `aimDegrees` off the fairway), then `look`. `clubp` should read "LIE · ROUGH" with the yardages dropped.
+   - PERFECT banner: `until meter.stage 1`, then `until meter.power` [0.49, 0.52] for the second Space, then `look` at once. The `banner` should show PERFECT!/NICE clear of `ball1`.
+   - Closing cards: four swings at power 0.05 with `until phase card` to capture PICKED UP. Then `until hudRound.final` for the ROUND COMPLETE card.
+2. **Make the `meterp` visible and legible during swing stages 1–2 and flight.** It was not on screen at aim. Check it with `look` `zoom` on the bottom centre [440, 700, 840, 790] at stage 2. The needle and PERFECT/HOOK label should be opaque and clear of `ball1`. Then run a real putt close to the cup and confirm `lastCall` is "SO CLOSE!" or "IN!" with no doubled cup sound. Per the Steer, that sound lives in `src/ballfx.js`.
+3. **Run `test` on the whole set, with a pick-up in the full round.** Confirm `hud-round-full-round` (all `until` on `meter` and `phase card`, real keys only) still reaches ROUND COMPLETE. Check the capped score and "PICKED UP" on the card, so the run no longer depends on exact physics. After that, improve how the 2-player card reads at the wide camera: a larger kit-colour ring under `golferShadow`, and a marker on the player whose turn it is.
+
+SCORE: 7.7
