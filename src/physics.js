@@ -22,7 +22,7 @@ export const ROUND = [{ name: 'lighthouse', x: LH.x, z: LH.z, r: LH.r + 0.12, to
 
 // ---------------------------------------------------------------- the ball's physics: arc with wind and side spin, bounce and roll by surface, hazards
 export const waterY = () => H_POND + 0.06;
-export function newSim() { return { pos: new THREE.Vector3(), vel: new THREE.Vector3(), mode: 'rest', bounces: 0, landT: 0.7, wx: 0, wz: 0, curve: 0, fx: 1, fz: 0, t: 0, surf: 'fairway', ev: [], hasLanded: false, entry: new THREE.Vector3(), live: true, sunkT: 0 }; }
+export function newSim() { return { pos: new THREE.Vector3(), vel: new THREE.Vector3(), mode: 'rest', bounces: 0, landT: 0.7, wx: 0, wz: 0, curve: 0, fx: 1, fz: 0, t: 0, surf: 'fairway', ev: [], hasLanded: false, entry: new THREE.Vector3(), live: true, sunkT: 0, minPinD: 9 }; }
 export const SIM = newSim();
 export const ball = { pos: SIM.pos };          // the island's cow watches this
 export const sheepList = [];
@@ -115,7 +115,7 @@ export function previewShot(club, aimYaw, power, H, startPos, lie, out, acc = 0)
 export const puttRange = d => Math.max(1.6, d * 1.22 + 0.5);
 export function launchOn(s, club, power, acc, aimYaw, H, lie) {
   const wv = H.wv, f = aimYaw + acc * (club.putt ? 0.05 : 0.04);
-  s.fx = Math.cos(f); s.fz = Math.sin(f); s.bounces = 0; s.hasLanded = false; s.t = 0; s.ev = []; s.lipped = false; s.sheep = null; s.treeHit = null;
+  s.fx = Math.cos(f); s.fz = Math.sin(f); s.bounces = 0; s.hasLanded = false; s.t = 0; s.ev = []; s.lipped = false; s.minPinD = 9; s.sheep = null; s.treeHit = null;
   s.pin = { x: H.pinX, z: H.pinZ }; s.wx = wv.x * 0.26; s.wz = wv.y * 0.26; s.landT = club.land;
   if (club.putt) {
     // forgiving putts: a power within 0.2 of the flat-ground notch counts half, so a press near the cyan line still drops
@@ -131,7 +131,7 @@ export function launchOn(s, club, power, acc, aimYaw, H, lie) {
 let _lastTrail = null;
 export function stepFlight(dt) {
   G.flightT += dt; ST.cowWatch = 0.3; const n = Math.max(1, Math.ceil(dt * 240)), h = dt / n;
-  for (let i = 0; i < n; i++) { stepSim(SIM, h); if (SIM.ev.length) flightEvents(); if (SIM.mode === 'rest' || SIM.mode === 'sunk' || SIM.mode === 'water' || SIM.mode === 'ob') break; }
+  for (let i = 0; i < n; i++) { stepSim(SIM, h); if (SIM.mode === 'roll' && SIM.pin) SIM.minPinD = Math.min(SIM.minPinD ?? 9, Math.hypot(SIM.pin.x - SIM.pos.x, SIM.pin.z - SIM.pos.z)); if (SIM.ev.length) flightEvents(); if (SIM.mode === 'rest' || SIM.mode === 'sunk' || SIM.mode === 'water' || SIM.mode === 'ob') break; }
   if (SIM.mode === 'air' || (SIM.mode === 'roll' && Math.hypot(SIM.vel.x, SIM.vel.z) > 1.2)) { const L = _lastTrail; const nn = L ? Math.min(4, Math.ceil(L.distanceTo(SIM.pos) / 0.12)) : 1; for (let i = 1; i <= nn; i++) { const k = i / nn; emit(trail, L ? L.x + (SIM.pos.x - L.x) * k : SIM.pos.x, L ? L.y + (SIM.pos.y - L.y) * k : SIM.pos.y, L ? L.z + (SIM.pos.z - L.z) * k : SIM.pos.z, { life: 0.75, sp: 0.02, up: 0.03, g: 0, color: SIM.mode === 'air' ? '#fff3c0' : '#ffe9a0' }); } _lastTrail = SIM.pos.clone(); } else _lastTrail = null;
   if (G.flightT > 22 && SIM.mode !== 'rest') { SIM.mode = 'rest'; SIM.vel.set(0, 0, 0); }
   if (SIM.mode === 'rest' || SIM.mode === 'sunk' || SIM.mode === 'water' || SIM.mode === 'ob') { G.phase = 'settle'; G.resolveT = SIM.mode === 'rest' ? 0.7 : SIM.mode === 'sunk' ? 0.5 : 1.7; }

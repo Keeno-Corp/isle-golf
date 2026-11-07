@@ -65,4 +65,4 @@ addUpdate(dt => {
     const fb = PHY.firstBounce; if (fb) PHY.rollYd = Math.round(Math.hypot(SIM.pos.x - fb.x, SIM.pos.z - fb.z) * YD);
   }
 });
-addObserve(() => ({ physics: { spin: r3(PHY.spin), carryYd: PHY.carryYd, rollYd: PHY.rollYd, bounces: PHY.bounces, lastBounce: PHY.lastBounce, firstBounce: PHY.firstBounce, puttBreak: PHY.puttBreak, lips: PHY.lips, mode: SIM.mode, vel: r3(Math.hypot(SIM.vel.x, SIM.vel.z)), landPreview: aimRing.visible ? { x: r3(aimRing.position.x), z: r3(aimRing.position.z) } : (flightRing.visible ? PHY.landPreview : null) } }));
+addObserve(() => ({ physics: { spin: r3(PHY.spin), carryYd: PHY.carryYd, rollYd: PHY.rollYd, bounces: PHY.bounces, lastBounce: PHY.lastBounce, firstBounce: PHY.firstBounce, puttBreak: PHY.puttBreak, lips: PHY.lips, mode: SIM.mode, minPinD: r3(SIM.minPinD ?? 9), vel: r3(Math.hypot(SIM.vel.x, SIM.vel.z)), landPreview: aimRing.visible ? { x: r3(aimRing.position.x), z: r3(aimRing.position.z) } : (flightRing.visible ? PHY.landPreview : null) } }));

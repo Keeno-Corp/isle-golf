@@ -1,11 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 9
-**Did**: Saved check `ball-physics-slope-break` in game-tests.json: hole 1, ball placed at (-5.7, 11.95), putter, `aim at pin`, real Space presses (waits 40/30), expects `physics.puttBreak` in [0.2, 5]. No source files changed.
-**Saw**: `test` 13/13 pass. The slope check reads `physics.puttBreak` 0.204 (ball ended 0.75 from the pin at (-2.42, 12.15)), so the margin over 0.2 is thin. I did not look at `aimDots` or `slopeGrid` in the aim phase. I ran no `perf` and no looks. By the numbers in `SURF` (rules.js) the roll deceleration is green 2.4 < fairway 3.1 < rough 10 < sand 26, so the roll-out order should hold, but I did not run it.
-**Next**: Save `ball-physics-rollout-<surface>` from real-key wedge swings and check the 37 yd iron roll-out on a green; then the tree, sheep and house-wall drives (`ball:tree`, `ball:sheep`, `ball:wall`); then a look of `landPuffs` and of `aimDots` bending on the slope.
-**Open**: The slope-break margin is small (0.204 vs 0.2); a longer putt on a steeper spot would be sturdier. An `eval` loop that calls `act swing` repeatedly gave unreliable results (the ball stayed 'sunk'), so measure with `interact` and reloads instead. Sand puff colours are still a guess.
-
 ### Judge 9
 
 **Judge, session 9: ball-physics lane**
@@ -31,3 +25,14 @@ Session 9 only added a saved check, so I ran `test` (13/13 pass), one look at th
 3. **Show a landing puff on screen (asked again).** Run `interact` with `look: true` 2–3 frames after `air` turns to `roll`, with a `camera` near the landing point. Done when the look lists `landPuffs` above 0.3% with a pale cloud beside `ball1`. If it still has 0 units, place the puff at the first-bounce position and not at the origin. After that, save the tree, sheep and house drives (`ball:tree`, `ball:sheep`, `ball:wall`). Also move the slope-break putt to a longer, steeper spot so `puttBreak` clears 0.2 by more than 0.004.
 
 SCORE: 7.2
+
+## The request changed
+
+paprika-loop/PROMPT.md changed before session 10; the Next lists above were written before it. Changed lines:
++ - Cross-lane (do this session, small): hud-round needs the closest ball-to-pin distance of each shot for a "SO CLOSE!" call. Add `SIM.minPinD` in physics.js: set to 9 in launchOn/doSwing, and in stepFlight while SIM.mode==='roll' and SIM.pin exists, keep the min of hypot(pin - pos) on x/z. Also expose it as observe `physics.minPinD`, and list it in lanes/ball-physics.md under Provides. Do not write G.minPinD.
+
+## Iteration 10
+**Did**: Added `SIM.minPinD` (physics.js): `newSim` starts it at 9, `launchOn` (which `doSwing` and putts go through) resets it to 9, and the `stepFlight` sub-step loop keeps the min of hypot(pin - pos) on x/z while `SIM.mode==='roll'` and `SIM.pin` exists. Exposed as observe `physics.minPinD` (ballfx.js addObserve, r3-rounded) and listed under Provides in lanes/ball-physics.md. `G.minPinD` is not written.
+**Saw**: `test` 13/13 pass. A real-key putt (Space/wait/Space/wait/Space) traced `physics.minPinD` 9 → 2.635 at frame 249, first change at frame 127 (roll start); `expect` [0,9] ✓. That putt stopped 2.6 from the pin (short, a 32 yd putt). No looks and no `perf` this session.
+**Next**: The earlier Next items remain: `ball-physics-rollout-<surface>` checks, tree/sheep/house drive checks, a look at `landPuffs` at the first-bounce position, and a steeper/longer slope-break putt (puttBreak was 0.204 vs 0.2).
+**Open**: minPinD only counts roll mode, so an air-only shot (water/OB) stays 9. The rollout, lip-out and puff looks are still unverified.
