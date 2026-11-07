@@ -55,8 +55,8 @@ style.textContent = `
 #holep .who{display:flex;align-items:center;gap:7px;font-size:18px;color:#fff6c8}#holep .who i{display:inline-block;width:13px;height:13px;border-radius:50%;border:2px solid #fff6c8}
 #windp{position:absolute;right:16px;top:14px;padding:6px 12px;min-width:150px;display:flex;align-items:center;gap:12px}
 #windp .arr{width:46px;height:46px;transition:transform .2s}#windp .t{font-size:30px;line-height:1;color:#fff6c8}#windp .t small{display:block;font-size:15px;color:#a8f0d8}
-#banner{position:absolute;left:27%;top:26%;transform:translateX(-50%);text-align:center;white-space:nowrap}
-#banner b{display:block;font-size:66px;line-height:1;color:#f7e27a;text-shadow:3px 3px 0 #000,-2px -2px 0 #000,0 0 18px rgba(255,214,120,.8);-webkit-text-stroke:1.5px #3a3408}
+#banner{position:absolute;left:max(26%,200px);top:26%;transform:translateX(-50%);text-align:center;white-space:nowrap}
+#banner b{display:block;font-size:46px;line-height:1;color:#f7e27a;text-shadow:3px 3px 0 #000,-2px -2px 0 #000,0 0 18px rgba(255,214,120,.8);-webkit-text-stroke:1.5px #3a3408}
 #banner i{display:inline-block;margin-top:6px;font-size:22px;padding:3px 16px;color:#fff6c8;background:linear-gradient(180deg,#4a6a5c,#233c33 45%,#122219);border:2px solid #7ba08a;border-radius:4px;box-shadow:0 0 8px rgba(255,214,120,.45)}
 #banner i:empty{display:none}#banner{opacity:0;transition:opacity .35s}#banner.on{opacity:1}
 #banner.on b{animation:slam .45s cubic-bezier(.2,1.6,.4,1)}@keyframes slam{0%{transform:scale(2.4) skewX(-12deg);opacity:0}100%{transform:scale(1);opacity:1}}

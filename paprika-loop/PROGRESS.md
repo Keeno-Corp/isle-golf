@@ -200,3 +200,9 @@ Writing up the verdict now. I ran the open, look, putt and perf checks and have 
    - Look at the yardage drop in `#clubp` for a rough or sand lie.
 
 SCORE: 6.3
+
+## Iteration 5
+**Did:** `src/round.js resolveShot`: "SO CLOSE!" now needs `minPinD` < 0.24 and the final `pinDist` < 3 units, else the normal "n YD TO PIN". `src/hud.js`: `#banner` shrunk (b 66px→46px, left `max(26%,200px)`) so it is not cut off at the left edge.
+**Saw:** shot from hole 1 rested 46 YD out: `hudRound.lastCall` "46 YD TO PIN", `lipOut` false throughout. HOLE/WIND/CLUB panels 0 overlap, 0 cut off. Green 71%, yellow 19%; golfer 0.34% of frame; fov 30. No console errors beyond toNonIndexed. The putter `club` action was overridden by auto-club (wedge shot), so a near-pass "SO CLOSE!" (<3 units) was not re-shown.
+**Next:** prove the near-pass "SO CLOSE!" resting within 2 units; save `hud-round-full-round` with real keys only; save an "IN!" check; take pictures of the final card, 2-player stamped card, PERFECT banner, meter stage 1, rough/sand yardage drop.
+**Open:** full-round check and the card/stamp pictures still missing; groan/rattle unheard (headless).

@@ -47,7 +47,7 @@ export function beginShot() {
 export function resolveShot() {
   const p = curP(), H = curH(), b = SIM; let msg = '';
   G.lastLip = false;
-  if (b.mode === 'rest' && curClub().putt && G.minPinD < 0.24) { fire('hud-round:lipout', { dist: G.minPinD }); play('groan'); showBanner('SO CLOSE!', 'LIPPED OUT BY A HAIR', 1.6); G.lastLip = true; }
+  if (b.mode === 'rest' && curClub().putt && G.minPinD < 0.24 && pinDist(b.pos, H) < 3) { fire('hud-round:lipout', { dist: G.minPinD }); play('groan'); showBanner('SO CLOSE!', 'LIPPED OUT BY A HAIR', 1.6); G.lastLip = true; }
   else if (b.mode === 'rest') { const yd = Math.round(pinDist(b.pos, H) * YD); if (yd > 0) { fire('hud-round:rest', { yards: yd }); if (yd >= 3) { showBanner(yd + ' YD TO PIN', '', 1.4); play('pin'); } } }
   if (b.mode === 'sunk') {
     p.holed = true; p.scores[G.hole] = p.strokes; p.pos.set(H.pinX, H.pinY, H.pinZ); const nm = scoreName(p.strokes, H.par);

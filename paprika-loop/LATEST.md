@@ -1,11 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 4
-**Did:** Top priority built. `meter.js` resets `G.minPinD` at swing; `physics.js stepFlight` tracks the closest the rolling ball gets to the pin; `round.js resolveShot` raises "SO CLOSE!" (sub "LIPPED OUT BY A HAIR"), fires `hud-round:lipout` and plays new `SFX.groan` when a putt passes within 0.24 units of the cup and rests undropped; a holed putt now plays new `SFX.rattle` and shows "IN!" (sub has PAR/BOGEY and strokes; birdie or better keep their name). `hudRound` observe gained `lipOut` and `minPinD`. Saved check `hud-round-sound` (lip-out expect). Notes in lanes/hud-round.md.
-**Saw:** look at "SO CLOSE!" on hole 1: banner left of the pin, clear of the ball and flag; #holep, #windp, #clubp, #hinter, #banner, #sub do not overlap or cut off. A holed putt gave "IN!" then the PAR / BOGEY stamp card. Putting is now very easy: a 0.045-power putt from 0.43 units dropped, so a true lip-out needs a fast pass (power 0.9, accuracy 1, minPinD 0.07). Camera fov still ~30; golfer 0.4–2.5% of frame. No console errors; only the toNonIndexed warning. game-tests.json has each hud-round-* once (hud, hotseat, sound).
-**Next:** save `hud-round-full-round` with real keys only (Space, arrows, waits) to ROUND COMPLETE; take pictures of the final card, 2-player stamped card, PERFECT banner, meter at stage 1/2; shrink the "n YD TO PIN" banner; save a check for "IN!"; "SO CLOSE!" fires on any fast pass that rests anywhere (even 34 yd away in the rough), so require a final distance under ~3 units.
-**Open:** the groan/rattle sounds were not heard (headless); `Sound` line not read. Full-round check still missing. Lip-out wording may be misleading for long overshoots.
-
 ### Judge 4
 
 Writing up the verdict now. I ran the open, look, putt and perf checks and have the evidence I need.
@@ -62,3 +56,9 @@ Writing up the verdict now. I ran the open, look, putt and perf checks and have 
    - Look at the yardage drop in `#clubp` for a rough or sand lie.
 
 SCORE: 6.3
+
+## Iteration 5
+**Did:** `src/round.js resolveShot`: "SO CLOSE!" now needs `minPinD` < 0.24 and the final `pinDist` < 3 units, else the normal "n YD TO PIN". `src/hud.js`: `#banner` shrunk (b 66px→46px, left `max(26%,200px)`) so it is not cut off at the left edge.
+**Saw:** shot from hole 1 rested 46 YD out: `hudRound.lastCall` "46 YD TO PIN", `lipOut` false throughout. HOLE/WIND/CLUB panels 0 overlap, 0 cut off. Green 71%, yellow 19%; golfer 0.34% of frame; fov 30. No console errors beyond toNonIndexed. The putter `club` action was overridden by auto-club (wedge shot), so a near-pass "SO CLOSE!" (<3 units) was not re-shown.
+**Next:** prove the near-pass "SO CLOSE!" resting within 2 units; save `hud-round-full-round` with real keys only; save an "IN!" check; take pictures of the final card, 2-player stamped card, PERFECT banner, meter stage 1, rough/sand yardage drop.
+**Open:** full-round check and the card/stamp pictures still missing; groan/rattle unheard (headless).
