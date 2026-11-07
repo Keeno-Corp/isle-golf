@@ -15,6 +15,8 @@ A tilt-shift arcade golf game on Shepherd Isle: the football field of Isle Blitz
 11. Looks as LOOK.md says: its Checks hold.
 12. Edit only src/hud.js, src/round.js, src/effects.js, src/sound.js, src/input.js, src/main.js, src/api.js, index.html, README.md, lanes/hud-round.md and game-tests.json. Follow COORDINATION.md: keep each src file's first-line `import './<previous>.js'`, use the hooks in src/shared.js, add one observe key named `hudRound`, name new events hud-round:<thing>, and document what this lane provides in lanes/hud-round.md.
 13. Keep as they are (other lanes own them): plays as DESIGN.md's Core loop and Controls say (aim, club, three-click meter, mouse or keyboard, C hole camera); camera high behind the ball with narrow FOV and flyover intros; ball flight with arc, wind, bounce and roll by surface; the 9 holes, sheep and the ball-bonks-a-sheep baa; the golfer matches CHARACTERS.md; window.__game observe()/act(); 60 fps; no real golf brands on screen.
+**Steer (lane lead):** the next session's first job, before any new feature, is to run and save hud-round-full-round (real keys only, all 9 holes to ROUND COMPLETE) and hud-round-hotseat; take the ROUND COMPLETE and 2-player stamped-card pictures in the same session. Three sessions have skipped these.
+
 ## References
 refs/sheets/LOOK.png · style · match (Shepherd Isle, the game's own views) · built from /home/ubuntu/repos/paprika3d-dev/examples/shepherd-isle
 refs/study/ (not published) · mood · inspiration
