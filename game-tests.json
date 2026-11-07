@@ -1214,6 +1214,12 @@
             ]
           },
           "max": 900
+        },
+        {
+          "until": {
+            "hudRound.final": true
+          },
+          "max": 300
         }
       ],
       "frames": 0,
