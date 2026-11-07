@@ -66,7 +66,8 @@ export const kmix = new ShaderPass({
       float mk = max(max(m0, 1.0 - texture2D(tS, vUv + vec2(mh.x, 0.0)).a), max(1.0 - texture2D(tS, vUv - vec2(mh.x, 0.0)).a, max(1.0 - texture2D(tS, vUv + vec2(0.0, mh.y)).a, 1.0 - texture2D(tS, vUv - vec2(0.0, mh.y)).a)));
       sharp = max(sharp, 0.6 * smoothstep(band * 0.7, band * 0.35, abs(vUv.y - focus)));   // the miniature's focus band keeps its chalk crisp
       sharp = max(sharp, mk);   // the boy's own pixels (his silhouette mask) keep their detail
-      gl_FragColor = vec4(mix(c, k, amt * (1.0 - 0.9 * sharp)), 1.0 - m0);   // alpha carries the boy's mask on to the grade
+      vec3 o = mix(c, k, amt * (1.0 - 0.9 * sharp)); o = mix(o, c, step(0.5, m0));   // alpha-0 pixels (boy, ball, flag, dither survivors) stay raw
+      gl_FragColor = vec4(o, 1.0 - m0);   // alpha carries the boy's mask on to the grade
     }`,
 }, 'tNone');
 kmix.uniforms.tK.value = kuwaRT.texture; kmix.uniforms.tS.value = sceneRT.texture;
@@ -77,8 +78,8 @@ export const tiltFS = `uniform sampler2D tDiffuse; uniform vec2 res, dir; unifor
   void main(){ float dy = vUv.y - focus; float off = max(0.0, abs(dy) - band * 0.62) / 0.55;
     float k = clamp(off * off * 1.6 + off * 0.35, 0.0, 1.0) * (dy > 0.0 ? 1.0 : 0.82);
     vec2 sd = (vUv - spot.xy) * vec2(res.x / res.y, 1.0); k *= smoothstep(spot.z, spot.z * 1.8, length(sd));   // a second, round focus on the lighthouse
-    float r = k * maxR;
-    if (r < 0.35) { gl_FragColor = texture2D(tDiffuse, vUv); return; }
+    float r = k * maxR; vec4 c00 = texture2D(tDiffuse, vUv);
+    if (r < 0.35 || c00.a < 0.5) { gl_FragColor = c00; return; }   // alpha-0 pixels stay sharp and keep their mask
     vec4 s = vec4(0.0); float w = 0.0;
     for (int i = -9; i <= 9; i++) { float t = float(i) / 9.0; float g = exp(-t * t * 2.0); s += texture2D(tDiffuse, vUv + dir * t * r / res) * g; w += g; }
     gl_FragColor = s / w; }`;
@@ -117,6 +118,11 @@ export const grade = new ShaderPass({
       c += vec3(0.75, 0.82, 1.0) * uBolt * 0.35 * (0.4 + l);
       c = mix(c, c0 * mix(vec3(1.0), vec3(0.75, 0.8, 1.1), uDusk), boyK * 0.5);
       c += vec3(0.010, 0.018, 0.017);
+      { // the sea: water pixels (blue-green, not grass or cliff) are drawn toward the lighthouse's teal #0f6a67 so the open water reads as the brief's colour
+        float wk = smoothstep(0.0, 0.06, c.b - c.r) * smoothstep(-0.02, 0.04, c.g - c.r) * (1.0 - smoothstep(0.30, 0.55, l)) * (1.0 - uDusk) * (1.0 - uStorm);
+        vec3 teal = vec3(0.0045, 0.144, 0.136) * (1.3 + 0.3 * l);
+        c = mix(c, teal, wk * 0.8);
+      }
       float lf = dot(c, vec3(0.2126, 0.7152, 0.0722));
       c = max(mix(vec3(lf), c, 1.0 + uFlash * 0.7), 0.0) * (1.0 + uFlash * 0.3) + vec3(0.07, 0.035, 0.0) * uFlash;   // a big hit's flash: an additive warm pop that brightens and keeps (even boosts) the colour
       c *= 1.0 + ((n(px / 3.0) - 0.5) * 0.08 + (h(px + fract(uTime) * 91.0) - 0.5) * 0.06);
