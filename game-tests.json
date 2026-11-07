@@ -230,6 +230,52 @@
           "value": 0
         }
       ]
+    },
+    {
+      "id": "hud-round-hud",
+      "title": "hud-round-hud",
+      "state": {},
+      "actions": [
+        {
+          "action": "newRound",
+          "players": 2
+        },
+        {
+          "action": "next"
+        },
+        {
+          "wait": 5
+        },
+        {
+          "key": "Space"
+        },
+        {
+          "wait": 20
+        }
+      ],
+      "frames": 0,
+      "expect": [
+        {
+          "path": "players",
+          "op": "==",
+          "value": 2
+        },
+        {
+          "path": "meter.stage",
+          "op": "==",
+          "value": 1
+        },
+        {
+          "path": "hudRound.turn",
+          "op": "==",
+          "value": "ISLA"
+        },
+        {
+          "path": "phase",
+          "op": "==",
+          "value": "aim"
+        }
+      ]
     }
   ]
 }

@@ -1,0 +1,9 @@
+# Progress
+
+The request is in PROMPT.md. Each session of the loop appends one section here: a builder's `## Iteration n` (Did, Saw, Next, Open) and the judge's `### Judge n` (its scores, Next). LATEST.md holds the last of each, rewritten by the loop after every session; the next builder reads the latest Judge's Next there first.
+
+## Iteration 1
+**Did** sound.js: added SFX gull, surf, birdie, meterTick, perfect, nice, pin; `play()` now guards missing/throwing SFX (no more 'SFX[k] is not a function'); surf ambience and a meter tick every 1/16 of the power rise via addUpdate. round.js: PERFECT/NICE banner + sound on `swing` (fires `hud-round:call`), 'x YD TO PIN' banner at rest (`hud-round:rest`), bunker hint that matches the club, birdie jingle on holed, observe key `hudRound`. hud.js: #banner and #sub moved to left 27%/top 26% so they stop covering the pin. lanes/hud-round.md written; saved check hud-round-hud (2 players, meter stage 1); all 5 checks pass.
+**Saw** A bot of real Space key events (eval, window.bot, stage 1 at needPower, stage 2 at perfectAt) played a full solo round: 9 holes, best saved (27), final card then Space to title worked. 2-player card shows both rows, order ISLA,FINN. No console errors seen. Banner was overlapping the flag at the top centre in the aim view before the move; the new left position was not looked at again.
+**Next** Look at the banner position on several holes (does it hit the ball or pin?); save hud-round-full-round, -hotseat, -sound checks (a full round needs a long step list); look at the final card picture; check the order on hole 2 by last score with 2 players; the 'x YD TO PIN' banner may be hidden by the next banner at once.
+**Open** Auto-club picks the putter in sand (ball-physics lane). Hole 9 took the bot 5 strokes. ballShadow1/2 z-fight (not my files). Final-card look not taken.
