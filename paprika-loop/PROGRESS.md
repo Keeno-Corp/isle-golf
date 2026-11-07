@@ -826,3 +826,9 @@ Mean: (8+7+8+6+5+7+4+6+9+7+5+8+6)/13 = 6.6.
 3. **Kit colour check.** Run `interact` with `{key:"Digit2"}` and then Space on the title. Save `creatures-kit-colours` with expects `creatures.shirtColour` `#3b78c9` for FINN, then play through to ISLA's turn for `#d8503a`. Done is both ✓.
 
 SCORE: 6.6
+
+## Iteration 19
+**Did** `src/pose.js`: new `GS = 1.3`; `golfer.holder.scale` and `clubG.scale` are set to it each frame, and the shaft length `Lc` is divided by `GS` (the club follows the scaled hands; the two-bone IK and `toBall` are in world space, so the grip still meets the hands).
+**Saw** Aim view on hole 1: `Subject` golfer 0.81% (was 0.35%), 22 of 26 parts show, edge contrast 0.147. `club_grip` meets `golfer_hand` at address, the club reaches the ball, the golfer stands clear of the aim dots. `player` (footballer at H 1.0) 0.3%, helmet dark blue, reads well. No console errors. No `perf` run.
+**Next** 1) Save `creatures-par-dance`, `-bogey-dismay`, `-birdie-celebration`, `-sheep-bonk`, `-kit-colours` with `interact` (still missing since session 7; read the `setState` shape in `src/shared.js` first, `{ball:{x,z,mode}}` threw). 2) Check swing and putt poses at 1.3× (backswing top, follow-through, putter) with a stepped real-key drive. 3) Check the celebration and dance at the larger size, and the footballer's Celebration.
+**Open** The swing, putt and walk at 1.3× were not looked at; the stance distance `STANCE` is unchanged at 0.58, so the body may sit slightly closer to the ball relative to its size. The reaction and bonk checks are still unsaved.

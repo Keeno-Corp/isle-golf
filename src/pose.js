@@ -24,6 +24,7 @@ export function swingParam() {
   if (G.phase === 'aim') return -golfer.pose.back * (0.45 + 0.55 * G.m.power) * 0.9;
   return 0;
 }
+const GS = 1.3;   // the golfer's size on screen (holder scale; the club follows)
 const STANCE = 0.58;   // how far the golfer stands from the ball (a touch wider than before)
 const WALK_SPEED = 3.2;
 export function placeGolfer() {
@@ -36,7 +37,7 @@ export function placeGolfer() {
   else if (d < 0.05) { gx = tx; gz = tz; golfer.walking = false; }
   else { golfer.walking = true; const sp = Math.min(d, Math.max(WALK_SPEED, d / 1.8) / 60); gx += dx / d * sp; gz += dz / d * sp; golfer.wdir = Math.atan2(dx, dz); }
   const want = golfer.walking ? golfer.wdir : Math.atan2(rx, rz); golfer.yaw += angDiff(golfer.yaw, want) * (1 - Math.exp(-(golfer.walking ? 14 : 9) / 60));
-  h.position.set(gx, heightAt(gx, gz), gz); h.rotation.y = golfer.yaw;
+  h.position.set(gx, heightAt(gx, gz), gz); h.rotation.y = golfer.yaw; h.scale.setScalar(GS);
   golferShadow.position.set(gx + 0.05, h.position.y + 0.02, gz + 0.05);
   golfer.fx = fx; golfer.fz = fz; golfer.bx = ox.x; golfer.bz = ox.z; golfer.by = ox.y;
 }
@@ -125,9 +126,9 @@ export function updateGolfer(dt) {
     var Lc = L0;
     if (mixed && we < 1) { _d0.set(g.bx, g.by + 0.02, g.bz).sub(_hp).normalize(); _dir.lerpVectors(_d0, _dir, we).normalize(); }
   }
-  clubG.position.copy(_hp); clubG.scale.setScalar(1);
+  clubG.position.copy(_hp); clubG.scale.setScalar(GS);
   clubG.quaternion.setFromUnitVectors(_ny, _dir);
-  clubG.userData.shaft.scale.y = Lc; clubG.userData.head.position.y = -Lc - 0.02;
+  Lc /= GS; clubG.userData.shaft.scale.y = Lc; clubG.userData.head.position.y = -Lc - 0.02;
   _xv.set(1, 0, 0).applyQuaternion(clubG.quaternion); const want = _f.clone().addScaledVector(_dir, -_f.dot(_dir)).normalize();
   const ang = Math.atan2(_xv.clone().cross(want).dot(_dir), _xv.dot(want)); clubG.rotateOnWorldAxis(_dir, ang);
 }
