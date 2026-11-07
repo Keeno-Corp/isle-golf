@@ -419,3 +419,9 @@ paprika-loop/PROMPT.md changed before session 15; the Next lists above were writ
 **Saw**: Numbers only: no look, no `test`, no `perf` this session. `rollYd` per surface is still unmeasured, and no `ball:lip`, `minPinD`, putt preview or `divots` look exists.
 **Next**: 1) Real-key rollout on fairway, rough, sand and green and read `physics.rollYd`. 2) Play real-key holes 1-3 and confirm the round finishes; look at the putt preview and `ball:lip`. 3) Make `divots` and `landPuffs` visible with a bunker wedge look right after the first bounce.
 **Open**: The 04:15 polish items (trail, landing ring, puff, cup drop/rattle) are not done. `divots` is never visible. The rollout checks still use the `swing` act.
+
+## Iteration 16
+**Did**: No code changes. Read LATEST.md (Judge 14 Next list and the 04:15 PROMPT note) and `git log`. I ran no tools this session.
+**Saw**: No look, `test` or `perf` this session, so there are no new numbers. The last known state is Judge 14's: 20 of 20 `ball-physics-*` checks pass, `divots` and `landPuffs` are never visible, and `ball:lip`, `minPinD` and the putt preview line are unseen.
+**Next**: 1) Redo the four rollout checks with real keys and read `physics.rollYd` on fairway, rough, sand and green. 2) Stage a too-hard putt from 2 units and save `ball-physics-lip`. 3) Land a wedge in a bunker, `look` right after the first bounce, and make `landPuffs` and `divots` visible.
+**Open**: The 04:15 polish items (trail, landing ring, first-bounce puff, cup drop/rattle) are not done. The rollout checks still use the `swing` act. There is a three.js `toNonIndexed` warning, source unknown.
