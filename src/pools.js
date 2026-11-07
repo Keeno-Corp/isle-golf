@@ -10,7 +10,7 @@ export function pointPool(n, size, name, additive) {
   g.setAttribute('position', new THREE.BufferAttribute(pos, 3)); g.setAttribute('color', new THREE.BufferAttribute(col, 3));
   const m = new THREE.PointsMaterial({ size, map: TEX.soft, vertexColors: true, transparent: true, depthWrite: false, blending: additive ? THREE.AdditiveBlending : THREE.NormalBlending, sizeAttenuation: true });
   const pts = new THREE.Points(g, m); pts.name = name; pts.frustumCulled = false; pts.renderOrder = 7; scene.add(pts);
-  return { pts, pos, col, n, k: 0, p: Array.from({ length: n }, () => ({ life: 0, t: 1, vx: 0, vy: 0, vz: 0, g: 0, c: new THREE.Color() })) };
+  return { pts, add: !!additive, pos, col, n, k: 0, p: Array.from({ length: n }, () => ({ life: 0, t: 1, vx: 0, vy: 0, vz: 0, g: 0, c: new THREE.Color() })) };
 }
 export const dust = pointPool(160, 0.3, 'divots', false), trail = pointPool(140, 0.4, 'ballTrail', true);
 export const puffs = pointPool(60, 1.8, 'landPuffs', false);
@@ -23,7 +23,7 @@ export function emit(pool, x, y, z, o) {
 export function updatePool(pool, dt) {
   for (let i = 0; i < pool.n; i++) { const p = pool.p[i]; if (p.t >= p.life) { pool.pos[i * 3 + 1] = -999; continue; }
     p.t += dt; p.vy -= p.g * dt; pool.pos[i * 3] += p.vx * dt; pool.pos[i * 3 + 1] += p.vy * dt; pool.pos[i * 3 + 2] += p.vz * dt;
-    const k = 1 - p.t / p.life; pool.col[i * 3] = p.c.r * k; pool.col[i * 3 + 1] = p.c.g * k; pool.col[i * 3 + 2] = p.c.b * k; }
+    const k = pool.add ? 1 - p.t / p.life : 1; pool.col[i * 3] = p.c.r * k; pool.col[i * 3 + 1] = p.c.g * k; pool.col[i * 3 + 2] = p.c.b * k; }
   pool.pts.geometry.attributes.position.needsUpdate = true; pool.pts.geometry.attributes.color.needsUpdate = true;
 }
 export const burst = (x, z, n, color, sp = 1.4, up = 2.2) => { const y = heightAt(x, z) + 0.05; for (let i = 0; i < n; i++) emit(dust, x, y, z, { life: rand(0.4, 0.9), sp, up, color }); };

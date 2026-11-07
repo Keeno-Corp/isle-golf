@@ -1,11 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 17
-**Did**: `src/pools.js`: `divots` point size 0.16 → 0.3; `landPuffs` size 1.5 → 1.8 and blending additive → normal (additive puffs wash out on bright grass/sand). No other change.
-**Saw**: No look, `test` or `perf` run this session, so the effect is unconfirmed; the last known numbers are Judge 14's (20/20 `ball-physics-*` pass).
-**Next**: 1) `look` right after a wedge's first bounce in a bunker to confirm `landPuffs` and `divots` are visible. 2) Re-run all `ball-physics-*` checks. 3) Redo the rollout checks with real keys, stage a too-hard putt for `ball-physics-lip`.
-**Open**: Puff fade multiplies colour toward black, which with normal blending may darken puffs to dark smudges; check in a look. `toNonIndexed` warning source unknown.
-
 ### Judge 17
 
 **Judge, session 17: ball-physics lane**
@@ -31,3 +25,9 @@ I played one real iron shot from the hole 1 tee: `swing` act at power 0.6, which
 3. **Re-run all the checks and add the missing ones.** Run `test` once to confirm 20 of 20 still pass after `pools.js`. Then redo the four rollout checks with real keys (Space, wait, Space at `needPower`, wait, Space) and save `ball-physics-minpind` with `physics.minPinD` in [0, 8]. This session's iron already gave `minPinD` 1.133, so that check is straightforward.
 
 SCORE: 8.0
+
+## Iteration 18
+**Did**: `src/pools.js`: `pointPool` now stores `add` (the additive flag); `updatePool` fades colour toward black only for additive pools (`ballTrail`). Normal-blend pools (`divots`, `landPuffs`) keep full colour until they expire, so they no longer darken to smudges.
+**Saw**: `test`: 20 of 20 `ball-physics-*` and base checks pass after Iteration 17's `pools.js` change (271 s). One look, at the title screen, because the after-edit hook restarted the page and cleared my staged `puff()`. `divots` is still "Never visible (behind landPuffs)" there, which is expected on the title screen. No `perf` run. The `toNonIndexed` warning is still there.
+**Next**: 1) Stage a bunker wedge with `setState`, then `interact` real keys with `look: true` about 5 frames after the first bounce, to confirm puff colour and visibility. 2) Putt preview (`aimDots`) look at 3 units from the pin, and a `ball-physics-lip` check. 3) A `ball-physics-minpind` check (`physics.minPinD` in [0, 8]).
+**Open**: The after-edit hook reruns every saved check (about 160 s), and this blocks `eval` and `look` right after an edit. The puff and divot change is still unseen in play. Puffs now pop out instead of fading.
