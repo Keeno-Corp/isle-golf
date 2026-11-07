@@ -1,74 +1,63 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-### Judge 12
-
-**Judge 12.** I opened the page and ran the full `test`: 11 of 11 pass, including the new `course-cliff-lip`. I took one look, hole 5 after `newRound`, `next` and 40 frames of KeyC. The page was still in the intro phase with `overhead: true`, so the C view was caught in the flyover. I took no swing, no zoom of the cliff lip and no `perf` run. This host is SwiftShader, so frame times mean nothing.
-
-**Must have scores**
-
-0. **Ground not pixelated or tiled, spread wider: 8.**
-   - The `grass*` ×5036 (26%) blend softly into the mowing stripes and the rough, with no pixel blocks or tile pattern.
-   - The `tree*`, `bushes*` ×88 and `fenceRails*` have room around them.
-   - The `fenceRails*` run as long, clear diagonals.
-1. **LANE GOAL: 6.**
-   - `pin_flag` (0.056%) and `pin_pole` (0.034%) sit at the frame top, pole box [448, 34, 461, 84], so the pin is small but not cut.
-   - `way_ring` and `way_post` are visible.
-   - `course.pinVisible` is true only for hole 5.
-   - The `blossoms*` shrubs are still unproven. No zoom has ever shown them, and the cliff-lip check only asserts `hole` and `phase`.
-   - `pond_water` and `pond_lily` show at the left edge, but the ducks are not visible here.
-2. **Looks as LOOK.md says: 8.**
-   - The painted brush pass, warm cream-green haze and teal `sea` are there.
-   - Brightness is 52% with 0% blown out.
-   - The focus band blurs the top and bottom.
-   - The fairway reads lighter and yellower than #5d8a3a, but `course-h1-ribbon` passes.
-3. **Edit only the lane files: 8.** Recent commits touch lane files only; I did not diff this session.
-4. **Tilt-shift focus band: 8.** The middle is sharp and the edges blur.
-5. **Plays as DESIGN.md says: 6.** The HUD panels, club panel (IRON selected) and hint line show. `tee-shot-three-clicks` and `hot-seat-passes-turn` pass. I played no swing, and the R replay is unseen.
-6. **Camera: 5.**
-   - The overhead camera at y 38 pulls back well, and the golfer's `golfer_body` is only 0.011% of the frame.
-   - The tool reports "little of the subject shown".
-   - The hole 5 pin is at the top-left edge, 24 px from the top.
-   - The C view was not reached.
-7. **Ball flight: 6.** `course-h6-splash`, `course-h9-drive`, `course-h2-carry` and `course-h3-carry` pass. I saw no flight myself.
-8. **Full 9 holes, sheep, hazards: 7.**
-   - The `house_*` dogleg, `pond_water`, `sheep*` ×4, `bell_*` and `seaStacks*` are on screen.
-   - The `lighthouse` is out of view on this hole, which is expected.
-   - The `fenceRails*`, `sign_board` ×4 and `flowers` dress the island.
-9. **Stroke play and scorecard: 5.** The HUD shows "STROKES 0" and "ROUND EVEN". I saw no card or stamps.
-10. **HUD: 8.** There are 5 panels with 0 overlap and 0 cut off. The big "HOLE 5" banner covers the picture centre during the intro.
-11. **`window.__game`: 8.** `observe()` is full, with `course.pinVisible`, `course.waypoint`, `meter.needPower` and `pin`. One wrinkle: `needPower` is 1.05 for the iron on this 272 yd par 4. That is above 1, which means the iron cannot reach, so the auto-club should be the driver.
-12. **Golfer matches CHARACTERS.md: 6.** The kit is visible but tiny at this camera (0.011%). Colour is 38% against 52% around it, and edge contrast is 0.084, so it hardly stands out.
-13. **COORDINATION.md and load-order: 7.** Not re-checked.
-14. **`course:` events and `lanes/course.md`: 7.** Not re-read.
-15. **Pictures with interact and look: 8.** There are 11 saved checks, all passing, and the cliff-lip check is now saved.
-
-**Faults: 6.**
-- `three.js warned: toNonIndexed(): already non-indexed` still prints at `open`.
-- The banner covers the centre of the frame.
-- `cliffFace` and `cliffRocks` are listed as "Never visible" even though they are in view. They look occluded by `island`.
-- No console errors.
-
-**Object sourcing:** I did not read `paprika3d/asset-hits.json` or `paprika3d/sourcing.json`. The `tree*_leaves0` and `tree*_trunk` ×20, `bushes*` ×88, `blossoms*`, `fenceRails*`, `sign_board` and `house_*` are still code shapes. Run a library search first.
-
-**Next:**
-1. **Run `asset_search` for "low poly tree", "stylized bush" and "flowering shrub", then swap the code objects.**
-   - Replace `tree*_leaves0`/`tree*_trunk`, `bushes*` and `blossoms*` in `src/island.js`, keeping their positions and spacing.
-   - Cluster the blossoms into shrub-sized clumps while you are there. Their 0.021% of the frame is too small to read.
-   - Shown done by `look` with `zoom` on the cliff lip showing shrubs rather than pink rocks, at least 0.1% of the frame, and no higher draw-call count.
-   - Then re-save `course-cliff-lip` with a `sample` or `expect` that tests the blossoms.
-2. **Check `meter.needPower` on holes 4 to 9 and fix the pin framing.**
-   - Hole 5's iron `needPower` of 1.05 is over 1. Make the auto-club pick the driver wherever the iron's `needPower` exceeds 0.95. This holds in the iron-selected state after `next` on hole 5.
-   - Export `course.cViewCentre` so `src/camera.js` can centre the pin, or note the request in `lanes/course.md`. The hole 5 pin sits at y≈24 px.
-   - Shown done by `observe` giving `club: "driver"` and `needPower` of 0.95 or less on hole 5. Then a C-view `look` (KeyC after the intro, 40 frames) with `pin_flag` at 0.1% or more and its box top above 40 px.
-3. **Find the `toNonIndexed` source and save a scorecard check.**
-   - Run `grep -rn toNonIndexed src` and report the file to the owning lane, as `src/sheep.js:16` or `stage.js:40`.
-   - Shown done by `open` printing no `three.js warned` line.
-   - Add a `course-` check that plays a hole to `holed` and shows the card with its stamp, so the stroke-play score of 5 has evidence.
-
-SCORE: 6.9
-
 ## Iteration 13
 **Did** src/island.js blossoms: petal icosahedron radius 0.075 -> 0.16 and 24 petals per blooming bush (was 16), so shrubs read as flowering clumps, same single InstancedMesh (no new draw calls).
 **Saw** Not looked at (no page run this session); syntax check only.
 **Next** (1) look zoom on cliff lip to confirm blossoms >= 0.1% of frame. (2) Auto-club: pick driver when iron needPower > 0.95 (hole 5 gives 1.05). (3) toNonIndexed warning source (sheep.js:16 / stage.js:40), scorecard check.
 **Open** Blossom size unverified visually; petals may now look too chunky.
+
+### Judge 13
+
+**Judge 13.** I opened the page and took one look: hole 2 (`state.hole:1` landed on hole 2 here), `skipIntro`, then KeyC for 40 frames. I ran one `observe`-style `interact` on hole 6 and one `perf`. I did not take a cliff-lip zoom, run the full `test`, or play a swing. The host is SwiftShader, so frame times mean nothing.
+
+**Must have scores**
+
+0. **Ground not pixelated or tiled, spread wider: 8.**
+   - The `grass*` ×888 (16%) blend softly into the stripes, with no pixel blocks and no visible tile pattern.
+   - The sand pots and the rough show smooth edges.
+   - The `bushes*` ×23 and `flowers*` ×63 have room around them.
+1. **LANE GOAL: 6.**
+   - **Blossoms:** `blossoms*` ×28 are now 0.23% of the frame, up from 0.021%. In the picture they read as pink flowering clumps on the cliff lip, with green bushes beside them. The cliff-lip check still only asserts `hole` and `phase`.
+   - **Pin and waypoint:** `pin_flag` (0.36%), `pin_pole` (0.51%) and `pin_ring` are visible. The pole is cut at the frame top, and `course.pinVisible` is true only for the current hole. `way_ring`, `way_diamond` and `way_post` show.
+   - **Ducks:** not seen.
+   - **Hole 6 needPower:** `meter.needPower` is 0.993 with the driver on hole 6 (Duck Pond Bend, 218 yd, `club` "driver"). That is above the 0.95 target.
+2. **Looks as LOOK.md says: 8.** The painted brush pass is there, with cream-green haze, a teal `sea` and a warm sun. Brightness is 51% with 0% blown out, and the frame edges blur.
+3. **Edit only the lane files: 7.** I did not diff this session.
+4. **Tilt-shift focus band: 8.** The middle is sharp and the top and bottom blur.
+5. **Plays as DESIGN.md says: 6.** The HUD panels, the club list (IRON selected) and the hint line show. I played no swing and did not see R replay.
+6. **Camera: 5.** The KeyC overhead camera sits at y≈21 and the golfer is only 0.049% of the frame. The pin is cut at the frame top.
+7. **Ball flight: 6.** The saved splash, drive and carry checks passed last session. I saw no flight myself.
+8. **Full 9 holes, sheep, hazards: 7.**
+   - The `sheep*`, `pond_*` and `seaStacks` objects exist.
+   - The 20 `tree*` trunk and leaf pairs are in the "Never visible" list.
+   - `cliffRocks` and `seaStacks` are listed as never visible although they are in view.
+9. **Stroke play and scorecard: 5.** The HUD shows "STROKES 0" and "ROUND EVEN". No card or stamps were seen.
+10. **HUD: 8.** There are 5 panels with 0 overlap and 0 cut off. The "HOLE 2" banner sits over the picture centre.
+11. **`window.__game`: 8.** `observe()` returns `course.pinVisible`, `course.waypoint` and `meter.needPower`, and the actions are documented.
+12. **Golfer matches CHARACTERS.md: 5.** `golfer_body` is 0.049% of the frame. Brightness is 58% against 57% around it, and edge contrast is 0.065. The tool says it blends in.
+13. **COORDINATION.md and load-order: 7.** Not re-checked.
+14. **`course:` events and `lanes/course.md`: 7.** Not re-read.
+15. **Pictures with interact and look: 8.** The saved checks exist; I did not rerun them.
+
+**Faults: 6.**
+- `three.js warned: toNonIndexed(): already non-indexed` still prints at `open`.
+- The banner covers the picture centre.
+- Perf is not judged: 274 draw calls and 557k triangles, with the frame time meaningless on SwiftShader.
+- There were no console errors.
+
+**Object sourcing:** I did not read `paprika3d/asset-hits.json` or `paprika3d/sourcing.json`. The `tree*_trunk` and `tree*_leaves0`, `bushes*`, `blossoms*`, `fenceRails`, `sign_board` and `house_*` are still code shapes.
+
+**Next:**
+1. **Run `asset_search` for "low poly tree", "stylized bush", "flowering shrub" and "wooden fence", then swap in the results.**
+   - This is the first item and is asked again. Replace `tree*_trunk`/`tree*_leaves0`, `bushes*`, `blossoms*` and `fenceRails` in `src/island.js`, keeping their positions and spacing.
+   - Shown done by `look` with `zoom` on the cliff lip showing shrub models rather than icosahedron petals, with no higher draw-call count in `perf`.
+2. **Fix the auto-club and `needPower` (asked again).**
+   - Hole 6 shows 0.993 with the driver, so the hole's pin or tee needs pulling closer or the aim shortened. It should hold for every hole after `{state:{hole:n}}`.
+   - Hole 5's iron `needPower` of 1.05 was also never fixed. The club picked after `next` must have `needPower` of 0.95 or less.
+   - Shown done by `interact` with `expect {"meter.needPower":[0,0.95]}` on holes 4 to 9.
+3. **Make the C view frame the pin and the golfer.**
+   - Export `course.cViewCentre` and note it in `lanes/course.md` for `src/camera.js`, because the pin is cut at the top at y≈0.
+   - Also give the golfer a contrasting accent (a brighter kit patch or an outline) so the `Stands out` line passes.
+   - Shown done by `look` after KeyC with `pin_pole` fully inside [y>20] and the golfer's edge contrast at 0.1 or more.
+
+SCORE: 6.7
