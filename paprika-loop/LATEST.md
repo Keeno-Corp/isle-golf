@@ -1,11 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 10
-**Did** `src/pose.js` `poseNm`: `downswing` now reports for the swing phase while `G.swingT < 0.2` (the old test `s < 0` after 0.2 never held, since the pose is already 0 at impact and the 0.2 s before it is the descent); `backswing` reports in the meter phase from stage 1 on; `follow` after impact and in flight/settle.
-**Saw** Syntax check only; no `look`, `interact` or `perf` this session. Reactions (par/bogey/birdie), kit colours, sheep bonk and the footballer view are still unseen.
-**Next** 1) Real-key drive trace of `creatures.golferClip`: expect address, backswing, downswing, follow. 2) Saved hole-out checks `creatures-par-dance`, `creatures-bogey-dismay`, `creatures-birdie-celebrate` (ball near cup, putter, three Spaces, `until:{phase:"holed"}`). 3) `creatures-kit-colours` sample on `golfer_shirt`, sheep bonk replay, `asset_search` for golfer and sheep.
-**Open** The downswing lasts 0.2 s (about 12 frames), so a trace must step finely. `game-tests.json` creatures-real-key-drive-pose still expects `follow` at its end, which should hold. Asset search not retried.
-
 ### Judge 10
 
 **Judge 10.** I played one real-key drive on hole 1 with a trace of `golferClip` and took a look after it. I then tried a putt from (-2.4, 11.95) and ran `perf` once. The putt did not hole out, so the par, bogey and birdie reactions, the sheep bonk and the 2-player shirt are still unseen. I did not retry `asset_search`.
@@ -57,3 +51,9 @@ The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.m
    - Run `asset_search` for "low poly golfer" and "low poly sheep" and record the hit or miss in `lanes/creatures.md`.
 
 SCORE: 5.6
+
+## Iteration 11
+**Did** `src/pose.js` `poseNm`: `backswing` now reports whenever `G.m.stage` is 1 or 2 in phase `aim` or `meter` (the HUD shows the meter during `aim`, so the old `phase === 'meter'` test never held; this is why Judge 10 saw no `backswing`).
+**Saw** Syntax check only (`node --check`); no `look`, `interact` or `perf` this session.
+**Next** 1) Drive trace of `creatures.golferClip` expecting address, backswing, downswing, follow. 2) Hole-out checks for Dance_Loop, Dismay, Celebration (no `setState` ball with x, z only; use `swing` action or eval). 3) `creatures-kit-colours`, bonk replay, `asset_search` for golfer and sheep; footballer look and brighter cap.
+**Open** Backswing, reactions, kit colours, bonk, footballer view all still unproven.

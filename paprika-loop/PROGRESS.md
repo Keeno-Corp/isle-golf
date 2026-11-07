@@ -550,3 +550,9 @@ SCORE: 5.9
    - Run `asset_search` for "low poly golfer" and "low poly sheep" and record the hit or miss in `lanes/creatures.md`.
 
 SCORE: 5.6
+
+## Iteration 11
+**Did** `src/pose.js` `poseNm`: `backswing` now reports whenever `G.m.stage` is 1 or 2 in phase `aim` or `meter` (the HUD shows the meter during `aim`, so the old `phase === 'meter'` test never held; this is why Judge 10 saw no `backswing`).
+**Saw** Syntax check only (`node --check`); no `look`, `interact` or `perf` this session.
+**Next** 1) Drive trace of `creatures.golferClip` expecting address, backswing, downswing, follow. 2) Hole-out checks for Dance_Loop, Dismay, Celebration (no `setState` ball with x, z only; use `swing` action or eval). 3) `creatures-kit-colours`, bonk replay, `asset_search` for golfer and sheep; footballer look and brighter cap.
+**Open** Backswing, reactions, kit colours, bonk, footballer view all still unproven.
