@@ -21,7 +21,7 @@ export function hideGolfer() { showGolfer(false); }
 export function swingParam() {
   if (G.phase === 'swing') { const t = G.swingT; const back = -(0.45 + 0.55 * G.pend.power); return t < 0.2 ? back * (1 - (t / 0.2) ** 2) : Math.min(1, (t - 0.2) / 0.3) * 0.9 * (0.5 + 0.5 * G.pend.power); }
   if (G.phase === 'flight' || G.phase === 'settle') { const t = G.flightT; return 0.9 * (0.5 + 0.5 * (G.pend ? G.pend.power : 1)) * (1 - smooth(1.0, 1.8, t)); }
-  if (G.phase === 'aim') return -golfer.pose.back * (0.45 + 0.55 * G.m.power) * 0.9;
+  if (G.phase === 'aim') return G.m.stage >= 1 ? -(0.7 + 0.3 * Math.sqrt(G.m.power)) : -golfer.pose.back * 0.4;
   return 0;
 }
 const GS = 1.7;   // the golfer's size on screen (holder scale; the club follows)

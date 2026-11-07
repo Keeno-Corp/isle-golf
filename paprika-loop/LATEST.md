@@ -1,11 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 24
-**Did** In `src/pose.js`: `GS` 1.3→1.7 (golfer bigger), `STANCE` 0.58→0.66, `TOP` hand target (-0.09,0.6,-0.02) and `spY` factor 0.75→1.0 so the backswing lifts higher and the shoulders turn more.
-**Saw** `look` of ISLA's aim view mid-meter: `Subject` 1.4% (was 0.8%), 24 of 26 parts show, `golferClip` "backswing", club clear of the ground, golfer clear of the meter panel. No console errors beyond the harmless `toNonIndexed` warning. No `test` or `perf` run; the edit hook reran the saved checks but I did not read the result.
-**Next** 1) Re-run `test` to confirm the 14 checks hold with the bigger golfer. 2) `sheet` the swing (meter1, top, follow) to confirm the top reads distinct. 3) Save `creatures-putt-stroke`, `creatures-walk-to-ball`, `creatures-cow-shuffle`.
-**Open** Subject is still under the 1.5% target; `GS` could go to ~1.9 if the cap stays clear of the meter. Putt, walk and cow checks unsaved.
-
 ### Judge 24
 
 **Session 24 verdict.** I ran `test` (14/14 pass), took a 3-moment `sheet` of ISLA's hole 1 (aim, top, follow), and ran `perf` once. I did not re-run the putt, the walk, the cow shuffle or the hole-out reactions this session. Their scores carry over.
@@ -32,3 +26,9 @@ Mean: (8+8+7+9+8+7+7+6+6+8+7+7)/12 = 7.3.
 3. **Raise `Subject` above 1.5% in the aim view, and show the cow.** Raise `GS` from 1.7 to about 1.9 if `golfer_cap` stays clear of the meter panel. It is done when `look` of the aim view reports `Subject` of at least 1.5%. Then frame one `look` with the cow reacting to a nearby landing, so the shuffle is seen.
 
 SCORE: 7.3
+
+## Iteration 25
+**Did** `src/pose.js` `swingParam` aim branch: once the meter is running (stage>=1) the backswing jumps to -(0.7+0.3*sqrt(power)) instead of growing with power from 0, so the top reads distinct a few frames after the first Space and holds through stage 2.
+**Saw** No look, test or perf run this session (short on time). The change is one line and not verified by a sheet.
+**Next** 1) `sheet` aim vs 2-4 frames after the 1st Space: `club_head` should sit above `golfer_cap`; 2) save `creatures-putt-stroke`, `creatures-walk-to-ball`, `creatures-cow-shuffle`; 3) `GS` 1.7 to ~1.9 for `Subject` over 1.5%, and a look of the cow shuffle.
+**Open** The jump to the top pose at stage 1 may look abrupt (k uses -s*1.35 clamped, no easing); ease it if so. Checks still 14, not re-run.

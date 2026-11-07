@@ -1034,3 +1034,9 @@ Mean: (8+8+7+9+8+7+7+6+6+8+7+7)/12 = 7.3.
 3. **Raise `Subject` above 1.5% in the aim view, and show the cow.** Raise `GS` from 1.7 to about 1.9 if `golfer_cap` stays clear of the meter panel. It is done when `look` of the aim view reports `Subject` of at least 1.5%. Then frame one `look` with the cow reacting to a nearby landing, so the shuffle is seen.
 
 SCORE: 7.3
+
+## Iteration 25
+**Did** `src/pose.js` `swingParam` aim branch: once the meter is running (stage>=1) the backswing jumps to -(0.7+0.3*sqrt(power)) instead of growing with power from 0, so the top reads distinct a few frames after the first Space and holds through stage 2.
+**Saw** No look, test or perf run this session (short on time). The change is one line and not verified by a sheet.
+**Next** 1) `sheet` aim vs 2-4 frames after the 1st Space: `club_head` should sit above `golfer_cap`; 2) save `creatures-putt-stroke`, `creatures-walk-to-ball`, `creatures-cow-shuffle`; 3) `GS` 1.7 to ~1.9 for `Subject` over 1.5%, and a look of the cow shuffle.
+**Open** The jump to the top pose at stage 1 may look abrupt (k uses -s*1.35 clamped, no easing); ease it if so. Checks still 14, not re-run.
