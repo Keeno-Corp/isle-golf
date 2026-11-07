@@ -161,6 +161,7 @@ export function updateHUD() {
   }
   const m = G.m;
   hud.meter.classList.toggle('on', G.phase === 'aim' && m.stage > 0 || G.phase === 'swing');
+  hud.help.style.visibility = hud.meter.classList.contains('on') ? 'hidden' : '';
   if (G.phase === 'aim' || G.phase === 'swing') {
     hud.fill.style.width = (m.power * 100).toFixed(1) + '%';
     hud.needle.style.display = m.stage >= 2 ? 'block' : 'none';

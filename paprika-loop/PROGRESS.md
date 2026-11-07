@@ -1144,3 +1144,9 @@ Iteration 27's `#meterp .lab` text-shadow was untested by the builder. I saw it 
    - Then add a kit-colour ring under `golferShadow` or a marker on the player whose turn it is. The golfer is only 0.4% of the picture at stage 1, so it is hard to find at the wide camera. Show it with a 2-player `look` at stage 1.
 
 SCORE: 7.5
+
+## Iteration 28
+**Did:** `src/hud.js` update loop: `hud.help` (`#hinter`) gets `visibility:hidden` while `#meterp` has class `on` (aim stage>0 or swing), fixing the meterp/hinter overlap.
+**Saw:** No browser run (about 10 minutes); syntax check only. No new numbers.
+**Next:** Verify with `interact` Space `until meter.stage 1` + `look` (hinter hidden, 0 overlap); take the putt/PERFECT/PICKED UP/ROUND COMPLETE pictures; run `test` on the full set; kit-colour ring under `golferShadow`.
+**Open:** The hinter hide is untested.
