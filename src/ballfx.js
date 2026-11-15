@@ -57,7 +57,7 @@ on('ball:sunk', e => { landRing(e.ball.pos.x, e.ball.pos.z, 0.5, '#ffe27a', 0.8)
 addUpdate(dt => {
   for (const o of RINGS) { if (!o.m.visible) continue; o.t += dt; const k = o.t / o.dur; if (k >= 1) { o.m.visible = false; continue; } o.m.scale.setScalar(0.1 + o.r * (1 - (1 - k) ** 2)); o.m.material.opacity = 0.85 * (1 - k); }
   if (flightRing.visible) { flightRing.scale.setScalar(1.1 + 0.12 * Math.sin(performance.now() / 120)); if (G.phase === 'aim') flightRing.visible = false; }
-  aimRing.scale.setScalar(1 + 0.08 * Math.sin(performance.now() / 160));
+  aimRing.scale.setScalar(1 + 0.08 * Math.sin(performance.now() / 160)); if (aimRing.userData.to) aimRing.position.lerp(aimRing.userData.to, 1 - Math.exp(-dt * 16));
   // meter fields are cleared once the next aim phase begins
   const m = G.m; if (G.phase === 'aim' && m.stage === 0 && (m.power || m.t || m.t2 || m.tp || m.acc || m.label)) { m.power = m.t = m.t2 = m.tp = m.acc = 0; m.label = ''; }
   if (PHY.origin && (SIM.mode === 'roll' || SIM.mode === 'rest' || SIM.mode === 'sunk') && G.phase !== 'aim') {

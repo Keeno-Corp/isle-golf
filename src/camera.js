@@ -8,7 +8,7 @@ import { SIM } from './physics.js';
 import { G, curClub, curH, curP } from './round.js';
 import { _d0, _hp } from './pose.js';
 import { golfer, clubG } from './golfer.js';
-import { addObserve, addAction } from './shared.js';
+import { addObserve, addAction, addSetState } from './shared.js';
 import { PR } from './stage.js';
 
 // ---------------------------------------------------------------- camera: high behind the ball, narrow FOV; follows the ball in flight; pulls back to the diorama for each flyover
@@ -16,7 +16,7 @@ export const cam = { pos: new THREE.Vector3(1, 44, 68), look: new THREE.Vector3(
 export const DIO = { pos: new THREE.Vector3(1, 47, 74), look: new THREE.Vector3(0, 2.2, 1), fov: 29 };
 export const cPos = new THREE.Vector3(), cLook = new THREE.Vector3();
 export function aimCam(pos, look) {
-  const p = curP(), putt = curClub().putt, fx = Math.cos(G.aim), fz = Math.sin(G.aim), D = putt ? 3.6 : 5.6, Hh = putt ? 2.1 : 2.95, ah = putt ? 0.9 : 2.2, side = putt ? 0.45 : 0.15, src = G.phase === 'flight' || G.phase === 'settle' ? G.shotOrigin : p.pos;
+  const p = curP(), putt = curClub().putt, fx = Math.cos(G.aim), fz = Math.sin(G.aim), D = putt ? 3.6 : 4.5, Hh = putt ? 2.1 : 2.4, ah = putt ? 0.9 : 1.6, side = putt ? 0.45 : 0.15, src = G.phase === 'flight' || G.phase === 'settle' ? G.shotOrigin : p.pos;
   // a touch to the side away from the golfer (who stands on -r), so the ball-to-pin line stays clear
   pos.set(src.x - fx * D - fz * side, src.y + Hh, src.z - fz * D + fx * side); pos.y = Math.max(pos.y, heightAt(pos.x, pos.z) + 1.0); look.set(src.x + fx * ah, src.y + 0.35, src.z + fz * ah);
 }
@@ -63,7 +63,7 @@ export function updateCamera(dt) {
     if (G.phase === 'intro' && u < 0.12 && cam.snapTitle) { }
   } else if (G.overhead && G.phase === 'aim') {
     overheadCam(cPos, cLook, H, curP().pos); fov = 32; k = 4;
-  } else if (G.phase === 'aim' || G.phase === 'swing' || G.phase === 'flight' && G.flightT < 0.25 && !curClub().putt) { aimCam(cPos, cLook); k = 5; }   // a beat on the tee after impact: the strike's lurch (juice.js) reads before the camera chases the ball
+  } else if (G.phase === 'aim' || G.phase === 'swing' || G.phase === 'flight' && G.flightT < 0.5 && !curClub().putt) { aimCam(cPos, cLook); k = 5; if (G.phase === 'aim' && cam.lastPh === 'aim' && Math.abs(G.aim - cam.lastAim) > 0.03) snap = true; }   // an aim set in one jump (act, a click) cuts there; held keys still glide   // a beat on the tee after impact: the strike's lurch (juice.js) reads before the camera chases the ball
   else if (G.phase === 'holed' || G.phase === 'settle' && SIM.mode === 'sunk') { fov = 30; k = 7; cPos.set(H.pinX + 2.6, H.pinY + 3.0, H.pinZ + 4.0); cLook.set(H.pinX, H.pinY + 0.6, H.pinZ); }
   else {   // flight and settle: behind the ball along its way, close in as it rolls
     const v = SIM.vel, hs = Math.hypot(v.x, v.z), dx = hs > 0.5 ? v.x / hs : Math.cos(G.aim), dz = hs > 0.5 ? v.z / hs : Math.sin(G.aim), putt = curClub().putt || SIM.mode === 'roll' && hs < 4;
@@ -71,6 +71,7 @@ export function updateCamera(dt) {
     const fdx = cam.fdx ?? dx, fdz = cam.fdz ?? dz, D = putt ? 3.6 : 7.8, Hh = putt ? 1.8 : 3.9;
     cPos.set(SIM.pos.x - fdx * D, Math.max(SIM.pos.y + Hh, heightAt(SIM.pos.x - fdx * D, SIM.pos.z - fdz * D) + 1.0), SIM.pos.z - fdz * D); cLook.set(SIM.pos.x + fdx * 1.8, SIM.pos.y + 0.1, SIM.pos.z + fdz * 1.8); k = putt ? 4 : 8; const dp = Math.hypot(H.pinX - SIM.pos.x, H.pinZ - SIM.pos.z); if (!putt && dp < 9) { const w = 1 - dp / 9; cLook.x = lerp(cLook.x, H.pinX, w * 0.6); cLook.z = lerp(cLook.z, H.pinZ, w * 0.6); }
   }
+  cam.lastPh = G.phase; cam.lastAim = G.aim;
   if (snap) { cam.pos.copy(cPos); cam.look.copy(cLook); cam.fov = fov; } else {
     const t = 1 - Math.exp(-dt * k); cam.pos.lerp(cPos, t); cam.look.lerp(cLook, t); cam.fov += (fov - cam.fov) * t;
   }
@@ -80,6 +81,7 @@ export function updateCamera(dt) {
   updateDither(Math.round(innerWidth * PR), Math.round(innerHeight * PR));
 }
 let ditherInit = false;
+addSetState(s => { if (s.skipIntro) { updateCamera(1); cam.pos.copy(cPos); cam.look.copy(cLook); } });   // a skipped flyover lands on the aim view at once, as ?hole= does
 
 // ---------------------------------------------------------------- look lane observe: pitch, flyover, focus band, screen NDC of ball / pin / golfer
 const _p = new THREE.Vector3();

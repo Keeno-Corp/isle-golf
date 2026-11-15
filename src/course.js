@@ -147,16 +147,19 @@ export function stripeAt(x, z) {
   if (greenOf(x, z)) return [0.5 + 0.5 * Math.sin((x + z * 0.4) * 5.2), w, 1];
   return [0.5 + 0.5 * Math.sin((x * -Math.sin(ang) + z * Math.cos(ang)) * 3.1 + (n - 0.5) * 0.6), w, 0];
 }
+const _gc = new THREE.Color();
 export function courseColour(x, z, c) {
   const m = mownSigned(x, z), n = fbm(x * 1.3 + 2, z * 1.3);
   if (m < 0.5) {
     let H = null, dBest = 1e9; for (const h of HOLES) { if (x < h.bb[0] || x > h.bb[2] || z < h.bb[1] || z > h.bb[3]) continue; const d = Math.hypot(x - h.green.x, z - h.green.z); if (d < dBest) { dBest = d; H = h; } }
     const ang = H ? H.teeYaw : 0, stripe = 0.5;   // the mowing stripes are baked into a smooth texture (island.js), not vertex colours
     const col = COURSE_C.fair.clone().lerp(COURSE_C.fairB, 0.45);
-    const gH = greenOf(x, z), teeNear = HOLES.some(h => { const cc = Math.cos(h.teeYaw), s2 = Math.sin(h.teeYaw), u = (x - h.tee[0]) * cc + (z - h.tee[1]) * s2, v = -(x - h.tee[0]) * s2 + (z - h.tee[1]) * cc; return Math.abs(u) < 0.95 && Math.abs(v) < 0.65; });
-    if (H && dBest < H.green.r + 0.62) col.lerp(COURSE_C.fringe, 0.7);
-    if (gH) col.copy(COURSE_C.green).lerp(COURSE_C.greenB, 0.3);
-    if (teeNear) col.copy(COURSE_C.tee).lerp(COURSE_C.greenB, 0.3 + 0.2 * n);
+    let gsd = 9; for (const h of HOLES) { const g = h.green; if (Math.abs(x - g.x) > g.r + 1.5 || Math.abs(z - g.z) > g.r + 1.5) continue; const ga = Math.atan2(z - g.z, x - g.x); gsd = Math.min(gsd, Math.hypot(x - g.x, z - g.z) - g.r * (1 + 0.09 * Math.sin(3 * ga + h.i) + 0.05 * Math.sin(5 * ga + 2 * h.i))); }   // greenOf's edge as a signed distance
+    let tsd = 9; for (const h of HOLES) { const cc = Math.cos(h.teeYaw), s2 = Math.sin(h.teeYaw), u = (x - h.tee[0]) * cc + (z - h.tee[1]) * s2, v = -(x - h.tee[0]) * s2 + (z - h.tee[1]) * cc; tsd = Math.min(tsd, Math.max(Math.abs(u) - 0.95, Math.abs(v) - 0.65)); }
+    // each edge feathers over ~0.12 units, so the baked course texture (island.js) blends it with no stair-steps
+    col.lerp(COURSE_C.fringe, 0.7 * smooth(0.68, 0.56, gsd));
+    col.lerp(_gc.copy(COURSE_C.green).lerp(COURSE_C.greenB, 0.3), smooth(0.06, -0.06, gsd));
+    col.lerp(_gc.copy(COURSE_C.tee).lerp(COURSE_C.greenB, 0.3 + 0.2 * n), smooth(0.06, -0.06, tsd));
     col.multiplyScalar(0.94 + 0.12 * n);
     c.lerp(col, smooth(0.5, -0.12, m) * 0.97);
   }

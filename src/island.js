@@ -149,7 +149,6 @@ export const terrainGeo = new THREE.PlaneGeometry(TW, TD, TSX, TSZ).rotateX(-Mat
       c.lerp(dirt.clone().lerp(dirtD, pn2 * 0.6), k * 0.95);
       c.lerp(gWorn, smooth(pw + 0.8, pw + 0.15, pd) * (1 - k) * 0.35);
     }
-    courseColour(x, z, c);   // the course: fairways, greens, tees and sand over the island's paint
     const dp = Math.hypot(x - POND.x, z - POND.z);
     c.lerp(pondBed, smooth(POND.r + 0.1, POND.r - 0.4, dp));
     col[i * 3] = c.r; col[i * 3 + 1] = c.g; col[i * 3 + 2] = c.b;
@@ -172,6 +171,20 @@ const stripeTex = (() => {
   const t = new THREE.DataTexture(d, STR_W, STR_H, THREE.RGBAFormat); t.colorSpace = THREE.NoColorSpace; t.generateMipmaps = true;
   t.minFilter = THREE.LinearMipmapLinearFilter; t.magFilter = THREE.LinearFilter; t.anisotropy = renderer.capabilities.getMaxAnisotropy(); t.needsUpdate = true; return t;
 })();
+// the course (fairways, fringe, greens, tees, sand) baked at 8 px/m over the vertex paint, which is only 5 px/m: courseColour is a chain
+// of lerps, so out = c * (1 - a) + B; running it on black and on white gives B and a. RGB holds sqrt(colour) so dark linear greens keep precision.
+const CRS_PPM = 8, CRS_W = TW * CRS_PPM, CRS_H = TD * CRS_PPM;
+const courseTex = (() => {
+  const d = new Uint8Array(CRS_W * CRS_H * 4), c0 = new THREE.Color(), c1 = new THREE.Color();
+  for (let j = 0; j < CRS_H; j++) for (let i = 0; i < CRS_W; i++) {
+    const x = (i + 0.5) / CRS_PPM - TW / 2, z = (j + 0.5) / CRS_PPM - TD / 2, k = (j * CRS_W + i) * 4;
+    courseColour(x, z, c0.setRGB(0, 0, 0)); courseColour(x, z, c1.setRGB(1, 1, 1));
+    const a = clamp((1 - (c1.g - c0.g)) * (1 - smooth(POND.r + 0.1, POND.r - 0.4, Math.hypot(x - POND.x, z - POND.z))), 0, 1), inv = a > 0.002 ? 1 / (1 - (c1.g - c0.g)) : 0;
+    d[k] = Math.sqrt(clamp(c0.r * inv, 0, 1)) * 255; d[k + 1] = Math.sqrt(clamp(c0.g * inv, 0, 1)) * 255; d[k + 2] = Math.sqrt(clamp(c0.b * inv, 0, 1)) * 255; d[k + 3] = a * 255;
+  }
+  const t = new THREE.DataTexture(d, CRS_W, CRS_H, THREE.RGBAFormat); t.colorSpace = THREE.NoColorSpace; t.generateMipmaps = true;
+  t.minFilter = THREE.LinearMipmapLinearFilter; t.magFilter = THREE.LinearFilter; t.anisotropy = renderer.capabilities.getMaxAnisotropy(); t.needsUpdate = true; return t;
+})();
 const grainTex = (() => {
   const N = 256, P = 16, d = new Uint8Array(N * N * 4);
   for (let j = 0; j < N; j++) for (let i = 0; i < N; i++) {
@@ -188,11 +201,12 @@ const grainTex = (() => {
 })();
 const terrainMat = std(0xffffff, { vertexColors: true, roughness: 1 });
 terrainMat.onBeforeCompile = sh => {
-  sh.uniforms.uStripe = { value: stripeTex }; sh.uniforms.uGrain = { value: grainTex }; sh.uniforms.uTer = { value: new THREE.Vector2(TW, TD) };
+  sh.uniforms.uStripe = { value: stripeTex }; sh.uniforms.uCourse = { value: courseTex }; sh.uniforms.uGrain = { value: grainTex }; sh.uniforms.uTer = { value: new THREE.Vector2(TW, TD) };
   sh.vertexShader = sh.vertexShader.replace('#include <common>', '#include <common>\nvarying vec2 vWxz;').replace('#include <begin_vertex>', '#include <begin_vertex>\nvWxz = position.xz;');
-  sh.fragmentShader = sh.fragmentShader.replace('#include <common>', '#include <common>\nvarying vec2 vWxz; uniform sampler2D uStripe, uGrain; uniform vec2 uTer;')
+  sh.fragmentShader = sh.fragmentShader.replace('#include <common>', '#include <common>\nvarying vec2 vWxz; uniform sampler2D uStripe, uGrain, uCourse; uniform vec2 uTer;')
     .replace('#include <color_fragment>', `#include <color_fragment>
       {
+        vec4 crs = texture2D(uCourse, vWxz / uTer + 0.5); diffuseColor.rgb = mix(diffuseColor.rgb, crs.rgb * crs.rgb, crs.a);
         vec3 st = texture2D(uStripe, vWxz / uTer + 0.5).rgb;
         diffuseColor.rgb *= 1.0 + (st.r - 0.5) * 2.0 * mix(0.075, 0.055, st.b) * st.g;
         float g1 = texture2D(uGrain, vWxz * 0.31).r, g2 = texture2D(uGrain, mat2(0.8, 0.6, -0.6, 0.8) * vWxz * 0.047 + 0.37).r, g3 = texture2D(uGrain, mat2(0.6, -0.8, 0.8, 0.6) * vWxz * 1.7 + 0.11).r;

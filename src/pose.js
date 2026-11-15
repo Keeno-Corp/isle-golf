@@ -72,7 +72,8 @@ export function updateGolfer(dt) {
   sPrev = s;
   // the swing pose (also the address and the waggle)
   const wag = (G.phase === 'aim' && (!G.m || G.m.stage === 0) ? Math.sin(tt * 2.2) * 0.012 : 0);
-  let P = { lean: (putt ? POSE.lean + 0.2 : POSE.lean) + 0.05 * Math.abs(s), hipY: s * 0.5, spY: s * 1.0, headY: -s * 0.6, headX: 0.38, drop: putt ? 0.01 : 0.03, bend: putt ? 0.28 : 0.4, bodyY: 0, bodyZ: 0, sway: s * 0.02 };
+  const br = G.phase === 'aim' && (!G.m || G.m.stage === 0) ? Math.sin(tt * 1.7) : 0;   // a slow breath at address: the chest rises and the knees settle
+  let P = { lean: (putt ? POSE.lean + 0.2 : POSE.lean) + 0.05 * Math.abs(s) - br * 0.025, hipY: s * 0.5, spY: s * 1.0, headY: -s * 0.6, headX: 0.38, drop: (putt ? 0.01 : 0.03) + br * 0.006, bend: putt ? 0.28 : 0.4, bodyY: 0, bodyZ: 0, sway: s * 0.02 };
   const k = s < 0 ? clamp(-s * 1.35, 0, 1) : clamp(s / 0.9, 0, 1), tgt = s < 0 ? TOP : FOLLOW, sc = putt ? 0.3 : 1;
   const hand = ADDR.clone().lerp(tgt, k * (putt ? 0.3 : 1)); hand.z += wag;
   let hR = hand.clone().add(V(-0.025, 0, 0)), hL = hand.clone().add(V(0.03, 0.01, 0)), mode = 'swing', polR = POLE_R, polL = POLE_L, hang = 0, hipSway = 0;

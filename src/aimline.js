@@ -57,7 +57,7 @@ export function updateAimLine() {
       if (i >= track.length) { _cm.position.set(0, -50, 0); _cm.scale.setScalar(0.001); } else { const [x, z] = track[i]; _cm.position.set(x, heightAt(x, z) + 0.035, z); _cm.scale.setScalar(0.9); }
       _cm.rotation.set(0, 0, 0); _cm.updateMatrix(); aimDots.setMatrixAt(i, _cm.matrix);
     }
-    aimRing.visible = true; aimRing.position.set(end.x, heightAt(end.x, end.z) + 0.04, end.z);
+    aimRing.visible = true; aimRing.userData.to = new THREE.Vector3(end.x, heightAt(end.x, end.z) + 0.04, end.z); if (aimRing.position.distanceTo(aimRing.userData.to) > 3) aimRing.position.copy(aimRing.userData.to);   // ballfx.js glides it over small aim changes
   }
   aimDots.instanceMatrix.needsUpdate = true; aimDots.visible = G.phase === 'aim' || G.phase === 'intro';
 }

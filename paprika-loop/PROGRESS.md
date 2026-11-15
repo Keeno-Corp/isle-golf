@@ -521,3 +521,7 @@ Next:
 Not checked this session: a sand lie, a full 4-player round, and the golfer's idle.
 
 SCORE: 7.7
+
+## Iteration 9
+
+All checks but one pass; looking at the one that fails (the near-plane fade test) now.

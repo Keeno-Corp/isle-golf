@@ -57,7 +57,7 @@ player.traverse(o => {
 });
 // Shepherd Isle's dark outline: an inverted hull on each skinned part, pushed out along its skinned normal by about 1.5 px at any distance
 const outlineMat = new THREE.MeshBasicMaterial({ color: '#2a2018', side: THREE.BackSide });
-outlineMat.onBeforeCompile = sh => { sh.vertexShader = sh.vertexShader.replace('#include <project_vertex>', '#include <project_vertex>\n mvPosition.xyz += normalize(normalMatrix * objectNormal) * 0.0013 * -mvPosition.z; gl_Position = projectionMatrix * mvPosition;'); };
+outlineMat.onBeforeCompile = sh => { sh.vertexShader = sh.vertexShader.replace('#include <project_vertex>', '#include <project_vertex>\n mvPosition.xyz += normalize(normalMatrix * objectNormal) * 0.0024 * -mvPosition.z; gl_Position = projectionMatrix * mvPosition;'); };
 { const skins = []; player.traverse(o => { if (o.isSkinnedMesh) skins.push(o); });
   for (const o of skins) { const h = new THREE.SkinnedMesh(o.geometry, outlineMat); h.name = 'footballer_outline'; h.position.copy(o.position); h.quaternion.copy(o.quaternion); h.scale.copy(o.scale); h.frustumCulled = false; h.bind(o.skeleton, o.bindMatrix); o.parent.add(h);
     for (const m of [].concat(o.material)) { m.roughness = Math.max(m.roughness ?? 1, 0.75); m.metalness = 0; } } }   // matte kit, as the painted island
@@ -133,6 +133,7 @@ const shell = new THREE.MeshStandardMaterial({ color: '#2d63c8', roughness: 0.55
 const white = new THREE.MeshStandardMaterial({ color: '#f6f2e8', roughness: 0.6 }); crisp(white);
 const R = 0.072;
 const helmetShell = new THREE.Mesh(new THREE.SphereGeometry(R, 20, 14, 0, Math.PI * 2, 0, Math.PI * 0.68), shell); helmetShell.name = 'footballer_helmetShell'; helmet.add(helmetShell);
+{ const o = new THREE.Mesh(helmetShell.geometry, new THREE.MeshBasicMaterial({ color: '#2a2018', side: THREE.BackSide })); o.name = 'footballer_helmetOutline'; o.scale.setScalar(1.12); helmet.add(o); }   // the helmet's share of the dark outline (the skinned hull above covers the body)
 const stripe = new THREE.Mesh(new THREE.BoxGeometry(0.018, R * 0.2, R * 2.05), white); stripe.position.y = R * 0.9; helmet.add(stripe);
 for (const y of [-0.03, -0.012, 0.008]) { const bar = new THREE.Mesh(new THREE.TorusGeometry(R * 0.6, 0.0065, 6, 16, Math.PI), white); bar.position.set(0, y, R * 0.7); bar.rotation.z = Math.PI; helmet.add(bar); }
 // the club: a shaft and a head, hung from the right hand; its look follows the club picked

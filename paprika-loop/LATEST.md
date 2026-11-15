@@ -1,9 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 8
-
-The background check rerun keeps resetting the page; running the full test suite now.
-
 ### Judge 8
 
 Iteration 8's section in PROGRESS.md is only a placeholder ("running the full test suite now"). It has no Did, Saw or Open, so this verdict is based on the page alone.
@@ -67,3 +63,7 @@ Next:
 Not checked this session: a sand lie, a full 4-player round, and the golfer's idle.
 
 SCORE: 7.7
+
+## Iteration 9
+
+All checks but one pass; looking at the one that fails (the near-plane fade test) now.
