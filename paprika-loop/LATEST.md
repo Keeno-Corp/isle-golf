@@ -1,42 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-### Judge 4
-
-The page loads in 1.4 s with no console errors. In real time it paints correctly: the `look opening` frames at 1.4, 2.0 and 5.0 s show the island, `sea` and the title with the painted look. Some paused-clock captures came out pale (saturation 12%, every pixel #b5c8bc, and `readPixels` returned 0). That includes the paused captures of the hole 4 putt. This is the known capture issue, not a fault in the game. The game camera did not need to work for the fence check: the `cameras` look at the fence drew normally.
-
-The Iteration 4 section in PROGRESS.md is only one line ("Fence panels … render near-black"). It has no Did, Saw or Open, so I judged the page alone.
-
-Two of last verdict's items are done. Water drop and out of bounds now work. The `club_*` teleport at the start of the swing is gone.
-
-1. **Looks as LOOK.md says: 7.** On the hole 1 aim view, saturation is 47%. The tilt-shift band is sharp on `player` and blurred above and below. There is cream haze over the distant `cliffFace`, and the `sea` is teal in the `card` cell. There are no `Lighting:` or `Surfaces:` lines. The golfer is a small subject: 0.61% of the frame on the aim view. The new `fencePanels` render as dark brown wood with visible grain in the "fence close" camera, not black. Their sunlit side faces away from the play camera, so on the hole 4 putt the row reads as a dark silhouette.
-2. **Plays as DESIGN.md says: 8.** `act` aim, club and swing all work. The keyboard meter, C and R were confirmed last session. The C cell in this sheet still showed the "HOLE 3" banner view, so I could not confirm it again. I did not try mouse clicks.
-3. **Camera: 8.** The aim camera is high behind the ball (`look.camPitchDeg` 20.9, `camera.fov` 33). The flight cell follows the ball with `ballTrail` and `landRingPreview`. The "h1 intro" cell pulls back to the green for the flyover.
-4. **Ball flight by surface: 8.** I shot an iron at 57.6° on hole 6 into `pond_water`. It gave "SPLASH!", added a penalty (strokes 0→2 on one swing) and dropped the ball in rough beside the pond. A driver at 200° gave "OUT OF BOUNDS / OVER THE CLIFF AND INTO THE SEA", a 2-stroke total and the ball back on the tee. Fairway and rough lies work. I did not see a sand result.
-5. **Nine playable holes: 7.** Holes 1, 3, 4, 6 and 9 are named, and 9 is "Lighthouse Home", par 5. Ten `sheep` walk and graze. I hit a putt down a sheep's line (aim 340.4° from the hole 6 tee), but the sheep had walked to (-22.2, -4.4) and `sheepHits` stayed 0. The bounce off a sheep with a baa is still not shown.
-6. **Stroke play and scorecard: 8.** The `card` shows hole 1 PEBBLE STEP, PAR 3, ISLA 2, −1, a BIRDIE stamp and "SPACE · NEXT HOLE". The hole 6 two-player cell shows "ISLA TO PLAY".
-7. **HUD: 8.** `#holep` is top left, `#windp` top right ("3 MPH HEADWIND"), `#clubp` bottom left with "LIE · FAIRWAY", and the meter is bottom centre, all in the steel type.
-8. **`window.__game` and 60 fps: 9.** `observe` and `act` drove every play above. `perf` measured a 2.7 ms median frame (131 fps), 185 draw calls and 4.54 MB of assets, all within budget.
-9. **Golfer matches CHARACTERS.md: 7.** `footballer_helmetShell` is teal and the jersey is in the kit colour. No brands appear on screen.
-10. **Game feel: 7.** The `feel` run on a hole 1 swing shows `feelBits` 0→30 at frame 164 and 16 sounds. There is no `club_*` teleport any more; the only teleport left is `aimLanding`, 0.58 units. Two things are weak:
-    - Landing: `landPuffs` is now on screen (2.6% in the putt look), but `feel` lists no `landPuffs` count rising at the bounce.
-    - Camera: it still "moved up to 67.8 … did not come back".
-11. **Richer look: 7.** Library trees, `bushes`, `hydrangeas`, `fencePanels` ×14, `teeBench`, `rowingBoat` and `smoke` add detail. The water and the golfer's motion look the same as before.
-12. **Course and play: 7.** `lastResult` stayed "" through all three hole 6 plays, so it is now cleared between holes. The pond and the sea now cost strokes, which changes the shot a player picks. Sheep still never change a shot. I did not test the chip-in problem from last verdict.
-13. **Better assets: 7.** `fencePanels` come from `fence-4d3f7d.glb`, and the old `fencePosts`/`fenceRails` are hidden. Three code stand-ins are still on screen even though their searches are in `sourcing.json`: `seaStacks`/`cliffRocks` ("stylized sea stack rock pillar"), `teeMarker` ("golf tee marker") and `pin_flag` ("golf flag pin hole"). None of them was picked.
-
-**Faults: 7.**
-- No console errors. three.js warns once: `toNonIndexed(): BufferGeometry is already non-indexed`.
-- `divots` is "Never visible", although it is in view.
-- The Iteration 4 section is a one-line stub with no Did or Open.
-- `perf` p95 is 19.1 ms with 176 slow frames. The host load was 4.1 on 8 cores, so treat that as noise.
-
-Next:
-1. **(asked again) Replace the sea stacks, tee markers and flag that are still built in code.** Searches for all three are already in `sourcing.json`. For each, `pick` the closest stylized hit from its search, check it with `model_audit`, then hide the code mesh. Do `seaStacks`/`cliffRocks` first, because they ring the island in the title and card views, then `teeMarker` and `pin_flag`. To see it done, take a sheet cell `{state:{hole:0,skipIntro:true}}` through the card. It should list the picked model's name where `seaStacks` is now, and `seaStacks` should appear under "Hidden by the game".
-2. **(asked again) Make the landing react and bring the camera back.** On `physics.firstBounce`, raise the `landPuffs` count, tinted by surface (sand, grass, green), and start a thud sound. After the strike punch, ease the camera back to the follow path instead of leaving it raised. To see it done, run `feel` with `{state:{hole:0,skipIntro:true}}, {wait:150}, {action:"aim",at:"pin"}, swing 0.75, {wait:100}` and `frames: 90`. It should list a `landPuffs` count rise and a sound at the bounce frame, and the Camera line should read "came back".
-3. **(asked again) Show a sheep bounce and a sand lie as saved checks.** Add a `setState` option that puts a grazing sheep on the shot line. For example, `{hole:5, sheepAt:[-24,-5.5]}` would hold `sheep[5]` there in "graze". Then `interact` a low iron through it with `expect {sheepHits:[1,9]}` and `save` the check. A "BAA" banner and a sound should appear in the trace. Save a bunker shot the same way, expecting `lie:"sand"`. The builder should also fill in Iteration 4's Did and Open.
-
-SCORE: 7.5
-
 ## Iteration 5
 
 **Did**
@@ -55,3 +18,64 @@ SCORE: 7.5
 **Open**
 - I have not confirmed with a `look` that hidden empty pools changed nothing on screen. They draw nothing when empty, so I expect no change.
 - I don't know why `feel` doesn't name `landPuffs` even though its draw count goes 0→20 at the landing. It may be the Spawned list being cut off.
+
+### Judge 5
+
+The page loads in 1.2 s with no console errors. The only console output is the three.js `toNonIndexed` warning. Iteration 5 changed one thing: point pools now hide when empty. Two effects of that show in the measurements. `divots` now registers as a particle burst, "divots 0 → 8 at frame 164" in a 25-frame `feel`. `landPuffs` is listed on screen in the "landing +3" cell. The first cell of each sheet still comes out pale (saturation 12%, a flat #b5c8bc frame). This is the known capture problem: the same views paint correctly in every other cell.
+
+Two `feel` findings change last verdict's Next:
+- **The camera move it flagged is not a strike lurch.** "Moved up to 67.3 at frame 138" happens before the swing at frame 151. It is the aim camera gliding into place after `skipIntro`. The strike has no camera punch at all.
+- **The missing `landPuffs` count came from the steps I gave last session.** The 90-frame `feel` with `{wait:100}` puts the landing (about frame 238) inside the steps, so it is never in the watched frames. That is why neither `divots` nor `landPuffs` appeared in its Particles line.
+
+1. **Looks as LOOK.md says: 7.** On the "h2 aim" view, saturation is 52%. The tilt-shift band is sharp on `player` and blurred above and below. There is cream haze, the `sea` is teal past the `cliffFace`, and `hydrangeas` and `bushes` are painted. There are no `Lighting:` or `Surfaces:` lines. The golfer is still small on the aim views (0.6%).
+2. **Plays as DESIGN.md says: 8.** `act` aim, club and swing drove every shot. In the "C hole cam" cell, C gives the overhead hole view with `aimDots` to the pin. I did not try the mouse.
+3. **Camera: 8.** The aim camera is high behind the ball (`camPitchDeg` 20.9, `fov` 33). "h1 flight" follows the ball and its `ballTrail`. "h1 intro" pulls back to the green and bunkers. The title and card cells show the whole island diorama.
+4. **Ball flight by surface: 8.** An iron at power 0.4 carried 41 yd and rolled 6 yd over 2 bounces, with `firstBounce.surf` "fairway". A putter from the tee stopped in rough with "IN THE ROUGH: SHORTER SHOT". The pond and OB results from session 4 stand. I did not see a sand lie.
+5. **Nine playable holes: 7.** Holes 1 (Pebble Step), 2 (Gorse Run), 4 (Lantern Road), 6 (Duck Pond Bend) and 9 (Lighthouse Home, par 5, 474 yd) are distinct. I hit two shots at the grazing `sheep[8]` at (-9, 2.2) on hole 1, and `sheepHits` stayed 0 through 600 frames. The sheep bounce exists in the code (physics.js:156) but still cannot be shown.
+6. **Stroke play and scorecard: 8.** The `card` shows HOLE 1 · PEBBLE STEP, ISLA 3, EVEN, with a PAR stamp and "SPACE · NEXT HOLE".
+7. **HUD: 8.** `#holep` is top left, wind is top right ("2 MPH TAILWIND"), and the club list is bottom left with "LIE · TEE / GREEN", all in the steel type.
+8. **`window.__game` and 60 fps: 9.** `observe`/`act` worked throughout. `perf` measured a 4.8 ms median (109 fps), 181 draw calls and 4.54 MB of assets, all within budget.
+9. **Golfer matches CHARACTERS.md: 7.** `footballer_helmetShell` is teal and the number 4 jersey is in the kit colour. No brands appear on screen.
+10. **Game feel: 7.**
+    - Strike: `feelBits` 0→30, `divots` 0→8 (newly visible) and 8 sounds.
+    - Landing: `landPuffs` is drawn at the landing, but no `feel` has measured it yet.
+    - Camera: there is no strike lurch.
+    - Teleports: `aimLanding` still teleports 0.58 units at the swing.
+11. **Richer look: 7.** This is unchanged from session 4: library trees, `bushes`, `hydrangeas`, `fencePanels`, `teeBench` and `rowingBoat`. The putt view adds `slopeGridLines`. The water and the golfer's animation look the same as before.
+12. **Course and play: 7.**
+    - The putt view's `slopeGridLines` make the green slope readable. `puttBreak` is reported.
+    - The pond and the sea cost strokes.
+    - Sheep still never change a shot.
+    - In "h1 putt", the golfer is still walking to the ball 120 frames after it settles. They stand between the camera and the pin, with a white puff column on the putting line.
+13. **Better assets: 7.** `eval` shows that all four code stand-ins are still visible:
+
+    | Object | Type | Material | Count |
+    |---|---|---|---|
+    | `seaStacks` | Mesh | MeshStandardMaterial | 24 |
+    | `cliffRocks` | Mesh | MeshStandardMaterial | 70 |
+    | `teeMarker` | Mesh | MeshStandardMaterial | 1 |
+    | `pin_flag` | Mesh | MeshStandardMaterial | 1 |
+
+    Their searches are in `sourcing.json`, but nothing was picked.
+
+**Faults: 8.**
+- The `divots` "Never visible" fault is gone.
+- There are no console errors; only the `toNonIndexed` warning remains.
+- `perf` p95 was 19.5 ms, but the host load was 3.7 on 8 cores, so that is noise.
+- Iteration 5's Open is answered above: the landing fell inside the steps, not in the watched frames.
+
+Next:
+1. **(asked again) Replace the sea stacks, cliff rocks, tee marker and flag that are still built in code.**
+   - What to do: `pick` from the searches already in `sourcing.json` ("stylized sea stack rock pillar", "golf tee marker", "golf flag pin hole"), `model_audit` each pick, credit it, then hide the code mesh. Start with `seaStacks`/`cliffRocks`, because they ring the island in the title and card views.
+   - The call that shows it done: `eval` returning `find('seaStacks').visible`, `find('pin_flag').visible` and `find('teeMarker').visible`. All three should be `false`. A title-cell `look` should list the picked model's mesh names where `seaStacks` is now.
+2. **(asked again) Make a sheep bounce happen on demand.** A grazing sheep cannot be hit by playing normally: two aimed shots at `sheep[8]` missed while it wandered.
+   - What to do: add a `setState` option, for example `{hole:0, skipIntro:true, sheepAt:[-12.4, 12]}`. It should place `sheep[0]` on the tee-to-pin line, hold it in "graze" and clear its target (`tx`/`tz`). Then interact with a low putter roll through it, expect `sheepHits:[1,9]`, and save the check. Save a bunker check the same way, expecting `lie:"sand"`.
+   - The call that shows it done: that `interact` with `trace:["sheepHits","banner"]`. It should show `sheepHits` 0→1 and banner "BAA!".
+3. **Add a strike camera punch, and measure the landing in the watched frames.**
+   - Camera: no strike punch exists; the "moved up to 67" is the aim camera gliding in at frame 138, before the swing. On the swing, push `camera.position` about 0.3 units along the view direction and ease it back over 0.15 s.
+   - Golfer on the putt view: stop the golfer walking into the putt camera's line after the ball settles.
+   - The calls that show it done:
+     - Strike: `feel` with `{state:{hole:0,skipIntro:true}}, {wait:150}, {action:"aim",at:"pin"}, swing 0.75` and `frames: 25`. Its Camera line should read "… and came back" after frame 151.
+     - Landing: `feel` with the same steps plus `{wait:80}` and `frames: 30`. The landing at about frame 238 then falls inside the watched frames, and Particles should list a `landPuffs` rise and a sound there.
+
+SCORE: 7.6
