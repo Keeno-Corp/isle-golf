@@ -18,3 +18,7 @@ shrinkMaps(duckGLB, 256);
 export function centreFloor(o) { o.updateMatrixWorld(true); const b = new THREE.Box3().setFromObject(o, true); o.position.x -= (b.min.x + b.max.x) / 2; o.position.y -= b.min.y; o.position.z -= (b.min.z + b.max.z) / 2; }
 // a static model copy at a height, its origin at the feet, inside a group so it can be turned freely
 export function modelCopy(glb, height, name) { const m = glb.scene.clone(true); const b0 = new THREE.Box3().setFromObject(glb.scene); m.scale.setScalar(height / (b0.max.y - b0.min.y)); centreFloor(m); const g = new THREE.Group(); g.name = name; g.add(m); m.traverse(o => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; } }); return g; }
+// the library models that stand in for the code-built sheep, trees, lighthouse and house, and the props (src/library.js places them): matte, colour map only
+const lib = async f => { const g = await gltfL.loadAsync('./assets/' + f + '.glb'); shrinkMaps(g, 512); g.scene.traverse(o => { if (o.isMesh) for (const m of [].concat(o.material)) { m.roughness = 1; m.metalness = 0; } }); return g; };
+export const [sheepGLB, treeA, treeB, lhGLB, stoneGLB, benchGLB, boatGLB, cottageGLB] = await Promise.all(
+  ['koyun-ef9df4', 'stylized-tree-6ba26d', 'odd-little-tree-37524b', 'lighthouse-florane-games-2ed07b', 'stonepile-2d5f24', 'bench-stylized-ee9269', 'rowing-boat-prop-free-agustin-honnun-afdd98', 'fantasy-cottage-gart130-56175c'].map(lib));

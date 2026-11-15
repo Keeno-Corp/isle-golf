@@ -36,3 +36,10 @@ Tee box (pale, level), fairway (mown stripes, fast roll), rough (tall straw, slo
 - Cow, ducks: assets/vaca-2-771611.glb, assets/duck-1ef909.glb (CC BY, assets/CREDITS.md), as set-dressing and a ball obstacle (the cow).
 - Lighthouse, house, cottage, bell, trees, gulls, koi-free pond: the island's own code from Shepherd Isle.
 - Hole sign posts, tee markers: code.
+- From the paprika3d library (asset_search, all CC BY 4.0, each audited with model_audit: passes the site budget; credits in assets/CREDITS.md), placed by src/library.js in place of the code-built stand-ins:
+  - Sheep: assets/koyun-ef9df4.glb (Koyun, Feraxion), merged to one instanced geometry, 0.55 units long.
+  - Trees: assets/stylized-tree-6ba26d.glb (Stylized tree, roroer) and assets/odd-little-tree-37524b.glb (Odd Little Tree, Javafern), by turns under each crown group.
+  - Lighthouse tower: assets/lighthouse-florane-games-2ed07b.glb (Jenya_girl), its blue base disc cut away; the code lamp beams, light and keeper's cottage stay.
+  - House on hole 5: assets/fantasy-cottage-gart130-56175c.glb (Manuel Pelaez Taracena).
+  - Standing stones in the deep rough (round colliders): assets/stonepile-2d5f24.glb (Rico Peters). Tee benches: assets/bench-stylized-ee9269.glb (salmonclosebeta). Rowing boats off the cliffs: assets/rowing-boat-prop-free-agustin-honnun-afdd98.glb (Agustín Hönnun).
+  - Searched and left as code: boulders at the waterline (only an 80-triangle kit rock fit), flags and cups (by design), the sky (a haze gradient by LOOK.md). Two cottage hits by "Scenario" were rejected as possibly generated.

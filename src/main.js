@@ -18,7 +18,9 @@ import { G, beginShot, nextTurnOrCard, resolveShot } from './round.js';
 import { doSwing, updateMeter } from './meter.js';
 import { hud, showTitle, updateHUD } from './hud.js';
 import { hideGolfer, placeGolfer, updateGolfer } from './pose.js';
-import { cLook, cPos, cam, updateCamera } from './camera.js';
+import { cLook, cPos, cam, patchAll, updateCamera } from './camera.js';
+import './library.js';
+import './juice.js';
 
 // ---------------------------------------------------------------- one step of the game
 export function stepGame(dt) {
@@ -62,5 +64,6 @@ export function frame(now) {
 showTitle(true); hideGolfer();
 HOLES.forEach(H => { const wv = H.wv; });
 updateCamera(1); cam.pos.copy(cPos); cam.look.copy(cLook);
+patchAll();   // the occluder dither patches every material: done before the warm-up compile below, so frame 1 does not recompile them all
 { const hid = []; scene.traverse(o => { if (!o.visible) { hid.push(o); o.visible = true; } }); renderer.compile(scene, camera); hid.forEach(o => o.visible = false); }
 requestAnimationFrame(frame);
