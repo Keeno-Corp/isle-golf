@@ -1,4 +1,5 @@
 import './api.js';   // load order: each file runs after the one before it (COORDINATION.md)
+import './daily.js';  // Daily Hole mode
 import { rand } from './util.js';
 import { ST, hooks } from './shared.js';
 import { HOLES } from './course.js';
