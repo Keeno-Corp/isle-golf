@@ -4,19 +4,19 @@ import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { duckGLB, modelCopy } from './assets.js';
 import { clamp, fbm, hash, lerp, rand, smooth, vnoise } from './util.js';
 import { ST } from './shared.js';
-import { SPREAD, BELL, FLOWERS, HOUSE, H_COT, H_HOUSE, H_LH, H_POND, LH, LH_COT, POND, TREES, courseColour, stripeAt, edgeR, heightAt, inland, outFlat } from './course.js';
+import { K, SPREAD, ISLE_A, ISLE_B, BELL, FLOWERS, HOUSE, H_COT, H_HOUSE, H_LH, H_POND, LH, LH_COT, POND, TREES, courseColour, stripeAt, edgeR, heightAt, inland, outFlat } from './course.js';
 import { camera, mergeChildren, named, renderer, scene, std } from './stage.js';
 import { FF, _gv, canvasTex, clouds, ffGeo, ffMat, ffSeed, flies, gulls, smokes, spawnSmoke } from './effects.js';
 
 // ---------------------------------------------------------------- sea
 export const STACKS = [];
 for (const [th, out, rad] of [[2.5, 2.0, 0.75], [0.35, 2.4, 0.9], [-0.9, 3.6, 0.7], [1.45, 4.2, 1.0], [-2.6, 2.6, 0.8], [3.9, 5.5, 0.6]]) {
-  const R = edgeR(th) + out; STACKS.push({ x: Math.cos(th) * R, z: Math.sin(th) * R, r: rad });
+  const R = edgeR(th) + out * K; STACKS.push({ x: Math.cos(th) * R, z: Math.sin(th) * R, r: rad });
 }
 export const seaMat = new THREE.ShaderMaterial({
   fog: false,
   uniforms: {
-    uTime: { value: 0 }, uDusk: { value: 0 }, uFog: { value: new THREE.Color() }, uFogNear: { value: 62 }, uFogFar: { value: 175 },
+    uTime: { value: 0 }, uDusk: { value: 0 }, uFog: { value: new THREE.Color() }, uFogNear: { value: 62 * K }, uFogFar: { value: 175 * K },
     uStacks: { value: STACKS.map(s => new THREE.Vector3(s.x, s.z, s.r)) }, uBeam: { value: new THREE.Vector4() },
     uStorm: { value: 0 },
   },
@@ -25,7 +25,7 @@ export const seaMat = new THREE.ShaderMaterial({
   fragmentShader: `
     uniform float uTime, uDusk, uFogNear, uFogFar, uStorm; uniform vec3 uFog; uniform vec3 uStacks[6]; uniform vec4 uBeam;
     varying vec3 vW; varying float vDepth;
-    float edgeR(float th){ float e = 541.5/length(vec2(19.0*cos(th), 28.5*sin(th))); return e*(1.0 + 0.5/14.0*(1.6*sin(2.0*th+1.8) + 0.9*sin(3.0*th+2.1) + 0.5*sin(5.0*th+0.3) + 0.3*sin(9.0*th+1.3) + 0.9*sin(4.0*th+0.6) + 0.6*sin(7.0*th+2.4))); }
+    float edgeR(float th){ float e = ${(ISLE_A * ISLE_B).toFixed(2)}/length(vec2(${ISLE_B.toFixed(3)}*cos(th), ${ISLE_A.toFixed(3)}*sin(th))); return e*(1.0 + 0.5/14.0*(1.6*sin(2.0*th+1.8) + 0.9*sin(3.0*th+2.1) + 0.5*sin(5.0*th+0.3) + 0.3*sin(9.0*th+1.3) + 0.9*sin(4.0*th+0.6) + 0.6*sin(7.0*th+2.4))); }
     float h21(vec2 p){ return fract(sin(dot(p, vec2(127.1,311.7))) * 43758.5453); }
     float vn(vec2 p){ vec2 i = floor(p), f = fract(p); f = f*f*(3.0-2.0*f);
       return mix(mix(h21(i), h21(i+vec2(1,0)), f.x), mix(h21(i+vec2(0,1)), h21(i+vec2(1,1)), f.x), f.y); }
@@ -110,7 +110,7 @@ for (const c of pathCurves) {
 export function pathDist(x, z) { let m = 1e9; for (const [px, pz] of pathPts) { const d = (px - x) ** 2 + (pz - z) ** 2; if (d < m) m = d; } return Math.sqrt(m); }
 
 // ---------------------------------------------------------------- terrain
-export const TW = 78, TD = 54, TSX = 390, TSZ = 270;
+export const TW = 78 * K, TD = 54 * K, TSX = Math.round(TW * 4), TSZ = Math.round(TD * 4);   // 0.25 m vertex spacing: the course detail lives in the baked textures
 export const terrainGeo = new THREE.PlaneGeometry(TW, TD, TSX, TSZ).rotateX(-Math.PI / 2);
 {
   const pos = terrainGeo.attributes.position;
@@ -123,10 +123,10 @@ export const terrainGeo = new THREE.PlaneGeometry(TW, TD, TSX, TSZ).rotateX(-Mat
   const c = new THREE.Color(), t = new THREE.Color();
   for (let i = 0; i < pos.count; i++) {
     const x = pos.getX(i), y = pos.getY(i), z = pos.getZ(i), ny = nrm.getY(i), e = inland(x, z);
-    const pn = fbm(x * 0.21 + 11, z * 0.21), pn2 = fbm(x * 0.9, z * 0.9 + 5);
+    const pn = fbm(x * 0.21 / K + 11, z * 0.21 / K), pn2 = fbm(x * 0.9, z * 0.9 + 5);
     c.copy(gA).lerp(gB, smooth(0.35, 0.7, pn) * 0.75 + (pn2 - 0.5) * 0.3);
     // 01.jpg's broad patches (3-6 m): warm yellow-ochre fields beside deep blue-green ones
-    const patch = fbm(x * 0.17 - 4.2, z * 0.17 + 8.6), patchB = fbm(x * 0.33 + 2.7, z * 0.33 - 1.9);
+    const patch = fbm(x * 0.17 / K - 4.2, z * 0.17 / K + 8.6), patchB = fbm(x * 0.33 / K + 2.7, z * 0.33 / K - 1.9);
     c.lerp(gOchre, smooth(0.42, 0.58, patch) * 0.9 * smooth(1.5, 3.5, e));
     c.lerp(gTeal, smooth(0.46, 0.3, patch) * 0.6);
     c.lerp(gMid, smooth(0.55, 0.7, patchB) * 0.4);
@@ -159,9 +159,9 @@ export const terrainGeo = new THREE.PlaneGeometry(TW, TD, TSX, TSZ).rotateX(-Mat
   for (let i = 0; i < idx.length; i += 3) if (Math.max(pos.getY(idx[i]), pos.getY(idx[i + 1]), pos.getY(idx[i + 2])) > -1.6) keep.push(idx[i], idx[i + 1], idx[i + 2]);
   terrainGeo.setIndex(keep);
 }
-// smooth ground detail: mowing stripes baked at 16 px/m (bilinear + mipmaps + anisotropy, so no stair-steps), plus tiling noise read at three
+// smooth ground detail: mowing stripes baked at 12 px/m (a 2 m stripe pair is still 24 px) (bilinear + mipmaps + anisotropy, so no stair-steps), plus tiling noise read at three
 // scales and rotations so no tile repeats visibly
-const STR_PPM = 16, STR_W = TW * STR_PPM, STR_H = TD * STR_PPM;
+const STR_PPM = 12, STR_W = TW * STR_PPM, STR_H = TD * STR_PPM;
 const stripeTex = (() => {
   const d = new Uint8Array(STR_W * STR_H * 4);
   for (let j = 0; j < STR_H; j++) for (let i = 0; i < STR_W; i++) {
@@ -261,7 +261,7 @@ export function cliffRing(name, cx, cz, edge, NT) {
   const face = named(new THREE.Mesh(g, std(0xffffff, { vertexColors: true, roughness: 0.95, flatShading: true, side: THREE.DoubleSide })), name);
   scene.add(face);
 }
-cliffRing('cliffFace', 0, 0, edgeR, 900);
+cliffRing('cliffFace', 0, 0, edgeR, Math.round(900 * K));
 // ---------------------------------------------------------------- boulders at the waterline, sea stacks
 {
   const geo = new THREE.IcosahedronGeometry(1, 0);
@@ -275,7 +275,7 @@ cliffRing('cliffFace', 0, 0, edgeR, 900);
     geo.setAttribute('color', new THREE.BufferAttribute(vc, 3));
   }
   const mat = std(0xffffff, { flatShading: true, roughness: 0.95, vertexColors: true });
-  const N = 70, rocks = new THREE.InstancedMesh(geo, mat, N + STACKS.length * 4);
+  const N = Math.round(70 * K), rocks = new THREE.InstancedMesh(geo, mat, N + STACKS.length * 4);
   rocks.name = 'cliffRocks'; rocks.castShadow = true; rocks.receiveShadow = true;
   const m = new THREE.Matrix4(), q = new THREE.Quaternion(), s = new THREE.Vector3(), p = new THREE.Vector3(), e3 = new THREE.Euler();
   const cols = ['#5a5442', '#7a6a4e', '#3a3e30', '#66604a', '#8a7656', '#3f4a36'].map(x => new THREE.Color(x));
@@ -351,7 +351,7 @@ export const BUSHES = [];
   const pink = ['#b8687c', '#c98a98', '#a85468'].map(x => new THREE.Color(x));
   const list = [], blossomAt = [];
   // clumps, not a string of beads: a big core with smaller blobs around it, some leaning out over the cliff lip
-  for (let i = 0; i < 3000 && list.length < 380; i++) {
+  for (let i = 0; i < 3000 * K && list.length < 380 * K; i++) {
     const th = rand(0, Math.PI * 2), lip = Math.random() < 0.35, R = edgeR(th) - (lip ? rand(0.35, 0.9) : rand(1.2, 4.6));
     const cx = Math.cos(th) * R, cz = Math.sin(th) * R;
     if (!clearOf(cx, cz) || nearPath(cx, cz, 1.0)) continue;
@@ -389,7 +389,7 @@ export const BUSHES = [];
   const cols = ['#f3d3e0', '#e46a8f', '#fff6e0', '#f2cf4a', '#b48ad8'].map(x => new THREE.Color(x));
   const pts = [];
   for (const f of FLOWERS) for (let i = 0; i < 90; i++) { const a = rand(0, 6.28), d = Math.sqrt(Math.random()) * f.r; pts.push([f.x + Math.cos(a) * d, f.z + Math.sin(a) * d]); }
-  for (let i = 0; i < 600; i++) { const x = rand(-28, 28), z = rand(-19, 19); if (inland(x, z) > 2.2 && clearOf(x, z) && !nearPath(x, z, 0.6)) pts.push([x, z]); }
+  for (let i = 0; i < 600 * K * K; i++) { const x = rand(-28 * K, 28 * K), z = rand(-19 * K, 19 * K); if (inland(x, z) > 2.2 && clearOf(x, z) && !nearPath(x, z, 0.6)) pts.push([x, z]); }
   const inst = new THREE.InstancedMesh(geo, std(0xffffff, { roughness: 0.8 }), pts.length);
   inst.name = 'flowers';
   const m = new THREE.Matrix4();
@@ -450,8 +450,8 @@ export const grassMat = (() => {
   const tc = terrainGeo.attributes.color;
   const groundCol = (x, z) => { const ix = clamp(Math.round((x + TW / 2) / TW * TSX), 0, TSX), iz = clamp(Math.round((z + TD / 2) / TD * TSZ), 0, TSZ), k = iz * (TSX + 1) + ix; return new THREE.Color(tc.getX(k), tc.getY(k), tc.getZ(k)); };
   const pts = [];
-  for (let i = 0; i < 160000 && pts.length < 17000; i++) {
-    const x = rand(-30, 30), z = rand(-21, 21), e = inland(x, z);
+  for (let i = 0; i < 160000 * K * K && pts.length < 17000 * K; i++) {   // the clump count grows with the island's width, not its area: a frame-time cap
+    const x = rand(-30 * K, 30 * K), z = rand(-21 * K, 21 * K), e = inland(x, z);
     if (e < 0.9 || nearPath(x, z, 0.48 + 0.1 * hash(x, z)) || outFlat(x, z) < 0.6) continue;
     if (Math.hypot(x - HOUSE.x, z - HOUSE.z) < 2.3 || Math.hypot(x - POND.x, z - POND.z) < POND.r + 0.05 || Math.hypot(x - LH.x, z - LH.z) < 1.3 || Math.hypot(x - LH_COT.x, z - LH_COT.z) < 1.8) continue;
     const inPenArea = false;
@@ -697,7 +697,7 @@ export const LILIES = [];
   const water = named(new THREE.Mesh(wg, pondWaterMat), 'pond_water', false); water.renderOrder = 1; pond.add(water);
   // lily pads with their notch, some with a water lily open on them (five petals round a yellow heart)
   const petalM = [std('#f6e0ec'), std('#fbf6ee'), std('#e9a6c0')], heartM = std('#f2cf4a');
-  for (let i = 0; i < 11; i++) {
+  for (let i = 0; i < 20; i++) {
     const a = rand(0, 6.28), d = rand(0.35, POND.r - 0.3), r = rand(0.13, 0.24);
     const pad = named(new THREE.Mesh(new THREE.CircleGeometry(r, 12, 0.35, 5.6).rotateX(-Math.PI / 2), i % 3 ? lilyM : lilyM2), 'pond_lily', false);
     pad.position.set(Math.cos(a) * d, 0.02 + i * 0.003, Math.sin(a) * d); pad.rotation.y = rand(0, 6); pond.add(pad); LILIES.push({ x: pad.position.x, z: pad.position.z, r });
@@ -720,7 +720,7 @@ export const LILIES = [];
   }
   // rushes: thin reeds in tufts along the far bank
   const reedGeo = new THREE.CylinderGeometry(0.009, 0.016, 0.8, 4); reedGeo.translate(0, 0.4, 0);
-  for (let i = 0; i < 46; i++) {
+  for (let i = 0; i < 70; i++) {
     const a = rand(1.9, 4.0), d = POND.r + rand(-0.15, 0.3);
     const r = named(new THREE.Mesh(reedGeo, i % 4 ? reedA : reedB), 'pond_reed', false);
     r.position.set(Math.cos(a) * d, 0, Math.sin(a) * d); r.rotation.set(rand(-0.25, 0.25), 0, rand(-0.25, 0.25)); r.scale.y = rand(0.5, 1.15); pond.add(r);
@@ -730,11 +730,11 @@ export const LILIES = [];
 }
 // ferny shore plants and yellow marsh marigolds: one instanced draw each, round the bank
 {
-  const fern = new THREE.InstancedMesh(scene.getObjectByName('grass').geometry, grassMat, 70);   // the grass cards, tall and lush at the water's edge
+  const fern = new THREE.InstancedMesh(scene.getObjectByName('grass').geometry, grassMat, 105);   // the grass cards, tall and lush at the water's edge
   fern.name = 'pond_sedge'; fern.receiveShadow = true;
   const sedgeCol = [new THREE.Color('#4f7a34'), new THREE.Color('#5e8a3a'), new THREE.Color('#6f8f42')];
   const m = new THREE.Matrix4(), q = new THREE.Quaternion(), sc = new THREE.Vector3(), p = new THREE.Vector3(), up = new THREE.Vector3(0, 1, 0);
-  for (let i = 0; i < 70; i++) { const a = rand(0, 6.28); if (a > 5.2 && a < 5.9) { i--; continue; } const d = POND.r + rand(-0.05, 0.55), x = POND.x + Math.cos(a) * d, z = POND.z + Math.sin(a) * d; const k = rand(0.7, 1.1); fern.setMatrixAt(i, m.compose(p.set(x, Math.max(heightAt(x, z), H_POND) - 0.03, z), q.setFromAxisAngle(up, rand(0, 6)), sc.set(k, k * rand(1.6, 2.6), k))); fern.setColorAt(i, sedgeCol[i % 3]); }
+  for (let i = 0; i < 105; i++) { const a = rand(0, 6.28); if (a > 5.2 && a < 5.9) { i--; continue; } const d = POND.r + rand(-0.05, 0.55), x = POND.x + Math.cos(a) * d, z = POND.z + Math.sin(a) * d; const k = rand(0.7, 1.1); fern.setMatrixAt(i, m.compose(p.set(x, Math.max(heightAt(x, z), H_POND) - 0.03, z), q.setFromAxisAngle(up, rand(0, 6)), sc.set(k, k * rand(1.6, 2.6), k))); fern.setColorAt(i, sedgeCol[i % 3]); }
   for (let i = 0; i < 34 * 3; i++) rand();   // the marigolds sat behind the water from every camera and are gone; their draws stay so the seeded layout is unchanged
   scene.add(fern);
 }
@@ -742,7 +742,7 @@ export function makeDuck(i) {
   const g = new THREE.Group(); g.name = 'duck' + i;
   const b = modelCopy(duckGLB, 0.26, 'duck_body'); b.children[0].rotation.y = DUCK_YAW; b.traverse(o => o.castShadow = false); g.add(b);   // b bobs and dabbles
   b.position.y = -0.07;   // sits in the water up to its breast, legs hidden below the surface
-  pond.add(g); return { g, b, a: i * 3.1, r: 0.9 + i * 0.35, sp: 0.25 + i * 0.08, dab: 0, nextDab: rand(3, 7), trail: [] };
+  pond.add(g); return { g, b, a: i * 3.1, r: (0.9 + i * 0.35) * K, sp: (0.25 + i * 0.08) / K, dab: 0, nextDab: rand(3, 7), trail: [] };
 }
 export const DUCK_YAW = 0, KOI_YAW = -Math.PI / 2;   // each model's own facing, turned to +z
 export const ducks = [makeDuck(0), makeDuck(1)];

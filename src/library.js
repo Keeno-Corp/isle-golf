@@ -4,7 +4,7 @@ import * as THREE from 'three';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { hash } from './util.js';
 import { ST, addUpdate } from './shared.js';
-import { HOLES, HOUSE, LH, POND, edgeR, heightAt, inland, mownSigned, surfaceAt } from './course.js';
+import { HOLES, HOUSE, K, LH, POND, edgeR, heightAt, inland, mownSigned, surfaceAt } from './course.js';
 import { scene } from './stage.js';
 import { modelCopy as copy0, sheepGLB, treeA, treeB, lhGLB, stoneGLB, benchGLB, boatGLB, cottageGLB, bushGLB, hydrangeaGLB, signGLB, cattailGLB, fenceGLB, rockGLB, flagGLB, keeperGLB } from './assets.js';
 import { FLAG, flagMat, flagWhite } from './pins.js';
@@ -61,8 +61,8 @@ treeObjs.forEach((t, i) => {
 
 // standing stones in the deep rough (each a round collider), a bench by every tee, two rowing boats off the cliffs
 export const stones = [];
-for (let i = 0, n = 0; i < 400 && n < 16; i++) {
-  const a = hash(i, 3) * 6.283, r = Math.sqrt(hash(i, 5)) * 30, x = Math.cos(a) * r * 1.25, z = Math.sin(a) * r * 0.85;
+for (let i = 0, n = 0; i < 400 && n < 24; i++) {
+  const a = hash(i, 3) * 6.283, r = Math.sqrt(hash(i, 5)) * 30 * K, x = Math.cos(a) * r * 1.25, z = Math.sin(a) * r * 0.85;
   if (inland(x, z) < 1.6 || mownSigned(x, z) < 1.6 || !clearOf(x, z) || surfaceAt(x, z) !== 'rough' || Math.hypot(x - LH.x, z - LH.z) < 3 || Math.hypot(x - HOUSE.x, z - HOUSE.z) < 4) continue;
   if (stones.some(s => Math.hypot(s.x - x, s.z - z) < 5) || treeObjs.some(t => Math.hypot(t.x - x, t.z - z) < 2)) continue;
   const s = 0.45 + hash(i, 9) * 0.4, m = modelCopy(stoneGLB, s, 'standingStone'); m.position.set(x, heightAt(x, z) - 0.04, z); m.rotation.y = hash(i, 11) * 6.28; scene.add(m);
@@ -71,7 +71,7 @@ for (let i = 0, n = 0; i < 400 && n < 16; i++) {
 HOLES.forEach((H, i) => {
   const [tx, tz] = H.tee, [nx, nz] = H.path[1], d = Math.hypot(nx - tx, nz - tz), fx = (nx - tx) / d, fz = (nz - tz) / d;
   for (const side of [1, -1]) {   // behind and beside the tee, on whichever side is rough
-    const x = tx - fx * 1.0 + -fz * side * 1.7, z = tz - fz * 1.0 + fx * side * 1.7;
+    const x = tx - fx * 1.0 * K + -fz * side * 1.7 * K, z = tz - fz * 1.0 * K + fx * side * 1.7 * K;
     if (surfaceAt(x, z) !== 'rough' || inland(x, z) < 0.9) continue;
     const m = modelCopy(benchGLB, 0.42, 'teeBench'); m.position.set(x, heightAt(x, z) - 0.02, z); m.rotation.y = Math.atan2(tx - x, tz - z); scene.add(m);
     ROUND.push({ name: 'bench', x, z, r: 0.4, top: heightAt(x, z) + 0.45 }); break;

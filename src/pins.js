@@ -1,7 +1,7 @@
 import './rules.js';   // load order: each file runs after the one before it (COORDINATION.md)
 import * as THREE from 'three';
 import { playerP } from './assets.js';
-import { HOLES, heightAt, inland, surfaceAt, BUNKERS } from './course.js';
+import { HOLES, K, heightAt, inland, surfaceAt, BUNKERS } from './course.js';
 import { named, scene, std, camera } from './stage.js';
 import { canvasTex } from './effects.js';
 import { on, addUpdate, addObserve } from './shared.js';
@@ -41,9 +41,9 @@ export const pins = HOLES.map((H) => {
   const signTex = (n, par) => canvasTex((x, w, h) => { x.fillStyle = '#2f4a3a'; x.fillRect(0, 0, w, h); x.strokeStyle = '#e9d9a0'; x.lineWidth = 5; x.strokeRect(5, 5, w - 10, h - 10); x.fillStyle = '#f2e7b0'; x.font = 'italic 900 70px Impact, sans-serif'; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText(String(n), w * 0.3, h * 0.52); x.font = 'italic 900 26px Impact, sans-serif'; x.fillText('PAR ' + par, w * 0.72, h * 0.52); }, 160, 80);
   for (const H of HOLES) {
     const c = Math.cos(H.teeYaw), s = Math.sin(H.teeYaw);
-    for (const k of [-1, 1]) { const px = H.tee[0] - s * 0.72 * k - c * 0.3, pz = H.tee[1] + c * 0.72 * k - s * 0.3; const m = named(new THREE.Mesh(new THREE.SphereGeometry(0.045, 8, 6), std('#e8e2cf')), 'teeMarker'); m.position.set(px, heightAt(px, pz) + 0.035, pz); scene.add(m); }
+    for (const k of [-1, 1]) { const px = H.tee[0] - s * 0.72 * K * k - c * 0.3 * K, pz = H.tee[1] + c * 0.72 * K * k - s * 0.3 * K; const m = named(new THREE.Mesh(new THREE.SphereGeometry(0.045, 8, 6), std('#e8e2cf')), 'teeMarker'); m.position.set(px, heightAt(px, pz) + 0.035, pz); scene.add(m); }
     const sg = new THREE.Group(); sg.name = 'holeSign' + (H.i + 1);
-    const sx = H.tee[0] + s * 1.15 - c * 0.7, sz = H.tee[1] - c * 1.15 - s * 0.7;
+    const sx = H.tee[0] + (s * 1.15 - c * 0.7) * K, sz = H.tee[1] + (-c * 1.15 - s * 0.7) * K;
     sg.position.set(sx, heightAt(sx, sz), sz); sg.rotation.y = -H.teeYaw + Math.PI / 2 + 0.3;
     const post = named(new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.03, 0.55, 6), std('#6b4a30')), 'sign_post'); post.position.y = 0.27; sg.add(post);
     const board = named(new THREE.Mesh(new THREE.BoxGeometry(0.46, 0.23, 0.03), new THREE.MeshStandardMaterial({ map: signTex(H.i + 1, H.par), roughness: 0.85 })), 'sign_board'); board.position.y = 0.6; sg.add(board);
@@ -55,7 +55,7 @@ export const pins = HOLES.map((H) => {
 // Course API (lanes/course.md): aimTarget(H, pos, club) -> {x,z,pin} is the point autoAim() aims at (same rule), the marker stands there when it is not the pin.
 export function aimTarget(H, pos, club) {
   const c = CLUBS[club], d = Math.hypot(H.pinX - pos.x, H.pinZ - pos.z);
-  if (c.putt || d < Math.max(c.carry * 0.78, 5)) return { x: H.pinX, z: H.pinZ, pin: true };
+  if (c.putt || d < Math.max(c.carry * 0.78, 5 * K)) return { x: H.pinX, z: H.pinZ, pin: true };
   let bi = 0, bd = 1e9; H.samp.forEach((s, i) => { const q = (s[0] - pos.x) ** 2 + (s[1] - pos.z) ** 2; if (q < bd) { bd = q; bi = i; } });
   let run = 0;
   for (let i = bi + 1; i < H.samp.length; i++) { run += Math.hypot(H.samp[i][0] - H.samp[i - 1][0], H.samp[i][1] - H.samp[i - 1][1]); if (run > c.carry * 0.8) return { x: H.samp[i][0], z: H.samp[i][1], pin: false }; }

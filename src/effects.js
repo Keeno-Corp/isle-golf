@@ -2,7 +2,7 @@ import './cow.js';   // load order: each file runs after the one before it (COOR
 import * as THREE from 'three';
 import { hash, rand, smooth } from './util.js';
 import { ST } from './shared.js';
-import { FIELD_H, HOUSE, H_HOUSE, H_POND, POND } from './course.js';
+import { K, FIELD_H, HOUSE, H_HOUSE, H_POND, POND } from './course.js';
 import { camera, scene, std } from './stage.js';
 import { WIND } from './rules.js';
 
@@ -73,12 +73,12 @@ export function makeGull(i, wild) {
   const l = new THREE.Mesh(wg, gullMat), r = new THREE.Mesh(wg, gullMat); r.scale.x = -1; l.name = r.name = 'gull_wing';
   const b = new THREE.Mesh(new THREE.CapsuleGeometry(0.05, 0.25, 2, 5), gullMat); b.rotation.x = Math.PI / 2; b.name = 'gull_body';
   g.add(l, r, b); g.scale.setScalar(1.1); scene.add(g);   // circling out over the island's rim and the surf, where the wide shots see them, never across the play
-  gulls.push({ g, l, r, a: rand(0, 6.28), R: rand(14, 18), h: FIELD_H + rand(2, 4), sp: rand(0.15, 0.3) * (i % 2 ? 1 : -1), ph: rand(0, 6), life: wild ? rand(14, 20) : 1e9, t: 0 });
+  gulls.push({ g, l, r, a: rand(0, 6.28), R: rand(14, 18) * K, h: FIELD_H + rand(2, 4), sp: rand(0.15, 0.3) * (i % 2 ? 1 : -1), ph: rand(0, 6), life: wild ? rand(14, 20) : 1e9, t: 0 });
 }
 makeGull(0, false); makeGull(1, false);
 // fireflies for the night
 export const FF = 40, ffGeo = new THREE.BufferGeometry(), ffPos = new Float32Array(FF * 3), ffSeed = [];
-for (let i = 0; i < FF; i++) ffSeed.push([POND.x + rand(-4, 4), POND.z + rand(-3.5, 3.5), rand(0, 6.28), rand(0.3, 1.4)]);
+for (let i = 0; i < FF; i++) ffSeed.push([POND.x + rand(-4, 4) * K, POND.z + rand(-3.5, 3.5) * K, rand(0, 6.28), rand(0.3, 1.4)]);
 ffGeo.setAttribute('position', new THREE.BufferAttribute(ffPos, 3));
 export const ffMat = new THREE.PointsMaterial({ color: 0xfff09a, size: 0.22, map: TEX.soft, transparent: true, opacity: 0, depthWrite: false, blending: THREE.AdditiveBlending });
 export const fireflies = new THREE.Points(ffGeo, ffMat); fireflies.name = 'fireflies'; fireflies.frustumCulled = false; scene.add(fireflies);

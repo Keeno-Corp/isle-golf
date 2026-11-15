@@ -1,7 +1,7 @@
 import './pools.js';   // load order: each file runs after the one before it (COORDINATION.md)
 import * as THREE from 'three';
 import { clamp } from './util.js';
-import { greenOf, heightAt } from './course.js';
+import { K, greenOf, heightAt } from './course.js';
 import { scene } from './stage.js';
 import { play } from './sound.js';
 import { CLUBS, LIE, _cm } from './rules.js';
@@ -24,7 +24,7 @@ export const gridLines = (() => {
   const l = new THREE.LineSegments(g, new THREE.LineBasicMaterial({ color: '#f3f0d0', transparent: true, opacity: 0.3, depthWrite: false })); l.name = 'slopeGridLines'; l.frustumCulled = false; l.renderOrder = 3; l.visible = false; scene.add(l); return l; })();
 export function autoClub() {
   const p = curP(), H = curH(), d = pinDist(p.pos, H), surf = p.surf;
-  let club = surf === 'green' || d < 2.3 ? 3 : surf === 'sand' ? (d > 9 ? 1 : 2) : d > 13.4 && (surf === 'tee' || surf === 'fairway') ? 0 : d > 7.0 ? 1 : 2;
+  let club = surf === 'green' || d < 2.3 * K ? 3 : surf === 'sand' ? (d > 9 * K ? 1 : 2) : d > 13.4 * K && (surf === 'tee' || surf === 'fairway') ? 0 : d > 7.0 * K ? 1 : 2;
   const t = aimTarget(H, p.pos, club), aim = Math.atan2(t.z - p.pos.z, t.x - p.pos.x);
   if (needPower(club, aim) > 1) club = 0;
   return club;
@@ -71,7 +71,7 @@ export function puttTrack(p, H, c) {
 }
 export function buildSlopeGrid() {
   const p = curP(), H = curH(), cx = (p.pos.x + H.pinX) / 2, cz = (p.pos.z + H.pinZ) / 2; let k = 0;
-  const half = Math.min(3.0, Math.max(1.4, pinDist(p.pos, H) / 2 + 0.8)), step = 0.6, mat = new THREE.Matrix4(), q = new THREE.Quaternion(), s = new THREE.Vector3(), pp = new THREE.Vector3(), col = new THREE.Color();
+  const half = Math.min(3.0 * K, Math.max(1.4 * K, pinDist(p.pos, H) / 2 + 0.8 * K)), step = 0.6 * K, mat = new THREE.Matrix4(), q = new THREE.Quaternion(), s = new THREE.Vector3(), pp = new THREE.Vector3(), col = new THREE.Color();
   const lp = gridLines.geometry.attributes.position; let li = 0;
   for (let gx = -half; gx <= half + 1e-3; gx += step) for (let gz = -half; gz <= half + 1e-3; gz += step) {
     const x = cx + gx, z = cz + gz; if (k >= 120) break; if (!greenOf(x, z)) continue;

@@ -2,7 +2,7 @@ import './aimline.js';   // load order: each file runs after the one before it (
 import * as THREE from 'three';
 import { clamp, rand } from './util.js';
 import { ST, fire } from './shared.js';
-import { BELL, COW, HOUSE, H_COT, H_HOUSE, H_LH, H_POND, LH, LH_COT, POND, heightAt, surfaceAt } from './course.js';
+import { K, BELL, COW, HOUSE, H_COT, H_HOUSE, H_LH, H_POND, LH, LH_COT, POND, heightAt, surfaceAt } from './course.js';
 import { treeObjs } from './island.js';
 import { spawnParticles, spawnRipple } from './effects.js';
 import { play } from './sound.js';
@@ -76,7 +76,7 @@ export function stepSim(b, dt) {
       const ret = b.bounces === 0 ? b.landT * S.t / 0.8 : S.t;
       tmpV.copy(v).addScaledVector(_n, -vn).multiplyScalar(ret);
       v.copy(tmpV).addScaledVector(_n, -vn * S.e); if (b.bounces === 0 && b.curve) { const hv2 = Math.hypot(v.x, v.z) || 1; v.x += (-v.z / hv2) * b.curve * 0.22; v.z += (v.x / hv2) * b.curve * 0.22; } b.bounces++; b.ev.push('bounce');
-      if (-vn * S.e < 0.75 || b.bounces > 5) { v.y = 0; b.mode = 'roll'; }
+      if (-vn * S.e < 0.75 * Math.sqrt(K) || b.bounces > 5) { v.y = 0; b.mode = 'roll'; }
     }
   } else if (b.mode === 'roll') {
     const surf = surfaceAt(p.x, p.z); b.surf = surf;

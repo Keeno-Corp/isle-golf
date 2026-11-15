@@ -3,6 +3,7 @@ import * as THREE from 'three';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { clamp, lerp, smooth } from './util.js';
 import { ST } from './shared.js';
+import { K } from './course.js';
 import { houseLamp, seaMat, windowMat } from './island.js';
 
 // ---------------------------------------------------------------- renderer, scene, camera
@@ -15,15 +16,15 @@ renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure
 document.body.appendChild(renderer.domElement);
 export const scene = new THREE.Scene();
 export const FOG_DAY = new THREE.Color('#bccabd'), FOG_NIGHT = new THREE.Color('#3a2a20');
-scene.fog = new THREE.Fog(FOG_DAY.clone(), 62, 175);
+scene.fog = new THREE.Fog(FOG_DAY.clone(), 62 * K, 175 * K);
 scene.background = FOG_DAY.clone();
 export const camera = new THREE.PerspectiveCamera(30, innerWidth / innerHeight, 1, 700);
 
 export const hemi = new THREE.HemisphereLight('#d9ecdf', '#3f6a3a', 1.25); hemi.name = 'skyLight'; scene.add(hemi);
 export const sun = new THREE.DirectionalLight('#fff0d6', 2.9); sun.name = 'sun';
-sun.position.set(-22, 28, -16); sun.castShadow = true;
+sun.position.set(-22 * K, 28 * K, -16 * K); sun.castShadow = true;
 sun.shadow.mapSize.set(4096, 4096);
-Object.assign(sun.shadow.camera, { left: -32, right: 32, top: 32, bottom: -32, near: 5, far: 110 });
+Object.assign(sun.shadow.camera, { left: -32 * K, right: 32 * K, top: 32 * K, bottom: -32 * K, near: 5, far: 110 * K });
 sun.shadow.bias = -0.0004; sun.shadow.normalBias = 0.035;
 scene.add(sun, sun.target);
 export const SUN_DAY = new THREE.Color('#fff0d6'), SUN_NIGHT = new THREE.Color('#a9b8f0');

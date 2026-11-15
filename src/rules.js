@@ -1,6 +1,7 @@
 import './post.js';   // load order: each file runs after the one before it (COORDINATION.md)
 import * as THREE from 'three';
 import { ST } from './shared.js';
+import { K } from './course.js';
 // ================================================================ ISLE GOLF
 // ---------------------------------------------------------------- world state shared with the island's own effects
 export const WIND = new THREE.Vector2(1, 0.35).normalize();
@@ -15,9 +16,9 @@ export const KITS = [
   { name: 'WREN', col: '#c75a9a', cap: '#f0e6c6', pants: '#e6dcc0', ball: '#ffffff' },
 ];
 export const CLUBS = [
-  { id: 'driver', name: 'DRIVER', carry: 17, loft: 0.36, land: 0.6, power: 1 },
-  { id: 'iron', name: 'IRON', carry: 11, loft: 0.52, land: 0.38, power: 1 },
-  { id: 'wedge', name: 'WEDGE', carry: 6.2, loft: 0.82, land: 0.3, power: 1 },
+  { id: 'driver', name: 'DRIVER', carry: 17 * K, loft: 0.36, land: 0.6, power: 1 },
+  { id: 'iron', name: 'IRON', carry: 11 * K, loft: 0.52, land: 0.38, power: 1 },
+  { id: 'wedge', name: 'WEDGE', carry: 6.2 * K, loft: 0.82, land: 0.3, power: 1 },
   { id: 'putter', name: 'PUTTER', carry: 0, loft: 0, land: 1, power: 1, putt: 9.5 },
 ];
 export const GR = 7.0, BR = 0.07;
