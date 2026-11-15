@@ -11,7 +11,7 @@ import { LH_TOP, grassU, lighthouse } from './island.js';
 import { tmpV } from './rules.js';
 import { golfer, kitU } from './golfer.js';
 import { SIM } from './physics.js';
-import { G } from './round.js';
+import { G, curH } from './round.js';
 import { cam } from './camera.js';
 // ---------------------------------------------------------------- post: painterly strokes, tilt-shift, grade (after the lighthouse scenes)
 // the scene is drawn once into its own MSAA target; the post chain runs on plain (non-MSAA) targets, so no pass pays a multisample resolve
@@ -150,11 +150,16 @@ addEventListener('resize', () => { camera.aspect = innerWidth / innerHeight; cam
 export function updatePost(dt) {
   // the tilt-shift band rides on the ball (a little ahead of it while aiming, so the target stays readable)
   if (G.phase === 'title' || G.phase === 'card') tmpV.set(0, 3, 4); else if (G.phase === 'intro') tmpV.copy(cam.look); else if (G.phase === 'aim' || G.phase === 'swing') tmpV.set(golfer.bx + golfer.fx * 2.2, golfer.by, golfer.bz + golfer.fz * 2.2); else tmpV.copy(SIM.pos);
-  tmpV.project(camera); cam.fy += (clamp(tmpV.y * 0.5 + 0.5, 0.3, 0.68) - cam.fy) * Math.min(1, dt * 6);
+  tmpV.project(camera); let fyT = clamp(tmpV.y * 0.5 + 0.5, 0.3, 0.68), bandT = lerp(0.16, 0.2, cam.dio);
+  if (G.phase === 'aim' || G.phase === 'swing') {   // owner: the fairway stays in focus while aiming, so the band spans the ball to the pin
+    const H = curH(), yb = clamp(tmpV.set(golfer.bx, golfer.by, golfer.bz).project(camera).y * 0.5 + 0.5, 0, 1), yp = clamp(tmpV.set(H.pinX, H.pinY, H.pinZ).project(camera).y * 0.5 + 0.5, 0, 1);
+    fyT = (yb + yp) / 2; bandT = Math.min(0.55, Math.max(bandT, (Math.abs(yp - yb) / 2 + 0.06) / 0.62));   // the shader keeps |dy| < band * 0.62 sharp
+  }
+  const k = Math.min(1, dt * 6); cam.fy += (fyT - cam.fy) * k; cam.fb = (cam.fb ?? bandT) + (bandT - (cam.fb ?? bandT)) * k;
   const fy = cam.fy; tiltH.uniforms.focus.value = tiltV.uniforms.focus.value = kmix.uniforms.focus.value = fy;
   tiltH.uniforms.spot.value.set(-9, -9, 0.01); tiltV.uniforms.spot.value.copy(tiltH.uniforms.spot.value); grade.uniforms.spot.value.copy(tiltH.uniforms.spot.value);
   { tmpV.set(LH.x, H_LH + LH_TOP + 0.9, LH.z).project(camera); const z = 1.6 / Math.max(4, camera.position.distanceTo(lighthouse.position)) * 2.2; kmix.uniforms.lamp.value.set(tmpV.x * 0.5 + 0.5, tmpV.y * 0.5 + 0.5, z); grade.uniforms.lamp.value.copy(kmix.uniforms.lamp.value); }
-  const band = lerp(0.16, 0.2, cam.dio); tiltH.uniforms.band.value = tiltV.uniforms.band.value = kmix.uniforms.band.value = band;
+  const band = cam.fb; tiltH.uniforms.band.value = tiltV.uniforms.band.value = kmix.uniforms.band.value = band;
   grassU.uTime.value = ST.gameTime; grassU.uDusk.value = smooth(0, 1, ST.dusk); kitU.uNight.value = smooth(0.2, 0.8, ST.dusk);
   grassU.uBoy.value.set(golfer.holder.position.x, golfer.holder.position.y, golfer.holder.position.z);
   grade.uniforms.uMist.value.set(cam.look.x * 0.028, -cam.look.z * 0.022); grade.uniforms.uHz0.value = lerp(0.42, 0.66, cam.dio);

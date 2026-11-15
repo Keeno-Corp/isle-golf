@@ -126,16 +126,6 @@ export function retargetPlayer(right, left) {
   armIK('L', golfer.spine.localToWorld(left.clone()));
   return player.getObjectByName('DEF-handR').getWorldPosition(new THREE.Vector3()).add(player.getObjectByName('DEF-handL').getWorldPosition(wp)).multiplyScalar(0.5);
 }
-const headBone = player.getObjectByName('DEF-head');
-const helmet = new THREE.Group(); helmet.name = 'footballer_helmet'; headBone.add(helmet);
-helmet.scale.setScalar(1 / 0.46); helmet.position.set(0, 0.032 / 0.46, 0.012 / 0.46);
-const shell = new THREE.MeshStandardMaterial({ color: '#2d63c8', roughness: 0.55 }); crisp(shell);
-const white = new THREE.MeshStandardMaterial({ color: '#f6f2e8', roughness: 0.6 }); crisp(white);
-const R = 0.072;
-const helmetShell = new THREE.Mesh(new THREE.SphereGeometry(R, 20, 14, 0, Math.PI * 2, 0, Math.PI * 0.68), shell); helmetShell.name = 'footballer_helmetShell'; helmet.add(helmetShell);
-{ const o = new THREE.Mesh(helmetShell.geometry, new THREE.MeshBasicMaterial({ color: '#2a2018', side: THREE.BackSide })); o.name = 'footballer_helmetOutline'; o.scale.setScalar(1.12); helmet.add(o); }   // the helmet's share of the dark outline (the skinned hull above covers the body)
-const stripe = new THREE.Mesh(new THREE.BoxGeometry(0.018, R * 0.2, R * 2.05), white); stripe.position.y = R * 0.9; helmet.add(stripe);
-for (const y of [-0.03, -0.012, 0.008]) { const bar = new THREE.Mesh(new THREE.TorusGeometry(R * 0.6, 0.0065, 6, 16, Math.PI), white); bar.position.set(0, y, R * 0.7); bar.rotation.z = Math.PI; helmet.add(bar); }
 // the club: a shaft and a head, hung from the right hand; its look follows the club picked
 export const clubG = new THREE.Group(); clubG.name = 'club';
 export const clubMat = std('#c9c3b0', { roughness: 0.5, metalness: 0 }), clubHeadMat = std('#3a3430', { roughness: 0.5 });
