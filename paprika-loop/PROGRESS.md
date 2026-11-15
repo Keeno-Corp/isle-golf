@@ -453,3 +453,7 @@ Next:
 Not checked this session: a sand lie, a 2–4 player hot-seat round, and whether the pale settle frame is a real fade or a capture problem.
 
 SCORE: 7.4
+
+## Iteration 8
+
+The background check rerun keeps resetting the page; running the full test suite now.

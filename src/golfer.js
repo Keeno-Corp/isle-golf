@@ -55,6 +55,12 @@ player.traverse(o => {
     mat.needsUpdate = true;
   }
 });
+// Shepherd Isle's dark outline: an inverted hull on each skinned part, pushed out along its skinned normal by about 1.5 px at any distance
+const outlineMat = new THREE.MeshBasicMaterial({ color: '#2a2018', side: THREE.BackSide });
+outlineMat.onBeforeCompile = sh => { sh.vertexShader = sh.vertexShader.replace('#include <project_vertex>', '#include <project_vertex>\n mvPosition.xyz += normalize(normalMatrix * objectNormal) * 0.0013 * -mvPosition.z; gl_Position = projectionMatrix * mvPosition;'); };
+{ const skins = []; player.traverse(o => { if (o.isSkinnedMesh) skins.push(o); });
+  for (const o of skins) { const h = new THREE.SkinnedMesh(o.geometry, outlineMat); h.name = 'footballer_outline'; h.position.copy(o.position); h.quaternion.copy(o.quaternion); h.scale.copy(o.scale); h.frustumCulled = false; h.bind(o.skeleton, o.bindMatrix); o.parent.add(h);
+    for (const m of [].concat(o.material)) { m.roughness = Math.max(m.roughness ?? 1, 0.75); m.metalness = 0; } } }   // matte kit, as the painted island
 player.updateMatrixWorld(true);
 const bindLengths = new Map();
 player.traverse(bone => { if (bone.isBone) bindLengths.set(bone, bone.position.length()); });
@@ -123,8 +129,8 @@ export function retargetPlayer(right, left) {
 const headBone = player.getObjectByName('DEF-head');
 const helmet = new THREE.Group(); helmet.name = 'footballer_helmet'; headBone.add(helmet);
 helmet.scale.setScalar(1 / 0.46); helmet.position.set(0, 0.032 / 0.46, 0.012 / 0.46);
-const shell = new THREE.MeshStandardMaterial({ color: '#2d63c8', roughness: 0.3 }); crisp(shell);
-const white = new THREE.MeshStandardMaterial({ color: '#f6f2e8', roughness: 0.35 }); crisp(white);
+const shell = new THREE.MeshStandardMaterial({ color: '#2d63c8', roughness: 0.55 }); crisp(shell);
+const white = new THREE.MeshStandardMaterial({ color: '#f6f2e8', roughness: 0.6 }); crisp(white);
 const R = 0.072;
 const helmetShell = new THREE.Mesh(new THREE.SphereGeometry(R, 20, 14, 0, Math.PI * 2, 0, Math.PI * 0.68), shell); helmetShell.name = 'footballer_helmetShell'; helmet.add(helmetShell);
 const stripe = new THREE.Mesh(new THREE.BoxGeometry(0.018, R * 0.2, R * 2.05), white); stripe.position.y = R * 0.9; helmet.add(stripe);

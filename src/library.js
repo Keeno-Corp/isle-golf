@@ -6,7 +6,8 @@ import { hash } from './util.js';
 import { ST, addUpdate } from './shared.js';
 import { HOLES, HOUSE, LH, POND, edgeR, heightAt, inland, mownSigned, surfaceAt } from './course.js';
 import { scene } from './stage.js';
-import { modelCopy as copy0, sheepGLB, treeA, treeB, lhGLB, stoneGLB, benchGLB, boatGLB, cottageGLB, bushGLB, hydrangeaGLB, signGLB, cattailGLB, fenceGLB } from './assets.js';
+import { modelCopy as copy0, sheepGLB, treeA, treeB, lhGLB, stoneGLB, benchGLB, boatGLB, cottageGLB, bushGLB, hydrangeaGLB, signGLB, cattailGLB, fenceGLB, rockGLB, flagGLB } from './assets.js';
+import { FLAG, flagMat, flagWhite } from './pins.js';
 import { BUSHES, LH_TOP, rails, clearOf, house, lighthouse, pond, sea, treeObjs } from './island.js';
 import { ROUND } from './physics.js';
 import { chimneyTop } from './effects.js';
@@ -116,3 +117,31 @@ HOLES.forEach(H => { const sg = scene.getObjectByName('holeSign' + (H.i + 1)); i
   rails.forEach(([x1, z1, x2, z2], i) => { const x = (x1 + x2) / 2, z = (z1 + z2) / 2; p.set(x, Math.min(heightAt(x1, z1), heightAt(x2, z2)) - 0.03, z); q.setFromAxisAngle(up, -Math.atan2(z2 - z1, x2 - x1));
     fi.setMatrixAt(i, m.compose(p, q, s.set(Math.hypot(x2 - x1, z2 - z1) * 1.02, k, k))); });
   scene.add(fi); }
+
+// ---------------------------------------------------------------- session 8: library rocks, tee stones and flags in place of the last code meshes
+// an InstancedMesh's places and tints carried onto a library geometry; the code mesh is hidden
+function swapInst(name, geo, mat, tint) {
+  const old = scene.getObjectByName(name), n = new THREE.InstancedMesh(geo, mat, old.count);
+  n.instanceMatrix.copy(old.instanceMatrix); const c = new THREE.Color();
+  for (let i = 0; i < old.count; i++) { old.getColorAt(i, c); n.setColorAt(i, c.lerp(new THREE.Color(1, 1, 1), tint)); }
+  n.name = name + 'Lib'; n.castShadow = n.receiveShadow = true; n.frustumCulled = false; old.visible = false; scene.add(n); return n;
+}
+// the code shapes were a radius-1 icosahedron (boulders) and a 2-tall, 2-wide column (stacks), both centred on y = 0: the unit models are fitted to those boxes
+{ const S = unit(stoneGLB); S.geo.computeBoundingBox(); const h = S.geo.boundingBox.max.y; S.geo.scale(2, 2 / h, 2).translate(0, -1, 0);
+  swapInst('cliffRocks', S.geo, S.mat, 0.45);
+  const R = unit(rockGLB); R.geo.computeBoundingBox(); const hr = R.geo.boundingBox.max.y; R.geo.scale(2.2, 2.2 / hr, 2.2).translate(0, -1, 0);   // the sandstone's own layers read as the cliff strata
+  swapInst('seaStacks', R.geo, R.mat, 0.7); }
+// tee markers: two small sandstone blocks (0.09 tall, ankle height on the 0.85 golfer) where the code spheres were
+scene.children.filter(o => o.name === 'teeMarker').forEach((o, i) => { o.visible = false;
+  const m = modelCopy(rockGLB, 0.09, 'teeStone'); m.position.set(o.position.x, o.position.y - 0.035, o.position.z); m.rotation.y = hash(i, 61) * 6.28; scene.add(m); });
+// flags: the library's triangle flag; its pole and pennant are fitted to FLAG (1.1 pole, 0.3 x 0.17 pennant), the pennant keeps the wind wave (flagMat reads x / 0.3)
+{ let pole = null, pen = null; flagGLB.scene.updateMatrixWorld(true);
+  flagGLB.scene.traverse(o => { if (!o.isMesh) return; const a = o.geometry.attributes.position, g = new THREE.BufferGeometry();   // quantized positions to floats before the place is baked in
+    g.setAttribute('position', new THREE.BufferAttribute(Float32Array.from({ length: a.count * 3 }, (_, i) => a.getComponent(i / 3 | 0, i % 3)), 3)); if (o.geometry.index) g.setIndex(Array.from(o.geometry.index.array)); g.applyMatrix4(o.matrixWorld); g.computeBoundingBox(); if (g.boundingBox.min.y < 0.01) pole = g; else pen = g; });
+  pole.computeBoundingBox(); let b = pole.boundingBox; const px = (b.min.x + b.max.x) / 2, pz = (b.min.z + b.max.z) / 2, ph = b.max.y;
+  pole.translate(-px, 0, -pz).scale(FLAG.poleR * 2 / (b.max.x - b.min.x), FLAG.poleH / ph, FLAG.poleR * 2 / (b.max.x - b.min.x)); pole.computeVertexNormals();
+  pen.computeBoundingBox(); b = pen.boundingBox; const cy = (b.min.y + b.max.y) / 2;
+  pen.translate(-b.min.x, -cy, -pz).scale(FLAG.pennantL / (b.max.x - b.min.x), FLAG.pennantH / (b.max.y - b.min.y), 1).translate(FLAG.poleR, 0, 0); pen.computeVertexNormals();
+  HOLES.forEach(H => { const op = H.pinG.getObjectByName('pin_pole'), of = H.flag; op.visible = of.visible = false;
+    const p = new THREE.Mesh(pole, flagWhite); p.name = 'flagPole'; p.castShadow = true; H.pinG.add(p);
+    const f = new THREE.Mesh(pen, flagMat); f.name = 'flagPennant'; f.castShadow = true; f.position.copy(of.position); f.rotation.copy(of.rotation); f.scale.copy(of.scale); H.pinG.add(f); H.flag = f; }); }

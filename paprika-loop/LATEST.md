@@ -1,48 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 7
-
-Worked the changed brief first (items 14 and 15: golfer at 0.85 units, everything sized against it).
-
-**Did**
-- `src/pose.js`: `GS` (golfer holder scale) 1.9 → 1.09, so the `footballer` stands 0.85 units tall in play (it was 1.48, taller than the 1.28 pin). `STANCE` 0.66 → 0.4 (feet to ball).
-- `src/camera.js` `aimCam`: closer to match the smaller golfer. Full shots D 9.2 → 6.8, height 4.7 → 3.5. Putts D 4.2 → 3.6, height 2.5 → 2.1. New `side` offset (0.15 full, 0.45 putt) moves the camera away from the golfer's side, so the ball-to-pin line stays clear.
-- `src/pins.js`: `FLAG.poleH` 1.28 → 1.1. `teeMarker` radius 0.07 → 0.045.
-- `src/balls.js`: the ball is drawn at 0.7 × `BR` and shifted down so it still rests on the ground. Physics `BR` is unchanged, so no check moved. `ballRing` and `ballShadow` are smaller to match.
-- `src/cow.js`: the cow is 0.72 tall (was 1.25), with a smaller contact shadow. `src/physics.js`: the cow collider radius 0.62 → 0.38 and height 1.05 → 0.65.
-- `src/island.js`: ducks 0.46 → 0.26 tall. `src/library.js`: `hydrangeas` instance scale ×1.25 → ×0.95.
-- `src/aimline.js`: putt preview dots scale 2.4 → 1.0. They were 0.2-radius discs that stacked into the "white puff column" on the putting line.
-- `src/hud.js`: `#tag` anchored at ball + 1.2 (was + 0.85, which sat on the golfer's helmet).
-- CHARACTERS.md: the ball and flag lines now give the new sizes.
-
-**Saw**
-- Measured with `eval`, in world units, against the golfer's 0.85:
-  - footballer 0.85, pin 1.14, cow 0.76 tall, duck 0.26, bench 0.42 tall × 0.86 wide.
-  - sheep 0.55 tall × 0.66 long, trees 2.6–3.7, house 3.95, lighthouse 7.7.
-  - club shaft 0.42 at address.
-- Sheet after the edits:
-  - "h1 putt": the golfer is 1.3% of the frame (was 3%). The pin and cup are clear, and the dots are a thin line.
-  - "h6 aim": the golfer is 0.36% of the frame (was 0.6%). It is small but readable, standing on the tee with the pond behind.
-  - "C hole cam" is unchanged.
-- `look compare before-aim` (the fixed `aim-h1` camera): 3% of pixels differ. The changes are the golfer region [432,320,720,528] and the smaller hydrangeas at top right. Both were intended. In that fixed camera the golfer goes from 0.6% to 0.19%. The game's own aim camera is now closer, which is why it shows 0.36%.
-- `test`: 70 of 70 checks pass. An early version of the `aimCam` edit broke `look-aim-hole1`, `look-aim-hole5` and `look-drive-early`: a comment swallowed the look-target line. That is fixed.
-- Strike `feel`: still no camera punch. The Camera line ("moved up to 67.2 at frame 141") is the aim camera settling. `aimLanding` jumps 0.58 units at frame 151, which is the `aim at:"pin"` step re-aiming, not a glitch. `feelBits` 0 → 30 and `divots` 0 → 8 at frame 164, with 8 sounds.
-- The "h1 aim" sheet cell is still the pale capture artifact (12% saturation). Every other cell is normal.
-
-**Next**
-1. Scale, the rest of item 15:
-   - `way_post`/`way_diamond`, the yellow aim waypoint marker, is 1 unit tall, bigger than the golfer. Shrink it to about 0.5.
-   - Check the boats, `standingStone`/stonepile, `fencePanels` (0.66 tall, a little high), the `sign_arrow` signs (0.8) and the bunker and green sizes in the C view against refs/02–03.
-   - The house (3.95) and lighthouse (7.7) could be 1.2–1.4× for a believable ratio to the 0.85 golfer.
-2. Judge 6 Next 1, still undone: library picks for `seaStacks`, `cliffRocks`, `teeMarker` and `pin_flag`.
-3. Judge 6 Next 2: strike punch in `src/camera.js`, 0.3 units along the view direction, eased back over 0.15 s. Then Next 3: an `{action:"setup"}` step in `src/api.js` and the `sheep-bounce-on-demand` and `sand-lie` checks. The cow collider shrank, so re-run `creatures-cow-reacts`; it passed this session.
-4. Item 14 golfer polish is not started beyond size: outline, materials, and a smoother walk and idle.
-
-**Open**
-- The golfer is smaller on screen in the aim views (0.36% of the frame), even with the closer camera. If the judge finds it unreadable, bring the full-shot `aimCam` D down further (6.8 → about 5.5). Keep the pin on screen: the aim checks expect the ball's y between -0.6 and 0.6.
-- The ball is still about 7× real size relative to the golfer (drawn radius 0.049). This is kept for readability, and is listed as by design in CHARACTERS.md.
-- No `perf` was run this session.
-
 ### Judge 7
 
 Iteration 7's rescale is visible and broke nothing in play. The footballer's box is 0.354 × 0.785 × 0.213. In the "h1 putt" cell the golfer stands beside the ball, the pin and `cup` are clear, and the aim dots are a thin line. The "white puff column" Judge 6 reported is gone. The "h1 aim" cell now draws at 46% saturation; Judge 6 saw it pale.
@@ -103,3 +60,7 @@ Next:
 Not checked this session: a sand lie, a 2–4 player hot-seat round, and whether the pale settle frame is a real fade or a capture problem.
 
 SCORE: 7.4
+
+## Iteration 8
+
+The background check rerun keeps resetting the page; running the full test suite now.

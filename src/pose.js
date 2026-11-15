@@ -28,7 +28,7 @@ let sPrev = 0;   // last frame's swing param
 let entryT = 0;   // frames since the meter started, eases the backswing in
 const GS = 1.09;   // holder scale: the footballer stands 0.85 units tall (PROMPT item 15; everything is sized against this)
 const STANCE = 0.4;   // feet to ball, about a real stance at 0.85 units tall
-const WALK_SPEED = 3.2;
+const WALK_SPEED = 3.2;   // the walk's speed is fixed when it starts (golfer.wsp): at the ball in 0.7 s at most (it used to slow as it closed in)
 export function placeGolfer() {
   entryT = G.phase === 'aim' && G.m && G.m.stage >= 1 ? entryT + 1 : 0;
   if (G.phase === 'title' || G.phase === 'card') return;
@@ -38,7 +38,7 @@ export function placeGolfer() {
   const striking = G.phase !== 'aim' || (G.m && G.m.stage > 0);
   if (golfer.init !== true || d > 25 || striking || (!golfer.walking && d < 1.2)) { gx = tx; gz = tz; golfer.walking = false; golfer.init = true; golfer.yaw = Math.atan2(rx, rz); }
   else if (d < 0.05) { gx = tx; gz = tz; golfer.walking = false; }
-  else { golfer.walking = true; const sp = Math.min(d, Math.max(WALK_SPEED, d / 0.8) / 60); gx += dx / d * sp; gz += dz / d * sp; golfer.wdir = Math.atan2(dx, dz); }
+  else { if (!golfer.walking) golfer.wsp = Math.max(WALK_SPEED, d / 0.7); golfer.walking = true; const sp = Math.min(d, golfer.wsp / 60); gx += dx / d * sp; gz += dz / d * sp; golfer.wdir = Math.atan2(dx, dz); }
   const want = golfer.walking ? golfer.wdir : Math.atan2(rx, rz); golfer.yaw += angDiff(golfer.yaw, want) * (1 - Math.exp(-(golfer.walking ? 14 : 9) / 60));
   h.position.set(gx, heightAt(gx, gz), gz); h.rotation.y = golfer.yaw; h.scale.setScalar(GS);
   golferShadow.position.set(gx + 0.05, h.position.y + 0.02, gz + 0.05);

@@ -63,9 +63,9 @@ export function aimTarget(H, pos, club) {
 }
 export const wayMark = new THREE.Group(); wayMark.name = 'waypointMarker'; wayMark.visible = false;
 {
-  const post = named(new THREE.Mesh(new THREE.CylinderGeometry(0.035, 0.04, 1.0, 6), std('#f2e7b0')), 'way_post'); post.position.y = 0.5; wayMark.add(post);
-  const dia = named(new THREE.Mesh(new THREE.OctahedronGeometry(0.2), std('#f2c43a', { roughness: 0.6 })), 'way_diamond'); dia.position.y = 1.2; dia.scale.set(1, 1.4, 0.35); wayMark.add(dia);
-  const ring = named(new THREE.Mesh(new THREE.RingGeometry(0.3, 0.38, 24).rotateX(-Math.PI / 2), new THREE.MeshBasicMaterial({ color: '#f2d43a', transparent: true, opacity: 0.8, depthWrite: false })), 'way_ring'); ring.position.y = 0.04; wayMark.add(ring);
+  const post = named(new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.022, 0.45, 6), std('#f2e7b0')), 'way_post'); post.position.y = 0.225;   // half the golfer's 0.85 wayMark.add(post);
+  const dia = named(new THREE.Mesh(new THREE.OctahedronGeometry(0.09), std('#f2c43a', { roughness: 0.6 })), 'way_diamond'); dia.position.y = 0.56; dia.scale.set(1, 1.4, 0.35); wayMark.add(dia);
+  const ring = named(new THREE.Mesh(new THREE.RingGeometry(0.2, 0.26, 24).rotateX(-Math.PI / 2), new THREE.MeshBasicMaterial({ color: '#f2d43a', transparent: true, opacity: 0.8, depthWrite: false })), 'way_ring'); ring.position.y = 0.04; wayMark.add(ring);
   scene.add(wayMark);
 }
 // C view: the pin keeps its true size; a small bright ring round the cup marks it (colour, not scale)

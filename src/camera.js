@@ -16,7 +16,7 @@ export const cam = { pos: new THREE.Vector3(1, 44, 68), look: new THREE.Vector3(
 export const DIO = { pos: new THREE.Vector3(1, 47, 74), look: new THREE.Vector3(0, 2.2, 1), fov: 29 };
 export const cPos = new THREE.Vector3(), cLook = new THREE.Vector3();
 export function aimCam(pos, look) {
-  const p = curP(), putt = curClub().putt, fx = Math.cos(G.aim), fz = Math.sin(G.aim), D = putt ? 3.6 : 6.8, Hh = putt ? 2.1 : 3.5, ah = putt ? 0.9 : 2.2, side = putt ? 0.45 : 0.15, src = G.phase === 'flight' || G.phase === 'settle' ? G.shotOrigin : p.pos;
+  const p = curP(), putt = curClub().putt, fx = Math.cos(G.aim), fz = Math.sin(G.aim), D = putt ? 3.6 : 5.6, Hh = putt ? 2.1 : 2.95, ah = putt ? 0.9 : 2.2, side = putt ? 0.45 : 0.15, src = G.phase === 'flight' || G.phase === 'settle' ? G.shotOrigin : p.pos;
   // a touch to the side away from the golfer (who stands on -r), so the ball-to-pin line stays clear
   pos.set(src.x - fx * D - fz * side, src.y + Hh, src.z - fz * D + fx * side); pos.y = Math.max(pos.y, heightAt(pos.x, pos.z) + 1.0); look.set(src.x + fx * ah, src.y + 0.35, src.z + fz * ah);
 }

@@ -15,3 +15,5 @@
 - Stylized Sign: "Stylized Sign" by iyodjung (https://sketchfab.com/3d-models/8bdde6bbaae84d07b306b94fd10dff95) is licensed under CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/). Optimized for the web by paprika3D.
 - Cattail Plant: "Cattail Plant" by SXuno (https://sketchfab.com/3d-models/c50630051edd4a7daa9708f6b31c021f) is licensed under CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/). Optimized for the web by paprika3D.
 - Fence: "Fence" by Cavalqs (https://sketchfab.com/3d-models/4d3f7dd97acf49b6bb4312680ec63916) is licensed under CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/). Optimized for the web by paprika3D.
+- Stylized Rock | Agustin Hönnun: "Stylized Rock | Agustin Hönnun" by Agustín Hönnun (https://sketchfab.com/3d-models/ae21c3d47cb14323a3bb06ccb562e368) is licensed under CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/). Optimized for the web by paprika3D.
+- Triangle flag: "Triangle flag" by cham1105 (https://sketchfab.com/3d-models/adadd59fd56d44f7b0354d1caba38f95) is licensed under CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/). Optimized for the web by paprika3D.
