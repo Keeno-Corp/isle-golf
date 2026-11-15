@@ -160,13 +160,15 @@ export function updateHUD() {
     hud.arrow.setAttribute('transform', `rotate(${Number.isFinite(w.rel) ? w.rel : 0})`);
   }
   const m = G.m;
-  hud.meter.classList.toggle('on', G.phase === 'aim' && m.stage > 0 || G.phase === 'swing');
-  hud.help.style.visibility = hud.meter.classList.contains('on') ? 'hidden' : '';
+  // the meter stays up while aiming, so the player reads the notch before the first click instead of reacting to it
+  const ready = G.phase === 'aim' && m.stage === 0;
+  hud.meter.classList.toggle('on', G.phase === 'aim' || G.phase === 'swing');
+  hud.help.style.visibility = G.phase === 'swing' || m.stage > 0 && G.phase === 'aim' ? 'hidden' : '';
   if (G.phase === 'aim' || G.phase === 'swing') {
-    hud.fill.style.width = (m.power * 100).toFixed(1) + '%';
+    hud.fill.style.width = ready ? '0%' : (m.power * 100).toFixed(1) + '%';
     hud.needle.style.display = m.stage >= 2 ? 'block' : 'none';
     if (m.stage >= 2) { const pos = Math.max(0, m.power - m.t2 / METER.down); hud.needle.style.left = (Math.max(0, pos) * 100).toFixed(1) + '%'; }
-    hud.l1.textContent = m.label || 'POWER'; hud.l2.textContent = `${Math.round(m.power * 100)}%`;
+    hud.l1.textContent = ready ? 'SPACE OR CLICK TO SWING' : m.label || 'POWER'; hud.l2.textContent = ready ? '' : `${Math.round(m.power * 100)}%`;
     const np = needPower(); hud.notch.style.left = (clamp(np, 0, 1) * 100).toFixed(1) + '%'; hud.notch.style.background = np > 1.02 ? '#ff6a4a' : '#4ad8e8';
   }
 }
