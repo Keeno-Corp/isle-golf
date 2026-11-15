@@ -1,57 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-### Judge 6
-
-The page opens in 1.3 s with no console errors. The only console output is the known three.js `toNonIndexed` warning. Iteration 6 added one thing, the `sheepAt` setup, and it works. With `sheepAt:[-9.85,15.1]`, a putter at power 0.6 raised `sheepHits` from 0 to 1 at frame 65. The banner read "BAA!" from frame 65 to 193, and the "sheep hit" sheet cell shows "BAA! BOUNCED OFF A SHEEP" with the ball rolling back toward the tee. I ran the landing `feel` Judge 5 asked for, and the landing is now inside the watched frames: `divots` 0 → 18 at frame 239, and sounds rose from 8 to 14. `landPuffs` does not appear in the Particles line. The strike `feel` still shows no camera punch. The first cell of the sheet (the title) is pale again, at 12% saturation, which is the known capture problem.
-
-1. **Looks as LOOK.md says: 7.** On "h2 aim" saturation is 52%. The tilt-shift band is sharp on `player` and blurred above and below it. The haze is cream, the `sea` is teal beyond the `cliffFace`, and `hydrangeas` and `bushes` look painted. There are no `Lighting:` or `Surfaces:` lines. The golfer is still small on the aim views: 0.6% of the frame on h2, h6 and h9.
-2. **Plays as DESIGN.md says: 8.** The mouse works now. Three clicks took `meter.stage` from 0 to 3 and `meter.power` peaked at 0.594. The ball flew and settled on "fairway", 38 yd from the pin. `act` aim, club and swing worked throughout. In the "C hole cam" cell, C gives the overhead view of hole 6 with `aimDots` to the pin past `pond_water`.
-3. **Camera: 8.** The aim camera is high behind the ball. "h1 flight" follows the ball and its `ballTrail` toward the pin. "h1 intro" pulls back over the hole with the "HOLE 1 · PAR 3 · PEBBLE STEP" card.
-4. **Ball flight by surface: 8.** The ball's first bounce was on fairway, and the sheep rebound left the ball in the rough (`lie` "rough"). The pond and out-of-bounds results from session 4 stand. I still have not seen a sand lie.
-5. **Nine playable holes: 8.** A sheep bounce can now be shown: `sheepHits` went 0 → 1, `lastSheepHit.tumble` was true and the banner read "BAA!". Holes 1, 2, 6 (Duck Pond Bend, par 4, 206 yd, round the pond) and 9 (Lighthouse Home, par 5, 474 yd) each look different.
-6. **Stroke play and scorecard: 8.** Carried over from session 5: the `card` shows the PAR stamp and "SPACE · NEXT HOLE". I did not re-check it this session.
-7. **HUD: 8.** `#holep` is top left with strokes, round and hole name. Wind is top right ("2 MPH TAILWIND"). The club list is bottom left with yardages, and the key hints are bottom right.
-8. **`window.__game` and 60 fps: 9.** `observe`, `act` and `setState({sheepAt})` all worked. `perf` measured a 9 ms median frame, 4.54 MB of assets and a 1.7 s load. Its p95 of 41.4 ms was taken with the host load at 15.8 on 8 cores, so that number is noise.
-9. **Golfer matches CHARACTERS.md: 7.** `footballer_helmetShell` is teal and the jersey is in the kit colour. No brands appear on screen.
-10. **Game feel: 7.**
-    - Strike: `feelBits` 0 → 30 and `divots` 0 → 8 at frame 164, with 8 sounds.
-    - Landing: `divots` 0 → 18 at frame 239 and 6 more sounds.
-    - Camera: there is still no strike punch. The only camera move is the aim camera settling at frame 138.
-    - Teleport: `aimLanding` still jumps 0.58 units at frame 151.
-11. **Richer look: 7.** Unchanged since session 4: library trees, `bushes`, `hydrangeas`, `fencePanels`, `teeBench` and `sign_arrow`, plus `slopeGridLines` on the putt view.
-12. **Course and play: 7.** The `slopeGridLines` make the green slope readable, and the sheep rebound changes where the ball ends up. In "h1 putt", the golfer still stands between the camera and the pin, with a white puff column on the putting line.
-13. **Better assets: 7.** `eval` shows all four code stand-ins still visible, each a `Mesh` with `MeshStandardMaterial`: `seaStacks` (24), `cliffRocks` (70), `teeMarker` (1) and `pin_flag` (1). This was asked for twice and is not done.
-
-**Faults: 8.**
-- There are no console errors.
-- The `aimLanding` teleport remains.
-- Iteration 6's `sheepAt` check is still not saved.
-- The `perf` p95 was read on a busy host, so it is not a fault.
-
-Next:
-1. **(asked again) Replace the code-built `seaStacks`, `cliffRocks`, `teeMarker` and `pin_flag`.** This has been asked for twice and Iteration 6 did not touch it.
-   - What to do: `pick` from the searches already in `paprika3d/sourcing.json`, using its "stylized sea stack rock pillar", "golf tee marker" and "golf flag pin hole" searches. `model_audit` each pick, credit it, and hide the code mesh. If a search finds nothing usable, try library words such as "stylized rock formation", "low poly cliff rocks", "flag pole" or "triangle flag". The `stonepile-2d5f24.glb` already loaded could replace `cliffRocks`.
-   - The call that shows it done: `eval` returning `find('seaStacks').visible`, `find('cliffRocks').visible`, `find('teeMarker').visible` and `find('pin_flag').visible`, all `false`. A `look` with `camera` at about `{position:[0,60,80], lookAt:[0,0,0]}` should list the picked model's meshes where `seaStacks` was.
-2. **(asked again) Add a strike camera punch, and stop the golfer walking into the putt camera's line.**
-   - Camera: in `src/camera.js`, at the frame the swing turns into flight, push `camera.position` about 0.3 units along the view direction and ease it back over 0.15 s. Also stop the `aimLanding` jump at frame 151: ease it, or hide it at the swing.
-   - Golfer: on the putt view, place the golfer beside the ball, off the ball-to-pin line, before the putt camera settles.
-   - The calls that show it done:
-     - Strike: `feel` with `{state:{hole:0,skipIntro:true}}, {wait:150}, {action:"aim",at:"pin"}, {action:"swing",power:0.75,accuracy:0}` and `frames: 25`. Its Camera line should read "… and came back" after frame 151, and Teleports should be 0.
-     - Golfer: the "h1 putt" sheet cell, the same steps plus `{wait:300}` and `frames:120`. The pin should be visible with no golfer or puff column between the ball and the pin.
-3. **(asked again) Save the sheep check and a sand check.** Add an `{action:"setup", hole, sheepAt}` step to `actFn` in `src/api.js` so `test` accepts it. Then save `sheep-bounce-on-demand` from the steps that passed this session (setup, wait 30, aim at pin, putter swing at power 0.6, wait 240), expecting `sheepHits:[1,9]`. Add a `ballAt` option to the same setup to place the ball in a bunker, and save `sand-lie`, expecting `lie:"sand"`.
-   - The call that shows it done: `test`, listing both checks as passing.
-
-SCORE: 7.6
-
-## The request changed
-
-paprika-loop/PROMPT.md changed before session 7; the Next lists above were written before it. Changed lines:
-+ 14. The golfer looks its best: still the footballer the owner restored, in the existing Shepherd Isle style, with cleaner proportions, materials and outline and a smoother swing, walk and idle; it reads clearly in the aim and flight views and never fills the frame or blocks the putt view.
-+ 15. Everything is scaled correctly against the golfer (0.85 units tall), using refs/01-03 for relative sizes only: the ball, cup, flag and pin, tee markers, clubs, sheep, bench, boat, fences, trees, bushes, rocks, bunkers, greens, the house and the lighthouse each sit at a believable size next to a person, checked in the aim, putt and hole-camera views; nothing reads as a toy or a giant beside its neighbours.
-+ refs/01.jpg · layout (relative scale only; the style stays Shepherd Isle's) · inspiration · https://www.flickr.com/photos/29450586@N04/5097697858 (CC BY): tilt-shift links fairway, golfers tiny against bunkers and gorse
-+ refs/02.jpg · layout (relative scale only) · inspiration · https://commons.wikimedia.org/wiki/File:Putting_green_at_the_Royal_Canberra_Golf_Club_1.JPG (CC BY 4.0): golfer, flag and bunker sizes on a green from above
-+ refs/03.jpg · layout (relative scale only) · inspiration · https://commons.wikimedia.org/wiki/File:Bruntsfield_Links_golf_course_from_the_air_-_geograph.org.uk_-_7885450.jpg (CC BY-SA 2.0): tree clumps, bunkers, pond and houses against fairway widths
-
 ## Iteration 7
 
 Worked the changed brief first (items 14 and 15: golfer at 0.85 units, everything sized against it).
@@ -94,3 +42,64 @@ Worked the changed brief first (items 14 and 15: golfer at 0.85 units, everythin
 - The golfer is smaller on screen in the aim views (0.36% of the frame), even with the closer camera. If the judge finds it unreadable, bring the full-shot `aimCam` D down further (6.8 → about 5.5). Keep the pin on screen: the aim checks expect the ball's y between -0.6 and 0.6.
 - The ball is still about 7× real size relative to the golfer (drawn radius 0.049). This is kept for readability, and is listed as by design in CHARACTERS.md.
 - No `perf` was run this session.
+
+### Judge 7
+
+Iteration 7's rescale is visible and broke nothing in play. The footballer's box is 0.354 × 0.785 × 0.213. In the "h1 putt" cell the golfer stands beside the ball, the pin and `cup` are clear, and the aim dots are a thin line. The "white puff column" Judge 6 reported is gone. The "h1 aim" cell now draws at 46% saturation; Judge 6 saw it pale.
+
+Two things are not fixed:
+- The strike `feel` still has no camera punch. The Camera line reads "moved up to 67.215 at frame 141 and did not come back", and `aimLanding` jumps 0.58 units at frame 151.
+- `eval` still finds `seaStacks` (24), `cliffRocks` (70), `teeMarker` and `pin_flag` visible as code meshes.
+
+New this session: the "golfer walk to ball" cell (the moment the ball settles) is pale, at 12% saturation, like the title cell. A plain `look` after `interact` was also a flat haze colour, `#b5c8bc`.
+
+1. **Looks as LOOK.md says: 7.** On "h1 aim" saturation is 46%. The tilt-shift band is sharp on `player` and blurred above and below. The `sea` is teal past `cliffFace`, and `hydrangeas` and `bushes` look painted. There are no `Lighting:` or `Surfaces:` lines. The title and settle cells are still pale.
+2. **Plays as DESIGN.md says: 8.** Keyboard Space ×3 took `meter.stage` 0 → 3 at frame 229, with `meter.power` peaking at 0.594. Phases went swing, flight, settle, then aim at frame 392. R reset `strokes` from 1 to 0 with the banner "REPLAY". C gives the overhead view of hole 6 with `aimDots` past `pond_water`.
+3. **Camera: 8.** The aim camera is high behind the ball (pitch 19.3°, fov 33). "h1 flight" follows the `ballTrail` to the green. "h1 intro" pulls back over the hole with the "PAR 3 · 129 YD · PEBBLE STEP" card.
+4. **Ball flight by surface: 8.** `physics` read carry 122 yd, roll 41 yd and 2 bounces, with the first bounce on "green". The sheep rebound left the ball in the rough. A sand lie is still not shown.
+5. **Nine playable holes: 8.** The "sheep hit" cell shows "BAA! BOUNCED OFF A SHEEP". Holes 1, 6 (Duck Pond Bend, par 4, 206 yd, round `pond_water`) and 9 (Lighthouse Home, par 5, 474 yd) each look different.
+6. **Stroke play and scorecard: 8.** Holed in 2 on hole 1. The `card` shows the BIRDIE stamp, 2 strokes, −1 and "SPACE · NEXT HOLE".
+7. **HUD: 8.** `#holep` is top left. Wind ("2 MPH TAILWIND") is top right. The club list with yardages is bottom left, and the key hints are bottom right.
+8. **`window.__game` and 60 fps: 9.** `observe`, `act` and `setState` all work. `perf` measured an 8.1 ms median frame, 4.54 MB of assets and a 1.5 s load. The 25.5 ms p95 was taken with the host load at 7.2 on 8 cores, so it is noise.
+9. **Golfer matches CHARACTERS.md: 7.** `footballer_helmetShell` is teal and the jersey is in the kit colour. No brands appear on screen.
+10. **Game feel: 7.**
+    - Strike: `feelBits` 0 → 30 and `divots` 0 → 8 at frame 164, with 8 sounds.
+    - Camera: still no punch.
+    - Teleport: `aimLanding` still jumps 0.58 units at frame 151.
+11. **Richer look: 7.** Unchanged: library trees, `bushes`, `hydrangeas`, `fencePanels`, `teeBench`, `sign_arrow` and `slopeGridLines`.
+12. **Course and play: 8.** The putt view is now clear. The `slopeGridLines` make the green slope readable, and the sheep rebound changes where the ball ends up. In "putt address", 60 frames into the second aim, the golfer is still out past the pin, not yet at the ball.
+13. **Better assets: 7.** `seaStacks`, `cliffRocks`, `teeMarker` and `pin_flag` are still visible code meshes. `lighthouse_cottageWalls`, `lighthouse_cottageRoof` and `lighthouse_cottageDoor` are code meshes too.
+14. **The golfer looks its best: 5.** This is a first draft: only the size has changed.
+    - Size: about 0.85 tall in play, and it never fills the frame. It is 0.36% of the frame on "h1 aim", "h6 aim" and "h9 aim", and 1.3% on "h1 putt".
+    - Not started: outline, materials, and a smoother walk and idle.
+    - On the aim views it reads as a tiny orange figure.
+15. **Everything scaled against the golfer: 6.**
+    - Believable: `teeBench` (0.42 tall × 0.87 wide), `standingStone` (0.65), trees (2.6–3.7), `house` (3.95), `lighthouse` (7.7), `teeMarker` (0.09).
+    - Too big: `way_post` is 1.0 tall, taller than the 0.785 footballer, and `way_diamond` is 0.56. The ball is drawn about 5× real size by design.
+    - Not checked against refs/02–03: the bunker and green sizes.
+
+**Faults: 8.**
+- There are no console errors; the only warning is the known `toNonIndexed` one.
+- The `aimLanding` teleport remains.
+- The `sheep-bounce-on-demand` and `sand-lie` checks are still not saved.
+- The settle-moment and title cells are pale. This may be the known capture problem, but it now also shows during play.
+
+Next:
+1. **(asked again) Replace the code-built `seaStacks`, `cliffRocks`, `teeMarker` and `pin_flag` with library models.** This has been asked for three times. Iteration 7 did not attempt it, and its Open does not say it is impossible.
+   - What to do: `pick` from the searches already in `paprika3d/sourcing.json`. If those find nothing usable, try "stylized rock formation", "low poly cliff rocks", "flag pole" or "triangle flag".
+   - Use `stonepile-2d5f24.glb`, which is already loaded, for `cliffRocks`. Run `asset_search` "stylized small cottage" for `lighthouse_cottage`.
+   - `model_audit` each pick, credit it and hide the code mesh.
+   - The call that shows it done: `eval` returning `.visible === false` for all four names. A `look` from `{position:[0,60,80], lookAt:[0,0,0]}` should list the picked meshes where `seaStacks` was.
+2. **Item 14, the golfer polish.** This is the lowest score.
+   - Aim views: bring the full-shot `aimCam` D in `src/camera.js` from 6.8 to about 5.5, as the Iteration 7 Open suggests. Keep the ball's y between −0.6 and 0.6 so the aim checks pass. Check it with the "h1 aim" sheet cell: the golfer should be at least 0.6% of the frame.
+   - Outline: give `player` an inverted-hull outline (Shepherd Isle's dark outline) and a less shiny jersey and helmet material.
+   - Walk: speed up the walk to the ball so the golfer is at address before the putt camera settles. Check it with the "putt address" cell (second aim plus `{wait:60}`): the golfer should be beside the ball, not out past the pin.
+3. **Item 15, the scale pass, plus the strike punch (asked again).**
+   - Waypoint marker: shrink `way_post` from 1.0 to about 0.45 tall and `way_diamond` from 0.56 to about 0.25.
+   - Bunkers and greens: compare their sizes in the "C hole cam" cell against refs/02–03 and record the numbers in CHARACTERS.md.
+   - Strike punch: in `src/camera.js`, push the camera 0.3 units along the view direction at the frame the swing turns into flight, then ease it back over 0.15 s. Ease or hide `aimLanding` at the swing.
+   - The call that shows it done: `feel` with `{state:{hole:0,skipIntro:true}}, {wait:150}, {action:"aim",at:"pin"}, {action:"swing",power:0.75,accuracy:0}` and `frames:25`. Its Camera line should read "… and came back", and Teleports should be 0.
+
+Not checked this session: a sand lie, a 2–4 player hot-seat round, and whether the pale settle frame is a real fade or a capture problem.
+
+SCORE: 7.4
