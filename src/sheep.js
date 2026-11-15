@@ -65,6 +65,8 @@ function updatePops(dt) {
     if (k >= 1) { scene.remove(p.sp); p.sp.material.dispose(); pops.splice(i, 1); }
   }
 }
+// test hook: plant sheep[0] at [x, z], grazing in place long enough for a shot to reach it
+addSetState(s => { if (s.sheepAt) { const o = sheep[0]; o.x = o.tx = s.sheepAt[0]; o.z = o.tz = s.sheepAt[1]; o.wait = 60; o.init = true; o.gy = heightAt(o.x, o.z); } });
 export const crt = { freeze: 0, lastHit: null, hits: 0 };
 addUpdate(dt => { updatePops(dt); if (crt.freeze > 0) { G.hitStop = Math.max(G.hitStop || 0, crt.freeze); crt.freeze = 0; } });
 export const sheepObs = () => ({ sheep: sheep.map(s => ({ x: +s.x.toFixed(2), z: +s.z.toFixed(2), state: s.state, tx: +s.tx.toFixed(1), tz: +s.tz.toFixed(1) })), sheepHits: G.sheepHits, lastSheepHit: crt.lastHit, hitStop: G.hitStop > 0 });

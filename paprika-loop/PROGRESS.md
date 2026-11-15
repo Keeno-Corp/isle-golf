@@ -265,3 +265,26 @@ Next:
      - Landing: `feel` with the same steps plus `{wait:80}` and `frames: 30`. The landing at about frame 238 then falls inside the watched frames, and Particles should list a `landPuffs` rise and a sound there.
 
 SCORE: 7.6
+
+## Iteration 6
+
+**Did**
+- `src/sheep.js`: new `setState({sheepAt:[x,z]})` hook. It plants `sheep[0]` at that point with its target set to the same point, `wait` 60 s (grazing in place) and `init` true, so a shot can be aimed through it.
+
+**Saw**
+- On hole 1 the tee is (-12.84, 15.36) and the pin is (-2.14, 14.43). I used `interact` with `{state:{hole:0,skipIntro:true,sheepAt:[-9.85,15.1]}}, wait 30, aim at pin, swing putter power 0.6, wait 240` and traced `sheepHits` and `banner`.
+  - `sheepHits` went 0 → 1 at frame 65.
+  - The banner read "PERFECT!" until frame 65, then "BAA!" until frame 193.
+  - `lastSheepHit` had `tumble:true`, and `sheep[0]` went to "flee".
+  - The ball bounced back off the sheep to (-14.58, 15.49), in the rough: carry 7 yd, roll 14 yd.
+- The check was not saved. `test` refuses leading `{state}` steps unless `observe()` reports each key back, and `hole`, `skipIntro` and `sheepAt` are not reported.
+- There was no console error. The only console output was the known `toNonIndexed` warning.
+- I took no before/after `look` this session (there was not enough time). The change does not touch rendering unless `sheepAt` is passed.
+
+**Next**
+1. Save the sheep check. Either make the setup an `{action:"setup", hole, sheepAt}` step in `actFn` (src/api.js), or have `observe()` echo `sheepAt` and accept that `hole` is reported 1-based. Then save `sheep-bounce-on-demand` with the steps above and expect `sheepHits:[1,9]`. Save a bunker check the same way, expecting `lie:"sand"`.
+2. Replace the code-built `seaStacks`, `cliffRocks`, `teeMarker` and `pin_flag` with picks from the searches already in `sourcing.json` (Judge 5, Next 1, asked again).
+3. Add a strike camera punch: 0.3 units along the view direction, eased back over 0.15 s. Stop the golfer walking into the putt camera's line. Run both `feel` calls Judge 5 gave.
+
+**Open**
+- `sheepAt` only moves `sheep[0]`. Its home is (-16.5, 4.2), so once `wait` runs out it wanders back toward that range.

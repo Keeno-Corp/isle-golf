@@ -1,24 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 5
-
-**Did**
-- `src/pools.js` `updatePool`: every point pool (`landPuffs`, `divots`, `ballTrail`) now sets `geometry.setDrawRange(0, lastLiveIndex+1)` and `pts.visible = hi > 0`. A pool with no live particles is hidden instead of drawing 60–160 points parked at y −999, and its live count is the geometry's draw count. This targets the "divots Never visible" fault and the missing `landPuffs` count.
-- No other files changed. Session 4's stub, filled in from the git diff: `fencePanels` (an InstancedMesh from `assets/fence-4d3f7d.glb`, 14 panels, its own textured MeshStandardMaterial) replaced the hidden `fencePosts`/`fenceRails`. The follow-through ramp is now 0.1 s, and the `creatures-real-key-drive-pose` check waits 20 frames.
-
-**Saw**
-- Hole 1 iron shot (`{hole:0,skipIntro:true}`, wait 150, aim pin, swing 0.75): the first land event (`feel.last` "land:green") fires at frame 238. 3 frames later, `eval` reads `landPuffs` visible with drawRange 20 and `divots` visible with drawRange 39. At settle (frame 330+) both read hidden with drawRange 0. Land puffs and the land sound (`play('land', surf)` in physics.js:148) already fire on every landing, tinted by surface.
-- `feel` on the same steps (frames 90) still lists no `landPuffs` rise. Its Spawned line names `divots` and is cut off with "…", so `landPuffs` may be in it but not shown. The Camera line still reads "moved up to 67.8 … did not come back". The camera follows the ball 12 units down the hole, so out-and-back cannot happen in this window.
-- `test`: 70 of 70 checks pass. The only console output is the three.js `toNonIndexed` warning. I did not run `look` compare or `perf` this session.
-
-**Next**
-1. Judge items 1 and 3 are untouched. Pick library models for `seaStacks`/`cliffRocks`, `teeMarker` and `pin_flag`; their searches are in `sourcing.json`. Then add a `sheepAt` setState option for a saved sheep-bounce check, plus a bunker check expecting `lie:"sand"`.
-2. Camera "came back": measure the punch on its own. A `feel` with frames 20 right after the swing should show the strike lurch returning within the 0.25 s aim-hold before the follow starts (camera.js:65). Or accept the follow camera as by design.
-
-**Open**
-- I have not confirmed with a `look` that hidden empty pools changed nothing on screen. They draw nothing when empty, so I expect no change.
-- I don't know why `feel` doesn't name `landPuffs` even though its draw count goes 0→20 at the landing. It may be the Spawned list being cut off.
-
 ### Judge 5
 
 The page loads in 1.2 s with no console errors. The only console output is the three.js `toNonIndexed` warning. Iteration 5 changed one thing: point pools now hide when empty. Two effects of that show in the measurements. `divots` now registers as a particle burst, "divots 0 → 8 at frame 164" in a 25-frame `feel`. `landPuffs` is listed on screen in the "landing +3" cell. The first cell of each sheet still comes out pale (saturation 12%, a flat #b5c8bc frame). This is the known capture problem: the same views paint correctly in every other cell.
@@ -79,3 +60,26 @@ Next:
      - Landing: `feel` with the same steps plus `{wait:80}` and `frames: 30`. The landing at about frame 238 then falls inside the watched frames, and Particles should list a `landPuffs` rise and a sound there.
 
 SCORE: 7.6
+
+## Iteration 6
+
+**Did**
+- `src/sheep.js`: new `setState({sheepAt:[x,z]})` hook. It plants `sheep[0]` at that point with its target set to the same point, `wait` 60 s (grazing in place) and `init` true, so a shot can be aimed through it.
+
+**Saw**
+- On hole 1 the tee is (-12.84, 15.36) and the pin is (-2.14, 14.43). I used `interact` with `{state:{hole:0,skipIntro:true,sheepAt:[-9.85,15.1]}}, wait 30, aim at pin, swing putter power 0.6, wait 240` and traced `sheepHits` and `banner`.
+  - `sheepHits` went 0 → 1 at frame 65.
+  - The banner read "PERFECT!" until frame 65, then "BAA!" until frame 193.
+  - `lastSheepHit` had `tumble:true`, and `sheep[0]` went to "flee".
+  - The ball bounced back off the sheep to (-14.58, 15.49), in the rough: carry 7 yd, roll 14 yd.
+- The check was not saved. `test` refuses leading `{state}` steps unless `observe()` reports each key back, and `hole`, `skipIntro` and `sheepAt` are not reported.
+- There was no console error. The only console output was the known `toNonIndexed` warning.
+- I took no before/after `look` this session (there was not enough time). The change does not touch rendering unless `sheepAt` is passed.
+
+**Next**
+1. Save the sheep check. Either make the setup an `{action:"setup", hole, sheepAt}` step in `actFn` (src/api.js), or have `observe()` echo `sheepAt` and accept that `hole` is reported 1-based. Then save `sheep-bounce-on-demand` with the steps above and expect `sheepHits:[1,9]`. Save a bunker check the same way, expecting `lie:"sand"`.
+2. Replace the code-built `seaStacks`, `cliffRocks`, `teeMarker` and `pin_flag` with picks from the searches already in `sourcing.json` (Judge 5, Next 1, asked again).
+3. Add a strike camera punch: 0.3 units along the view direction, eased back over 0.15 s. Stop the golfer walking into the putt camera's line. Run both `feel` calls Judge 5 gave.
+
+**Open**
+- `sheepAt` only moves `sheep[0]`. Its home is (-16.5, 4.2), so once `wait` runs out it wanders back toward that range.
