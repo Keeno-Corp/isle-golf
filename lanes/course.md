@@ -6,6 +6,7 @@
 - `aimTarget(H, pos, clubIdx)` exports the auto-aim target; `wayMark` displays it. Observe `course.waypoint` is its [x,z] or null when aiming at the pin.
 - Observe `course` includes `pinVisible`, `pinScreen`, `cViewPinOk`, `flag`, `waypointSurface`, `waypoint`, `cViewCentre` and `cViewSpan`. Camera lane can use the last two for framing.
 - `SPREAD = 1.2` remains the course scale. The historical C-view 2.6x note below is superseded by the true-size flag.
+- Course scale `K = 1.5` (course.js, owner 2026-11-15: "bigger course relative to our player"): the layout (`SPREAD = 1.2 * K`), island, terrain, fairways, greens, sand, tees, pond, club carries, auto-club and aim distances, fog, sun shadow box and the wide cameras all grow by K; trees by `KT = 1.4`. Person-sized things (golfer, ball, cup, flag, signs, benches, sheep, cow, ducks, cup physics, `puttRange`) do not. `YD = 12 / K`, so HUD yardages and pars are unchanged. A saved check that places the ball scales its x/z by K, except putts, which keep their old distance from the (moved) pin.
 
 ## Provides
 - `pins.js` `aimTarget(H, pos, clubIdx)` -> `{x, z, pin}`: the point autoAim() aims at (same rule: the fairway point 0.8 x carry along `H.samp`, or the pin when near / putting).
