@@ -144,3 +144,7 @@ Next:
    - Clear `lastResult` on `next`.
 
 SCORE: 7.1
+
+## Iteration 4
+
+Fence panels are placed along the line but render near-black. Checking their material.

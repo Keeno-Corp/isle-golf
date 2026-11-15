@@ -6,8 +6,8 @@ import { hash } from './util.js';
 import { ST, addUpdate } from './shared.js';
 import { HOLES, HOUSE, LH, POND, edgeR, heightAt, inland, mownSigned, surfaceAt } from './course.js';
 import { scene } from './stage.js';
-import { modelCopy as copy0, sheepGLB, treeA, treeB, lhGLB, stoneGLB, benchGLB, boatGLB, cottageGLB, bushGLB, hydrangeaGLB, signGLB, cattailGLB } from './assets.js';
-import { BUSHES, LH_TOP, clearOf, house, lighthouse, pond, sea, treeObjs } from './island.js';
+import { modelCopy as copy0, sheepGLB, treeA, treeB, lhGLB, stoneGLB, benchGLB, boatGLB, cottageGLB, bushGLB, hydrangeaGLB, signGLB, cattailGLB, fenceGLB } from './assets.js';
+import { BUSHES, LH_TOP, rails, clearOf, house, lighthouse, pond, sea, treeObjs } from './island.js';
 import { ROUND } from './physics.js';
 import { chimneyTop } from './effects.js';
 import { sheep } from './sheep.js';
@@ -106,3 +106,13 @@ HOLES.forEach(H => { const sg = scene.getObjectByName('holeSign' + (H.i + 1)); i
 { for (const n of ['pond_cattailStem', 'pond_cattail', 'pond_cattailLeaf']) { const o = pond.getObjectByName(n); if (o) o.visible = false; }
   [2.5, 3.3, 0.4, 1.3, 4.4].forEach((ca, j) => { for (let i = 0; i < 3; i++) { const a = ca + (hash(j, i + 20) - 0.5) * 0.4, d = POND.r + (hash(j, i + 30) - 0.6) * 0.35, m = modelCopy(cattailGLB, 0.75 + hash(j, i + 40) * 0.4, 'pond_cattailPlant');
     m.position.set(Math.cos(a) * d, -0.03, Math.sin(a) * d); m.rotation.y = hash(j, i + 50) * 6.28; pond.add(m); } }); }
+
+// fences: one library fence panel per code rail span (same line, same colliders in FENCE_SEGS), in place of the code posts and rails
+{ for (const n of ['fencePosts', 'fenceRails']) scene.getObjectByName(n).visible = false;
+  const F = unit(fenceGLB); F.geo.computeBoundingBox(); let b = F.geo.boundingBox;
+  if (b.max.z - b.min.z > b.max.x - b.min.x) { F.geo.rotateY(Math.PI / 2); F.geo.computeBoundingBox(); b = F.geo.boundingBox; }   // the panel's length along +x
+  const k = 0.66 / (b.max.y - b.min.y), fi = new THREE.InstancedMesh(F.geo, F.mat, rails.length); fi.name = 'fencePanels'; fi.castShadow = fi.receiveShadow = true;
+  const m = new THREE.Matrix4(), p = new THREE.Vector3(), q = new THREE.Quaternion(), s = new THREE.Vector3(), up = new THREE.Vector3(0, 1, 0);
+  rails.forEach(([x1, z1, x2, z2], i) => { const x = (x1 + x2) / 2, z = (z1 + z2) / 2; p.set(x, Math.min(heightAt(x1, z1), heightAt(x2, z2)) - 0.03, z); q.setFromAxisAngle(up, -Math.atan2(z2 - z1, x2 - x1));
+    fi.setMatrixAt(i, m.compose(p, q, s.set(Math.hypot(x2 - x1, z2 - z1) * 1.02, k, k))); });
+  scene.add(fi); }

@@ -20,10 +20,11 @@ export function showGolfer(on) { golfer.holder.visible = on; clubG.visible = on;
 export function hideGolfer() { showGolfer(false); }
 export function swingParam() {
   if (G.phase === 'swing') { const t = G.swingT; const back = -(0.45 + 0.55 * G.pend.power); return t < 0.2 ? back * (1 - (t / 0.2) ** 2) : Math.min(1, (t - 0.2) / 0.3) * 0.9 * (0.5 + 0.5 * G.pend.power); }
-  if (G.phase === 'flight' || G.phase === 'settle') { const t = G.flightT; return 0.9 * (0.5 + 0.5 * (G.pend ? G.pend.power : 1)) * (1 - smooth(1.0, 1.8, t)); }
+  if (G.phase === 'flight' || G.phase === 'settle') { const t = G.flightT; return Math.min(1, t / 0.1) * 0.9 * (0.5 + 0.5 * (G.pend ? G.pend.power : 1)) * (1 - smooth(1.0, 1.8, t)); }   // flight starts at impact, so the follow-through carries on from the swing's ramp
   if (G.phase === 'aim') return G.m.stage >= 1 ? -(0.7 + 0.3 * Math.sqrt(G.m.power)) * Math.min(1, 0.15 + entryT / 7) : -golfer.pose.back * 0.4;
   return 0;
 }
+let sPrev = 0;   // last frame's swing param
 let entryT = 0;   // frames since the meter started, eases the backswing in
 const GS = 1.9;   // the golfer's size on screen (holder scale; the club follows)
 const STANCE = 0.66;   // how far the golfer stands from the ball (a touch wider than before)
@@ -67,6 +68,8 @@ export function updateGolfer(dt) {
   const clip = golfer.cur, w = clamp(golfer.t / Math.max(0.01, golfer.fade || 0.2), 0, 1), we = w * w * (3 - 2 * w), tt = ST.gameTime;
   const walking = !!golfer.walking && clip === 'Idle_Loop'; golfer.walk += ((walking ? 1 : 0) - golfer.walk) * (1 - Math.exp(-dt * 8)); if (walking) golfer.ph += dt * 8.5;
   let s = swingParam() * (putt ? 0.28 : 1);
+  if (s < sPrev) s = Math.max(s, sPrev - dt * 14);   // a swing started without the meter eases up into the backswing over ~4 frames instead of snapping
+  sPrev = s;
   // the swing pose (also the address and the waggle)
   const wag = (G.phase === 'aim' && (!G.m || G.m.stage === 0) ? Math.sin(tt * 2.2) * 0.012 : 0);
   let P = { lean: (putt ? POSE.lean + 0.2 : POSE.lean) + 0.05 * Math.abs(s), hipY: s * 0.5, spY: s * 1.0, headY: -s * 0.6, headX: 0.38, drop: putt ? 0.01 : 0.03, bend: putt ? 0.28 : 0.4, bodyY: 0, bodyZ: 0, sway: s * 0.02 };

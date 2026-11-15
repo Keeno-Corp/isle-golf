@@ -14,3 +14,4 @@
 - Hydrangea: "Hydrangea" by hui.an.michelle.li (https://sketchfab.com/3d-models/d2213888b4974bd8a58a8c82e70a79db) is licensed under CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/). Optimized for the web by paprika3D.
 - Stylized Sign: "Stylized Sign" by iyodjung (https://sketchfab.com/3d-models/8bdde6bbaae84d07b306b94fd10dff95) is licensed under CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/). Optimized for the web by paprika3D.
 - Cattail Plant: "Cattail Plant" by SXuno (https://sketchfab.com/3d-models/c50630051edd4a7daa9708f6b31c021f) is licensed under CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/). Optimized for the web by paprika3D.
+- Fence: "Fence" by Cavalqs (https://sketchfab.com/3d-models/4d3f7dd97acf49b6bb4312680ec63916) is licensed under CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/). Optimized for the web by paprika3D.
