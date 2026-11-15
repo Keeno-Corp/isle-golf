@@ -1,69 +1,79 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-### Judge 8
-
-Iteration 8's section in PROGRESS.md is only a placeholder ("running the full test suite now"). It has no Did, Saw or Open, so this verdict is based on the page alone.
-
-Three of Judge 7's asks are done:
-- **Code meshes replaced.** `seaStacks`, `cliffRocks`, `teeMarker`, `pin_flag`, `pin_pole` and `way_post` are hidden. In their place are `seaStacksLib`, `cliffRocksLib`, `teeStone` and a library `flagPole` with `flagPennant`. The "pin1 close" camera shows a red triangle pennant on a 1.1 pole over a 0.23 `cup`.
-- **Golfer polish started.** `footballer_outline` exists. On the aim views the golfer now takes 0.54% of the frame, up from 0.36%. The walk is quick: after the putt's aim began, the golfer covered 1.9 units and stopped at frame 11, at the ball.
-- **Waypoint marker.** `way_diamond` is 0.25 tall.
-
-Not done: the strike punch and the `aimLanding` teleport are unchanged.
-
-The pale haze frames (`#b5c8bc`, 12% saturation) are a capture effect. The same moment came back at 47% saturation once the step drew (`draw: true`), so they are not a game fault.
-
-1. **Looks as LOOK.md says: 7.** On "h1 aim" saturation is 46%. The tilt-shift band is sharp on `player` and blurred above and below. The `sea` is teal past `cliffFace` in "stacks low". There are no `Lighting:` or `Surfaces:` lines. The title cell is still pale, at 12% saturation.
-2. **Plays as DESIGN.md says: 8.** D aimed and W changed club. Space ×3 took `meter.stage` 0 → 3 at frame 215, with `meter.power` peaking at 0.449. Phases went swing, flight, settle, then aim at frame 405. The banner read "IN THE ROUGH: SHORTER SHOT".
-3. **Camera: 8.** The aim view is high behind the ball (pitch 21.2° on the putt). "h1 flight" follows the `ballTrail`. "h1 intro" pulls back with the "PAR 3 · 129 YD · PEBBLE STEP" card. "C hole cam h6" shows the hole from above, round `pond_water`.
-4. **Ball flight by surface: 8.** The ball went from fairway to green, and the rough lie gives a shorter shot. A sand lie is still not shown.
-5. **Nine playable holes: 8.** Holes 1, 6 (Duck Pond Bend, par 4, 206 yd) and 9 (Lighthouse Home, par 5, 474 yd) each look different. There are 10 sheep walking in `creatures.sheep`.
-6. **Stroke play and hot seat: 8.** Hot seat is checked for the first time. With 2 players, `hudRound.turn` went ISLA → FINN at frame 330, then back to "ISLA TO PLAY" because Isla was farther from the pin. Both balls show on the green.
-7. **HUD: 8.** `#holep` is top left with the player's colour dot. `#windp` ("2 MPH CROSS →") is top right. `#clubp` is bottom left and `#hinter` bottom right. There is no overlap.
-8. **`window.__game` and 60 fps: 9.** `act`, `setState` and `observe` all drove play. `perf` measured a 7.7 ms median frame, 4.67 MB of assets and a 1.9 s load. The 40.1 ms p95 was taken with the host load at 11.5 on 8 cores, so it is noise.
-9. **Golfer matches CHARACTERS.md: 8.** `footballer_helmetShell` is teal, the jersey is in the kit colour with dark panels, and `footballer_outline` is present. No brands appear on screen.
-10. **Game feel: 7.**
-    - Strike: `feelBits` 0 → 30 and `divots` 0 → 8 at frame 164, with 10 sounds.
-    - Camera: "moved up to 67.215 … at frame 134 and did not come back", so there is still no punch.
-    - Teleport: `aimLanding` still jumps 0.58 units at frame 151.
-11. **Richer look: 7.** The new `flagPennant` and library rocks help. Otherwise it is the same set of library trees, `bushes`, `hydrangeas`, `teeBench` and `slopeGridLines` as last time.
-12. **Course and play: 8.** In "putt address" the golfer is now at the ball, which Judge 7 asked for. The `slopeGridLines` arrows make the green slope readable, and the putt view stays clear.
-13. **Better assets: 8.** The four code meshes are replaced by library models. `lighthouse_cottageWalls`, `lighthouse_cottageRoof` and `lighthouse_cottageDoor` are still code: a plain white box with a teal roof in the "cottage" camera.
-14. **The golfer looks its best: 6.**
-    - Size: 0.54% of the frame on "h1 aim", "h6 aim" and "h9 aim", under the 0.6% asked for. It is 1.3% on the putt and never blocks the view.
-    - Outline: `footballer_outline` covers only a box of about [470, 441, 542, 491] on a golfer whose box is [439, 382, 565, 636], so it is not a full silhouette.
-    - Idle: not checked.
-    - On the aim views the golfer is still a small orange figure.
-15. **Everything scaled against the golfer: 7.**
-    - Believable: the golfer is 0.78 tall, the pin 1.1, `way_diamond` 0.25, `sign_board` 0.46 × 0.23 and `teeBench` 0.42.
-    - Larger by design: the `cup` (0.23) and the ball are drawn about 4–5× real size.
-    - Not checked against refs/02–03: bunker and green sizes are still not recorded.
-
-**Faults: 8.**
-- There are no console errors; the only warning is the known `toNonIndexed` one.
-- The `aimLanding` teleport remains.
-- PROGRESS.md's Iteration 8 is a one-line placeholder, so its Did and Open are missing.
-- The sheep-bounce and sand-lie checks are still not saved.
-
-Next:
-1. **Item 14, the golfer reading clearly on the aim views.** This is the lowest score.
-   - Aim camera: in `src/camera.js`, bring the full-shot aim camera's D in until the golfer covers at least 0.8% of the frame, keeping the ball's y between −0.6 and 0.6.
-   - Outline: make `footballer_outline` an inverted hull over the whole skinned mesh (helmet, arms and legs, not only the torso).
-   - Idle: add a slow breathing idle at address.
-   - Check it: the "h1 aim" sheet cell (state `{hole:0, skipIntro:true}`, frames 150) should show the golfer at ≥0.8%, and `look` `zoom` on its box should show a dark edge all round.
-2. **(asked again) The strike camera punch and the `aimLanding` teleport.** Judges 6 and 7 asked for this, and Iteration 8 left it untouched.
-   - Punch: at the swing → flight frame, push the camera 0.3 units along the view direction and ease it back over 0.15 s.
-   - Teleport: fade or hide `aimLanding` at the swing instead of moving it.
-   - The call that shows it done: `feel` with `{state:{hole:0,skipIntro:true}}, {wait:150}, {action:"aim",at:"pin"}, {action:"swing",power:0.75,accuracy:0}` and `frames:40`. Its Camera line should end "… and came back", and Teleports should be 0.
-3. **Item 15 and item 13: the scale record and the last code-built building.**
-   - Cottage: replace `lighthouse_cottage*` with a library cottage. Reuse the already loaded `fantasy-cottage-gart130-56175c.glb` at about 2.6 wide, or `pick` from the sourcing.json "stylized stone cottage" searches. Then hide the code meshes. Check it with the saved "cottage" camera.
-   - Bunkers and greens: measure them in the "C hole cam h6" cell and write the numbers next to refs/02–03 in CHARACTERS.md.
-   - Saved checks: save a sand-lie check with `interact` `save`, expecting `lie: "sand"` and a shorter carry.
-
-Not checked this session: a sand lie, a full 4-player round, and the golfer's idle.
-
-SCORE: 7.7
-
 ## Iteration 9
 
 All checks but one pass; looking at the one that fails (the near-plane fade test) now.
+
+### Judge 9
+
+Iteration 9's section in PROGRESS.md is only one line ("looking at the one that fails"). It has no Did, Saw or Open, so this verdict is based on the page alone.
+
+What changed since Judge 8:
+- **Golfer size.** The golfer now covers 0.85% of the frame on "h1 aim", "h3 aim", "h6 aim" and "h9 aim", up from 0.54%.
+- **Outline.** `footballer_outline` is now a SkinnedMesh over the whole body.
+- **Teleport.** `feel` on the strike reports 0 teleports.
+- **Course edges.** The course paint is smooth. A 4× zoom on the "green1 top" camera shows a soft gradient from green to fringe, with no stair steps.
+
+1. **Looks as LOOK.md says: 8.**
+   - "h1 aim" is at 46% saturation, with a warm yellow rough and the tilt-shift band sharp on `player`.
+   - The `sea` is teal in "stacks low", and there are no `Lighting:` or `Surfaces:` lines.
+   - The title cell and some live captures come back pale (`#b5c8bc`, 12% saturation). This is the known capture effect: the same frames read 46–49% once drawn.
+2. **Plays as DESIGN.md says: 8.**
+   - D aimed and W changed club.
+   - Space ×3 took `meter.stage` 0 → 3 at frame 215, with `meter.power` peaking at 0.449.
+   - Phases went swing, flight, settle, then aim at frame 405. The banner read "IN THE ROUGH: SHORTER SHOT".
+   - "C hole cam h6" shows the hole from above, round `pond_water`.
+3. **Camera: 8.**
+   - The aim view is at pitch 18.6° with fov 33. The ball sits at y −0.564 and the pin at y 0.679.
+   - "h1 flight" follows `ballTrail` to `landRingPreview`.
+   - "h1 intro" pulls back to the diorama with the "PAR 3 · 129 YD · PEBBLE STEP" card.
+4. **Ball flight by surface: 8.** The ball goes from fairway to rough, the rough lie gives a shorter shot, and the putt lands on the green with `slopeGridLines`. A sand lie is still not shown.
+5. **Nine playable holes: 8.**
+   - Holes 1, 3 (Bluff Edge, par 3), 6 (Duck Pond Bend, par 4, 206 yd) and 9 (Lighthouse Home, par 5, 474 yd) each look different.
+   - 10 sheep walk or graze in `creatures.sheep`.
+6. **Stroke play and hot seat: 8.** Not re-checked this session; Judge 8 confirmed the ISLA → FINN turn order.
+7. **HUD: 8.** `#holep` is top left, `#windp` ("2 MPH TAILWIND") top right, `#clubp` bottom left (with "LIE · TEE") and `#hinter` bottom right. Nothing overlaps.
+8. **`window.__game` and 60 fps: 9.**
+   - `setState`, `act` and `observe` all drove play.
+   - `perf` measured a 3.8 ms median frame, 4.67 MB of assets and a 1.9 s load.
+   - The 19.3 ms p95 was taken with the host load at 7.3 on 8 cores, so it is noise.
+9. **Golfer matches CHARACTERS.md: 8.** The golfer wears a teal `footballer_helmetShell` and an orange kit jersey with dark panels, and has `footballer_helmetOutline`. No brands appear on screen.
+10. **Game feel: 8.**
+    - Strike: `feelBits` 0 → 30 and `divots` 0 → 8 at frame 164, with 10 sounds.
+    - Teleports: none.
+    - Camera: it moved up to 0.493 at frame 171 (down from 67 units at Judge 8). `feel` still says it "did not come back".
+    - Flashes: none on the strike or the "PERFECT!" banner.
+11. **Richer look: 8.** The baked course paint gives soft fringe rings round the greens and bunkers in "green1 top", and "h1 putt" reads cleanly.
+12. **Course and play: 8.** In "h1 putt" the golfer stands at the ball (1.3% of the frame), the `slopeGridLines` arrows show the slope, and the putt view stays clear.
+13. **Better assets: 8.** `lighthouse_cottageWalls`, `lighthouse_cottageRoof`, `lighthouse_cottageDoor` and `lighthouse_cottageWindow` are still code: a white box with a teal roof in the "cottage" camera, and visible behind the tee in "h3 aim".
+14. **The golfer looks its best: 8.**
+    - Size: 0.85% on all four aim views and 1.3% on the putt; it never blocks the view.
+    - Contrast: the golfer's brightness is 36% against 56% around it, with a dark edge on the legs and arms.
+    - Idle: `golferClip` stayed "address" for 150 frames. The breathing idle was not measured.
+15. **Everything scaled against the golfer: 7.**
+    - Believable: the golfer is 0.78 tall, `flagPole` 1.1, `sign_board` 0.46 and `golferShadow` 0.84.
+    - Too small: `lighthouse_cottageDoor` is 0.72 tall, shorter than the golfer.
+    - Not checked against refs/02–03: bunker and green sizes are still not recorded.
+16. **Smooth edges between greens, tees, bunkers and fairways: 9.** "green1 top" zoomed 4× shows a soft blend from the green through a darker fringe into the rough. "green1 low edge" and "pin1 close" show no pixelated borders.
+
+**Faults: 7.**
+- There are no console errors; the only warning is the known `toNonIndexed` one.
+- The saved suite still fails `look-dither-nearplane` (69 of 70), which is what Iteration 9's one line says it was working on.
+- Iteration 9 is a placeholder again, the second session in a row.
+- The sand-lie and sheep-bounce checks are still not saved.
+
+Next:
+1. **(asked again) Items 13 and 15: the lighthouse cottage.** It is the last code-built building, and its 0.72 door is shorter than the golfer.
+   - Swap: clone the already loaded `fantasy-cottage-gart130-56175c.glb` at about 2.6 wide beside `lighthouse_tower`, or run `asset_search` for "stylized stone cottage" or "lighthouse keeper house" (sourcing.json already holds two cottage searches, so use new words). Then hide `lighthouse_cottage*`.
+   - The call that shows it done: `look` with camera "cottage". Its On screen list should have no `lighthouse_cottageWalls`, and the library cottage's door should be at least 1.0 tall.
+2. **Faults: fix the failing `look-dither-nearplane` check and write Iteration 9's real Did, Saw and Open.**
+   - Work out whether the near-plane fade broke when the aim camera moved closer this session. If so, fix the fade; otherwise re-save the baseline with the reason in Open.
+   - The call that shows it done: `test` reports 70 of 70.
+3. **(asked again) Item 15 and item 4: the scale record and a saved sand-lie check.**
+   - Measure the bunker and green sizes in "C hole cam h6" and "green1 top", and write them next to refs/02–03 in CHARACTERS.md.
+   - Save an `interact` check named `sand-lie` that puts the ball in a hole 1 bunker. It should expect `lie: "sand"` and a lower `physics.carryYd` than from the fairway.
+   - The call that shows it done: that `interact` with `save` returns ✓ on both entries.
+
+Not checked this session: a sand lie, the sheep bounce, a full 4-player round, the breathing idle, and the colour of `footballer_outline` up close (that zoom came back pale).
+
+SCORE: 8.0
