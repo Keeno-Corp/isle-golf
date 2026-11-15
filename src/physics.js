@@ -16,7 +16,7 @@ import { setSub, showBanner } from './hud.js';
 export const treeBlockers = treeObjs.map(t => ({ t, x: t.x, z: t.z, cy: heightAt(t.x, t.z) + 2.05 * t.s, R: 1.0 * t.s, trunk: 0.22 * t.s, top: 1.6 * t.s }));
 export const BOXES = [
   { name: 'house', x: HOUSE.x, z: HOUSE.z, hx: HOUSE.w / 2 + 0.05, hz: HOUSE.d / 2 + 0.05, top: H_HOUSE + 3.0 },
-  { name: 'cottage', x: LH_COT.x, z: LH_COT.z, hx: LH_COT.w / 2 + 0.05, hz: LH_COT.d / 2 + 0.05, top: H_COT + 2.2 },
+  { name: 'cottage', x: LH_COT.x, z: LH_COT.z, hx: LH_COT.w / 2 + 0.05, hz: LH_COT.d / 2 + 0.05, top: H_COT + 4.6 },
 ];
 export const ROUND = [{ name: 'lighthouse', x: LH.x, z: LH.z, r: LH.r + 0.12, top: H_LH + 7 }, { name: 'bell', x: BELL.x, z: BELL.z, r: 0.3, top: 6 }];
 

@@ -100,7 +100,7 @@ export const pathCurves = [
   [[-9.5, -11.9], [-8.4, -10.9], [-6.4, -10.4], [-3.2, -10.6]].map(q => q.map(v => v * SPREAD)),                             // from the house door out to the lane
   [[-3.2, -10.6], [-0.4, -11.8], [1.4, -12.8], [2.6, -14.2]].map(q => q.map(v => v * SPREAD)),                               // up the hill to the bell
   [[19.2 * SPREAD, -8.9 * SPREAD], [20.2 * SPREAD, -9.3 * SPREAD], [LH.x - 0.9, LH.z + 0.7]],                                    // the last green to the lighthouse door
-  [[LH_COT.x - 0.4, LH_COT.z + 1.0], [LH_COT.x - 2.6, LH_COT.z + 2.2], [LH_COT.x - 4.0, LH_COT.z + 3.6]],   // from the cottage
+  [[LH_COT.x - 1.2, LH_COT.z + 2.3], [LH_COT.x - 2.8, LH_COT.z + 3.0], [LH_COT.x - 4.4, LH_COT.z + 3.8]],   // from the cottage door
 ];
 export const pathPts = [];
 for (const c of pathCurves) {
@@ -327,7 +327,7 @@ cliffRing('cliffFace', 0, 0, edgeR, 900);
 // ---------------------------------------------------------------- bushes along the cliff lip, flowers
 export const nearPath = (x, z, d) => pathDist(x, z) < d;
 export const clearOf = (x, z) => outFlat(x, z) > 0.8 && Math.hypot(x - HOUSE.x, z - HOUSE.z) > 2.8 && Math.hypot(x - POND.x, z - POND.z) > POND.r + 0.8 && Math.hypot(x - BELL.x, z - BELL.z) > 1.6
-  && Math.hypot(x - LH.x, z - LH.z) > 1.9 && Math.hypot(x - LH_COT.x, z - LH_COT.z) > 2.1;
+  && Math.hypot(x - LH.x, z - LH.z) > 1.9 && Math.hypot(x - LH_COT.x, z - LH_COT.z) > 3.6;
 export const BUSHES = [];
 {
   // a lumpy leaf-mass: noise-displaced, flat-bottomed, dark underneath and sun-lit on top (instance colour multiplies this)

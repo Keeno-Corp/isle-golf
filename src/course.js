@@ -20,7 +20,7 @@ export const COW = { x: SP(-19.0), z: SP(10.6), yaw: 2.3 };   // the cow grazes 
 export const BELL = { x: SP(3.0), z: SP(-15.4) };
 export const HILL = { x: SP(2.6), z: SP(-15.0) };
 export const LH_TH = -0.42, LH_R = edgeR(LH_TH) - 2.3;
-export const LH = { x: Math.cos(LH_TH) * LH_R, z: Math.sin(LH_TH) * LH_R, r: 0.72 }, LH_COT = { x: SP(25.4), z: SP(-4.6), w: 2.6, d: 1.3 };
+export const LH = { x: Math.cos(LH_TH) * LH_R, z: Math.sin(LH_TH) * LH_R, r: 0.72 }, LH_COT = { x: SP(25.4), z: SP(-4.6), w: 6.4, d: 4.1 };
 // the nine holes: tee, the fairway's centre line (tee to green), its half width, the green (radius, tilt as rise per metre), the pin's offset on the green, sand pots [x, z, rx, rz, turn]
 export const HOLES = [
   { name: 'Pebble Step', par: 3, hw: 1.3, path: [[-10.7, 12.8], [-7, 13.0], [-2.2, 12.4]], green: { r: 2.1, sx: 0.035, sz: -0.03 }, pin: [0.5, -0.45], bunkers: [[-3.9, 11.0, 0.9, 0.6, 0.3], [-0.1, 14.0, 0.85, 0.55, -0.2]], wind: [2.0, 40] },

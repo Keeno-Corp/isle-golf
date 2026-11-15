@@ -3682,7 +3682,7 @@
         {
           "path": "look.dither.nearFades.1",
           "op": "==",
-          "value": "tree4_leaves0"
+          "value": "house_walls"
         },
         {
           "path": "look.dither.radius",

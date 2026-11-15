@@ -6,9 +6,9 @@ import { hash } from './util.js';
 import { ST, addUpdate } from './shared.js';
 import { HOLES, HOUSE, LH, POND, edgeR, heightAt, inland, mownSigned, surfaceAt } from './course.js';
 import { scene } from './stage.js';
-import { modelCopy as copy0, sheepGLB, treeA, treeB, lhGLB, stoneGLB, benchGLB, boatGLB, cottageGLB, bushGLB, hydrangeaGLB, signGLB, cattailGLB, fenceGLB, rockGLB, flagGLB } from './assets.js';
+import { modelCopy as copy0, sheepGLB, treeA, treeB, lhGLB, stoneGLB, benchGLB, boatGLB, cottageGLB, bushGLB, hydrangeaGLB, signGLB, cattailGLB, fenceGLB, rockGLB, flagGLB, keeperGLB } from './assets.js';
 import { FLAG, flagMat, flagWhite } from './pins.js';
-import { BUSHES, LH_TOP, rails, clearOf, house, lighthouse, pond, sea, treeObjs } from './island.js';
+import { BUSHES, LH_TOP, rails, clearOf, house, lhCottage, lighthouse, pond, sea, treeObjs } from './island.js';
 import { ROUND } from './physics.js';
 import { chimneyTop } from './effects.js';
 import { sheep } from './sheep.js';
@@ -54,6 +54,10 @@ treeObjs.forEach((t, i) => {
   // the chimney smoke rises from the model's highest point
   house.updateMatrixWorld(true); const v = new THREE.Vector3(); let top = -1e9;
   m.traverse(o => { if (!o.isMesh) return; const p = o.geometry.attributes.position; for (let i = 0; i < p.count; i++) { v.fromBufferAttribute(p, i).applyMatrix4(o.matrixWorld); if (v.y > top) { top = v.y; chimneyTop.copy(v); } } }); }
+
+// the lighthouse keeper's cottage: the library's blue-roofed house over the code cottage's footprint (its collider stays)
+{ for (const c of lhCottage.children) c.visible = false;
+  const m = modelCopy(keeperGLB, 4.8, 'lighthouse_cottage'); m.position.y = -0.06; lhCottage.add(m); }   // 4.8 tall: its door 1.0, above the 0.85 golfer
 
 // standing stones in the deep rough (each a round collider), a bench by every tee, two rowing boats off the cliffs
 export const stones = [];

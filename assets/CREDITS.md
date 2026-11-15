@@ -17,3 +17,4 @@
 - Fence: "Fence" by Cavalqs (https://sketchfab.com/3d-models/4d3f7dd97acf49b6bb4312680ec63916) is licensed under CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/). Optimized for the web by paprika3D.
 - Stylized Rock | Agustin Hönnun: "Stylized Rock | Agustin Hönnun" by Agustín Hönnun (https://sketchfab.com/3d-models/ae21c3d47cb14323a3bb06ccb562e368) is licensed under CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/). Optimized for the web by paprika3D.
 - Triangle flag: "Triangle flag" by cham1105 (https://sketchfab.com/3d-models/adadd59fd56d44f7b0354d1caba38f95) is licensed under CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/). Optimized for the web by paprika3D.
+- Stylized House FREE: "Stylized House FREE" by Leontev Artem (https://sketchfab.com/3d-models/b4a97972b78b4b899ef8f9cadc3a828d) is licensed under CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/). Optimized for the web by paprika3D.
