@@ -66,4 +66,6 @@ HOLES.forEach(H => { const wv = H.wv; });
 updateCamera(1); cam.pos.copy(cPos); cam.look.copy(cLook);
 patchAll();   // the occluder dither patches every material: done before the warm-up compile below, so frame 1 does not recompile them all
 { const hid = []; scene.traverse(o => { if (!o.visible) { hid.push(o); o.visible = true; } }); renderer.compile(scene, camera); hid.forEach(o => o.visible = false); }
+// ?hole=1..9 starts on that tee with the camera already behind the ball (a link to a hole; `feel` then measures a swing from the tee)
+if (QS.get('hole')) { window.__game.setState({ hole: +QS.get('hole') - 1, skipIntro: true }); updateCamera(1); cam.pos.copy(cPos); cam.look.copy(cLook); }
 requestAnimationFrame(frame);

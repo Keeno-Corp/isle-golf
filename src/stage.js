@@ -6,7 +6,7 @@ import { ST } from './shared.js';
 import { houseLamp, seaMat, windowMat } from './island.js';
 
 // ---------------------------------------------------------------- renderer, scene, camera
-export const renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: 'high-performance', preserveDrawingBuffer: true })   // the last frame stays in the canvas, so a capture between frames is never an empty canvas;
+export const renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: 'high-performance', preserveDrawingBuffer: true });   // the last frame stays in the canvas, so a capture between frames is never an empty canvas
 export const PR = Math.min(devicePixelRatio || 1, 1.5);
 renderer.setPixelRatio(PR); renderer.setSize(innerWidth, innerHeight);
 renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFShadowMap;

@@ -3680,7 +3680,7 @@
       "frames": 0,
       "expect": [
         {
-          "path": "look.dither.nearFades.0",
+          "path": "look.dither.nearFades.1",
           "op": "==",
           "value": "tree4_leaves0"
         },

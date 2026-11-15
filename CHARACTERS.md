@@ -2,10 +2,10 @@
 
 ## Golfer (player)
 Role: the player, one figure repainted in each player's kit colour (ISLA red, FINN blue, MOSS yellow, WREN pink).
-Silhouette: the island's skinned figure (assets/player-anim.glb), 0.85 units tall at course scale, big round cap-like head, thick limbs; stands beside the ball facing it, club in the right hand.   (builder's call)
-Colours: shirt in the kit colour, cap cream (or dark green for MOSS), trousers cream-khaki, ink-dark outline in the shader.
+Silhouette: the island's footballer (assets/player-anim.glb), restored by the owner and kept as the golfer: 0.85 units tall at course scale, a big round teal helmet (footballer_helmetShell) with a face guard, shoulder pads, thick limbs; stands beside the ball facing it, club in the right hand.   (builder's call)
+Colours: jersey in the kit colour with the player's number, helmet teal, trousers black, ink-dark outline in the shader.
 Materials: matte; alpha 0 so the painterly pass leaves it crisp.
-Animation: Idle_Loop clip plus procedural bone nudges for the lean, twist and the swing; Celebration (birdie or better) and Dance_Loop (par) after a hole-out.
+Animation: Idle_Loop clip plus procedural bone nudges for the lean, twist and the swing (address, backswing, impact, follow), a walk to the ball after each shot; Celebration (birdie or better) and Dance_Loop (par) after a hole-out.
 Source: existing project asset assets/player-anim.glb (Happy Cheff, CC BY, see assets/CREDITS.md), reused as the golfer as asked; fallback none needed · picked by builder (asset search found nothing usable offline).
 Turnaround: refs/sheets/LOOK.png (in-game views)
 
