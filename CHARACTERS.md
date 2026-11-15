@@ -11,12 +11,12 @@ Turnaround: refs/sheets/LOOK.png (in-game views)
 
 ## Golf ball
 Role: the thing the player follows; must read at every camera distance.
-Silhouette: sphere radius 0.07 (exaggerated), unlit warm white with a soft shadow blob and a player-colour ring.
+Silhouette: drawn at radius 0.049 (physics radius 0.07; still exaggerated so it reads), unlit warm white with a soft shadow blob and a player-colour ring.
 Source: code: by design · picked by builder.
 
 ## Flag and cup
 Role: the target on each green; the one vertical accent.
-Silhouette: thin white pole 1.25 units, a red cloth flag that waves in the hole's wind and points downwind, a dark cup disc with a white rim.
+Silhouette: thin white pole 1.1 units (1.3x the 0.85 golfer), a red cloth flag that waves in the hole's wind and points downwind, a dark cup disc with a white rim.
 Source: code: by design · picked by builder.
 
 ## Club

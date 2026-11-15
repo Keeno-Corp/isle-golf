@@ -26,8 +26,8 @@ export function swingParam() {
 }
 let sPrev = 0;   // last frame's swing param
 let entryT = 0;   // frames since the meter started, eases the backswing in
-const GS = 1.9;   // the golfer's size on screen (holder scale; the club follows)
-const STANCE = 0.66;   // how far the golfer stands from the ball (a touch wider than before)
+const GS = 1.09;   // holder scale: the footballer stands 0.85 units tall (PROMPT item 15; everything is sized against this)
+const STANCE = 0.4;   // feet to ball, about a real stance at 0.85 units tall
 const WALK_SPEED = 3.2;
 export function placeGolfer() {
   entryT = G.phase === 'aim' && G.m && G.m.stage >= 1 ? entryT + 1 : 0;

@@ -11,11 +11,11 @@ import { G, curH } from './round.js';
 
 // ---------------------------------------------------------------- the balls (one a player), their shadows and the active ring
 export const balls = KITS.map((k, i) => {
-  const m = named(new THREE.Mesh(new THREE.SphereGeometry(BR, 14, 10), new THREE.MeshBasicMaterial({ color: '#fffdf4' })), 'ball' + (i + 1), true);
+  const m = named(new THREE.Mesh(new THREE.SphereGeometry(BR * 0.7, 14, 10).translate(0, -BR * 0.3, 0), new THREE.MeshBasicMaterial({ color: '#fffdf4' })), 'ball' + (i + 1), true);
   m.material.toneMapped = false; m.visible = false; scene.add(m);
-  const ring = new THREE.Mesh(new THREE.RingGeometry(0.13, 0.17, 20).rotateX(-Math.PI / 2), new THREE.MeshBasicMaterial({ color: k.col, transparent: true, opacity: 0.9, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -2 }));
+  const ring = new THREE.Mesh(new THREE.RingGeometry(0.09, 0.12, 20).rotateX(-Math.PI / 2), new THREE.MeshBasicMaterial({ color: k.col, transparent: true, opacity: 0.9, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -2 }));
   ring.name = 'ballRing' + (i + 1); ring.renderOrder = 2; ring.visible = false; scene.add(ring);
-  const sh = new THREE.Mesh(new THREE.CircleGeometry(0.16, 12).rotateX(-Math.PI / 2), blobMat()); sh.name = 'ballShadow' + (i + 1); sh.renderOrder = 1; sh.visible = false; scene.add(sh);
+  const sh = new THREE.Mesh(new THREE.CircleGeometry(0.11, 12).rotateX(-Math.PI / 2), blobMat()); sh.name = 'ballShadow' + (i + 1); sh.renderOrder = 1; sh.visible = false; scene.add(sh);
   return { m, ring, sh };
 });
 export function updateBalls() {

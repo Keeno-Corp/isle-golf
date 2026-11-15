@@ -726,7 +726,7 @@ export const LILIES = [];
 }
 export function makeDuck(i) {
   const g = new THREE.Group(); g.name = 'duck' + i;
-  const b = modelCopy(duckGLB, 0.46, 'duck_body'); b.children[0].rotation.y = DUCK_YAW; b.traverse(o => o.castShadow = false); g.add(b);   // b bobs and dabbles
+  const b = modelCopy(duckGLB, 0.26, 'duck_body'); b.children[0].rotation.y = DUCK_YAW; b.traverse(o => o.castShadow = false); g.add(b);   // b bobs and dabbles
   b.position.y = -0.07;   // sits in the water up to its breast, legs hidden below the surface
   pond.add(g); return { g, b, a: i * 3.1, r: 0.9 + i * 0.35, sp: 0.25 + i * 0.08, dab: 0, nextDab: rand(3, 7), trail: [] };
 }

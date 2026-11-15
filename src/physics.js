@@ -55,7 +55,7 @@ export function collideWorld(b, gy) {
       b.mode = 'air'; b.ev.push('sheep'); b.sheep = s; return;
     }
   }
-  { const dx = p.x - COW.x, dz = p.z - COW.z, d = Math.hypot(dx, dz); if (d < 0.62 + BR && p.y < heightAt(COW.x, COW.z) + 1.05) { const sp = Math.max(2, Math.hypot(v.x, v.z) * 0.5); v.set(dx / d * sp, 1.8, dz / d * sp); p.x = COW.x + dx / d * (0.62 + BR + 0.02); p.z = COW.z + dz / d * (0.62 + BR + 0.02); b.mode = 'air'; b.ev.push('cow'); } }
+  { const dx = p.x - COW.x, dz = p.z - COW.z, d = Math.hypot(dx, dz); if (d < 0.38 + BR && p.y < heightAt(COW.x, COW.z) + 0.65) { const sp = Math.max(2, Math.hypot(v.x, v.z) * 0.5); v.set(dx / d * sp, 1.8, dz / d * sp); p.x = COW.x + dx / d * (0.38 + BR + 0.02); p.z = COW.z + dz / d * (0.38 + BR + 0.02); b.mode = 'air'; b.ev.push('cow'); } }
 }
 export const _n = new THREE.Vector3();
 export function stepSim(b, dt) {

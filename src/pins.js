@@ -9,8 +9,8 @@ import { CLUBS } from './rules.js';
 
 // ---------------------------------------------------------------- course furniture: flags, cups, tee markers, hole signs
 export const playerGLB = await playerP;
-// flag = believable miniature: golfer is 0.85 tall, pole 1.28 (1.5x), 0.012 radius, pennant 0.3 x 0.17 tapering to a point; read by colour, not size
-export const FLAG = { poleH: 1.28, poleR: 0.012, pennantL: 0.3, pennantH: 0.17 };
+// flag = believable miniature: golfer is 0.85 tall, pole 1.1 (1.3x), 0.012 radius, pennant 0.3 x 0.17 tapering to a point; read by colour, not size
+export const FLAG = { poleH: 1.1, poleR: 0.012, pennantL: 0.3, pennantH: 0.17 };
 export const flagU = { uTime: { value: 0 } };
 export const flagMat = std('#ff3b1f', { roughness: 0.8, side: THREE.DoubleSide });
 flagMat.onBeforeCompile = sh => {
@@ -41,7 +41,7 @@ export const pins = HOLES.map((H) => {
   const signTex = (n, par) => canvasTex((x, w, h) => { x.fillStyle = '#2f4a3a'; x.fillRect(0, 0, w, h); x.strokeStyle = '#e9d9a0'; x.lineWidth = 5; x.strokeRect(5, 5, w - 10, h - 10); x.fillStyle = '#f2e7b0'; x.font = 'italic 900 70px Impact, sans-serif'; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText(String(n), w * 0.3, h * 0.52); x.font = 'italic 900 26px Impact, sans-serif'; x.fillText('PAR ' + par, w * 0.72, h * 0.52); }, 160, 80);
   for (const H of HOLES) {
     const c = Math.cos(H.teeYaw), s = Math.sin(H.teeYaw);
-    for (const k of [-1, 1]) { const px = H.tee[0] - s * 0.72 * k - c * 0.3, pz = H.tee[1] + c * 0.72 * k - s * 0.3; const m = named(new THREE.Mesh(new THREE.SphereGeometry(0.07, 8, 6), std(k < 0 ? '#e8e2cf' : '#e8e2cf')), 'teeMarker'); m.position.set(px, heightAt(px, pz) + 0.06, pz); scene.add(m); }
+    for (const k of [-1, 1]) { const px = H.tee[0] - s * 0.72 * k - c * 0.3, pz = H.tee[1] + c * 0.72 * k - s * 0.3; const m = named(new THREE.Mesh(new THREE.SphereGeometry(0.045, 8, 6), std('#e8e2cf')), 'teeMarker'); m.position.set(px, heightAt(px, pz) + 0.035, pz); scene.add(m); }
     const sg = new THREE.Group(); sg.name = 'holeSign' + (H.i + 1);
     const sx = H.tee[0] + s * 1.15 - c * 0.7, sz = H.tee[1] - c * 1.15 - s * 0.7;
     sg.position.set(sx, heightAt(sx, sz), sz); sg.rotation.y = -H.teeYaw + Math.PI / 2 + 0.3;

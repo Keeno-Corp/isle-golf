@@ -15,11 +15,11 @@ export const cowG = new THREE.Group(); cowG.name = 'cow'; scene.add(cowG);
 export const cowBody = new THREE.Group(); cowBody.name = 'cow_body'; cowG.add(cowBody);
 {
   const w = new THREE.Group(), m = cowGLB.scene; w.add(m); w.rotation.y = Math.PI / 2;   // the model faces -x
-  w.updateMatrixWorld(true); const b = new THREE.Box3().setFromObject(w, true); w.scale.setScalar(1.25 / (b.max.y - b.min.y)); centreFloor(w);
+  w.updateMatrixWorld(true); const b = new THREE.Box3().setFromObject(w, true); w.scale.setScalar(0.72 / (b.max.y - b.min.y)); centreFloor(w);
   w.position.z -= 0.15; cowBody.add(w);   // pivot nearer her shoulders than her middle
   m.traverse(o => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; o.name = 'cow_hide'; for (const mt of [].concat(o.material)) { mt.metalness = 0; mt.roughness = 0.9; } } });   // a hide, not metal: with no environment to reflect, metal draws dark
   const sd = new THREE.Mesh(new THREE.CircleGeometry(0.5, 16).rotateX(-Math.PI / 2), new THREE.MeshBasicMaterial({ map: TEX_SOFT_SHADOW, color: 0, transparent: true, opacity: 0.32, depthWrite: false }));
-  sd.name = 'cow_contactShadow'; sd.scale.set(1.1, 1, 2.2); sd.position.y = 0.03; cowG.add(sd);
+  sd.name = 'cow_contactShadow'; sd.scale.set(0.65, 1, 1.3); sd.position.y = 0.03; cowG.add(sd);
 }
 export const cow = { alert: 0, state: 'graze', ox: 0, oz: 0, ox2: 0, oz2: 0, why: '', moos: 0, yaw: COW.yaw, yawTarget: COW.yaw, graze: 1, shuffle: rand(4, 8), moo: rand(9, 16), mooT: 0, pat: 0, look: 0, lookT: 0 };
 cowG.position.set(COW.x, heightAt(COW.x, COW.z), COW.z);

@@ -1,28 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 6
-
-**Did**
-- `src/sheep.js`: new `setState({sheepAt:[x,z]})` hook. It plants `sheep[0]` at that point with its target set to the same point, `wait` 60 s (grazing in place) and `init` true, so a shot can be aimed through it.
-
-**Saw**
-- On hole 1 the tee is (-12.84, 15.36) and the pin is (-2.14, 14.43). I used `interact` with `{state:{hole:0,skipIntro:true,sheepAt:[-9.85,15.1]}}, wait 30, aim at pin, swing putter power 0.6, wait 240` and traced `sheepHits` and `banner`.
-  - `sheepHits` went 0 → 1 at frame 65.
-  - The banner read "PERFECT!" until frame 65, then "BAA!" until frame 193.
-  - `lastSheepHit` had `tumble:true`, and `sheep[0]` went to "flee".
-  - The ball bounced back off the sheep to (-14.58, 15.49), in the rough: carry 7 yd, roll 14 yd.
-- The check was not saved. `test` refuses leading `{state}` steps unless `observe()` reports each key back, and `hole`, `skipIntro` and `sheepAt` are not reported.
-- There was no console error. The only console output was the known `toNonIndexed` warning.
-- I took no before/after `look` this session (there was not enough time). The change does not touch rendering unless `sheepAt` is passed.
-
-**Next**
-1. Save the sheep check. Either make the setup an `{action:"setup", hole, sheepAt}` step in `actFn` (src/api.js), or have `observe()` echo `sheepAt` and accept that `hole` is reported 1-based. Then save `sheep-bounce-on-demand` with the steps above and expect `sheepHits:[1,9]`. Save a bunker check the same way, expecting `lie:"sand"`.
-2. Replace the code-built `seaStacks`, `cliffRocks`, `teeMarker` and `pin_flag` with picks from the searches already in `sourcing.json` (Judge 5, Next 1, asked again).
-3. Add a strike camera punch: 0.3 units along the view direction, eased back over 0.15 s. Stop the golfer walking into the putt camera's line. Run both `feel` calls Judge 5 gave.
-
-**Open**
-- `sheepAt` only moves `sheep[0]`. Its home is (-16.5, 4.2), so once `wait` runs out it wanders back toward that range.
-
 ### Judge 6
 
 The page opens in 1.3 s with no console errors. The only console output is the known three.js `toNonIndexed` warning. Iteration 6 added one thing, the `sheepAt` setup, and it works. With `sheepAt:[-9.85,15.1]`, a putter at power 0.6 raised `sheepHits` from 0 to 1 at frame 65. The banner read "BAA!" from frame 65 to 193, and the "sheep hit" sheet cell shows "BAA! BOUNCED OFF A SHEEP" with the ball rolling back toward the tee. I ran the landing `feel` Judge 5 asked for, and the landing is now inside the watched frames: `divots` 0 → 18 at frame 239, and sounds rose from 8 to 14. `landPuffs` does not appear in the Particles line. The strike `feel` still shows no camera punch. The first cell of the sheet (the title) is pale again, at 12% saturation, which is the known capture problem.
@@ -65,3 +42,55 @@ Next:
    - The call that shows it done: `test`, listing both checks as passing.
 
 SCORE: 7.6
+
+## The request changed
+
+paprika-loop/PROMPT.md changed before session 7; the Next lists above were written before it. Changed lines:
++ 14. The golfer looks its best: still the footballer the owner restored, in the existing Shepherd Isle style, with cleaner proportions, materials and outline and a smoother swing, walk and idle; it reads clearly in the aim and flight views and never fills the frame or blocks the putt view.
++ 15. Everything is scaled correctly against the golfer (0.85 units tall), using refs/01-03 for relative sizes only: the ball, cup, flag and pin, tee markers, clubs, sheep, bench, boat, fences, trees, bushes, rocks, bunkers, greens, the house and the lighthouse each sit at a believable size next to a person, checked in the aim, putt and hole-camera views; nothing reads as a toy or a giant beside its neighbours.
++ refs/01.jpg · layout (relative scale only; the style stays Shepherd Isle's) · inspiration · https://www.flickr.com/photos/29450586@N04/5097697858 (CC BY): tilt-shift links fairway, golfers tiny against bunkers and gorse
++ refs/02.jpg · layout (relative scale only) · inspiration · https://commons.wikimedia.org/wiki/File:Putting_green_at_the_Royal_Canberra_Golf_Club_1.JPG (CC BY 4.0): golfer, flag and bunker sizes on a green from above
++ refs/03.jpg · layout (relative scale only) · inspiration · https://commons.wikimedia.org/wiki/File:Bruntsfield_Links_golf_course_from_the_air_-_geograph.org.uk_-_7885450.jpg (CC BY-SA 2.0): tree clumps, bunkers, pond and houses against fairway widths
+
+## Iteration 7
+
+Worked the changed brief first (items 14 and 15: golfer at 0.85 units, everything sized against it).
+
+**Did**
+- `src/pose.js`: `GS` (golfer holder scale) 1.9 → 1.09, so the `footballer` stands 0.85 units tall in play (it was 1.48, taller than the 1.28 pin). `STANCE` 0.66 → 0.4 (feet to ball).
+- `src/camera.js` `aimCam`: closer to match the smaller golfer. Full shots D 9.2 → 6.8, height 4.7 → 3.5. Putts D 4.2 → 3.6, height 2.5 → 2.1. New `side` offset (0.15 full, 0.45 putt) moves the camera away from the golfer's side, so the ball-to-pin line stays clear.
+- `src/pins.js`: `FLAG.poleH` 1.28 → 1.1. `teeMarker` radius 0.07 → 0.045.
+- `src/balls.js`: the ball is drawn at 0.7 × `BR` and shifted down so it still rests on the ground. Physics `BR` is unchanged, so no check moved. `ballRing` and `ballShadow` are smaller to match.
+- `src/cow.js`: the cow is 0.72 tall (was 1.25), with a smaller contact shadow. `src/physics.js`: the cow collider radius 0.62 → 0.38 and height 1.05 → 0.65.
+- `src/island.js`: ducks 0.46 → 0.26 tall. `src/library.js`: `hydrangeas` instance scale ×1.25 → ×0.95.
+- `src/aimline.js`: putt preview dots scale 2.4 → 1.0. They were 0.2-radius discs that stacked into the "white puff column" on the putting line.
+- `src/hud.js`: `#tag` anchored at ball + 1.2 (was + 0.85, which sat on the golfer's helmet).
+- CHARACTERS.md: the ball and flag lines now give the new sizes.
+
+**Saw**
+- Measured with `eval`, in world units, against the golfer's 0.85:
+  - footballer 0.85, pin 1.14, cow 0.76 tall, duck 0.26, bench 0.42 tall × 0.86 wide.
+  - sheep 0.55 tall × 0.66 long, trees 2.6–3.7, house 3.95, lighthouse 7.7.
+  - club shaft 0.42 at address.
+- Sheet after the edits:
+  - "h1 putt": the golfer is 1.3% of the frame (was 3%). The pin and cup are clear, and the dots are a thin line.
+  - "h6 aim": the golfer is 0.36% of the frame (was 0.6%). It is small but readable, standing on the tee with the pond behind.
+  - "C hole cam" is unchanged.
+- `look compare before-aim` (the fixed `aim-h1` camera): 3% of pixels differ. The changes are the golfer region [432,320,720,528] and the smaller hydrangeas at top right. Both were intended. In that fixed camera the golfer goes from 0.6% to 0.19%. The game's own aim camera is now closer, which is why it shows 0.36%.
+- `test`: 70 of 70 checks pass. An early version of the `aimCam` edit broke `look-aim-hole1`, `look-aim-hole5` and `look-drive-early`: a comment swallowed the look-target line. That is fixed.
+- Strike `feel`: still no camera punch. The Camera line ("moved up to 67.2 at frame 141") is the aim camera settling. `aimLanding` jumps 0.58 units at frame 151, which is the `aim at:"pin"` step re-aiming, not a glitch. `feelBits` 0 → 30 and `divots` 0 → 8 at frame 164, with 8 sounds.
+- The "h1 aim" sheet cell is still the pale capture artifact (12% saturation). Every other cell is normal.
+
+**Next**
+1. Scale, the rest of item 15:
+   - `way_post`/`way_diamond`, the yellow aim waypoint marker, is 1 unit tall, bigger than the golfer. Shrink it to about 0.5.
+   - Check the boats, `standingStone`/stonepile, `fencePanels` (0.66 tall, a little high), the `sign_arrow` signs (0.8) and the bunker and green sizes in the C view against refs/02–03.
+   - The house (3.95) and lighthouse (7.7) could be 1.2–1.4× for a believable ratio to the 0.85 golfer.
+2. Judge 6 Next 1, still undone: library picks for `seaStacks`, `cliffRocks`, `teeMarker` and `pin_flag`.
+3. Judge 6 Next 2: strike punch in `src/camera.js`, 0.3 units along the view direction, eased back over 0.15 s. Then Next 3: an `{action:"setup"}` step in `src/api.js` and the `sheep-bounce-on-demand` and `sand-lie` checks. The cow collider shrank, so re-run `creatures-cow-reacts`; it passed this session.
+4. Item 14 golfer polish is not started beyond size: outline, materials, and a smoother walk and idle.
+
+**Open**
+- The golfer is smaller on screen in the aim views (0.36% of the frame), even with the closer camera. If the judge finds it unreadable, bring the full-shot `aimCam` D down further (6.8 → about 5.5). Keep the pin on screen: the aim checks expect the ball's y between -0.6 and 0.6.
+- The ball is still about 7× real size relative to the golfer (drawn radius 0.049). This is kept for readability, and is listed as by design in CHARACTERS.md.
+- No `perf` was run this session.

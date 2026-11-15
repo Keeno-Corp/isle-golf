@@ -96,7 +96,7 @@ function unit(glb) {
     let bi = 0, bd = 1e9; BUSHES.forEach((b, i) => { const d = Math.hypot(b.x - x, b.z - z); if (d < bd) { bd = d; bi = i; } });
     bushes.getMatrixAt(bi, m); m.decompose(p, q, s); if (s.x < 0.01) continue; spots.push([p.x, p.z, s.x, bi]); bushes.setMatrixAt(bi, m.makeScale(0, 0, 0)); }
   const hy = new THREE.InstancedMesh(Hy.geo, Hy.mat, Math.max(1, spots.length)); hy.name = 'hydrangeas'; hy.castShadow = hy.receiveShadow = true; hy.count = spots.length;
-  spots.forEach(([x, z, sc, bi], i) => { p.set(x, heightAt(x, z) - 0.03, z); q.setFromAxisAngle(s.set(0, 1, 0), hash(bi, 13) * 6.28); hy.setMatrixAt(i, m.compose(p, q, s.setScalar(sc * 1.25))); hy.setColorAt(i, c.setRGB(1.0, 1.0, 0.62)); });   // the model's teal leaves pulled toward the island's warm greens
+  spots.forEach(([x, z, sc, bi], i) => { p.set(x, heightAt(x, z) - 0.03, z); q.setFromAxisAngle(s.set(0, 1, 0), hash(bi, 13) * 6.28); hy.setMatrixAt(i, m.compose(p, q, s.setScalar(sc * 0.95))); hy.setColorAt(i, c.setRGB(1.0, 1.0, 0.62)); });   // the model's teal leaves pulled toward the island's warm greens
   blossoms.visible = false; bushes.instanceMatrix.needsUpdate = true; bushes.instanceColor.needsUpdate = true; scene.add(hy); }
 // hole signs: the library's arrow sign in place of the code post, the hole's number board hung under the arrow
 HOLES.forEach(H => { const sg = scene.getObjectByName('holeSign' + (H.i + 1)); if (!sg) return;
