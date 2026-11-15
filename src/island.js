@@ -569,7 +569,7 @@ export const bellPivot = new THREE.Group(); bellPivot.position.y = 1.55; bellG.a
 }
 
 // ---------------------------------------------------------------- the lighthouse (after refs/lighthouse/opus-1 buildings.js): white round tower, dark red lantern and gallery, keeper's cottage
-export const LH_TOP = 5.4;                     // the gallery deck, metres above the tower's foot
+export const LH_TOP = 6.4;                     // the gallery deck, metres above the tower's foot
 export const lighthouse = new THREE.Group(); lighthouse.name = 'lighthouse'; lighthouse.position.set(LH.x, H_LH - 0.05, LH.z); scene.add(lighthouse);
 export const LH_DOOR = -2.05;                  // the door's azimuth (from +z toward +x): it looks west-south-west, toward the island
 export const lampGlass = std('#3d7d66', { emissive: new THREE.Color('#ffc46a'), emissiveIntensity: 0.12, roughness: 0.25, transparent: true, opacity: 0.5, depthWrite: false });

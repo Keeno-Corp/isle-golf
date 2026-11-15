@@ -3615,11 +3615,6 @@
           "value": true
         },
         {
-          "path": "look.dither.occluders.0",
-          "op": "==",
-          "value": "tree1_leaves0"
-        },
-        {
           "path": "look.dither.radius",
           "op": ">=",
           "value": 0.2
@@ -3628,6 +3623,16 @@
           "path": "look.dither.radius",
           "op": "<=",
           "value": 0.4
+        },
+        {
+          "path": "look.ball.y",
+          "op": ">=",
+          "value": -0.9
+        },
+        {
+          "path": "look.ball.y",
+          "op": "<=",
+          "value": 0.2
         }
       ]
     },
@@ -6856,7 +6861,7 @@
         {
           "path": "creatures.footballer.maxBoneLengthDeviation",
           "op": "<=",
-          "value": 1e-9
+          "value": 1e-09
         }
       ]
     },
@@ -6892,7 +6897,7 @@
         {
           "path": "creatures.footballer.maxBoneLengthDeviation",
           "op": "<=",
-          "value": 1e-9
+          "value": 1e-09
         }
       ]
     },
@@ -6930,7 +6935,7 @@
         {
           "path": "creatures.footballer.maxBoneLengthDeviation",
           "op": "<=",
-          "value": 1e-9
+          "value": 1e-09
         }
       ]
     },
@@ -6968,7 +6973,7 @@
         {
           "path": "creatures.footballer.maxBoneLengthDeviation",
           "op": "<=",
-          "value": 1e-9
+          "value": 1e-09
         }
       ]
     },
@@ -7009,7 +7014,7 @@
         {
           "path": "creatures.footballer.maxBoneLengthDeviation",
           "op": "<=",
-          "value": 1e-9
+          "value": 1e-09
         }
       ]
     },
@@ -7069,7 +7074,7 @@
         {
           "path": "creatures.footballer.maxBoneLengthDeviation",
           "op": "<=",
-          "value": 1e-9
+          "value": 1e-09
         },
         {
           "path": "creatures.golferClip",
@@ -7190,7 +7195,7 @@
         {
           "path": "creatures.footballer.maxBoneLengthDeviation",
           "op": "<=",
-          "value": 1e-9
+          "value": 1e-09
         },
         {
           "path": "creatures.golferClip",

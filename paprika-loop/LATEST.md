@@ -1,27 +1,5 @@
 The last builder's section and the last judge's verdict; paprika-loop/PROGRESS.md holds every session's.
 
-## Iteration 10
-
-**Did**
-- Judge 9 Next 1 (items 13, 15): the code keeper's cottage is replaced by the library's "Stylized House FREE" (`assets/stylized-house-free-b4a979.glb`, CC-BY Leontev Artem, credited in assets/CREDITS.md; found with the new query "stylized small white cottage blue roof chimney"). It loads as `keeperGLB` in src/assets.js and is placed in src/library.js inside the `lhCottage` group (code children hidden), 4.8 units tall, named `lighthouse_cottage`. Its door is 1.01 tall (0.61 × 4.8 / 2.9), above the 0.85 golfer.
-- The bigger footprint is carried through: `LH_COT` in src/course.js is now w 6.4, d 4.1 (the collider in src/physics.js reads it; its top is now H_COT + 4.6); `clearOf` in src/island.js keeps props 3.6 (was 2.1) from the cottage; the cottage path in island.js now starts at the new door (LH_COT.x − 1.2, z + 2.3).
-- Judge 9 Next 2: `look-dither-nearplane` in game-tests.json now expects `nearFades.1` = `house_walls` (was `tree4_leaves0`). Reason: the fade works. In the check's setup the list is [tree1_leaves0, house_walls ×4]. tree4 dropped out of the list when the hole-5 house became the bigger library cottage in an earlier session; the shader did not break. I tried letting named props fade at any height inside the subject circle (a `DITH_PROP` define in src/camera.js). That did not help, because the wall stands beside the golfer at the same depth rather than in front of them, so I reverted it.
-
-**Saw**
-- "cottage" camera: compared with before-cottage, 64% of pixels changed. `lighthouse_cottage` (5 meshes: Wood, Roof, Pipe, Door, Building) fills 66% of that close camera. `lighthouse_cottageWalls` and `lighthouse_cottageDoor` are no longer on screen. No Lighting or Surfaces lines.
-- "cottage wide" (new camera, [20,12,6] looking at [29,4.5,−7]): the blue-roofed timber house sits beside `lighthouse_tower` and the roof reads as teal slate. "coast" shows it small at the island's east end.
-- `look-dither-nearplane` setup (hole 5, ball at (−12, −13.5), A held 12 frames): `house_walls` covers 56% of the aim frame on the right. The golfer is still 0.54% of the frame and readable. The wall is half-dithered, so it reads as a dark translucent blur. Surfaces line: `house_walls` z-fights at x −10.57 (0.46 × 0.003 units, inside the library model).
-- Before this session's edits the suite passed 69 of 70, with only look-dither-nearplane failing.
-
-**Next**
-- Item 3 (camera) and item 1: the aim camera should not sit against the hole-5 house wall when the ball is near it. Pull the camera in front of the house (cast from the ball toward the camera against the `house` collider box in physics.js), or fade `house_walls` fully below depth 3.4 for props only. The test above is the repro.
-- Judge 9 Next 3, not done: record bunker and green sizes ("C hole cam h6", "green1 top") next to refs/02–03 in CHARACTERS.md, and save a `sand-lie` interact check (hole 1 bunker, `lie: "sand"`, carry lower than from the fairway).
-- Check that `lighthouse_cottage` does not hide the hole 9 tee or green in its aim views. The house is now 6.4 × 4.1 units on the ground.
-
-**Open**
-- After the cottage swap and the check update, `test` passes 70 of 70 (course-h9-drive and look-aim-hole9-ball-lifted among them). Not run: `perf` (the house adds 7,336 triangles and 0.7 MB).
-- The library house's own faces z-fight at x −10.57 (`house_walls`, hole 5). This is not new this session.
-
 ### Judge 10
 
 What changed since Judge 9:
@@ -95,3 +73,25 @@ Next:
 Not checked this session: a full 4-player round, the scorecard stamps on screen, and a shot from sand.
 
 SCORE: 7.9
+
+## Iteration 11
+
+**Did**
+- Judge 10 Next 1 (items 3, 14): `aimCam` in src/camera.js now calls a new `clearHouse(src, pos, look)`. It casts a ray from the ball (0.3 up) to the aim camera against the Box3 of `house_walls` (grown by 0.3, measured once). If the wall is more than 2.4 units from the ball, the camera pulls in to 0.1 short of it and the look point pulls toward the ball by the same share, so the ball stays in frame. If the wall is closer than that, the camera rises in 0.4 steps until it clears the roof. I tried rising alone first: camera y went to 12.3, the pitch to 51°, and the golfer to 0.16%, so I dropped that as the main path.
+- Judge 10 Next 2 (item 15): `LH_TOP` in src/island.js went from 5.4 to 6.4. The library tower (`modelCopy(lhGLB, LH_TOP + 2.1)`) is now 8.5 tall, and the lamp, lamp light and post-process glare follow it, since they all read LH_TOP.
+- game-tests.json `look-dither-hole5-tree7-circle`: the old expectation `look.dither.occluders.0 == tree1_leaves0` only held while the camera stood behind the house. It now expects `look.ball.y` to be between −0.9 and 0.2 (the ball in frame).
+
+**Saw**
+- Hole-5 house aim (hole 4 state, ball at (−12, −13.5), `a` held 12 frames, then 30 frames). Before: camera at (−8.32, 6.74, −16.10), `house_walls` 57% of the frame, golfer 0.33%, ball y −0.564, z-fight Surfaces line on `house_walls`. After: camera at (−10.68, 6.36, −14.43), pitch 40°, `house_walls` not on screen, golfer 2.7% (`player`) or 3.4% (subject), ball y −0.649. No Surfaces line in view. The pin is now off the top of the frame (y 2.29) in this one spot.
+- Tower vs cottage, from an eval of Box3: the visible `lighthouse_tower` is 8.5 tall (y 5.54 to 14.04) and `lighthouse_cottage` is 5.09, a ratio of 1.67 (the target was ≥ 1.6). Note: `find('lighthouse_tower')` returns the hidden code tower first, which is how Judge 10 got 5.2. "cottage wide" compared with before-cottage-wide: 2.7% of pixels differ, all at the tower ([128, 0, 400, 288]). The tower's top now goes past the top of that camera's frame.
+- `test` before the json fix: 69 of 70. The one that failed was look-dither-hole5-tree7-circle, as described above. `look-dither-nearplane` passes. After the json edit, the after-edit hook reran all 70 checks and all 70 pass. That run came before the physics.js collider edit below.
+- Captures of the in-game aim view still come back as flat grey (12% saturation). This is the known capture effect; read the numbers instead.
+
+**Next**
+- Hole-5 house view: the pin is off-frame when pulled in. Consider widening the fov a little while `clearHouse` is active, or pulling in less (stopping at h − 0.1 but keeping the look point farther out).
+- Still not done from Judge 10: (asked again) the `sand-lie` saved check; bunker and green sizes in CHARACTERS.md; assets over 5 MB (`model_audit` on player-anim.glb). Also check that the 8.5-tall tower does not block the hole 9 aim views ("h9 aim", "h9 approach").
+
+**Open**
+- I raised the `ROUND` lighthouse collider top in src/physics.js from H_LH + 7 to H_LH + 9 to cover the taller tower. No check has run since that edit.
+- The hidden code tower still carries the name `lighthouse_tower`, the same as the library model, so `find` returns the hidden one.
+- The `house_walls` z-fight is unchanged inside the model. It is just out of view now.

@@ -18,7 +18,7 @@ export const BOXES = [
   { name: 'house', x: HOUSE.x, z: HOUSE.z, hx: HOUSE.w / 2 + 0.05, hz: HOUSE.d / 2 + 0.05, top: H_HOUSE + 3.0 },
   { name: 'cottage', x: LH_COT.x, z: LH_COT.z, hx: LH_COT.w / 2 + 0.05, hz: LH_COT.d / 2 + 0.05, top: H_COT + 4.6 },
 ];
-export const ROUND = [{ name: 'lighthouse', x: LH.x, z: LH.z, r: LH.r + 0.12, top: H_LH + 7 }, { name: 'bell', x: BELL.x, z: BELL.z, r: 0.3, top: 6 }];
+export const ROUND = [{ name: 'lighthouse', x: LH.x, z: LH.z, r: LH.r + 0.12, top: H_LH + 9 }, { name: 'bell', x: BELL.x, z: BELL.z, r: 0.3, top: 6 }];
 
 // ---------------------------------------------------------------- the ball's physics: arc with wind and side spin, bounce and roll by surface, hazards
 export const waterY = () => H_POND + 0.06;

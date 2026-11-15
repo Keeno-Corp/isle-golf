@@ -19,6 +19,21 @@ export function aimCam(pos, look) {
   const p = curP(), putt = curClub().putt, fx = Math.cos(G.aim), fz = Math.sin(G.aim), D = putt ? 3.6 : 4.5, Hh = putt ? 2.1 : 2.4, ah = putt ? 0.9 : 1.6, side = putt ? 0.45 : 0.15, src = G.phase === 'flight' || G.phase === 'settle' ? G.shotOrigin : p.pos;
   // a touch to the side away from the golfer (who stands on -r), so the ball-to-pin line stays clear
   pos.set(src.x - fx * D - fz * side, src.y + Hh, src.z - fz * D + fx * side); pos.y = Math.max(pos.y, heightAt(pos.x, pos.z) + 1.0); look.set(src.x + fx * ah, src.y + 0.35, src.z + fz * ah);
+  clearHouse(src, pos, look);
+}
+// the hole-5 house: a camera behind its wall pulls in to the near side of the wall; if that is too close to the golfer it rises over the roof
+const _hb = new THREE.Box3(), _ray = new THREE.Ray(), _hit = new THREE.Vector3(); let _hbOk = false;
+function clearHouse(src, pos, look) {
+  if (!_hbOk) { const w = scene.getObjectByName('house_walls'); if (!w) return; _hb.setFromObject(w).expandByScalar(0.3); _hbOk = true; }
+  for (let i = 0; i < 20; i++) {
+    _ray.origin.set(src.x, src.y + 0.3, src.z); _ray.direction.subVectors(pos, _ray.origin);
+    const len = _ray.direction.length(); _ray.direction.divideScalar(len);
+    if (!_ray.intersectBox(_hb, _hit)) return;
+    const h = _hit.distanceTo(_ray.origin);
+    if (h > len) return;
+    if (h > 2.4) { pos.copy(_ray.origin).addScaledVector(_ray.direction, h - 0.1); look.lerp(src, 1 - h / len); return; }   // the look point pulls in with it, so the ball stays in frame
+    pos.y += 0.4;
+  }
 }
 const _fc = new THREE.PerspectiveCamera(32, 16 / 10, 0.1, 400), _fp = new THREE.Vector3();
 const _ohC = new Map();
