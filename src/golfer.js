@@ -50,7 +50,16 @@ player.traverse(o => {
     mat.onBeforeCompile = shader => {
       shader.uniforms.uJersey = kitU.uJersey;
       shader.fragmentShader = 'uniform vec3 uJersey;\n' + shader.fragmentShader;
-      shader.fragmentShader = shader.fragmentShader.replace('#include <map_fragment>', '#include <map_fragment>\n if (diffuseColor.r > diffuseColor.g * 1.3 && diffuseColor.r > diffuseColor.b * 1.3) diffuseColor.rgb = uJersey * (0.55 + diffuseColor.r * 0.7);');
+      // the model's 512 px scanned texture is noisy (owner: "looks like it's been written all over"): read it blurred (mip bias)
+      // and repaint each region in one flat kit colour, keeping only a little of its light and dark as soft shading
+      shader.fragmentShader = shader.fragmentShader.replace('#include <map_fragment>', `
+        vec3 t = texture2D(map, vMapUv, 3.0).rgb; float l = dot(t, vec3(0.299, 0.587, 0.114));
+        float jersey = smoothstep(1.55, 2.1, t.r / max(t.g, 0.02)) * smoothstep(0.18, 0.3, t.r);
+        float skin = (1.0 - jersey) * smoothstep(1.05, 1.25, t.r / max(t.g, 0.02)) * smoothstep(0.25, 0.4, l);
+        float light = (1.0 - jersey) * (1.0 - skin) * smoothstep(0.5, 0.65, l);
+        vec3 c = vec3(0.1, 0.085, 0.075);   // helmet, pants and trim: one warm near-black (a blue one reads as sea teal in the grade)
+        c = mix(c, vec3(0.86, 0.83, 0.76), light); c = mix(c, vec3(0.72, 0.47, 0.33), skin); c = mix(c, uJersey, jersey);
+        diffuseColor.rgb *= c * (0.85 + 0.3 * smoothstep(0.1, 0.7, l));`);
     };
     mat.needsUpdate = true;
   }
@@ -61,6 +70,16 @@ outlineMat.onBeforeCompile = sh => { sh.vertexShader = sh.vertexShader.replace('
 { const skins = []; player.traverse(o => { if (o.isSkinnedMesh) skins.push(o); });
   for (const o of skins) { const h = new THREE.SkinnedMesh(o.geometry, outlineMat); h.name = 'footballer_outline'; h.position.copy(o.position); h.quaternion.copy(o.quaternion); h.scale.copy(o.scale); h.frustumCulled = false; h.bind(o.skeleton, o.bindMatrix); o.parent.add(h);
     for (const m of [].concat(o.material)) { m.roughness = Math.max(m.roughness ?? 1, 0.75); m.metalness = 0; } } }   // matte kit, as the painted island
+player.updateMatrixWorld(true);
+// broad shoulder pads in the kit colour, over the scan's ragged sleeve edges (owner: the mesh looked unpolished); built at the bind pose, then hung on the chest bone
+{ const padMat = new THREE.MeshStandardMaterial({ roughness: 0.85 }); padMat.color = kitU.uJersey.value;   // shares the kit's Color, so applyKit repaints it
+  const chest = player.getObjectByName('DEF-spine003');
+  for (const sd of [-1, 1]) {
+    const pad = new THREE.Mesh(new THREE.SphereGeometry(0.12, 18, 10).scale(1.2, 0.55, 1.15), padMat); pad.name = 'footballer_pad'; pad.castShadow = true;
+    pad.position.set(sd * 0.165, 1.415, -0.005); pad.rotation.z = -sd * 0.32; player.add(pad);
+    const o = new THREE.Mesh(pad.geometry, new THREE.MeshBasicMaterial({ color: '#2a2018', side: THREE.BackSide })); o.name = 'footballer_outline'; o.scale.setScalar(1.06); pad.add(o);
+    pad.updateMatrixWorld(true); chest.attach(pad);
+  } }
 player.updateMatrixWorld(true);
 const bindLengths = new Map();
 player.traverse(bone => { if (bone.isBone) bindLengths.set(bone, bone.position.length()); });
