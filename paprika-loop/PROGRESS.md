@@ -37,3 +37,15 @@ Next:
 Not checked: R replay, mouse input, sand, water, out of bounds, the sheep bounce, the hole-out feel and holes 2–5 and 8.
 
 SCORE: 7.4
+
+## The request changed
+
+paprika-loop/PROMPT.md changed before session 2; the Next lists above were written before it. Changed lines:
++ 10. Game feel: the three-click meter, the strike, the ball's flight, each landing by surface, the hole-out and the camera follow each answer with feedback a player feels (motion, a short hit-stop or shake, particles, sound), measured with `feel`.
++ 11. Look: richer course detail, lighting, water and golfer animation than the starting commit, still inside LOOK.md's Checks.
++ 12. Course and play: each of the nine holes plays differently, putting has a readable green slope, hazards and sheep change the shot a player picks, and the flow from hole to scorecard to next hole never stalls.
++ 13. Better assets: the key things a viewer sees (trees, rocks, the house, the lighthouse, sheep, flags, course props, textures, the sky) come from the paprika3d library through `asset_search` where it has a higher-quality match in the stylized Shepherd Isle look, each picked one checked with `model_audit` and credited; code-built stand-ins are replaced first. Nothing paid and no generated models.
+
+## Iteration 2
+
+Real load error after the batch edit. Locating the exact column.

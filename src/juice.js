@@ -12,7 +12,7 @@ import { G } from './round.js';
 import { hud } from './hud.js';
 
 // ---------------------------------------------------------------- knobs
-export const FEEL = { strikeShake: 0.16, strikeStop: 0.05, strikeFov: 1.6, landShake: { fairway: 0.05, tee: 0.05, green: 0.03, rough: 0.045, sand: 0.09 }, sunkShake: 0.1, sunkStop: 0.09, decay: 9 };
+export const FEEL = { strikeShake: 0.16, strikeStop: 0.05, strikeFov: 1.6, strikePunch: 0.5, punchTime: 0.22, landShake: { fairway: 0.05, tee: 0.05, green: 0.03, rough: 0.045, sand: 0.09 }, sunkShake: 0.1, sunkStop: 0.09, decay: 9 };
 
 // ---------------------------------------------------------------- bits: one instanced draw of small tumbling chips; its count is the number alive
 const MAX = 160, bits = new THREE.InstancedMesh(new THREE.TetrahedronGeometry(1, 0), new THREE.MeshBasicMaterial({ color: 0xffffff }), MAX);
@@ -26,7 +26,7 @@ export function spray(x, y, z, n, cols, o = {}) {
   }
 }
 // ---------------------------------------------------------------- shake, hit-stop, flash, fov kick
-const S = { amp: 0, fov: 0, events: 0, last: '' };
+const S = { amp: 0, fov: 0, events: 0, last: '', punch: 0, pt: 1 };
 export const shake = a => { S.amp = Math.max(S.amp, a); };
 const stop = t => { G.hitStop = Math.max(G.hitStop || 0, t); };
 const flash = (v, hold = 0.03) => { ST.flash = Math.max(ST.flash, v); ST.flashHold = Math.max(ST.flashHold, hold); };
@@ -37,7 +37,7 @@ const BY_SURF = { fairway: GRASS, tee: GRASS, green: FINE, rough: STRAW, sand: S
 
 on('swing', e => {
   const c = CLUBS.find(k => k.id === e.club), putt = c && c.putt, p = e.power, b = SIM.pos, ca = Math.cos(G.aim), sa = Math.sin(G.aim);
-  shake(putt ? 0.012 + 0.02 * p : 0.04 + FEEL.strikeShake * p); if (!putt) { stop(FEEL.strikeStop * (0.4 + 0.6 * p)); flash(0.12 + 0.2 * p); S.fov = FEEL.strikeFov * p; }
+  shake(putt ? 0.012 + 0.02 * p : 0.04 + FEEL.strikeShake * p); if (!putt) { stop(FEEL.strikeStop * (0.4 + 0.6 * p)); flash(0.12 + 0.2 * p); S.fov = FEEL.strikeFov * p; S.punch = FEEL.strikePunch * (0.4 + 0.6 * p); S.pt = 0; }
   const surf = SIM.surf === 'sand' ? SAND : SIM.surf === 'rough' ? STRAW : GRASS;
   spray(b.x, b.y + 0.02, b.z, putt ? 3 : Math.round(8 + 16 * p), surf, { speed: 0.9, up: 1.6 + 1.8 * p, vx: ca * (0.8 + 2 * p), vz: sa * (0.8 + 2 * p), size: putt ? 0.035 : 0.055 });
   if (Math.abs(e.acc) < 0.001 && !putt) spray(b.x, b.y + 0.15, b.z, 10, GOLD, { speed: 1.4, up: 2.4, g: 3, life: 0.55, size: 0.045 });
@@ -69,6 +69,7 @@ addUpdate(dt => {
   bits.count = n; bits.instanceMatrix.needsUpdate = true; if (bits.instanceColor) bits.instanceColor.needsUpdate = true;
   // the shake rides on top of the camera the game placed this frame (camera.js writes it afresh every frame)
   if (S.amp > 0.0005) { const t = ST.gameTime; camera.translateX(S.amp * Math.sin(t * 97)); camera.translateY(S.amp * Math.cos(t * 123)); camera.rotateZ(S.amp * 0.035 * Math.sin(t * 71)); S.amp *= Math.exp(-dt * FEEL.decay); } else S.amp = 0;
+  if (S.pt < 1) { S.pt = Math.min(1, S.pt + dt / FEEL.punchTime); camera.translateZ(-S.punch * Math.sin(S.pt * Math.PI)); }   // the strike's lurch: the camera pushes in toward the ball and comes back
   if (ST.flash > 0.01) { sun.intensity += ST.flash * 2.5; hemi.color.offsetHSL(0, 0, ST.flash * 0.25); }   // the flash also lifts the lights (stage.js sets both afresh each frame)
   if (Math.abs(S.fov) > 0.01) { camera.fov += S.fov; camera.updateProjectionMatrix(); S.fov *= Math.exp(-dt * 7); } else S.fov = 0;
 });

@@ -2,7 +2,24 @@
   "deadline": "2026-11-15T01:31:05.840Z",
   "minutes": 120,
   "model": null,
-  "iterations": [],
-  "best": null,
+  "iterations": [
+    {
+      "n": 1,
+      "turns": 41,
+      "tokens": 6621027,
+      "costUsd": 8.814362400000002,
+      "minutes": 32.3,
+      "commit": "0fbe9d1",
+      "score": 7.4,
+      "judgeTurns": 18,
+      "judgeTokens": 723768
+    }
+  ],
+  "best": {
+    "n": 1,
+    "commit": "0fbe9d1",
+    "score": 7.4,
+    "brief": "87b0b04faf60"
+  },
   "brief": "# Isle Golf\n## What it is\nA tilt-shift arcade golf game on Shepherd Isle: the football field of Isle Blitz is regrown into a nine-hole links course with sheep, a pond, the lighthouse and the sea along the cliffs.\n## Must have\n1. Looks as LOOK.md says: Shepherd Isle's painted brush pass, a tilt-shift focus band on the ball, cream-green haze, teal sea, warm low sun; no unblurred frame.\n2. Plays as DESIGN.md's Core loop and Controls say: aim, club, a three-click meter, mouse or keyboard, C hole camera, R replay.\n3. Camera high behind the ball with a narrow FOV, following the ball in flight, pulling back to the diorama for each hole's flyover intro.\n4. Ball flight with arc, wind, bounce and roll by surface (fairway, rough, sand, green, water drop, out of bounds).\n5. A full playable 9 holes (tees, fairways, rough, greens with flags, bunkers, the pond, the sea as OB, lighthouse, house, trees), holes 1-3 par 3, doglegs round the pond and house, hole 9 par 5 at the lighthouse; sheep wander the fairways and a ball bounces off one with a baa.\n6. Stroke play against par per hole and over 9 holes, a scorecard after each hole with birdie/par/bogey stamps, solo and 2-4 player hot seat in kit colours.\n7. HUD in the Isle Blitz type restyled for golf: hole/par/strokes top left, wind top right, power meter bottom centre, club bottom left.\n8. window.__game with observe() and act() for aim, club and swing (power, accuracy) so the paprika3d tools play it; 60 fps.\n9. The golfer matches CHARACTERS.md; no real golf brands, courses or game names on screen.\n## References\nrefs/sheets/LOOK.png · style · match (Shepherd Isle, the game's own views) · built from /home/ubuntu/repos/paprika3d-dev/examples/shepherd-isle\nrefs/study/ (not published) · mood · inspiration\n## Inspirations and notes\nMario Golf and Everybody's Golf arcade feel, Golf Story charm, the tilt-shift diorama views of Shepherd Isle and Isle Blitz. The owner: \"take the shepherds isle / the tilt-shift nfl blitz game, and make it a golf game. Use the same style as shepherds isle\".\n## Sheets\nLOOK.md · CHARACTERS.md · DESIGN.md · refs/sheets/LOOK.png\nWeb study: yes (asked) · Picture sheets: no, no image key (asked) · Asset style: stylized (asked)\n## Left to the builder\nHole layouts and names, club distances, the meter's timing, the golfer's swing pose, the kit colours and player names.\n"
 }

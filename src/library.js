@@ -4,10 +4,10 @@ import * as THREE from 'three';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { hash } from './util.js';
 import { ST, addUpdate } from './shared.js';
-import { HOLES, HOUSE, LH, edgeR, heightAt, inland, mownSigned, surfaceAt } from './course.js';
+import { HOLES, HOUSE, LH, POND, edgeR, heightAt, inland, mownSigned, surfaceAt } from './course.js';
 import { scene } from './stage.js';
-import { modelCopy as copy0, sheepGLB, treeA, treeB, lhGLB, stoneGLB, benchGLB, boatGLB, cottageGLB } from './assets.js';
-import { LH_TOP, clearOf, house, lighthouse, sea, treeObjs } from './island.js';
+import { modelCopy as copy0, sheepGLB, treeA, treeB, lhGLB, stoneGLB, benchGLB, boatGLB, cottageGLB, bushGLB, hydrangeaGLB, signGLB, cattailGLB } from './assets.js';
+import { BUSHES, LH_TOP, clearOf, house, lighthouse, pond, sea, treeObjs } from './island.js';
 import { ROUND } from './physics.js';
 import { chimneyTop } from './effects.js';
 import { sheep } from './sheep.js';
@@ -74,3 +74,35 @@ HOLES.forEach((H, i) => {
 });
 export const boats = [1.25, 2.75].map((th, i) => { const R = edgeR(th) + 4.2 + i * 1.5, m = modelCopy(boatGLB, 0.42, 'rowingBoat'); m.position.set(Math.cos(th) * R, sea.position.y, Math.sin(th) * R); m.rotation.y = th + 1.1; scene.add(m); return m; });
 addUpdate(() => boats.forEach((b, i) => { const t = ST.gameTime * 0.9 + i * 2; b.position.y = sea.position.y - 0.06 + Math.sin(t) * 0.05; b.rotation.z = Math.sin(t * 0.8) * 0.07; b.rotation.x = Math.cos(t * 0.6) * 0.05; }));
+
+// ---------------------------------------------------------------- shrubs, hole signs and cattails from the library (session 2)
+// one textured geometry out of a model, one unit wide, standing on y = 0 (for an InstancedMesh that keeps the model's own material)
+function unit(glb) {
+  glb.scene.updateMatrixWorld(true); const gs = []; let mat = null;
+  glb.scene.traverse(o => { if (!o.isMesh) return; mat = mat || o.material; const g = new THREE.BufferGeometry(), src = o.geometry;
+    for (const [k, n] of [['position', 3], ['uv', 2]]) { const a = src.attributes[k]; g.setAttribute(k, new THREE.BufferAttribute(a ? Float32Array.from({ length: a.count * n }, (_, i) => a.getComponent(i / n | 0, i % n)) : new Float32Array(src.attributes.position.count * n), n)); }   // normals are recomputed below
+    if (src.index) g.setIndex(Array.from(src.index.array)); gs.push(g.applyMatrix4(o.matrixWorld)); });
+  const m = gs.length > 1 ? mergeGeometries(gs) : gs[0]; m.computeBoundingBox(); const b = m.boundingBox, k = 1 / Math.max(b.max.x - b.min.x, b.max.z - b.min.z);
+  m.translate(-(b.min.x + b.max.x) / 2, -b.min.y, -(b.min.z + b.max.z) / 2).scale(k, k, k); m.computeVertexNormals(); return { geo: m, mat };
+}
+// the 400-odd code leaf-blobs become the library's leafy bush (same places, sizes and colliders); the shrubs that carried white petal blobs become hydrangeas
+{ const bushes = scene.getObjectByName('bushes'), blossoms = scene.getObjectByName('blossoms'), B = unit(bushGLB), Hy = unit(hydrangeaGLB), white = new THREE.Color(1, 1, 1), c = new THREE.Color();
+  bushes.geometry.dispose(); bushes.geometry = B.geo.scale(1.2, 1.7, 1.2).translate(0, -0.16, 0); bushes.material = B.mat;
+  const m = new THREE.Matrix4(), p = new THREE.Vector3(), q = new THREE.Quaternion(), s = new THREE.Vector3();
+  for (let i = 0; i < bushes.count; i++) { bushes.getColorAt(i, c); bushes.setColorAt(i, c.lerp(white, 0.45).multiplyScalar(1.5));   // the instance tint now multiplies the model's own painted leaves
+    bushes.getMatrixAt(i, m); m.decompose(p, q, s); if (s.x < 0.7) bushes.setMatrixAt(i, m.makeScale(0, 0, 0)); }   // the small filler blobs of each code clump go: one library bush is a whole shrub (1,600 triangles each)
+  const n = Math.floor(blossoms.count / 24), spots = [];
+  for (let g = 0; g < n; g++) { let x = 0, z = 0; for (let k = 0; k < 24; k++) { blossoms.getMatrixAt(g * 24 + k, m); x += m.elements[12] / 24; z += m.elements[14] / 24; }
+    let bi = 0, bd = 1e9; BUSHES.forEach((b, i) => { const d = Math.hypot(b.x - x, b.z - z); if (d < bd) { bd = d; bi = i; } });
+    bushes.getMatrixAt(bi, m); m.decompose(p, q, s); if (s.x < 0.01) continue; spots.push([p.x, p.z, s.x, bi]); bushes.setMatrixAt(bi, m.makeScale(0, 0, 0)); }
+  const hy = new THREE.InstancedMesh(Hy.geo, Hy.mat, Math.max(1, spots.length)); hy.name = 'hydrangeas'; hy.castShadow = hy.receiveShadow = true; hy.count = spots.length;
+  spots.forEach(([x, z, sc, bi], i) => { p.set(x, heightAt(x, z) - 0.03, z); q.setFromAxisAngle(s.set(0, 1, 0), hash(bi, 13) * 6.28); hy.setMatrixAt(i, m.compose(p, q, s.setScalar(sc * 1.25))); hy.setColorAt(i, c.setRGB(1.0, 1.0, 0.62)); });   // the model's teal leaves pulled toward the island's warm greens
+  blossoms.visible = false; bushes.instanceMatrix.needsUpdate = true; bushes.instanceColor.needsUpdate = true; scene.add(hy); }
+// hole signs: the library's arrow sign in place of the code post, the hole's number board hung under the arrow
+HOLES.forEach(H => { const sg = scene.getObjectByName('holeSign' + (H.i + 1)); if (!sg) return;
+  sg.getObjectByName('sign_post').visible = false; sg.getObjectByName('sign_board').position.y = 0.3;
+  sg.add(modelCopy(signGLB, 0.8, 'sign_arrow')); });
+// cattails: the library's plant in the code clumps' places round the pond
+{ for (const n of ['pond_cattailStem', 'pond_cattail', 'pond_cattailLeaf']) { const o = pond.getObjectByName(n); if (o) o.visible = false; }
+  [2.5, 3.3, 0.4, 1.3, 4.4].forEach((ca, j) => { for (let i = 0; i < 3; i++) { const a = ca + (hash(j, i + 20) - 0.5) * 0.4, d = POND.r + (hash(j, i + 30) - 0.6) * 0.35, m = modelCopy(cattailGLB, 0.75 + hash(j, i + 40) * 0.4, 'pond_cattailPlant');
+    m.position.set(Math.cos(a) * d, -0.03, Math.sin(a) * d); m.rotation.y = hash(j, i + 50) * 6.28; pond.add(m); } }); }

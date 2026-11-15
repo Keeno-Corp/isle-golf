@@ -37,7 +37,7 @@ export function placeGolfer() {
   const striking = G.phase !== 'aim' || (G.m && G.m.stage > 0);
   if (golfer.init !== true || d > 25 || striking || (!golfer.walking && d < 1.2)) { gx = tx; gz = tz; golfer.walking = false; golfer.init = true; golfer.yaw = Math.atan2(rx, rz); }
   else if (d < 0.05) { gx = tx; gz = tz; golfer.walking = false; }
-  else { golfer.walking = true; const sp = Math.min(d, Math.max(WALK_SPEED, d / 1.8) / 60); gx += dx / d * sp; gz += dz / d * sp; golfer.wdir = Math.atan2(dx, dz); }
+  else { golfer.walking = true; const sp = Math.min(d, Math.max(WALK_SPEED, d / 0.8) / 60); gx += dx / d * sp; gz += dz / d * sp; golfer.wdir = Math.atan2(dx, dz); }
   const want = golfer.walking ? golfer.wdir : Math.atan2(rx, rz); golfer.yaw += angDiff(golfer.yaw, want) * (1 - Math.exp(-(golfer.walking ? 14 : 9) / 60));
   h.position.set(gx, heightAt(gx, gz), gz); h.rotation.y = golfer.yaw; h.scale.setScalar(GS);
   golferShadow.position.set(gx + 0.05, h.position.y + 0.02, gz + 0.05);

@@ -6,6 +6,7 @@ import { camera } from './stage.js';
 import { BR, CLUBS, WIND, r3 } from './rules.js';
 import { autoAim, buildSlopeGrid, onClubChanged, updateAimLine } from './aimline.js';
 import { SIM } from './physics.js';
+import { audio } from './sound.js';
 import { G, beginHole, beginShot, curClub, curH, curP, pinDist, startRound } from './round.js';
 import { meterClick } from './meter.js';
 import { advanceCard, needPower, replayHole, setPlayersSel, showTitle, startFromTitle, windInfo } from './hud.js';
@@ -25,6 +26,7 @@ export function summary() {
 }
 export function actFn(input) {
   const a = input.action;
+  audio();   // a played action counts as the first tap: the sounds start for the tools as they do for a key
   if (hooks.actions[a]) { hooks.actions[a](input); return summary(); }
   const skipTo = () => { if (G.phase === 'title') startFromTitle(); if (G.phase === 'intro') { G.intro = G.introDur; stepGame(0.001); } };
   if (a === 'start') { setPlayersSel(clamp(input.players | 0 || 1, 1, 4)); if (G.phase === 'title') startFromTitle(); else { showTitle(false); startRound(G.nPlayers); } }
