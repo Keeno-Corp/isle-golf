@@ -21,9 +21,11 @@ export function emit(pool, x, y, z, o) {
   const i = (pool.k - 1) % pool.n; pool.pos[i * 3] = x; pool.pos[i * 3 + 1] = y; pool.pos[i * 3 + 2] = z;
 }
 export function updatePool(pool, dt) {
+  let hi = 0; // draw only up to the last live particle, so the live count is the geometry's draw count
   for (let i = 0; i < pool.n; i++) { const p = pool.p[i]; if (p.t >= p.life) { pool.pos[i * 3 + 1] = -999; continue; }
-    p.t += dt; p.vy -= p.g * dt; pool.pos[i * 3] += p.vx * dt; pool.pos[i * 3 + 1] += p.vy * dt; pool.pos[i * 3 + 2] += p.vz * dt;
+    hi = i + 1; p.t += dt; p.vy -= p.g * dt; pool.pos[i * 3] += p.vx * dt; pool.pos[i * 3 + 1] += p.vy * dt; pool.pos[i * 3 + 2] += p.vz * dt;
     const k = pool.add ? 1 - p.t / p.life : 1; pool.col[i * 3] = p.c.r * k; pool.col[i * 3 + 1] = p.c.g * k; pool.col[i * 3 + 2] = p.c.b * k; }
+  pool.pts.geometry.setDrawRange(0, hi); pool.pts.visible = hi > 0;
   pool.pts.geometry.attributes.position.needsUpdate = true; pool.pts.geometry.attributes.color.needsUpdate = true;
 }
 export const burst = (x, z, n, color, sp = 1.4, up = 2.2) => { const y = heightAt(x, z) + 0.05; for (let i = 0; i < n; i++) emit(dust, x, y, z, { life: rand(0.4, 0.9), sp, up, color }); };

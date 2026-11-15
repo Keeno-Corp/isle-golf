@@ -185,3 +185,22 @@ Next:
 3. **(asked again) Show a sheep bounce and a sand lie as saved checks.** Add a `setState` option that puts a grazing sheep on the shot line. For example, `{hole:5, sheepAt:[-24,-5.5]}` would hold `sheep[5]` there in "graze". Then `interact` a low iron through it with `expect {sheepHits:[1,9]}` and `save` the check. A "BAA" banner and a sound should appear in the trace. Save a bunker shot the same way, expecting `lie:"sand"`. The builder should also fill in Iteration 4's Did and Open.
 
 SCORE: 7.5
+
+## Iteration 5
+
+**Did**
+- `src/pools.js` `updatePool`: every point pool (`landPuffs`, `divots`, `ballTrail`) now sets `geometry.setDrawRange(0, lastLiveIndex+1)` and `pts.visible = hi > 0`. A pool with no live particles is hidden instead of drawing 60–160 points parked at y −999, and its live count is the geometry's draw count. This targets the "divots Never visible" fault and the missing `landPuffs` count.
+- No other files changed. Session 4's stub, filled in from the git diff: `fencePanels` (an InstancedMesh from `assets/fence-4d3f7d.glb`, 14 panels, its own textured MeshStandardMaterial) replaced the hidden `fencePosts`/`fenceRails`. The follow-through ramp is now 0.1 s, and the `creatures-real-key-drive-pose` check waits 20 frames.
+
+**Saw**
+- Hole 1 iron shot (`{hole:0,skipIntro:true}`, wait 150, aim pin, swing 0.75): the first land event (`feel.last` "land:green") fires at frame 238. 3 frames later, `eval` reads `landPuffs` visible with drawRange 20 and `divots` visible with drawRange 39. At settle (frame 330+) both read hidden with drawRange 0. Land puffs and the land sound (`play('land', surf)` in physics.js:148) already fire on every landing, tinted by surface.
+- `feel` on the same steps (frames 90) still lists no `landPuffs` rise. Its Spawned line names `divots` and is cut off with "…", so `landPuffs` may be in it but not shown. The Camera line still reads "moved up to 67.8 … did not come back". The camera follows the ball 12 units down the hole, so out-and-back cannot happen in this window.
+- `test`: 70 of 70 checks pass. The only console output is the three.js `toNonIndexed` warning. I did not run `look` compare or `perf` this session.
+
+**Next**
+1. Judge items 1 and 3 are untouched. Pick library models for `seaStacks`/`cliffRocks`, `teeMarker` and `pin_flag`; their searches are in `sourcing.json`. Then add a `sheepAt` setState option for a saved sheep-bounce check, plus a bunker check expecting `lie:"sand"`.
+2. Camera "came back": measure the punch on its own. A `feel` with frames 20 right after the swing should show the strike lurch returning within the 0.25 s aim-hold before the follow starts (camera.js:65). Or accept the follow camera as by design.
+
+**Open**
+- I have not confirmed with a `look` that hidden empty pools changed nothing on screen. They draw nothing when empty, so I expect no change.
+- I don't know why `feel` doesn't name `landPuffs` even though its draw count goes 0→20 at the landing. It may be the Spawned list being cut off.
